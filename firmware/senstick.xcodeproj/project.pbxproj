@@ -46,23 +46,19 @@
 		F8AC9D601C2259B500366AEF /* ble_advertising_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_advertising_manager.c; sourceTree = "<group>"; };
 		F8AC9D611C2259B500366AEF /* ble_advertising_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_advertising_manager.h; sourceTree = "<group>"; };
 		F8AC9D621C225C1100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = nrf51822_xxaa_s130_sdk10/RTE; sourceTree = "<group>"; };
+		F8AC9D631C225DF000366AEF /* RTT_Implementation_141217 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RTT_Implementation_141217; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		F8AC9D2F1C2236D600366AEF = {
 			isa = PBXGroup;
 			children = (
-				F8AC9D5C1C223FE700366AEF /* senstick_ble_parameters_config.h */,
-				F8AC9D5F1C22507100366AEF /* debug_rtt.h */,
-				F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */,
-				F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */,
-				F8AC9D361C22375900366AEF /* main.c */,
-				F8AC9D371C22377600366AEF /* senstick_pin_definitions.h */,
+				F8AC9D531C223C0900366AEF /* spi */,
 				F8AC9D3F1C22396400366AEF /* senstick */,
 				F8AC9D591C223F7500366AEF /* ble */,
 				F8AC9D441C223A9500366AEF /* gpio */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
-				F8AC9D531C223C0900366AEF /* spi */,
+				F8AC9D631C225DF000366AEF /* RTT_Implementation_141217 */,
 				F8AC9D621C225C1100366AEF /* RTE */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +85,12 @@
 		F8AC9D3F1C22396400366AEF /* senstick */ = {
 			isa = PBXGroup;
 			children = (
+				F8AC9D5F1C22507100366AEF /* debug_rtt.h */,
+				F8AC9D361C22375900366AEF /* main.c */,
+				F8AC9D5C1C223FE700366AEF /* senstick_ble_parameters_config.h */,
+				F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */,
+				F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */,
+				F8AC9D371C22377600366AEF /* senstick_pin_definitions.h */,
 				F8AC9D3D1C22391D00366AEF /* senstick_gatt_service.h */,
 				F8AC9D3C1C22391D00366AEF /* senstick_gatt_service.c */,
 				F8AC9D3B1C2238A500366AEF /* senstick_core_manager.h */,

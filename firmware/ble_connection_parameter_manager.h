@@ -1,16 +1,10 @@
-//
-//  ble_connection_parameter_manager.h
-//  senstick
-//
-//  Created by AkihiroUehara on 2015/12/17.
-//
-//
-
 #ifndef ble_connection_parameter_manager_h
 #define ble_connection_parameter_manager_h
 #include <stdint.h>
 #include "ble.h"
-#include "megane_app_timer_configration.h"
+#include "ble_connection_parameter_manager_config.h"
+
+
 
 // 概要:
 // コネクションインターバルの制御クラスです。

@@ -44,6 +44,7 @@
 		F8AC9D621C225C1100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = nrf51822_xxaa_s130_sdk10/RTE; sourceTree = "<group>"; };
 		F8AC9D631C225DF000366AEF /* RTT_Implementation_141217 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RTT_Implementation_141217; sourceTree = "<group>"; };
 		F8AC9D661C263F6100366AEF /* components */ = {isa = PBXFileReference; lastKnownFileType = folder; name = components; path = ../tmp/nRF51_SDK_10/components; sourceTree = "<group>"; };
+		F8AC9D671C266F2700366AEF /* nrf_drv_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nrf_drv_config.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -82,6 +83,7 @@
 		F8AC9D3F1C22396400366AEF /* senstick */ = {
 			isa = PBXGroup;
 			children = (
+				F8AC9D671C266F2700366AEF /* nrf_drv_config.h */,
 				F8AC9D5F1C22507100366AEF /* debug_rtt.h */,
 				F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */,
 				F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */,

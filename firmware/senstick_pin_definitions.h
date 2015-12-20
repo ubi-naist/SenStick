@@ -23,7 +23,8 @@
 // P0.27    In      32kHzクロックが供給される
 // P0.05    In      電源電圧。(470k/220k分圧、0.32倍)
 #define PIN_NUMBER_32kHz_CLK            27
-#define PIN_NUMBER_SUPPLY_MONITORING    5
+//#define PIN_NUMBER_SUPPLY_MONITORING    5 //AIN6_2
+#define ADC_INPUT_SUPPLY_MONITORING    NRF_ADC_CONFIG_INPUT_6
 
 // TWI
 // P0.21            SDA
@@ -38,7 +39,7 @@
 // P0.01        DO
 // P0.11        DI
 // P0.12        CLK
-#define PIN_NUMBER_SPI_CS   0
+#define PIN_NUMBER_SPI_nCS  0
 #define PIN_NUMBER_SPI_DO   1
 #define PIN_NUMBER_SPI_DI   11
 #define PIN_NUMBER_SPI_CLK  12

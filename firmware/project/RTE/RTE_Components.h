@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'senstick_s130_pca10028' 
+ * Project: 'senstick_xxaa_s130_sdk10' 
  * Target:  'nrf51822_xxac_s13(debug)' 
  */
 

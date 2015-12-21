@@ -13,8 +13,8 @@
 		F8AC9D391C2237DC00366AEF /* senstick_data_models.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_data_models.h; sourceTree = "<group>"; };
 		F8AC9D3A1C2238A500366AEF /* senstick_core_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_core_manager.c; sourceTree = "<group>"; };
 		F8AC9D3B1C2238A500366AEF /* senstick_core_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_core_manager.h; sourceTree = "<group>"; };
-		F8AC9D3C1C22391D00366AEF /* senstick_gatt_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_gatt_service.c; sourceTree = "<group>"; };
-		F8AC9D3D1C22391D00366AEF /* senstick_gatt_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_gatt_service.h; sourceTree = "<group>"; };
+		F8AC9D3C1C22391D00366AEF /* ble_activity_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_activity_service.c; sourceTree = "<group>"; };
+		F8AC9D3D1C22391D00366AEF /* ble_activity_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_activity_service.h; sourceTree = "<group>"; };
 		F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_rtc.c; sourceTree = "<group>"; };
 		F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_rtc.h; sourceTree = "<group>"; };
 		F8AC9D421C223A4A00366AEF /* twi_slave_acceleration_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_acceleration_sensor.c; sourceTree = "<group>"; };
@@ -41,10 +41,10 @@
 		F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_definitions.h; sourceTree = "<group>"; };
 		F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_definitions.h; sourceTree = "<group>"; };
 		F8AC9D5F1C22507100366AEF /* debug_rtt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debug_rtt.h; sourceTree = "<group>"; };
-		F8AC9D621C225C1100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = nrf51822_xxaa_s130_sdk10/RTE; sourceTree = "<group>"; };
 		F8AC9D631C225DF000366AEF /* RTT_Implementation_141217 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RTT_Implementation_141217; sourceTree = "<group>"; };
 		F8AC9D661C263F6100366AEF /* components */ = {isa = PBXFileReference; lastKnownFileType = folder; name = components; path = ../tmp/nRF51_SDK_10/components; sourceTree = "<group>"; };
 		F8AC9D671C266F2700366AEF /* nrf_drv_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nrf_drv_config.h; sourceTree = "<group>"; };
+		F8AC9D681C26927100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = project/RTE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -56,7 +56,7 @@
 				F8AC9D531C223C0900366AEF /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
 				F8AC9D631C225DF000366AEF /* RTT_Implementation_141217 */,
-				F8AC9D621C225C1100366AEF /* RTE */,
+				F8AC9D681C26927100366AEF /* RTE */,
 				F8AC9D661C263F6100366AEF /* components */,
 			);
 			sourceTree = "<group>";
@@ -90,8 +90,8 @@
 				F8AC9D361C22375900366AEF /* main.c */,
 				F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */,
 				F8AC9D371C22377600366AEF /* senstick_pin_definitions.h */,
-				F8AC9D3D1C22391D00366AEF /* senstick_gatt_service.h */,
-				F8AC9D3C1C22391D00366AEF /* senstick_gatt_service.c */,
+				F8AC9D3D1C22391D00366AEF /* ble_activity_service.h */,
+				F8AC9D3C1C22391D00366AEF /* ble_activity_service.c */,
 				F8AC9D3B1C2238A500366AEF /* senstick_core_manager.h */,
 				F8AC9D3A1C2238A500366AEF /* senstick_core_manager.c */,
 				F8AC9D391C2237DC00366AEF /* senstick_data_models.h */,

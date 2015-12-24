@@ -2,11 +2,12 @@
 
 #include <string.h>
 
+#include "nrf_assert.h"
 #include "nrf_delay.h"
+#include "nrf_log.h"
+
 #include "app_error.h"
 #include "senstick_pin_definitions.h"
-
-#include "debug_rtt.h"
 
 /**
  * Definitions
@@ -47,7 +48,7 @@ static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, 
 {
     ret_code_t err_code;
     
-    LOG_ASSERT(data_length <= RTC_MAX_DATA_LENGTH);
+    ASSERT(data_length <= RTC_MAX_DATA_LENGTH);
     
     // 先頭2バイトは、I2Cアドレスとレジスタアドレス
     uint8_t buffer[RTC_MAX_DATA_LENGTH + 1];
@@ -90,7 +91,7 @@ void initRTC(rtc_context_t *p_context, const rtc_init_t *p_init)
 void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting)
 {
     // 値はBCDなので注意すること
-    LOG("\nsetRTCDateTime() y:%0x m:%0x d:%0x dow:%0x h:%0x m:%0x", p_setting->year, p_setting->month, p_setting->day, p_setting->dayOfWeek, p_setting->hour, p_setting->minute);
+    NRF_LOG_PRINTF_DEBUG("\nsetRTCDateTime() y:%0x m:%0x d:%0x dow:%0x h:%0x m:%0x", p_setting->year, p_setting->month, p_setting->day, p_setting->dayOfWeek, p_setting->hour, p_setting->minute);
     // チップ仕様書 p.29 時刻の設定は、1回のスタートからストップコンディションの間に、0.5秒以内に完了させる制約がある。
     // 時刻を設定する。レジスタのアドレスが連続しているので、値を1度に書き込む。
     // レジスタのアドレス並びは以下のとおり:
@@ -131,7 +132,7 @@ void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setti
 
 void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
 {
-    LOG("\ngetRTCDateTime()");
+    NRF_LOG_PRINTF_DEBUG("\ngetRTCDateTime()");
     
     // レジスタのアドレス並びは以下のとおり:
     /*
@@ -171,7 +172,7 @@ void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
 
 void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_t *p_setting)
 {
-    LOG("\nsetRTCAlarmDateTime() h:%0x m:%0x dow_bits:0x%0x", p_setting->hour, p_setting->minute, p_setting->dayOfWeekBitFields);
+    NRF_LOG_PRINTF_DEBUG("\nsetRTCAlarmDateTime() h:%0x m:%0x dow_bits:0x%0x", p_setting->hour, p_setting->minute, p_setting->dayOfWeekBitFields);
     
     // アラームの現状のフラグを習得。
     bool isAlarm = getRTCAlarmEnable(p_context);
@@ -205,7 +206,7 @@ void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_
 
 void getRTCAlarmDateTime(rtc_context_t *p_context, rtcAlarmSettingCommand_t *p_setting)
 {
-    LOG("\ngetRTCAlarmDateTime()");
+    NRF_LOG_PRINTF_DEBUG("\ngetRTCAlarmDateTime()");
     // レジスタのアドレス並びは以下のとおり:
     /*
      RTCAlarm_DayOfWeek_MinuteRegister       = 0x08,
@@ -221,7 +222,7 @@ void getRTCAlarmDateTime(rtc_context_t *p_context, rtcAlarmSettingCommand_t *p_s
 
 void clearRTCAlarm(rtc_context_t *p_context)
 {
-    LOG("\nclearRTCAlarm()");
+    NRF_LOG_PRINTF_DEBUG("\nclearRTCAlarm()");
     
     // RTCControlRegister2
     // D7: Scratch
@@ -239,7 +240,7 @@ void clearRTCAlarm(rtc_context_t *p_context)
 
 void setRTCAlarmEnable(rtc_context_t *p_context, bool flag)
 {
-    LOG("\nsetRTCAlarmEnable() flag:%d", flag);
+    NRF_LOG_PRINTF_DEBUG("\nsetRTCAlarmEnable() flag:%d", flag);
     
     uint8_t data;
     if(flag) {
@@ -285,7 +286,7 @@ bool getRTCAlarmEnable(rtc_context_t *p_context)
     // D0: CT0      0
     bool result = ((data & 0x80) != 0);
     
-    LOG("\ngetRTCAlarmEnable() %d", result);
+    NRF_LOG_PRINTF_DEBUG("\ngetRTCAlarmEnable() %d", result);
     return result;
 }
 

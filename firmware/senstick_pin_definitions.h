@@ -46,5 +46,6 @@
 
 // IOポートのアドレス定義
 // I2Cバス上の、スレーブ・アドレス
+#define	TWI_RTC_ADDRESS     0x64 // 01100100
 
 #endif /* senstick_pin_definitions_h */

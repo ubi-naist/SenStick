@@ -59,7 +59,7 @@ typedef uint16_t TemperatureData_t;
  */
 
 // 加速度センサーの範囲設定値。列挙側の値は、BLEでの設定値に合わせている。
-typedef {
+typedef enum {
     ACCELERATION_RANGE_2G, // +- 2g
     ACCELERATION_RANGE_4G, // +- 4g
     ACCELERATION_RANGE_8G, // +- 8g
@@ -67,7 +67,7 @@ typedef {
 } AccelerationRange_t;
 
 // ジャイロセンサーの範囲設定値。列挙側の値は、BLEでの設定値に合わせている。
-typedef {
+typedef enum {
     ROTATION_RANGE_250DPS,
     ROTATION_RANGE_500DPS,
     ROTATION_RANGE_1000DPS,
@@ -75,7 +75,7 @@ typedef {
 } RotationRange_t;
 
 // サンプリング・レート
-typedef {
+typedef enum {
   SAMPLING_RATE_0_1_Hz, // 0.1Hz
   SAMPLING_RATE_1_Hz,   // 1Hz
   SAMPLING_10_Hz        // 10Hz

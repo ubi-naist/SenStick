@@ -1,4 +1,27 @@
+#include "nordic_common.h"
+#include "nrf_soc.h"
+#include "nrf_delay.h"
+
+#include "softdevice_handler.h"
+#include "softdevice_handler_appsh.h"
+
+#include "ble_advertising.h"
+#include "ble_gap.h"
+#include "ble_parameters_config.h"
+
+#include "app_timer_appsh.h"
+#include "app_scheduler.h"
+#include "app_error.h"
+#include "pstorage.h"
+
 #include "ble_activity_service.h"
+
+#include "softdevice_handler_appsh.h"
+
+#include "senstick_device_definitions.h"
+#include "senstick_definitions.h"
+
+#include "debug_rtt.h"
 
 /**
  * 定義
@@ -34,7 +57,7 @@ static void sys_evt_dispatch(uint32_t sys_evt)
 static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
     ble_advertising_on_ble_evt(p_ble_evt);
-    ble_activity_service_on_ble_event(activity_service_context, p_ble_evt);
+    ble_activity_service_on_ble_event(&activity_service_context, p_ble_evt);
 }
 
 /**
@@ -116,7 +139,7 @@ static void gap_params_init(void)
 
 static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
 {
-    uint32_t err_code;
+//    uint32_t err_code;
     
     switch (ble_adv_evt)
     {
@@ -163,12 +186,9 @@ static void on_advertising_error(uint32_t nrf_error)
     LOG("\non_advertising_error() error:0x%0x.", nrf_error);
 }
 
-void initAdvertisingManager(void)
+void initAdvertisingManager(ble_uuid_t *p_uuid)
 {
     uint32_t      err_code;
-    
-    // コンテキストをクリアする
-    memset(p_context, 0, sizeof(ble_advertising_manager_t));
     
     // アドバタイジングデータを構築する。
     ble_advdata_t advdata;
@@ -183,7 +203,7 @@ void initAdvertisingManager(void)
     ble_advdata_t scan_response_data;
     memset(&scan_response_data, 0, sizeof(scan_response_data));
     
-    scan_response_data.name_type               = BLE_ADVDATA_FULL_NAME;
+    scan_response_data.name_type = BLE_ADVDATA_FULL_NAME;
     
     // アドバタイジングモードのオプション設定
     ble_adv_modes_config_t options;
@@ -198,7 +218,7 @@ void initAdvertisingManager(void)
     options.ble_adv_slow_interval = ADV_SLOW_INTERVAL_0625UNIT;
     options.ble_adv_slow_timeout  = ADV_SLOW_TIMEOUT_SEC;
     
-    err_code = ble_advertising_init(&advdata, &scan_response_data, &options, on_advertising_event, on_advertsing_error);
+    err_code = ble_advertising_init(&advdata, &scan_response_data, &options, on_advertising_event, on_advertising_error);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -218,27 +238,24 @@ void on_activity_service_event(ble_activity_service_t * p_context, const ble_act
     
 }
 
-/**@brief Function for application main entry.
+/**
+ * main関数
  */
 int main(void)
 {
     uint32_t err_code;
-
-    // スタックの初期化。
-    ble_stack_init();
     
     // タイマーモジュール、スケジューラ設定。
-    APP_TIMER_INIT(PRESCALER, OP_QUEUE_SIZE, scheduler_function);
     APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
+    APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
 
     // pstorageを初期化。device managerを呼び出す前に、この処理を行わなくてはならない。
     err_code = pstorage_init();
     APP_ERROR_CHECK(err_code);
     
-    // GAP、アドバタイジング、接続パラメータ。
+    // スタックの初期化。
+    ble_stack_init();
     gap_params_init();
-    advertising_init();
-    conn_params_init();
     
     // サービス初期化
     ble_activity_service_init_t activity_service_init;
@@ -247,6 +264,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
     
     // アドバタイジングを開始する。
+    initAdvertisingManager(&(activity_service_context.service_uuid));
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
 
@@ -259,4 +277,3 @@ int main(void)
         app_sched_execute();
     }
 }
-

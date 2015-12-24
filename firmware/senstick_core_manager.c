@@ -1,6 +1,10 @@
+#include <stdint.h>
+#include "nrf_drv_gpiote.h"
+#include "nrf_adc.h"
+#include "app_error.h"
 
 #include "senstick_core_manager.h"
-
+#include "senstick_pin_definitions.h"
 /**
  * イベントハンドラ
  */
@@ -10,6 +14,7 @@ static void gpio_event_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t a
         case PIN_NUMBER_TACT_SWITCH:
             break;
         default:
+            break;
     }
 }
 
@@ -31,20 +36,30 @@ static void init_gpio(void)
     }
     
     // LEDピンの設定
-    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false); // 引数は init_high。初期値をlowにする。
-    err_code = nrf_drv_gpiote_out_config(PIN_NUMBER_LED, &out_config);
+    // 引数は init_high。初期値をlowにする。
+//    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false);
+    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_LOW;
+    out_config.task_pin = false;
+    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_LED, &out_config);
     APP_ERROR_CHECK(err_code);
     
     // タクトスイッチの設定
     // P0.20    In      タクトスイッチ接続。スイッチオンでGNDに落とされる。
-    in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(false); // 引数は high accuracy。精度はいらないのでfalseを指定。
-    in_config.pull = NRF_GPIO_PIN_PULLUP;
+    // 引数は high accuracy。精度はいらないのでfalseを指定。
+//    in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(false);
+    in_config.is_watcher  = false;
+    in_config.hi_accuracy = false;
+    in_config.sense       = NRF_GPIOTE_POLARITY_HITOLO;
+    in_config.pull        = NRF_GPIO_PIN_PULLUP;
     err_code = nrf_drv_gpiote_in_init(PIN_NUMBER_TACT_SWITCH, &in_config, gpio_event_handler);
     APP_ERROR_CHECK(err_code);
 
     // TWIのデバイス電源設定
-    out_config = GPIOTE_CONFIG_OUT_SIMPLE(true); // 引数は init_high。初期値をhighにする。
-    err_code = nrf_drv_gpiote_out_config(PIN_NUMBER_TWI_POWER, &out_config);
+    // 引数は init_high。初期値をhighにする。
+//    out_config = GPIOTE_CONFIG_OUT_SIMPLE(true);
+    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_HIGH;
+    out_config.task_pin = false;
+    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_TWI_POWER, &out_config);
     APP_ERROR_CHECK(err_code);
     // ドライブストレンクスを"強"に
     nrf_gpio_cfg(PIN_NUMBER_TWI_POWER,
@@ -56,8 +71,10 @@ static void init_gpio(void)
     nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
     
     // SPIのnCS
-    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false); // 引数は init_high。初期値をlowにする。
-    err_code = nrf_drv_gpiote_out_config(PIN_NUMBER_SPI_nCS, &out_config);
+//    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false); // 引数は init_high。初期値をlowにする。
+    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_LOW;
+    out_config.task_pin = false;
+    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_SPI_nCS, &out_config);
     APP_ERROR_CHECK(err_code);
     
     // 以下のピンは、今は利用しない

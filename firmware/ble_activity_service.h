@@ -40,8 +40,10 @@ typedef struct {
 } ble_activity_service_init_t;
 
 // アクティビティサービスのコンテキスト構造体。サービスの実行に必要な情報が含まれる。
-typedef struct ble_activity_service_s {
+struct ble_activity_service_s {
     ble_activity_service_event_handler_t event_handler;     // イベントハンドラ
+
+    ble_uuid_t service_uuid;
     
     uint16_t service_handle;                                // サービスのGATTデータベースのHandle。
     ble_gatts_char_handles_t nine_axis_sensor_char_handle;  // 9軸センサのキャラクタリスティクスのハンドル
@@ -52,7 +54,7 @@ typedef struct ble_activity_service_s {
     ble_gatts_char_handles_t control_char_handle;           // コントロール
     
     uint16_t connection_handle;
-    uint8_t	 base_uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
+    uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
 
     bool should_notify_nine_axis_sensor;
     bool should_notify_brightness_data;

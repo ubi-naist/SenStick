@@ -10,7 +10,7 @@
 #define ADV_FAST_INTERVAL_0625UNIT      (32)   // アドバタイジング・インターバルは、0.625ミリ秒単位で指定する。20 / 0.625 = 32。
 #define ADV_FAST_TIMEOUT_SEC            (30)
 
-#define ADV_SLOW_ADV_INTERVAL_0625UNIT  (1600) // 1000ミリ秒 / 0.625ミリ秒 = 1600
+#define ADV_SLOW_INTERVAL_0625UNIT      (1600) // 1000ミリ秒 / 0.625ミリ秒 = 1600
 #define ADV_SLOW_TIMEOUT_SEC            (150)
 
 // コネクション・インターバル
@@ -23,12 +23,4 @@
 #define DEFAULT_SLAVE_LATENCY                   0
 #define DEFAULT_CONN_SUP_TIMEOUT_MILISEC        (4 * 1000)
 
-/*
-#define SEC_PARAM_BOND                   1                                        // Perform bonding.
-#define SEC_PARAM_MITM                   0                                        //**< Man In The Middle protection not required.
-#define SEC_PARAM_IO_CAPABILITIES        BLE_GAP_IO_CAPS_NONE                     //**< No I/O capabilities.
-#define SEC_PARAM_OOB                    0                                        //**< Out Of Band data not available.
-#define SEC_PARAM_MIN_KEY_SIZE           7                                        //**< Minimum encryption key size.
-#define SEC_PARAM_MAX_KEY_SIZE           16                                       //**< Maximum encryption key size.
-*/
 #endif /* ble_parameters_config_h */

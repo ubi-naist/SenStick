@@ -6,6 +6,13 @@
 //
 //
 
+#include <string.h>
+#include <nordic_common.h>
+#include <ble.h>
+#include <ble_gatts.h>
+
+#include <app_error.h>
+
 #include "ble_activity_service.h"
 
 const ble_uuid128_t ble_activity_base_uuid128 = {
@@ -45,6 +52,8 @@ const ble_uuid128_t ble_activity_base_uuid128 = {
 
 static void on_write(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
 {
+    ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+    
     // CCCDへの書き込み確認
     if((p_evt_write->len == 2) && (p_evt_write->handle == p_context->nine_axis_sensor_char_handle.cccd_handle)) {
         p_context->should_notify_nine_axis_sensor = ble_srv_is_notification_enabled(p_evt_write->data);
@@ -64,18 +73,16 @@ static void on_write(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
     uint32_t err_code;
     uint8_t buffer[GATT_MAX_DATA_LENGTH];
     
-    ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
-    uint16_t len = MIN(GATT_MAX_DATA_LENGTH, p_evt_write->len); // 長さを制約
-    
     ble_gatts_value_t gatts_value;
     memset(&gatts_value, 0 , sizeof(gatts_value));
     gatts_value.len     = MIN(sizeof(buffer), p_evt_write->len); // 長さを制約
     gatts_value.offset  = 0;
     gatts_value.p_value = buffer;
     err_code = sd_ble_gatts_value_get(p_context->connection_handle, p_evt_write->handle, &gatts_value);
-
+    APP_ERROR_CHECK(err_code);
+    
     // 設定、制御への書き込みを通知する
-    if(p_evt_write->handle == p_context->setting_char_handle.value_handle) || p_evt_write->handle == p_context->control_char_handle.value_handle) {
+    if((p_evt_write->handle == p_context->setting_char_handle.value_handle) || (p_evt_write->handle == p_context->control_char_handle.value_handle)) {
         ble_activity_service_event_t event;
         // イベントタイプを設定。今は2つしかないので3項演算子で設定。
         event.event_type  = (p_evt_write->handle == p_context->setting_char_handle.value_handle) ? BLE_ACTIVITY_SERVICE_SETTING_WRITTEN : BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN;
@@ -86,39 +93,7 @@ static void on_write(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
     }
 }
 
-static void on_write(megane_controller_t *p_context, ble_evt_t *p_ble_evt)
-{
-    uint32_t err_code;
-    ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
-    
-    if(p_evt_write->handle == p_context->controller_characteristic_handle.value_handle) {
-        // コントローラキャラクタリスティクスへの書き込み、パースして処理する
-        // 動的メモリ確保により、malloc経由HARD FAULTが発生
-        //        uint8_t buffer[p_evt_write->len];
-        uint8_t buffer[GATT_MAX_DATA_LENGTH];
-        uint16_t length = MIN(GATT_MAX_DATA_LENGTH, p_evt_write->len); // 長さを指定値に制約
-        
-        // gatts の値の取得関数の引数が、SDK6とSDK8では異なる。
-        ble_gatts_value_t gatts_value;
-        memset(&gatts_value, 0, sizeof(gatts_value));
-        gatts_value.len = length;
-        gatts_value.offset = 0;
-        gatts_value.p_value = buffer;
-        err_code = sd_ble_gatts_value_get(p_context->connection_handle,
-                                          p_context->controller_characteristic_handle.value_handle,
-                                          &gatts_value);
-        APP_ERROR_CHECK(err_code);
-        
-        processMeganeControllerPacket(p_context, buffer, length);
-    } else if((p_evt_write->handle == p_context->notification_characteristic_handle.cccd_handle) && (p_evt_write->len == 2)) {
-        // cccd書き込み
-        p_context->is_notification_enabled = ble_srv_is_notification_enabled(p_evt_write->data);
-        // TBD 通知タイマーの起動などの処理を入れる
-    }
-}
-
-
-static uint32_t add_notification_characteristics(ble_gatts_char_handles_t p_handle, const ble_activity_service_t *p_context, const uint16_t uuid_sub, const int value_len)
+static uint32_t add_notification_characteristics(ble_gatts_char_handles_t *p_handle, const ble_activity_service_t *p_context, const uint16_t uuid_sub, const int value_len)
 {
     ble_gatts_char_md_t char_md;
     ble_gatts_attr_md_t attribute_md;
@@ -127,7 +102,7 @@ static uint32_t add_notification_characteristics(ble_gatts_char_handles_t p_hand
     
     // UUIDを用意
     ble_uuid_t characteristics_uuid;
-    characteristics_uuid.type = p_context->base_uuid_type;
+    characteristics_uuid.type = p_context->uuid_type;
     characteristics_uuid.uuid = uuid_sub;
     
     // クライアント・キャラクタリスティクス・コンフィグレーション・ディスクリプタ メタデータ
@@ -155,7 +130,7 @@ static uint32_t add_notification_characteristics(ble_gatts_char_handles_t p_hand
     return sd_ble_gatts_characteristic_add(p_context->service_handle, &char_md, &attr_value, p_handle);
 }
 
-static uint32_t add_write_characteristics(ble_gatts_char_handles_t p_handle, const ble_activity_service_t *p_context, const uint16_t uuid_sub, const int value_len)
+static uint32_t add_write_characteristics(ble_gatts_char_handles_t *p_handle, const ble_activity_service_t *p_context, const uint16_t uuid_sub, const int value_len)
 {
     ble_gatts_char_md_t char_md;
     ble_gatts_attr_md_t attribute_md;
@@ -163,7 +138,7 @@ static uint32_t add_write_characteristics(ble_gatts_char_handles_t p_handle, con
     
     // UUIDを用意
     ble_uuid_t characteristics_uuid;
-    characteristics_uuid.type = p_context->base_uuid_type;
+    characteristics_uuid.type = p_context->uuid_type;
     characteristics_uuid.uuid = uuid_sub;
     
     // ノーティフィケーション・キャラクタリスティクスのメタデータ
@@ -216,7 +191,6 @@ uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_
     }
     
     uint32_t   err_code;
-    ble_uuid_t ble_uuid;
     
     // サービス構造体を初期化
     memset(p_context, 0, sizeof(ble_activity_service_t));
@@ -225,7 +199,7 @@ uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_
     p_context->connection_handle = BLE_CONN_HANDLE_INVALID;
     
     // ベースUUIDを登録
-    err_code = sd_ble_uuid_vs_add(&ble_activity_base_uuid128, &(sp_context->base_uuid_type));
+    err_code = sd_ble_uuid_vs_add(&ble_activity_base_uuid128, &(p_context->uuid_type));
     APP_ERROR_CHECK(err_code);
 
     // サービスを登録
@@ -234,6 +208,9 @@ uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_
     service_uuid.type = p_context->uuid_type;
     err_code = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &service_uuid, &(p_context->service_handle));
     APP_ERROR_CHECK(err_code);
+    
+    // UUIDをコピー
+    BLE_UUID_COPY_INST(p_context->service_uuid, service_uuid);
     
     // キャラクタリスティクスを追加
     add_characteristics(p_context);

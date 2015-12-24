@@ -2,11 +2,9 @@
 
 #include <string.h>
 
-#include "twi_master.h"
 #include "nrf_delay.h"
-
-#include "megane_rtc.h"
-#include "megane_io_definitions.h"
+#include "app_error.h"
+#include "senstick_pin_definitions.h"
 
 #include "debug_rtt.h"
 
@@ -44,9 +42,11 @@ typedef enum {
  * Private methods
  */
 
-// RTCに書き込みます。RTC_ADDRESSは megane_io_definitions.h で定義されているI2Cバス上のRTCのアドレスです。
-static bool writeToRTC(RTCRegister_t target_register, const uint8_t *data, uint8_t data_length)
+// RTCに書き込みます。TWI_RTC_ADDRESSは megane_io_definitions.h で定義されているI2Cバス上のRTCのアドレスです。
+static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, const uint8_t *data, uint8_t data_length)
 {
+    ret_code_t err_code;
+    
     LOG_ASSERT(data_length <= RTC_MAX_DATA_LENGTH);
     
     // 先頭2バイトは、I2Cアドレスとレジスタアドレス
@@ -55,38 +55,39 @@ static bool writeToRTC(RTCRegister_t target_register, const uint8_t *data, uint8
     memcpy(&(buffer[1]), data, data_length);
     
     // I2C書き込み
-    bool result = twi_master_transfer(RTC_ADDRESS, // I2CのRTCアドレス(7ビット) + R/Wビット=0(書き込み)
-                                      buffer, (data_length + 1),
-                                      true);
+    err_code = nrf_drv_twi_tx(p_context->p_twi,
+                   TWI_RTC_ADDRESS, // I2CのRTCアドレス(7ビット) + R/Wビット=0(書き込み)
+                   buffer, (data_length + 1),
+                   true);
+    APP_ERROR_CHECK(err_code);
     nrf_delay_us(31); // R2221L/T 仕様書 p.29 ストップコンディションから次のスタートコンディションまで、31us以上の時間を空ける。
-    
-    LOG_ASSERT(result);
-    return result;
 }
 
-static bool readFromRTC(RTCRegister_t target_register, uint8_t *data, uint8_t data_length)
+static void readFromRTC(rtc_context_t *p_context, RTCRegister_t target_register, uint8_t *data, uint8_t data_length)
 {
+    ret_code_t err_code;
+    
     // 読み出しターゲットアドレスを設定
     uint8_t buffer0 = (((uint8_t)target_register) << 4) | 0x00; // 4ビットの内部アドレス + 4ビットの転送フォーマット(0x00)
-    bool result = twi_master_transfer(RTC_ADDRESS, &buffer0, 1, false);
+    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_RTC_ADDRESS, &buffer0, 1, false);
+    APP_ERROR_CHECK(err_code);
     // データを読み出し
-    result &= twi_master_transfer((RTC_ADDRESS | TWI_READ_BIT), data, data_length, true);
+//    err_code = rf_drv_twi_tx(p_context->p_twi, (TWI_RTC_ADDRESS | TWI_READ_BIT), data, data_length, true);
+    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_RTC_ADDRESS, data, data_length, true);
+    APP_ERROR_CHECK(err_code);
     nrf_delay_us(31); // R2221L/T 仕様書 p.29 ストップコンディションから次のスタートコンディションまで、31us以上の時間を空ける。
-    
-    LOG_ASSERT(result);
-    return result;
-    
 }
 
 /**
  * Public methods
  */
 
-void initRTC(void)
+void initRTC(rtc_context_t *p_context, const rtc_init_t *p_init)
 {
+    p_context->p_twi = p_init->p_twi;
 }
 
-void setRTCDateTime(const rtcSettingCommand_t *p_setting)
+void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting)
 {
     // 値はBCDなので注意すること
     LOG("\nsetRTCDateTime() y:%0x m:%0x d:%0x dow:%0x h:%0x m:%0x", p_setting->year, p_setting->month, p_setting->day, p_setting->dayOfWeek, p_setting->hour, p_setting->minute);
@@ -125,10 +126,10 @@ void setRTCDateTime(const rtcSettingCommand_t *p_setting)
         p_setting->day,
         p_setting->month,
         p_setting->year };
-    writeToRTC(RTCSecondCountRegister, data, sizeof(data));
+    writeToRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
 }
 
-void getRTCDateTime(rtcSettingCommand_t *p_setting)
+void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
 {
     LOG("\ngetRTCDateTime()");
     
@@ -143,7 +144,7 @@ void getRTCDateTime(rtcSettingCommand_t *p_setting)
      RTCYearCountRegister    = 0x06,
      */
     uint8_t data[7];
-    readFromRTC(RTCSecondCountRegister, data, sizeof(data));
+    readFromRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
     
     // 構造体は次の通り。
     // dayOfWeek は、曜日(1が日曜日 7が土曜日)なので、気をつけること。
@@ -168,20 +169,20 @@ void getRTCDateTime(rtcSettingCommand_t *p_setting)
     p_setting->year      = data[6];
 }
 
-void setRTCAlarmDateTime(const rtcAlarmSettingCommand_t *p_setting)
+void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_t *p_setting)
 {
     LOG("\nsetRTCAlarmDateTime() h:%0x m:%0x dow_bits:0x%0x", p_setting->hour, p_setting->minute, p_setting->dayOfWeekBitFields);
     
     // アラームの現状のフラグを習得。
-    bool isAlarm = getRTCAlarmEnable();
+    bool isAlarm = getRTCAlarmEnable(p_context);
     
     // アラームを停止
     if(isAlarm) {
-        setRTCAlarmEnable(false);
+        setRTCAlarmEnable(p_context, false);
     }
     
     // アラーム出力フラグをクリア
-    clearRTCAlarm();
+    clearRTCAlarm(p_context);
     
     // アラーム時刻を設定する。レジスタのアドレスが連続しているので、3つの値を1度に書き込む。
     // rtcAlarmSettingCommand_t の dayOfWeek は、曜日(1が日曜日 7が土曜日)なので、気をつけること。
@@ -194,15 +195,15 @@ void setRTCAlarmDateTime(const rtcAlarmSettingCommand_t *p_setting)
      RTCAlarm_DayOfWeek_HourRegister         = 0x09,
      RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
      */
-    writeToRTC(RTCAlarm_DayOfWeek_MinuteRegister, alarm_w_data, sizeof(alarm_w_data));
+    writeToRTC(p_context, RTCAlarm_DayOfWeek_MinuteRegister, alarm_w_data, sizeof(alarm_w_data));
     
     // アラームのフラグを再度設定
     if(isAlarm) {
-        setRTCAlarmEnable(true);
+        setRTCAlarmEnable(p_context, true);
     }
 }
 
-void getRTCAlarmDateTime(rtcAlarmSettingCommand_t *p_setting)
+void getRTCAlarmDateTime(rtc_context_t *p_context, rtcAlarmSettingCommand_t *p_setting)
 {
     LOG("\ngetRTCAlarmDateTime()");
     // レジスタのアドレス並びは以下のとおり:
@@ -212,13 +213,13 @@ void getRTCAlarmDateTime(rtcAlarmSettingCommand_t *p_setting)
      RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
      */
     uint8_t data[3];
-    readFromRTC(RTCAlarm_DayOfWeek_MinuteRegister, data, sizeof(data));
+    readFromRTC(p_context, RTCAlarm_DayOfWeek_MinuteRegister, data, sizeof(data));
     p_setting->minute               = data[0];
     p_setting->hour                 = data[1];
     p_setting->dayOfWeekBitFields   = data[2]; // アラームのdayOfWeekはビットフラグなので、時刻設定のように+1のような加工は必要はない。
 }
 
-void clearRTCAlarm(void)
+void clearRTCAlarm(rtc_context_t *p_context)
 {
     LOG("\nclearRTCAlarm()");
     
@@ -233,10 +234,10 @@ void clearRTCAlarm(void)
     // D0: DAFG     0   Alarm_D フラグビット アラーム一致になると1になる。0を書き込むと、一致信号がクリアされる。
     
     const uint8_t data[] = {0x00};
-    writeToRTC(RTCControlRegister2, data, sizeof(data));
+    writeToRTC(p_context, RTCControlRegister2, data, sizeof(data));
 }
 
-void setRTCAlarmEnable(bool flag)
+void setRTCAlarmEnable(rtc_context_t *p_context, bool flag)
 {
     LOG("\nsetRTCAlarmEnable() flag:%d", flag);
     
@@ -264,15 +265,15 @@ void setRTCAlarmEnable(bool flag)
         // D0: CT0      0
         data = 0x20;
     }
-    writeToRTC(RTCControlRegister1, &data, 1);
+    writeToRTC(p_context, RTCControlRegister1, &data, 1);
     // hoge もう1つのフラグ?
 }
 
-bool getRTCAlarmEnable()
+bool getRTCAlarmEnable(rtc_context_t *p_context)
 {
     // コントロールレジスタ1を読み出します。
     uint8_t data = 0;
-    readFromRTC(RTCControlRegister1, &data, 1);
+    readFromRTC(p_context, RTCControlRegister1, &data, 1);
     // RTCControlRegister1
     // D7: WALE     1   Alarm_W 一致動作
     // D6: DALE     0   Alarm_D 一致動作無効

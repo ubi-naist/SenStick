@@ -432,9 +432,9 @@
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_gatt_service.c</FileName>
+              <FileName>ble_activity_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_gatt_service.c</FilePath>
+              <FilePath>..\ble_activity_service.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -505,21 +505,6 @@
               <FileName>gpio_battery_monitor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_battery_monitor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ble</GroupName>
-          <Files>
-            <File>
-              <FileName>ble_connection_parameter_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_connection_parameter_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_advertising_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_advertising_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -980,9 +965,9 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_gatt_service.c</FileName>
+              <FileName>ble_activity_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_gatt_service.c</FilePath>
+              <FilePath>..\ble_activity_service.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1053,21 +1038,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>gpio_battery_monitor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_battery_monitor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ble</GroupName>
-          <Files>
-            <File>
-              <FileName>ble_connection_parameter_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_connection_parameter_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_advertising_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_advertising_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1526,9 +1496,9 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_gatt_service.c</FileName>
+              <FileName>ble_activity_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_gatt_service.c</FilePath>
+              <FilePath>..\ble_activity_service.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1599,21 +1569,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>gpio_battery_monitor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_battery_monitor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ble</GroupName>
-          <Files>
-            <File>
-              <FileName>ble_connection_parameter_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_connection_parameter_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_advertising_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_advertising_manager.c</FilePath>
             </File>
           </Files>
         </Group>

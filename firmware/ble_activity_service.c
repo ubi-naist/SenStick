@@ -70,7 +70,7 @@ static void on_write(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
     }
     
     // 書き込まれた値を取り出す。
-    uint32_t err_code;
+    ret_code_t err_code;
     uint8_t buffer[GATT_MAX_DATA_LENGTH];
     
     ble_gatts_value_t gatts_value;
@@ -159,7 +159,7 @@ static uint32_t add_write_characteristics(ble_gatts_char_handles_t *p_handle, co
 
 static void add_characteristics(ble_activity_service_t *p_context)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
     
     err_code = add_notification_characteristics(&(p_context->nine_axis_sensor_char_handle), p_context, BLE_UUID_NINE_AXIS_CHAR_SUB, BLE_NINE_AXIS_CHAR_VALUE_LENGTH);
     APP_ERROR_CHECK(err_code);

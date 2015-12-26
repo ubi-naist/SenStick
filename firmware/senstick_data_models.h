@@ -104,4 +104,11 @@ typedef struct {
     uint8_t dayOfWeekBitFields;  // 曜日(1が日曜日 7が土曜日)
 } rtcAlarmSettingCommand_t;
 
+// 関数
+uint16_t readUInt16AsBigEndian(uint8_t *ptr);
+uint16_t readUInt16AsLittleEndian(uint8_t *ptr);
+
+// デバッグ用ログ関数
+void debugLogAccerationData(const AccelerationData_t *data);
+
 #endif /* senstick_data_models_h */

@@ -84,7 +84,7 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 // Function for initializing the BLE stack.
 static void ble_stack_init(void)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
     
     // Initialize the SoftDevice handler module.
     // ハードウェア構成により、クロック設定は異なってくる。使用するモジュールは、32MHzクロック。32kHzクロックはなし。外部のRTCが32kHzクロックを供給する。
@@ -148,7 +148,7 @@ static void gap_params_init(void)
 
 static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
 {
-//    uint32_t err_code;
+//    ret_code_t err_code;
     
     switch (ble_adv_evt)
     {
@@ -266,7 +266,7 @@ void on_activity_service_event(ble_activity_service_t * p_context, const ble_act
  */
 int main(void)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
 
     // RTTログを有効に
     NRF_LOG_INIT();

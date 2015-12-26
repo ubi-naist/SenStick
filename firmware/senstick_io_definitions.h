@@ -1,5 +1,5 @@
-#ifndef senstick_pin_definitions_h
-#define senstick_pin_definitions_h
+#ifndef senstick_io_definitions_h
+#define senstick_io_definitions_h
 
 // 配線(役割)
 // IO     In/Out      概要
@@ -46,6 +46,7 @@
 
 // IOポートのアドレス定義
 // I2Cバス上の、スレーブ・アドレス
-#define	TWI_RTC_ADDRESS     0x64 // 01100100
+#define	TWI_RTC_ADDRESS     0x32 // 00110010
+#define TWI_MPU9500_ADDRESS 0x68 // 01101000 最下位ビットはピンの値で与えられる。この基板はLOW固定。
 
-#endif /* senstick_pin_definitions_h */
+#endif /* senstick_io_definitions_h */

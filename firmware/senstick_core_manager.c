@@ -1,10 +1,27 @@
 #include <stdint.h>
 #include "nrf_drv_gpiote.h"
+#include "nrf_drv_twi.h"
+
 #include "nrf_adc.h"
 #include "app_error.h"
 
 #include "senstick_core_manager.h"
-#include "senstick_pin_definitions.h"
+#include "senstick_io_definitions.h"
+
+#include "twi_slave_nine_axes_sensor.h"
+
+/**
+ * static変数
+ */
+static nine_axes_sensor_context_t nine_axes_sensor_context;
+
+/**
+ * 型宣言
+ */
+typedef struct senstick_core_s {
+    nrf_drv_twi_t twi;
+}senstick_core_t;
+
 /**
  * イベントハンドラ
  */
@@ -25,7 +42,8 @@ static void gpio_event_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t a
 // IO初期化ルーチン
 static void init_gpio(void)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
+    
     nrf_drv_gpiote_out_config_t out_config;
     nrf_drv_gpiote_in_config_t in_config;
     
@@ -113,13 +131,35 @@ static void init_adc(void)
     nrf_adc_input_select(ADC_INPUT_SUPPLY_MONITORING);
 }
 
+static void init_twi_slaves(void)
+{
+    ret_code_t err_code;
+    
+    p_context->twi = NRF_DRV_TWI_INSTANCCE(0);
+
+    err_code = nrf_drv_twi_init(&(p_context->twi), NULL, NULL);
+    APP_ERROR_CHECK(err_code);
+    
+    nrf_drv_twi_enable(&(p_context->twi));
+    
+    // slaveの初期化
+    initNineAxesSensor(&nine_axes_sensor_context, &(p_context->twi));
+
+    // 値取得、デバッグ
+    MotionSensorData_t sensor_data;
+    getNineAxesData(&nine_axes_sensor_context, &sensor_data);
+    debugLogAccerationData(&(sensor_data.accelarationData));
+}
+
 /**
  * Public関数
  */
-void init_senstick_core_manager(void)
+void init_senstick_core_manager(senstick_core_t *p_context)
 {
+    memset(p_context, 0, sizeof(senstick_core_t));
     init_gpio();
     init_adc();
+    init_twi_slaves(p_context);
 
 }
 

@@ -7,11 +7,14 @@
 #include "nrf_log.h"
 
 #include "app_error.h"
-#include "senstick_pin_definitions.h"
+#include "senstick_io_definitions.h"
 
 /**
  * Definitions
  */
+typedef struct {
+    nrf_drv_twi_t *p_twi;
+} rtc_context_t;
 
 // RTC内部レジスタのタイプ。4ビットの値は、RTC内部のレジスタアドレスに対応する
 typedef enum {
@@ -56,10 +59,7 @@ static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, 
     memcpy(&(buffer[1]), data, data_length);
     
     // I2C書き込み
-    err_code = nrf_drv_twi_tx(p_context->p_twi,
-                   TWI_RTC_ADDRESS, // I2CのRTCアドレス(7ビット) + R/Wビット=0(書き込み)
-                   buffer, (data_length + 1),
-                   true);
+    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_RTC_ADDRESS, buffer, (data_length + 1), false);
     APP_ERROR_CHECK(err_code);
     nrf_delay_us(31); // R2221L/T 仕様書 p.29 ストップコンディションから次のスタートコンディションまで、31us以上の時間を空ける。
 }
@@ -70,11 +70,10 @@ static void readFromRTC(rtc_context_t *p_context, RTCRegister_t target_register,
     
     // 読み出しターゲットアドレスを設定
     uint8_t buffer0 = (((uint8_t)target_register) << 4) | 0x00; // 4ビットの内部アドレス + 4ビットの転送フォーマット(0x00)
-    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_RTC_ADDRESS, &buffer0, 1, false);
+    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_RTC_ADDRESS, &buffer0, 1, true);
     APP_ERROR_CHECK(err_code);
     // データを読み出し
-//    err_code = rf_drv_twi_tx(p_context->p_twi, (TWI_RTC_ADDRESS | TWI_READ_BIT), data, data_length, true);
-    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_RTC_ADDRESS, data, data_length, true);
+    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_RTC_ADDRESS, data, data_length, false);
     APP_ERROR_CHECK(err_code);
     nrf_delay_us(31); // R2221L/T 仕様書 p.29 ストップコンディションから次のスタートコンディションまで、31us以上の時間を空ける。
 }

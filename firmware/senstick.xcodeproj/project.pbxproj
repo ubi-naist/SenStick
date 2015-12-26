@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		F8AC9D371C22377600366AEF /* senstick_pin_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_pin_definitions.h; sourceTree = "<group>"; };
+		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
 		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
 		F8AC9D391C2237DC00366AEF /* senstick_data_models.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_data_models.h; sourceTree = "<group>"; };
-		F8AC9D3A1C2238A500366AEF /* senstick_core_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_core_manager.c; sourceTree = "<group>"; };
+		F8AC9D3A1C2238A500366AEF /* senstick_core_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = senstick_core_manager.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D3B1C2238A500366AEF /* senstick_core_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_core_manager.h; sourceTree = "<group>"; };
-		F8AC9D3C1C22391D00366AEF /* ble_activity_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_activity_service.c; sourceTree = "<group>"; };
+		F8AC9D3C1C22391D00366AEF /* ble_activity_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = ble_activity_service.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D3D1C22391D00366AEF /* ble_activity_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_activity_service.h; sourceTree = "<group>"; };
 		F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_rtc.c; sourceTree = "<group>"; };
 		F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_rtc.h; sourceTree = "<group>"; };
-		F8AC9D421C223A4A00366AEF /* twi_slave_acceleration_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_acceleration_sensor.c; sourceTree = "<group>"; };
-		F8AC9D431C223A4A00366AEF /* twi_slave_acceleration_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_acceleration_sensor.h; sourceTree = "<group>"; };
+		F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_nine_axes_sensor.c; sourceTree = "<group>"; };
+		F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_nine_axes_sensor.h; sourceTree = "<group>"; };
 		F8AC9D451C223AB200366AEF /* gpio_battery_monitor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_battery_monitor.c; sourceTree = "<group>"; };
 		F8AC9D461C223AB200366AEF /* gpio_battery_monitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_battery_monitor.h; sourceTree = "<group>"; };
 		F8AC9D471C223AE300366AEF /* gpio_button_monitoring.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_button_monitoring.c; sourceTree = "<group>"; };
@@ -64,8 +64,8 @@
 		F8AC9D3E1C22393B00366AEF /* twi */ = {
 			isa = PBXGroup;
 			children = (
-				F8AC9D431C223A4A00366AEF /* twi_slave_acceleration_sensor.h */,
-				F8AC9D421C223A4A00366AEF /* twi_slave_acceleration_sensor.c */,
+				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
+				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
 				F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */,
 				F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */,
 				F8AC9D4C1C223B3D00366AEF /* twi_slave_uvsensor.h */,
@@ -89,7 +89,7 @@
 				F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */,
 				F8AC9D361C22375900366AEF /* main.c */,
 				F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */,
-				F8AC9D371C22377600366AEF /* senstick_pin_definitions.h */,
+				F8AC9D371C22377600366AEF /* senstick_io_definitions.h */,
 				F8AC9D3D1C22391D00366AEF /* ble_activity_service.h */,
 				F8AC9D3C1C22391D00366AEF /* ble_activity_service.c */,
 				F8AC9D3B1C2238A500366AEF /* senstick_core_manager.h */,

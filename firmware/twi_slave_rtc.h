@@ -7,18 +7,13 @@
 #include "nrf_drv_twi.h"
 #include "senstick_data_models.h"
 
-typedef struct {
-    nrf_drv_twi_t *p_twi;
-} rtc_init_t;
-
-typedef struct {
-    nrf_drv_twi_t *p_twi;
-} rtc_context_t;
+// RTCのコンテキスト構造体の型宣言。
+typedef struct rtc_context_s rtc_context_t;
 
 // RTCとのバス機能を提供します。
 
 // 電源ON時点、タイマー動作、割り込みレベル。initはタイマー一致フラグをクリアしない。明示的に呼び出すべし。
-void initRTC(rtc_context_t *p_context, const rtc_init_t *p_init);
+void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi);
 
 // 時計時刻を設定/取得します。
 void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting);

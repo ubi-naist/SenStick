@@ -7,10 +7,13 @@
 //
 
 #include <string.h>
+
 #include <nordic_common.h>
+
 #include <ble.h>
 #include <ble_gatts.h>
 
+#include <sdk_errors.h>
 #include <app_error.h>
 
 #include "ble_activity_service.h"

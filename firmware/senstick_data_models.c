@@ -1,4 +1,5 @@
 #include "senstick_data_models.h"
+#include "nrf_log.h"
 
 uint16_t readUInt16AsBigEndian(uint8_t *ptr)
 {
@@ -13,14 +14,11 @@ uint16_t readUInt16AsLittleEndian(uint8_t *ptr)
 // 加速度の16ビット整数をGに変換します。1G=16384。
 static float accelerationFloatValue(int16_t value)
 {
-    return (float)value / 16384f;
+    return (float)value / (float)16384;
 }
+
 void debugLogAccerationData(const AccelerationData_t *data)
 {
-    NRF_LOG_PRINTF_DEBUG("%Accs. x:%1.2f, y:%1.2f, z:%1.2f.\n",
-                         accelerationFloatValue(data->x),
-                         accelerationFloatValue(data->y),
-                         accelerationFloatValue(data->z)
-                         );
+    NRF_LOG_PRINTF_DEBUG("%Accs. x:%d, y:%d, z:%d (1G=16384).\n", data->x, data->y, data->z);
 }
 

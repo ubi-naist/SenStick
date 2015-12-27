@@ -6,15 +6,14 @@
 #include "nrf_delay.h"
 #include "nrf_log.h"
 
+#include "nrf_drv_twi.h"
+
 #include "app_error.h"
 #include "senstick_io_definitions.h"
 
 /**
  * Definitions
  */
-typedef struct {
-    nrf_drv_twi_t *p_twi;
-} rtc_context_t;
 
 // RTC内部レジスタのタイプ。4ビットの値は、RTC内部のレジスタアドレスに対応する
 typedef enum {
@@ -40,21 +39,17 @@ typedef enum {
     RTCControlRegister2 = 0x0f,
 } RTCRegister_t;
 
-#define RTC_MAX_DATA_LENGTH 7
-
 /**
  * Private methods
  */
 
 // RTCに書き込みます。TWI_RTC_ADDRESSは megane_io_definitions.h で定義されているI2Cバス上のRTCのアドレスです。
-static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, const uint8_t *data, uint8_t data_length)
+static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, const uint8_t *data, uint32_t data_length)
 {
     ret_code_t err_code;
     
-    ASSERT(data_length <= RTC_MAX_DATA_LENGTH);
-    
     // 先頭2バイトは、I2Cアドレスとレジスタアドレス
-    uint8_t buffer[RTC_MAX_DATA_LENGTH + 1];
+    uint8_t buffer[data_length + 1];
     buffer[0] = (((uint8_t)target_register) << 4) | 0x00; // 4ビットの内部アドレス + 4ビットの転送フォーマット(書き込みは0x00しかない)
     memcpy(&(buffer[1]), data, data_length);
     
@@ -64,7 +59,7 @@ static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, 
     nrf_delay_us(31); // R2221L/T 仕様書 p.29 ストップコンディションから次のスタートコンディションまで、31us以上の時間を空ける。
 }
 
-static void readFromRTC(rtc_context_t *p_context, RTCRegister_t target_register, uint8_t *data, uint8_t data_length)
+static void readFromRTC(rtc_context_t *p_context, RTCRegister_t target_register, uint8_t *data, uint32_t data_length)
 {
     ret_code_t err_code;
     
@@ -82,9 +77,10 @@ static void readFromRTC(rtc_context_t *p_context, RTCRegister_t target_register,
  * Public methods
  */
 
-void initRTC(rtc_context_t *p_context, const rtc_init_t *p_init)
+void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi)
 {
-    p_context->p_twi = p_init->p_twi;
+    memset(p_context, 0, sizeof(rtc_context_t));
+    p_context->p_twi = p_twi;
 }
 
 void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting)

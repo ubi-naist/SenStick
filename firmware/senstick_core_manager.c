@@ -1,26 +1,23 @@
 #include <stdint.h>
+#include <string.h>
+
+#include "nordic_common.h"
 #include "nrf_drv_gpiote.h"
 #include "nrf_drv_twi.h"
+#include "nrf_delay.h"
 
 #include "nrf_adc.h"
 #include "app_error.h"
 
 #include "senstick_core_manager.h"
 #include "senstick_io_definitions.h"
+#include "senstick_data_models.h"
 
 #include "twi_slave_nine_axes_sensor.h"
 
 /**
- * static変数
- */
-static nine_axes_sensor_context_t nine_axes_sensor_context;
-
-/**
  * 型宣言
  */
-typedef struct senstick_core_s {
-    nrf_drv_twi_t twi;
-}senstick_core_t;
 
 /**
  * イベントハンドラ
@@ -131,24 +128,36 @@ static void init_adc(void)
     nrf_adc_input_select(ADC_INPUT_SUPPLY_MONITORING);
 }
 
-static void init_twi_slaves(void)
+static void init_twi_slaves(senstick_core_t *p_context)
 {
     ret_code_t err_code;
     
-    p_context->twi = NRF_DRV_TWI_INSTANCCE(0);
+    p_context->twi.p_reg        = NRF_TWI1;
+    p_context->twi.irq          = TWI1_IRQ;
+    p_context->twi.instance_id  = TWI1_INSTANCE_INDEX;
+    /*
+     = NRF_DRV_TWI_INSTANCE(0);
+     {                                                     \
+     .p_reg       = CONCAT_2(NRF_TWI, id),             \
+     .irq         = CONCAT_3(TWI, id, _IRQ),           \
+     .instance_id = CONCAT_3(TWI, id, _INSTANCE_INDEX) \
+     }     */
 
-    err_code = nrf_drv_twi_init(&(p_context->twi), NULL, NULL);
+    err_code = nrf_drv_twi_init(&(p_context->twi), NULL, NULL, NULL);
     APP_ERROR_CHECK(err_code);
     
     nrf_drv_twi_enable(&(p_context->twi));
     
     // slaveの初期化
-    initNineAxesSensor(&nine_axes_sensor_context, &(p_context->twi));
+    initNineAxesSensor(&(p_context->nine_axes_sensor_context), &(p_context->twi));
 
     // 値取得、デバッグ
+    while(1) {
     MotionSensorData_t sensor_data;
-    getNineAxesData(&nine_axes_sensor_context, &sensor_data);
-    debugLogAccerationData(&(sensor_data.accelarationData));
+    getNineAxesData(&(p_context->nine_axes_sensor_context), &sensor_data);
+    debugLogAccerationData(&(sensor_data.acceleration));
+    nrf_delay_ms(300);
+    }
 }
 
 /**
@@ -159,7 +168,10 @@ void init_senstick_core_manager(senstick_core_t *p_context)
     memset(p_context, 0, sizeof(senstick_core_t));
     init_gpio();
     init_adc();
+    
+    // 周辺デバイスの起動待ち時間。MPU-9250最大100ミリ秒
+    nrf_delay_ms(100);
+    
     init_twi_slaves(p_context);
-
 }
 

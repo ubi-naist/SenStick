@@ -2,6 +2,7 @@
 #include "nrf_soc.h"
 #include "nrf_delay.h"
 #include "nrf_log.h"
+#include "sdk_errors.h"
 
 //#include "softdevice_handler.h"
 //#include "softdevice_handler_appsh.h"
@@ -22,6 +23,8 @@
 #include "senstick_device_definitions.h"
 #include "senstick_definitions.h"
 
+#include "senstick_core_manager.h"
+
 #include "nrf51_bitfields.h"
 
 /**
@@ -36,7 +39,9 @@
 /**
  * static変数
  */
+
 static ble_activity_service_t activity_service_context;
+static senstick_core_t manager_context;
 
 /**
  * 関数宣言
@@ -289,6 +294,9 @@ int main(void)
     activity_service_init.event_handler = on_activity_service_event;
     err_code = ble_activity_service_init(&activity_service_context, &activity_service_init);
     APP_ERROR_CHECK(err_code);
+    
+    // コアの初期化
+    init_senstick_core_manager(&(manager_context));
     
     // アドバタイジングを開始する。
     initAdvertisingManager(&(activity_service_context.service_uuid));

@@ -8,7 +8,9 @@
 #include "senstick_data_models.h"
 
 // RTCのコンテキスト構造体の型宣言。
-typedef struct rtc_context_s rtc_context_t;
+typedef struct rtc_context_s {
+    nrf_drv_twi_t *p_twi;
+} rtc_context_t;
 
 // RTCとのバス機能を提供します。
 

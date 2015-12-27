@@ -12,28 +12,28 @@
  */
 
 // 加速度のデータ構造体
-typedef struct {
+typedef struct AccelerationData_s {
     uint16_t x;
     uint16_t y;
     uint16_t z;
 } AccelerationData_t;
 
 // ジャイロのデータ構造体
-typedef struct {
+typedef struct RotationRateData_s {
     uint16_t x;
     uint16_t y;
     uint16_t z;
 } RotationRateData_t;
 
 // 磁界のデータ構造体
-typedef struct {
+typedef struct MagneticFieldData_s {
     uint16_t x;
     uint16_t y;
     uint16_t z;
 } MagneticFieldData_t;
 
 // 9軸センサーのデータ構造体
-typedef struct {
+typedef struct MotionSensorData_s {
     AccelerationData_t  acceleration;
     MagneticFieldData_t magneticField;
     RotationRateData_t  rotaionRate;
@@ -85,7 +85,7 @@ typedef enum {
  * RTCのデータ構造
  */
 
-typedef struct {
+typedef struct rtcSettingCommand_s {
     // RTCの数値はすべてBCD(Binary-coded decimal)。16進表記したときの各桁が0-9の値を表す。
     uint8_t second;
     uint8_t minute;
@@ -97,7 +97,7 @@ typedef struct {
 } rtcSettingCommand_t;
 
 // RTC_ALARM_SETTING_COMMAND
-typedef struct {
+typedef struct rtcAlarmSettingCommand_s {
     // RTCの数値はすべてBCD
     uint8_t minute;
     uint8_t hour;

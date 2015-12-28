@@ -9,7 +9,6 @@
 #include "nrf_drv_twi.h"
 #include "senstick_data_models.h"
 
-/*
 // 構造体の宣言
 typedef struct {
     nrf_drv_twi_t *p_twi;
@@ -22,6 +21,6 @@ void initUVSensor(uv_sensor_context_t *p_context, nrf_drv_twi_t *p_twi);
 
 //void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context);
 //void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context);
-*/
+
 
 #endif /* twi_slave_uvsensor_h */

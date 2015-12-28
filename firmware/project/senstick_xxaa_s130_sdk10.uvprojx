@@ -471,6 +471,11 @@
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1014,6 +1019,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1554,6 +1564,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>twi_slave_nine_axes_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
             </File>
           </Files>
         </Group>

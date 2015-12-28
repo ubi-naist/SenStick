@@ -46,7 +46,7 @@ typedef uint16_t BrightnessData_t;
 typedef uint16_t UltraVioletData_t;
 
 // 気圧データ
-typedef uint16_t AirPressureData_t;
+typedef uint32_t AirPressureData_t;
 
 // 湿度データ
 typedef uint16_t HumidityData_t;
@@ -107,6 +107,8 @@ typedef struct rtcAlarmSettingCommand_s {
 // 関数
 uint16_t readUInt16AsBigEndian(uint8_t *ptr);
 uint16_t readUInt16AsLittleEndian(uint8_t *ptr);
+
+uint32_t readUInt32AsLittleEndian(uint8_t *ptr);
 
 // デバッグ用ログ関数
 void debugLogAccerationData(const AccelerationData_t *data);

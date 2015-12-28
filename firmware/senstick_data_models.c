@@ -11,14 +11,13 @@ uint16_t readUInt16AsLittleEndian(uint8_t *ptr)
     return ((uint16_t)ptr[0] << 0) | ((uint16_t)ptr[1] << 8);
 }
 
-// 加速度の16ビット整数をGに変換します。1G=16384。
-static float accelerationFloatValue(int16_t value)
+uint32_t readUInt32AsLittleEndian(uint8_t *ptr)
 {
-    return (float)value / (float)16384;
+    return ((uint32_t)ptr[0] << 0) |  ((uint32_t)ptr[1] << 8) | ((uint32_t)ptr[2] << 16) | ((uint32_t)ptr[3] << 24);
 }
 
 void debugLogAccerationData(const AccelerationData_t *data)
 {
-    NRF_LOG_PRINTF_DEBUG("%Accs. x:%d, y:%d, z:%d (1G=16384).\n", data->x, data->y, data->z);
+    NRF_LOG_PRINTF_DEBUG("Accs. x:%d, y:%d, z:%d .\n", data->x, data->y, data->z);
 }
 

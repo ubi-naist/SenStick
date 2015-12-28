@@ -5,6 +5,7 @@
 #include "nrf_drv_gpiote.h"
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
+#include "nrf_log.h"
 
 #include "nrf_adc.h"
 #include "app_error.h"
@@ -12,8 +13,6 @@
 #include "senstick_core_manager.h"
 #include "senstick_io_definitions.h"
 #include "senstick_data_models.h"
-
-#include "twi_slave_nine_axes_sensor.h"
 
 /**
  * 型宣言
@@ -132,16 +131,10 @@ static void init_twi_slaves(senstick_core_t *p_context)
 {
     ret_code_t err_code;
     
+    // TWIインタフェース TWI1を使用。
     p_context->twi.p_reg        = NRF_TWI1;
     p_context->twi.irq          = TWI1_IRQ;
     p_context->twi.instance_id  = TWI1_INSTANCE_INDEX;
-    /*
-     = NRF_DRV_TWI_INSTANCE(0);
-     {                                                     \
-     .p_reg       = CONCAT_2(NRF_TWI, id),             \
-     .irq         = CONCAT_3(TWI, id, _IRQ),           \
-     .instance_id = CONCAT_3(TWI, id, _INSTANCE_INDEX) \
-     }     */
 
     err_code = nrf_drv_twi_init(&(p_context->twi), NULL, NULL, NULL);
     APP_ERROR_CHECK(err_code);
@@ -150,13 +143,19 @@ static void init_twi_slaves(senstick_core_t *p_context)
     
     // slaveの初期化
     initNineAxesSensor(&(p_context->nine_axes_sensor_context), &(p_context->twi));
+    initPressureSensor(&(p_context->pressure_sensor_context), &(p_context->twi));
 
     // 値取得、デバッグ
     while(1) {
-    MotionSensorData_t sensor_data;
-    getNineAxesData(&(p_context->nine_axes_sensor_context), &sensor_data);
-    debugLogAccerationData(&(sensor_data.acceleration));
-    nrf_delay_ms(300);
+        MotionSensorData_t sensor_data;
+        getNineAxesData(&(p_context->nine_axes_sensor_context), &sensor_data);
+        debugLogAccerationData(&(sensor_data.acceleration));
+        
+        AirPressureData_t pressure_data;
+        getPressureData(&(p_context->pressure_sensor_context), &pressure_data);
+        NRF_LOG_PRINTF_DEBUG("Pressure, %d.\n", pressure_data); // 0.01hPa resolution
+        
+        nrf_delay_ms(300);
     }
 }
 

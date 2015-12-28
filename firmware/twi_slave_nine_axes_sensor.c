@@ -1,17 +1,9 @@
-//
-//  twi_slave_nine_axes_sensor.c
-//  senstick
-//
-//  Created by AkihiroUehara on 2015/12/17.
-//
-//
-
 #include <string.h>
 
 #include "nrf_delay.h"
+
+#include "twi_slave_utility.h"
 #include "twi_slave_nine_axes_sensor.h"
-#include "nrf_drv_twi.h"
-#include "app_error.h"
 
 #include "senstick_io_definitions.h"
 
@@ -44,31 +36,13 @@ typedef enum {
 // TWI_MPU9250_ADDRESS は senstick_io_definitions.h で定義されているI2Cバスのアドレスです。
 static void writeToMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Register_t target_register, const uint8_t *data, uint8_t data_length)
 {
-    ret_code_t err_code;
-    
-    // 先頭バイトは、レジスタアドレス
-    uint8_t buffer[data_length + 1];
-    buffer[0] = (uint8_t)target_register;
-    memcpy(&(buffer[1]), data, data_length);
-    
-    // I2C書き込み
-    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_MPU9250_ADDRESS, buffer, (data_length + 1), false);
-    APP_ERROR_CHECK(err_code);
+    writeToTwiSlave(p_context->p_twi, TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 // MPU9250から読み込みます。
 static void readFromMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Register_t target_register, uint8_t *data, uint8_t data_length)
 {
-    ret_code_t err_code;
-    
-    // 読み出しターゲットアドレスを設定
-    uint8_t buffer0 = (uint8_t)target_register;
-    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_MPU9250_ADDRESS, &buffer0, 1, true);
-    APP_ERROR_CHECK(err_code);
-
-    // データを読み出し
-    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_MPU9250_ADDRESS, data, data_length, false);
-    APP_ERROR_CHECK(err_code);
+    readFromTwiSlave(p_context->p_twi, TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 static void getAccelerationData(nine_axes_sensor_context_t *p_context, AccelerationData_t *p_acceleration)

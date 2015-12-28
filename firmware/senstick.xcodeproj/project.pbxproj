@@ -45,6 +45,8 @@
 		F8AC9D681C26927100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = project/RTE; sourceTree = "<group>"; };
 		F8AC9D691C28472000366AEF /* pstorage_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pstorage_platform.h; sourceTree = "<group>"; };
 		F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = segger_rtt; sourceTree = "<group>"; };
+		F8E760C41C3022C400EE9FD3 /* twi_slave_utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_utility.c; sourceTree = "<group>"; };
+		F8E760C51C3022C400EE9FD3 /* twi_slave_utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_utility.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -64,6 +66,8 @@
 		F8AC9D3E1C22393B00366AEF /* twi */ = {
 			isa = PBXGroup;
 			children = (
+				F8E760C51C3022C400EE9FD3 /* twi_slave_utility.h */,
+				F8E760C41C3022C400EE9FD3 /* twi_slave_utility.c */,
 				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
 				F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */,

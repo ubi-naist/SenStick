@@ -143,8 +143,9 @@ static void init_twi_slaves(senstick_core_t *p_context)
     
     // slaveの初期化
     initNineAxesSensor(&(p_context->nine_axes_sensor_context), &(p_context->twi));
-    initPressureSensor(&(p_context->pressure_sensor_context), &(p_context->twi));
-
+    initPressureSensor(&(p_context->pressure_sensor_context),  &(p_context->twi));
+    initHumiditySensor(&(p_context->humidity_sensor_context),  &(p_context->twi));
+    
     // 値取得、デバッグ
     while(1) {
         MotionSensorData_t sensor_data;
@@ -154,6 +155,10 @@ static void init_twi_slaves(senstick_core_t *p_context)
         AirPressureData_t pressure_data;
         getPressureData(&(p_context->pressure_sensor_context), &pressure_data);
         NRF_LOG_PRINTF_DEBUG("Pressure, %d.\n", pressure_data); // 0.01hPa resolution
+        
+        HumidityData_t humidity_data;
+        getHumidityData(&(p_context->humidity_sensor_context), &humidity_data);
+        NRF_LOG_PRINTF_DEBUG("Humidity, %d.\n", humidity_data);
         
         nrf_delay_ms(300);
     }

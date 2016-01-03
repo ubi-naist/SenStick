@@ -46,9 +46,9 @@
 
 // IOポートのアドレス定義
 // I2Cバス上の、スレーブ・アドレス
-#define	TWI_RTC_ADDRESS     0x32 // 00110010
-#define TWI_MPU9250_ADDRESS 0x68 // 01101000 最下位ビットはピンの値で与えられる。この基板はLOW固定。
-//#define TWI_LPS25HB_ADDRESS 0x5d // 01011101 圧力センサ。最下位ビットはピンの値(SA0)で与えられる。この基板はHIGH固定。
-#define TWI_LPS25HB_ADDRESS 0x5c // 01011100 圧力センサ。最下位ビットはピンの値(SA0)で与えられる。この基板はHIGH固定。
+#define	TWI_RTC_ADDRESS         0x32 // 00110010 カレンダーIC。
+#define TWI_MPU9250_ADDRESS     0x68 // 01101000 最下位ビットはピンの値で与えられる。この基板はLOW固定。
+#define TWI_LPS25HB_ADDRESS     0x5c // 01011100 圧力センサ。最下位ビットはピンの値(SA0)で与えられる。この基板はLOW固定。
+#define TWI_SHT20_ADDRESS       0x40 // 01000000 湿度センサ。
 
 #endif /* senstick_io_definitions_h */

@@ -76,8 +76,8 @@
 				F8AC9D4B1C223B3D00366AEF /* twi_slave_uvsensor.c */,
 				F8AC9D4E1C223BC600366AEF /* twi_slave_pressure_sensor.h */,
 				F8AC9D4D1C223BC600366AEF /* twi_slave_pressure_sensor.c */,
-				F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */,
 				F8AC9D501C223BE600366AEF /* twi_slave_humidity_sensor.h */,
+				F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */,
 				F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */,
 				F8AC9D521C223BFA00366AEF /* twi_slave_brightness_sensor.h */,
 			);

@@ -1,11 +1,3 @@
-//
-//  twi_slave_pressure_sensor.c
-//  senstick
-//
-//  Created by AkihiroUehara on 2015/12/17.
-//
-//
-
 #include "twi_slave_pressure_sensor.h"
 
 #include <string.h>
@@ -32,9 +24,9 @@ typedef enum {
     CTRL_REG4 = 0x23,
 
     // 圧力データ
-    PRESS_OUT_XL = 0x28,
-    PRESS_OUT_L  = 0x29,
-    PRESS_OUT_H  = 0x2a,
+    PRESS_OUT_XL = (0x28 | 0x80), // 読み出し時のアドレス自動インクリメントのため、最上位ビットを1にしている
+    PRESS_OUT_L  = (0x29 | 0x80),
+    PRESS_OUT_H  = (0x2a | 0x80),
 } LPS25HBRegister_t;
 
 /**
@@ -52,6 +44,7 @@ static void readFromLPS25HB(pressure_sensor_context_t *p_context, const LPS25HBR
 }
 
 // 指定されたビットを立てます
+/*
 static void setRegisterBitOfLPS25HB(pressure_sensor_context_t *p_context, const LPS25HBRegister_t target_register, const uint8_t bit_mask, bool set_active)
 {
     // ターゲットの値を読みだす
@@ -68,6 +61,7 @@ static void setRegisterBitOfLPS25HB(pressure_sensor_context_t *p_context, const 
     // 書き戻す
     writeToLPS25HB(p_context, target_register, &reg_value, 1);
 }
+*/
 
 /**
  * public methods
@@ -98,10 +92,9 @@ void getPressureData(pressure_sensor_context_t *p_context, AirPressureData_t *p_
 {
     // 変換済のはずの値を読みだす
     // データは、PRESS_OUT_XLから一連の連続するアドレスから読み出す。
-    // サブアドレスの最上位ビットが1だと、読み出し時アドレスが自動インクリメントされる。
     uint8_t buffer[4];
     memset(buffer, 0, sizeof(buffer));
-    readFromLPS25HB(p_context, PRESS_OUT_XL | 0x80, buffer, 3);
+    readFromLPS25HB(p_context, PRESS_OUT_XL, buffer, 3);
     
     *p_data = readUInt32AsLittleEndian(buffer);
     

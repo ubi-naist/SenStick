@@ -1,12 +1,13 @@
 #include "nordic_common.h"
+
 #include "nrf_soc.h"
 #include "nrf_delay.h"
 #include "nrf_log.h"
+
 #include "sdk_errors.h"
+#include "nrf51_bitfields.h"
 
-//#include "softdevice_handler.h"
-//#include "softdevice_handler_appsh.h"
-
+#include "softdevice_handler.h"
 #include "ble_advertising.h"
 #include "ble_gap.h"
 #include "ble_parameters_config.h"
@@ -16,16 +17,11 @@
 #include "app_error.h"
 #include "pstorage.h"
 
-#include "ble_activity_service.h"
-
-#include "softdevice_handler_appsh.h"
-
 #include "senstick_device_definitions.h"
 #include "senstick_definitions.h"
-
 #include "senstick_core_manager.h"
 
-#include "nrf51_bitfields.h"
+#include "ble_activity_service.h"
 
 /**
  * 定義
@@ -95,7 +91,8 @@ static void ble_stack_init(void)
     // ハードウェア構成により、クロック設定は異なってくる。使用するモジュールは、32MHzクロック。32kHzクロックはなし。外部のRTCが32kHzクロックを供給する。
     // Braveridgeのモジュールは、Xtalが32MHz。
     NRF_CLOCK->XTALFREQ = (uint32_t)((CLOCK_XTALFREQ_XTALFREQ_32MHz << CLOCK_XTALFREQ_XTALFREQ_Pos) & CLOCK_XTALFREQ_XTALFREQ_Msk);
-    SOFTDEVICE_HANDLER_APPSH_INIT(NRF_CLOCK_LFCLKSRC_RC_250_PPM_4000MS_CALIBRATION, true);
+    // BLEのスタックの処理は、スケジューラを使わず割り込みから直接処理に移行する。IO処理などでのブロックを排除するため。
+    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_RC_250_PPM_4000MS_CALIBRATION, NULL);
     
     // Enable BLE stack.
     ble_enable_params_t ble_enable_params;

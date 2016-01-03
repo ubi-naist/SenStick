@@ -23,6 +23,7 @@ typedef enum {
     ReadUserRegister        = 0xe7, //1110_0111
     SoftReset               = 0xfe, //1111_1110
 } SHT20Command_t;
+
 /**
  * Private methods
  */

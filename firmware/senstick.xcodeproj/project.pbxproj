@@ -25,8 +25,8 @@
 		F8AC9D481C223AE300366AEF /* gpio_button_monitoring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_button_monitoring.h; sourceTree = "<group>"; };
 		F8AC9D491C223B0900366AEF /* gpio_led_driver.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_led_driver.c; sourceTree = "<group>"; };
 		F8AC9D4A1C223B0900366AEF /* gpio_led_driver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_led_driver.h; sourceTree = "<group>"; };
-		F8AC9D4B1C223B3D00366AEF /* twi_slave_uvsensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_uvsensor.c; sourceTree = "<group>"; };
-		F8AC9D4C1C223B3D00366AEF /* twi_slave_uvsensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_uvsensor.h; sourceTree = "<group>"; };
+		F8AC9D4B1C223B3D00366AEF /* twi_slave_uv_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_uv_sensor.c; sourceTree = "<group>"; };
+		F8AC9D4C1C223B3D00366AEF /* twi_slave_uv_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_uv_sensor.h; sourceTree = "<group>"; };
 		F8AC9D4D1C223BC600366AEF /* twi_slave_pressure_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_pressure_sensor.c; sourceTree = "<group>"; };
 		F8AC9D4E1C223BC600366AEF /* twi_slave_pressure_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_pressure_sensor.h; sourceTree = "<group>"; };
 		F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_humidity_sensor.c; sourceTree = "<group>"; };
@@ -72,14 +72,14 @@
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
 				F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */,
 				F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */,
-				F8AC9D4C1C223B3D00366AEF /* twi_slave_uvsensor.h */,
-				F8AC9D4B1C223B3D00366AEF /* twi_slave_uvsensor.c */,
 				F8AC9D4E1C223BC600366AEF /* twi_slave_pressure_sensor.h */,
 				F8AC9D4D1C223BC600366AEF /* twi_slave_pressure_sensor.c */,
 				F8AC9D501C223BE600366AEF /* twi_slave_humidity_sensor.h */,
 				F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */,
-				F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */,
+				F8AC9D4C1C223B3D00366AEF /* twi_slave_uv_sensor.h */,
+				F8AC9D4B1C223B3D00366AEF /* twi_slave_uv_sensor.c */,
 				F8AC9D521C223BFA00366AEF /* twi_slave_brightness_sensor.h */,
+				F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */,
 			);
 			name = twi;
 			sourceTree = "<group>";

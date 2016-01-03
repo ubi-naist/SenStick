@@ -4,6 +4,8 @@
 #include "twi_slave_nine_axes_sensor.h"
 #include "twi_slave_pressure_sensor.h"
 #include "twi_slave_humidity_sensor.h"
+#include "twi_slave_uv_sensor.h"
+#include "twi_slave_brightness_sensor.h"
 
 // 構造体の宣言
 typedef struct senstick_core_s {
@@ -11,6 +13,8 @@ typedef struct senstick_core_s {
     nine_axes_sensor_context_t  nine_axes_sensor_context;
     pressure_sensor_context_t   pressure_sensor_context;
     humidity_sensor_context_t   humidity_sensor_context;
+    uv_sensor_context_t         uv_sensor_context;
+    brightness_sensor_context_t brightness_sensor_context;
 } senstick_core_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。

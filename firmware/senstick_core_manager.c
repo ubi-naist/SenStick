@@ -145,6 +145,10 @@ static void init_twi_slaves(senstick_core_t *p_context)
     initNineAxesSensor(&(p_context->nine_axes_sensor_context), &(p_context->twi));
     initPressureSensor(&(p_context->pressure_sensor_context),  &(p_context->twi));
     initHumiditySensor(&(p_context->humidity_sensor_context),  &(p_context->twi));
+    initUVSensor(&(p_context->uv_sensor_context),  &(p_context->twi));
+    initBrightnessSensor(&(p_context->brightness_sensor_context),  &(p_context->twi));
+    // 初期化処理完了待ち時間
+    nrf_delay_ms(100);
     
     // 値取得、デバッグ
     while(1) {
@@ -160,7 +164,16 @@ static void init_twi_slaves(senstick_core_t *p_context)
         getHumidityData(&(p_context->humidity_sensor_context), &humidity_data);
         NRF_LOG_PRINTF_DEBUG("Humidity, %d.\n", humidity_data);
         
-        nrf_delay_ms(300);
+        UltraVioletData_t uv_data;
+        getUVSensorData(&(p_context->uv_sensor_context), &uv_data);
+        NRF_LOG_PRINTF_DEBUG("UV, %d.\n", uv_data);
+        
+        BrightnessData_t brightness_data;
+        getBrightnessData(&(p_context->brightness_sensor_context), &brightness_data);
+        NRF_LOG_PRINTF_DEBUG("Brightness, %d.\n", brightness_data);
+
+        NRF_LOG_PRINTF_DEBUG("\n");
+        nrf_delay_ms(500);
     }
 }
 

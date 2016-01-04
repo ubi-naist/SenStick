@@ -33,8 +33,8 @@
 		F8AC9D501C223BE600366AEF /* twi_slave_humidity_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_humidity_sensor.h; sourceTree = "<group>"; };
 		F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_brightness_sensor.c; sourceTree = "<group>"; };
 		F8AC9D521C223BFA00366AEF /* twi_slave_brightness_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_brightness_sensor.h; sourceTree = "<group>"; };
-		F8AC9D541C223C1E00366AEF /* spi_slave_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spi_slave_flash_memory.c; sourceTree = "<group>"; };
-		F8AC9D551C223C1E00366AEF /* spi_slave_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spi_slave_flash_memory.h; sourceTree = "<group>"; };
+		F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spi_slave_mx25_flash_memory.c; sourceTree = "<group>"; };
+		F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spi_slave_mx25_flash_memory.h; sourceTree = "<group>"; };
 		F8AC9D571C223F4900366AEF /* gpio_uart.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_uart.c; sourceTree = "<group>"; };
 		F8AC9D581C223F4900366AEF /* gpio_uart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_uart.h; sourceTree = "<group>"; };
 		F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameters_config.h; sourceTree = "<group>"; };
@@ -122,8 +122,8 @@
 		F8AC9D531C223C0900366AEF /* spi */ = {
 			isa = PBXGroup;
 			children = (
-				F8AC9D541C223C1E00366AEF /* spi_slave_flash_memory.c */,
-				F8AC9D551C223C1E00366AEF /* spi_slave_flash_memory.h */,
+				F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */,
+				F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */,
 			);
 			name = spi;
 			sourceTree = "<group>";

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		F8438FF01C3A8C1E00365D75 /* test_spi_slave_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_spi_slave_flash_memory.c; sourceTree = "<group>"; };
+		F8438FF11C3A8C1E00365D75 /* test_spi_slave_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_spi_slave_flash_memory.h; sourceTree = "<group>"; };
+		F8438FF21C3A8CC700365D75 /* MX25_APP.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MX25_APP.c; sourceTree = "<group>"; };
+		F8438FF31C3A8CC700365D75 /* MX25_CMD.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MX25_CMD.c; sourceTree = "<group>"; };
+		F8438FF41C3A8CC700365D75 /* MX25_CMD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MX25_CMD.h; sourceTree = "<group>"; };
+		F8438FF51C3A8CC700365D75 /* MX25_DEF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MX25_DEF.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
 		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
@@ -122,8 +128,14 @@
 		F8AC9D531C223C0900366AEF /* spi */ = {
 			isa = PBXGroup;
 			children = (
+				F8438FF21C3A8CC700365D75 /* MX25_APP.c */,
+				F8438FF31C3A8CC700365D75 /* MX25_CMD.c */,
+				F8438FF41C3A8CC700365D75 /* MX25_CMD.h */,
+				F8438FF51C3A8CC700365D75 /* MX25_DEF.h */,
 				F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */,
 				F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */,
+				F8438FF11C3A8C1E00365D75 /* test_spi_slave_flash_memory.h */,
+				F8438FF01C3A8C1E00365D75 /* test_spi_slave_flash_memory.c */,
 			);
 			name = spi;
 			sourceTree = "<group>";

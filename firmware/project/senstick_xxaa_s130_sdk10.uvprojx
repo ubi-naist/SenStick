@@ -482,9 +482,9 @@
           <GroupName>spi</GroupName>
           <Files>
             <File>
-              <FileName>spi_slave_flash_memory.c</FileName>
+              <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\spi_slave_flash_memory.c</FilePath>
+              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1030,9 +1030,9 @@ rf51xxx.flm))</FlashDriverDll>
           <GroupName>spi</GroupName>
           <Files>
             <File>
-              <FileName>spi_slave_flash_memory.c</FileName>
+              <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\spi_slave_flash_memory.c</FilePath>
+              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1576,9 +1576,9 @@ rf51xxx.flm))</FlashDriverDll>
           <GroupName>spi</GroupName>
           <Files>
             <File>
-              <FileName>spi_slave_flash_memory.c</FileName>
+              <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\spi_slave_flash_memory.c</FilePath>
+              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1945,6 +1945,14 @@ rf51xxx.flm))</FlashDriverDll>
           <targetInfo name="nrf51822_xxac_s130(release)"/>
         </targetInfos>
       </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_spi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_spi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s130(debug)"/>
+          <targetInfo name="nrf51822_xxac_s130(release)"/>
+        </targetInfos>
+      </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_twi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_twi">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
@@ -1978,6 +1986,22 @@ rf51xxx.flm))</FlashDriverDll>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_gpiote" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_gpiote">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s130(debug)"/>
+          <targetInfo name="nrf51822_xxac_s130(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_spi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_spi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s130(debug)"/>
+          <targetInfo name="nrf51822_xxac_s130(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_spim" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_spim">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
           <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>

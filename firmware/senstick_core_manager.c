@@ -2,12 +2,15 @@
 #include <string.h>
 
 #include "nordic_common.h"
+
 #include "nrf_drv_gpiote.h"
 #include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "nrf_log.h"
-
+#include "nrf_drv_config.h"
 #include "nrf_adc.h"
+
+#include "app_util_platform.h"
 #include "app_error.h"
 
 #include "senstick_core_manager.h"
@@ -127,6 +130,43 @@ static void init_adc(void)
     nrf_adc_input_select(ADC_INPUT_SUPPLY_MONITORING);
 }
 
+static void init_spi_slaves(senstick_core_t *p_context)
+{
+    ret_code_t err_code;
+    // SPIインタフェース SPI0を使用。
+//    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
+    /*
+#define NRF_DRV_SPI_DEFAULT_CONFIG(id)                       \
+    {                                                            \
+        .sck_pin      = CONCAT_3(SPI, id, _CONFIG_SCK_PIN),      \
+        .mosi_pin     = CONCAT_3(SPI, id, _CONFIG_MOSI_PIN),     \
+        .miso_pin     = CONCAT_3(SPI, id, _CONFIG_MISO_PIN),     \
+        .ss_pin       = NRF_DRV_SPI_PIN_NOT_USED,                \
+        .irq_priority = CONCAT_3(SPI, id, _CONFIG_IRQ_PRIORITY), \
+        .orc          = 0xFF,                                    \
+        .frequency    = NRF_DRV_SPI_FREQ_4M,                     \
+        .mode         = NRF_DRV_SPI_MODE_0,                      \
+        .bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST,         \
+    }
+     */
+    nrf_drv_spi_config_t config;
+    config.sck_pin      = SPI0_CONFIG_SCK_PIN;
+    config.mosi_pin     = SPI0_CONFIG_MOSI_PIN;
+    config.miso_pin     = SPI0_CONFIG_MISO_PIN;
+    config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
+    config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
+    config.orc          = 0xff;
+//    config.frequency    = NRF_DRV_SPI_FREQ_4M;
+    config.frequency    = NRF_DRV_SPI_FREQ_250K;
+    config.mode         = NRF_DRV_SPI_MODE_0;
+    config.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
+    
+    err_code = nrf_drv_spi_init(&(p_context->spi), &config, NULL);
+    APP_ERROR_CHECK(err_code);
+    
+    initFlashMemory(&(p_context->flash_memory_context), &(p_context->spi));
+}
+
 static void init_twi_slaves(senstick_core_t *p_context)
 {
     ret_code_t err_code;
@@ -183,11 +223,15 @@ static void init_twi_slaves(senstick_core_t *p_context)
 void init_senstick_core_manager(senstick_core_t *p_context)
 {
     memset(p_context, 0, sizeof(senstick_core_t));
+    
     init_gpio();
     init_adc();
     
     // 周辺デバイスの起動待ち時間。MPU-9250最大100ミリ秒
     nrf_delay_ms(100);
+    
+    init_spi_slaves(p_context);
+    testFlashMemory(&(p_context->flash_memory_context));
     
     init_twi_slaves(p_context);
 }

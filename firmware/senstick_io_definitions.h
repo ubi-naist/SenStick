@@ -40,8 +40,8 @@
 // P0.11        DI
 // P0.12        CLK
 #define PIN_NUMBER_SPI_nCS  0
-#define PIN_NUMBER_SPI_DO   1
-#define PIN_NUMBER_SPI_DI   11
+#define PIN_NUMBER_SPI_MISO 1
+#define PIN_NUMBER_SPI_MOSI 11
 #define PIN_NUMBER_SPI_CLK  12
 
 // IOポートのアドレス定義

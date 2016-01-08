@@ -134,6 +134,20 @@ static void init_spi_slaves(senstick_core_t *p_context)
 {
     ret_code_t err_code;
     // SPIインタフェース SPI0を使用。
+    
+    /*
+     #define NRF_DRV_SPI_INSTANCE(id)                        \
+     {                                                       \
+     .p_registers  = NRF_DRV_SPI_PERIPHERAL(id),         \     #define NRF_DRV_SPI_PERIPHERAL(id)  (void *)CONCAT_2(NRF_SPI, id)
+     .irq          = CONCAT_3(SPI, id, _IRQ),            \
+     .drv_inst_idx = CONCAT_3(SPI, id, _INSTANCE_INDEX), \
+     .use_easy_dma = CONCAT_3(SPI, id, _USE_EASY_DMA)    \
+     }     */
+    p_context->spi.p_registers  = NRF_SPI0;
+    p_context->spi.irq          = SPI0_IRQ;
+    p_context->spi.drv_inst_idx = SPI0_INSTANCE_INDEX;
+    p_context->spi.use_easy_dma = SPI0_USE_EASY_DMA;
+    
 //    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
     /*
 #define NRF_DRV_SPI_DEFAULT_CONFIG(id)                       \

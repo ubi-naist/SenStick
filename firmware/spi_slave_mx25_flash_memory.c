@@ -287,7 +287,8 @@ void enableAddress4ByteMode(flash_memory_context_t *p_context)
     }
     setChipEnable(false);
     
-    if( ! isAddress4ByteMode(p_context)) {
+    bool isAddress4BM = isAddress4ByteMode(p_context);
+    if( ! isAddress4BM ) {
         APP_ERROR_CHECK(NRF_ERROR_INTERNAL);
     }
 }

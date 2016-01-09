@@ -170,8 +170,8 @@ static void init_spi_slaves(senstick_core_t *p_context)
     config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
     config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
     config.orc          = 0xff;
-//    config.frequency    = NRF_DRV_SPI_FREQ_4M;
-    config.frequency    = NRF_DRV_SPI_FREQ_250K;
+    config.frequency    = NRF_DRV_SPI_FREQ_4M;
+//    config.frequency    = NRF_DRV_SPI_FREQ_250K;
     config.mode         = NRF_DRV_SPI_MODE_0;
     config.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
     

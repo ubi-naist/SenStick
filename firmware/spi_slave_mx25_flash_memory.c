@@ -28,8 +28,6 @@
 //#define    tWREAW           40             // 40ns
 //#endif
 
-#define  MX25L25635F_FLASH_SIZE  0x2000000  // 32 MB
-
 typedef enum {
     // ID commands
     FLASH_CMD_RDID =     0x9F,    //RDID (Read Identification)
@@ -92,7 +90,7 @@ typedef enum {
 
 // nCSを設定してチップを選択します。isEnabledがtrueならばチップが選択されます。
 // 物理的な電圧や負論理かいなかなどは、このメソッドが吸収します。
-void setChipEnable(bool isEnabled)
+static void setChipEnable(bool isEnabled)
 {
     if(isEnabled) {
         nrf_drv_gpiote_out_clear(PIN_NUMBER_SPI_nCS);
@@ -102,7 +100,7 @@ void setChipEnable(bool isEnabled)
 }
 
 // 符号なし32ビット整数をバイト配列に展開します。ビッグエンディアン。
-void uint32ToByteArray(uint8_t *p_dst, uint32_t src)
+static void uint32ToByteArray(uint8_t *p_dst, uint32_t src)
 {
     // アドレスは4バイト。MSB-first
     p_dst[0] = (uint8_t)(0x0ff & (src >> 24));
@@ -111,7 +109,7 @@ void uint32ToByteArray(uint8_t *p_dst, uint32_t src)
     p_dst[3] = (uint8_t)(0x0ff & (src >>  0));
 }
 
-void transferToSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_tx_buffer, uint8_t tx_buffer_length, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
+static void transferToSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_tx_buffer, uint8_t tx_buffer_length, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
 {
     ret_code_t err_code;
     
@@ -134,17 +132,17 @@ void transferToSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint
     
 }
 
-void writeToSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_tx_buffer, uint8_t tx_buffer_length)
+static void writeToSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_tx_buffer, uint8_t tx_buffer_length)
 {
     transferToSPISlave(p_spi, command, p_tx_buffer, tx_buffer_length, NULL, 0);
 }
 
-void readFromSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
+static void readFromSPISlave(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
 {
     transferToSPISlave(p_spi, command, NULL, 0, p_rx_buffer, rx_buffer_length);
 }
 
-void transferSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_tx_buffer, uint8_t tx_buffer_length, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
+static void transferSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_tx_buffer, uint8_t tx_buffer_length, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
 {
     ret_code_t err_code;
     
@@ -172,27 +170,27 @@ void transferSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t comm
     setChipEnable(false);
 }
 
-void writeToSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_tx_buffer, uint8_t tx_buffer_length)
+static void writeToSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_tx_buffer, uint8_t tx_buffer_length)
 {
     transferSPISlaveWithAddress(p_spi, command, address, p_tx_buffer, tx_buffer_length, NULL, 0);
 }
 
-void readFromSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
+static void readFromSPISlaveWithAddress(nrf_drv_spi_t *p_spi, FlashMemoryCommand_t command, uint32_t address, uint8_t *p_rx_buffer, uint8_t rx_buffer_length)
 {
     transferSPISlaveWithAddress(p_spi, command, address, NULL, 0, p_rx_buffer, rx_buffer_length);
 }
 
-void readStatusRegister(flash_memory_context_t *p_context, uint8_t *p_data)
+static void readStatusRegister(flash_memory_context_t *p_context, uint8_t *p_data)
 {
     readFromSPISlave(p_context->p_spi, FLASH_CMD_RDSR, p_data, 1);
 }
 
-void readConfigrationRegister(flash_memory_context_t *p_context, uint8_t *p_data)
+static void readConfigrationRegister(flash_memory_context_t *p_context, uint8_t *p_data)
 {
     readFromSPISlave(p_context->p_spi, FLASH_CMD_RDCR, p_data, 1);
 }
 
-void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
+static void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
 {
     uint8_t buffer[3];
     
@@ -201,15 +199,14 @@ void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
     *p_data = ((uint32_t)buffer[0] << 16) |  ((uint32_t)buffer[1] << 8) | ((uint32_t)buffer[2] << 0);
 }
 
-
-bool IsFlashBusy(flash_memory_context_t *p_context)
+static bool IsFlashBusy(flash_memory_context_t *p_context)
 {
     uint8_t status = 0;
     readStatusRegister(p_context, & status);
     return ((status & STATUS_REGISTER_WIP) != 0);
 }
 
-void waitFlashReady(flash_memory_context_t *p_context)
+static void waitFlashReady(flash_memory_context_t *p_context)
 {
     const int TIMEOUT_LOOP = 100;
     
@@ -224,12 +221,12 @@ void waitFlashReady(flash_memory_context_t *p_context)
     }
 }
 
-void writeCommandWriteEnable(flash_memory_context_t *p_context)
+static void writeCommandWriteEnable(flash_memory_context_t *p_context)
 {
     writeToSPISlave(p_context->p_spi, FLASH_CMD_WREN, NULL, 0);
 }
 
-void writeStatusConfigrationRegister(flash_memory_context_t *p_context, uint8_t status, uint8_t config)
+static void writeStatusConfigrationRegister(flash_memory_context_t *p_context, uint8_t status, uint8_t config)
 {
     // Write in progressフラグをチェック
     if( IsFlashBusy(p_context) ) {
@@ -247,30 +244,7 @@ void writeStatusConfigrationRegister(flash_memory_context_t *p_context, uint8_t 
     waitFlashReady(p_context);
 }
 
-// 4kバイト単位のセクターのデータを消去します
-void eraseSector(flash_memory_context_t *p_context, uint32_t address)
-{
-    // アドレスチェック
-    if( address > MX25L25635F_FLASH_SIZE) {
-        APP_ERROR_CHECK(NRF_ERROR_INVALID_PARAM);
-    }
-    
-    // Write in progressフラグをチェック
-    if( IsFlashBusy(p_context) ) {
-        APP_ERROR_CHECK(NRF_ERROR_BUSY);
-    }
-
-    // weビットを立てる。
-    writeCommandWriteEnable(p_context);
-
-    uint8_t buffer[4];
-    uint32ToByteArray(buffer, address);
-    writeToSPISlave(p_context->p_spi, FLASH_CMD_SE4B, buffer, sizeof(buffer));
-    
-    waitFlashReady(p_context);
-}
-
-bool isAddress4ByteMode(flash_memory_context_t *p_context)
+static bool isAddress4ByteMode(flash_memory_context_t *p_context)
 {
     uint8_t config;
     readConfigrationRegister(p_context, &config);
@@ -278,7 +252,7 @@ bool isAddress4ByteMode(flash_memory_context_t *p_context)
 }
 
 // アドレッシングモードを、デフォルトの24ビットから、32ビットモードに設定します
-void enableAddress4ByteMode(flash_memory_context_t *p_context)
+static void enableAddress4ByteMode(flash_memory_context_t *p_context)
 {
     // コマンドを書き込み。
     writeToSPISlave(p_context->p_spi, FLASH_CMD_EN4B, NULL, 0);
@@ -302,7 +276,30 @@ void initFlashMemory(flash_memory_context_t *p_context, nrf_drv_spi_t *p_spi)
     enableAddress4ByteMode(p_context);
 }
 
-void writePage(flash_memory_context_t *p_context, uint32_t address, uint8_t *data, uint8_t data_length)
+// 4kバイト単位のセクターのデータを消去します
+void eraseSector(flash_memory_context_t *p_context, uint32_t address)
+{
+    // アドレスチェック
+    if( address > MX25L25635F_FLASH_SIZE) {
+        APP_ERROR_CHECK(NRF_ERROR_INVALID_PARAM);
+    }
+    
+    // Write in progressフラグをチェック
+    if( IsFlashBusy(p_context) ) {
+        APP_ERROR_CHECK(NRF_ERROR_BUSY);
+    }
+    
+    // weビットを立てる。
+    writeCommandWriteEnable(p_context);
+    
+    uint8_t buffer[4];
+    uint32ToByteArray(buffer, address);
+    writeToSPISlave(p_context->p_spi, FLASH_CMD_SE4B, buffer, sizeof(buffer));
+    
+    waitFlashReady(p_context);
+}
+
+void writeFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *data, uint8_t data_length)
 {
     // アドレスチェック
     if( address > MX25L25635F_FLASH_SIZE) {
@@ -362,7 +359,7 @@ void testFlashMemory(flash_memory_context_t *p_context)
         data[i] = (uint8_t) rand();
     }
     // 読み書き
-    writePage(p_context, MX25L25635F_FLASH_SIZE - 256, data, sizeof(data));
+    writeFlash(p_context, MX25L25635F_FLASH_SIZE - 256, data, sizeof(data));
     readFlash(p_context, MX25L25635F_FLASH_SIZE - 256, rd_buffer, sizeof(rd_buffer));
     if( memcmp(data, rd_buffer, sizeof(data)) != 0) {
         APP_ERROR_CHECK(NRF_ERROR_INTERNAL);
@@ -373,26 +370,32 @@ void testFlashMemory(flash_memory_context_t *p_context)
         APP_ERROR_CHECK(NRF_ERROR_INTERNAL);
     }
     
-    // 逐次書き込み比較
+    // 逐次書き込み
+//    const uint32_t max_address = MX25L25635F_FLASH_SIZE;
+    const uint32_t max_address = 10 * 1024; // 簡易に10kBでテスト
     srand(1);
-    for(uint32_t address = 0x00000000; address < MX25L25635F_FLASH_SIZE; address += sizeof(data)) {
+    for(uint32_t address = 0x00000000; address < max_address; address += sizeof(data)) {
         // 4kバイトのセクターをクリアする
         if( address % 0x01000 == 0) {
             eraseSector(p_context, address);
         }
         
         // ランダムデータを書き込む
-        srand(address);
         for(int i=0; i < sizeof(data); i++) {
             data[i] = (uint8_t) rand();
         }
-        writePage(p_context, address, data, sizeof(data));
-        
-        // 読み込む
+        writeFlash(p_context, address, data, sizeof(data));
+    }
+    
+    // 読み込み、比較
+    srand(1);
+    for(uint32_t address = 0x00000000; address < max_address; address += sizeof(data)) {
         readFlash(p_context, address, rd_buffer, sizeof(rd_buffer));
         
-        if( memcmp(data, rd_buffer, sizeof(data)) != 0) {
+        for(int i=0; i < sizeof(data); i++) {
+            if( rd_buffer[i] != (uint8_t)rand() ) {
                 APP_ERROR_CHECK(NRF_ERROR_INTERNAL);
+            }
         }
     }
 }

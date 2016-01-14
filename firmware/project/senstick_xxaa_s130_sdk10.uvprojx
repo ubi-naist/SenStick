@@ -436,6 +436,11 @@
               <FileType>1</FileType>
               <FilePath>..\ble_activity_service.c</FilePath>
             </File>
+            <File>
+              <FileName>senstick_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_logger.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -984,6 +989,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileType>1</FileType>
               <FilePath>..\ble_activity_service.c</FilePath>
             </File>
+            <File>
+              <FileName>senstick_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_logger.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1529,6 +1539,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>ble_activity_service.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\ble_activity_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_logger.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		F85DA1E51C4127C10090705F /* senstick_logger.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_logger.c; sourceTree = "<group>"; };
+		F85DA1E61C4127C10090705F /* senstick_logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_logger.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
 		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
@@ -100,6 +102,8 @@
 				F8AC9D3A1C2238A500366AEF /* senstick_core_manager.c */,
 				F8AC9D391C2237DC00366AEF /* senstick_data_models.h */,
 				F8AC9D381C2237DC00366AEF /* senstick_data_models.c */,
+				F85DA1E61C4127C10090705F /* senstick_logger.h */,
+				F85DA1E51C4127C10090705F /* senstick_logger.c */,
 			);
 			name = senstick;
 			sourceTree = "<group>";

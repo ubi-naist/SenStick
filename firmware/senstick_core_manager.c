@@ -245,7 +245,9 @@ void init_senstick_core_manager(senstick_core_t *p_context)
     nrf_delay_ms(100);
     
     init_spi_slaves(p_context);
-    testFlashMemory(&(p_context->flash_memory_context));
+
+    testLogger(&(p_context->flash_memory_context));
+//    testFlashMemory(&(p_context->flash_memory_context));
     
     init_twi_slaves(p_context);
 }

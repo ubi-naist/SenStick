@@ -10,9 +10,10 @@
 #include "twi_slave_uv_sensor.h"
 #include "twi_slave_brightness_sensor.h"
 #include "spi_slave_mx25_flash_memory.h"
+#include "senstick_logger.h"
 
 // 構造体の宣言
-typedef struct senstick_core_s {
+typedef struct {
     nrf_drv_twi_t twi;
     nrf_drv_spi_t spi;
     
@@ -23,6 +24,7 @@ typedef struct senstick_core_s {
     brightness_sensor_context_t brightness_sensor_context;
     
     flash_memory_context_t      flash_memory_context;
+    senstick_logger_t           logger_context;
 } senstick_core_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。

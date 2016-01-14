@@ -30,4 +30,6 @@ uint32_t logger_size(senstick_logger_t *p_context);
 // 先頭からpositonバイトに移動します。まだ書き込みをしていない領域を超えてpositionを指定した場合、その飛び越えた領域の値は不定値になります。
 uint32_t logger_seek(senstick_logger_t *p_context, uint32_t position);
 
+void testLogger(flash_memory_context_t *p_context);
+
 #endif /* senstick_logger_h */

@@ -1,7 +1,10 @@
 #include <string.h>
+#include <stdlib.h>
+
+#include "nordic_common.h"
+#include "app_error.h"
 
 #include "senstick_logger.h"
-#include "nordic_common.h"
 
 #define MAGIC_WORD  0xc0ffeede
 #define SECTOR_SIZE (4 * 1024)
@@ -168,4 +171,54 @@ uint32_t logger_seek(senstick_logger_t *p_context, uint32_t position)
     p_context->read_position  = pos;
     
     return pos;
+}
+
+void testLogger(flash_memory_context_t *p_context)
+{
+    senstick_logger_t logger_context;
+    uint8_t data[11];
+    uint8_t rd_buffer[11];
+
+    void logger_close(senstick_logger_t *p_context);
+    // p_bufferからsizeバイトを書き込みます。書き込めたサイズを返します。
+    uint32_t logger_write(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t size);
+    // p_bufferからsizeバイトを読み込みます。読み込んだサイズを返します。
+    uint32_t logger_read(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t size);
+    // 先頭からの位置を返します。
+    uint32_t logger_size(senstick_logger_t *p_context);
+    // 先頭からpositonバイトに移動します。まだ書き込みをしていない領域を超えてpositionを指定した場合、その飛び越えた領域の値は不定値になります。
+    uint32_t logger_seek(senstick_logger_t *p_context, uint32_t position);
+
+    // ロガーを開きます。
+    logger_open(&logger_context, p_context, true);
+    
+    // 逐次書き込み
+    //    const uint32_t max_address = MX25L25635F_FLASH_SIZE;
+    const uint32_t max_address = 10 * 1024; // 簡易に10kBでテスト
+    srand(1);
+    for(uint32_t address = 0x00000000; address < max_address; address += sizeof(data)) {
+        // ランダムデータを書き込む
+        for(int i=0; i < sizeof(data); i++) {
+            data[i] = (uint8_t) rand();
+        }
+        // 書き込み
+        logger_write(&logger_context, data, sizeof(data));
+    }
+    logger_close(&logger_context);
+
+    // ロガーを開きます。
+    logger_open(&logger_context, p_context, false);
+
+    // 読み込み、比較
+    srand(1);
+    for(uint32_t address = 0x00000000; address < max_address; address += sizeof(data)) {
+        logger_read(&logger_context, rd_buffer, sizeof(rd_buffer));
+        for(int i=0; i < sizeof(data); i++) {
+            if( rd_buffer[i] != (uint8_t)rand() ) {
+                APP_ERROR_CHECK(NRF_ERROR_INTERNAL);
+            }
+        }
+    }
+    logger_close(&logger_context);
+    
 }

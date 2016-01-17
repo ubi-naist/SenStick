@@ -116,12 +116,14 @@ static uint32_t add_notification_characteristics(ble_gatts_char_handles_t *p_han
     
     // ノーティフィケーション・キャラクタリスティクスのメタデータ
     memset(&char_md, 0, sizeof(char_md));
-//    char_md.char_props.read     = 1;    // 読み出し、ノーティフィケーションのフラグを立てる
+    char_md.char_props.read     = 1;    // 読み出し、ノーティフィケーションのフラグを立てる
     char_md.char_props.notify   = 1;
     char_md.p_cccd_md           = &cccd_md; // CCCDのメタデータを設定する
     
     memset(&attribute_md, 0, sizeof(attribute_md));
     attribute_md.vloc = BLE_GATTS_VLOC_STACK;  // Attributeの値のメモリ領域は、スタックに管理させる
+    attribute_md.vlen = 1;
+    
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.read_perm)); // 書き込みおよび読み出しパーミションは、オープン。
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.write_perm));
     
@@ -163,6 +165,12 @@ static uint32_t add_write_characteristics(ble_gatts_char_handles_t *p_handle, co
 static void add_characteristics(ble_activity_service_t *p_context)
 {
     ret_code_t err_code;
+
+    err_code = add_write_characteristics(&(p_context->setting_char_handle), p_context, BLE_UUID_SETTING_CHAR_SUB, 1);
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = add_write_characteristics(&(p_context->control_char_handle), p_context, BLE_UUID_CONTROL_CHAR_SUB, 1);
+    APP_ERROR_CHECK(err_code);
     
     err_code = add_notification_characteristics(&(p_context->nine_axis_sensor_char_handle), p_context, BLE_UUID_NINE_AXIS_CHAR_SUB, BLE_NINE_AXIS_CHAR_VALUE_LENGTH);
     APP_ERROR_CHECK(err_code);
@@ -176,11 +184,6 @@ static void add_characteristics(ble_activity_service_t *p_context)
     err_code = add_notification_characteristics(&(p_context->pressure_char_handle), p_context, BLE_UUID_PRESSURE_CHAR_SUB, BLE_PRESSURE_CHAR_VALUE_LENGTH);
     APP_ERROR_CHECK(err_code);
 
-    err_code = add_write_characteristics(&(p_context->setting_char_handle), p_context, BLE_UUID_SETTING_CHAR_SUB, 1);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = add_write_characteristics(&(p_context->control_char_handle), p_context, BLE_UUID_CONTROL_CHAR_SUB, 1);
-    APP_ERROR_CHECK(err_code);
 }
 
 /**

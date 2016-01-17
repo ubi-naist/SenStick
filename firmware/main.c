@@ -10,7 +10,10 @@
 #include "softdevice_handler.h"
 #include "ble_advertising.h"
 #include "ble_gap.h"
+#include "ble_hci.h"
 #include "ble_parameters_config.h"
+
+#include "device_manager.h"
 
 #include "app_timer_appsh.h"
 #include "app_scheduler.h"
@@ -38,7 +41,8 @@
 
 static ble_activity_service_t activity_service_context;
 static senstick_core_t manager_context;
-
+static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
+static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
  * 関数宣言
  */
@@ -55,11 +59,103 @@ static void sys_evt_dispatch(uint32_t sys_evt)
     ble_advertising_on_sys_evt(sys_evt);
 }
 
+static void on_ble_evt(ble_evt_t * p_ble_evt)
+{
+    uint32_t err_code;
+    
+    switch (p_ble_evt->header.evt_id)
+    {
+        case BLE_GAP_EVT_CONNECTED:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONNECTED");
+            m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
+            break;
+            
+        case BLE_GAP_EVT_DISCONNECTED:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_DISCONNECTED");
+            m_conn_handle = BLE_CONN_HANDLE_INVALID;
+            break;
+
+        case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_PARAMS_REQUEST.\n  invoked by SMP Paring request, replying parameters.");
+            break;
+            
+        case BLE_GAP_EVT_CONN_SEC_UPDATE:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_SEC_UPDATE.\n  Encrypted with STK.");
+            break;
+            
+        case BLE_GAP_EVT_AUTH_STATUS:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_AUTH_STATUS.");
+            break;
+            
+        case BLE_GAP_EVT_SEC_INFO_REQUEST:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_INFO_REQUEST");
+            break;
+            
+        case BLE_EVT_TX_COMPLETE:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_EVT_TX_COMPLETE");
+            break;
+            
+        case BLE_GAP_EVT_CONN_PARAM_UPDATE:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_PARAM_UPDATE.");
+            break;
+            
+        case BLE_GATTS_EVT_SYS_ATTR_MISSING:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_SYS_ATTR_MISSING.");
+            break;
+            
+        case BLE_GAP_EVT_TIMEOUT:
+            break;
+            
+        case BLE_GATTC_EVT_PRIM_SRVC_DISC_RSP:
+                        NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_PRIM_SRVC_DISC_RSP");
+            break;
+        case BLE_GATTC_EVT_CHAR_DISC_RSP:
+                        NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_CHAR_DISC_RSP");
+            break;
+        case BLE_GATTC_EVT_DESC_DISC_RSP:
+                        NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_DESC_DISC_RSP");
+            break;
+        case BLE_GATTC_EVT_WRITE_RSP:
+                        NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_WRITE_RSP");
+            break;
+        case BLE_GATTC_EVT_HVX:
+                        NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_HVX");
+            break;
+
+        case BLE_GATTC_EVT_TIMEOUT:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_TIMEOUT. disconnecting.");
+            // Disconnect on GATT Server and Client timeout events.
+            err_code = sd_ble_gap_disconnect(m_conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(err_code);
+            break;
+            
+        case BLE_GATTS_EVT_WRITE:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_WRITE");
+            break;
+            
+        case BLE_GATTS_EVT_TIMEOUT:
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
+            // Disconnect on GATT Server and Client timeout events.
+            err_code = sd_ble_gap_disconnect(m_conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(err_code);
+            break;
+            
+        default:
+            //No implementation needed
+            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
+            break;
+    }
+}
+
 // BLEスタックからのイベントを、各モジュールに分配する。
 static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
-    ble_advertising_on_ble_evt(p_ble_evt);
+    dm_ble_evt_handler(p_ble_evt);
+    
     ble_activity_service_on_ble_event(&activity_service_context, p_ble_evt);
+    
+    on_ble_evt(p_ble_evt);
+    ble_advertising_on_ble_evt(p_ble_evt);
 }
 
 /**
@@ -80,6 +176,47 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 {
     NRF_LOG_PRINTF_DEBUG("\nassert_nrf_callback: line:%d file:%s", line_num, p_file_name);
     app_error_handler(DEAD_BEEF, line_num, p_file_name);
+}
+
+// デバイスマネージャのイベント処理ハンドラ
+static uint32_t device_manager_evt_handler(dm_handle_t const * p_handle, dm_event_t const  * p_event, ret_code_t event_result)
+{
+    APP_ERROR_CHECK(event_result);
+/*
+#ifdef BLE_DFU_APP_SUPPORT
+    if (p_event->event_id == DM_EVT_LINK_SECURED)
+    {
+        app_context_load(p_handle);
+    }
+#endif // BLE_DFU_APP_SUPPORT
+*/
+    return NRF_SUCCESS;
+}
+
+// デバイスマネージャの初期化
+// このメソッドを呼び出す前にpstorageの初期化が完了していること。
+static void device_manager_init(bool erase_bonds)
+{
+    uint32_t               err_code;
+    dm_init_param_t        init_param = {.clear_persistent_data = erase_bonds};
+    dm_application_param_t register_param;
+    
+    err_code = dm_init(&init_param);
+    APP_ERROR_CHECK(err_code);
+    
+    memset(&register_param.sec_param, 0, sizeof(ble_gap_sec_params_t));
+    
+    register_param.sec_param.bond         = SEC_PARAM_BOND;
+    register_param.sec_param.mitm         = SEC_PARAM_MITM;
+    register_param.sec_param.io_caps      = SEC_PARAM_IO_CAPABILITIES;
+    register_param.sec_param.oob          = SEC_PARAM_OOB;
+    register_param.sec_param.min_key_size = SEC_PARAM_MIN_KEY_SIZE;
+    register_param.sec_param.max_key_size = SEC_PARAM_MAX_KEY_SIZE;
+    register_param.evt_handler            = device_manager_evt_handler;
+    register_param.service_type           = DM_PROTOCOL_CNTXT_GATT_SRVR_ID;
+    
+    err_code = dm_register(&m_app_handle, &register_param);
+    APP_ERROR_CHECK(err_code);
 }
 
 // Function for initializing the BLE stack.
@@ -285,6 +422,9 @@ int main(void)
     // スタックの初期化。
     ble_stack_init();
     gap_params_init();
+    
+    // デバイスマネージャを有効化    
+    device_manager_init(true);
     
     // サービス初期化
     ble_activity_service_init_t activity_service_init;

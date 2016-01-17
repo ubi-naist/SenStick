@@ -1904,6 +1904,14 @@ rf51xxx.flm))</FlashDriverDll>
           <targetInfo name="nrf51822_xxac_s130(release)"/>
         </targetInfos>
       </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="device_manager" Cvariant="Peripheral" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="device_manager_Peripheral">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s130(debug)"/>
+          <targetInfo name="nrf51822_xxac_s130(release)"/>
+        </targetInfos>
+      </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Services" Csub="ble_bas" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_bas">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
@@ -2257,10 +2265,12 @@ rf51xxx.flm))</FlashDriverDll>
         </targetInfos>
       </file>
       <file attr="config" category="header" name="device_manager\config\device_manager_cnfg.h" version="3.1.0">
-        <instance index="0" removed="1">RTE\nRF_BLE\nRF51422_xxAC\device_manager_cnfg.h</instance>
+        <instance index="0">RTE\nRF_BLE\nRF51422_xxAC\device_manager_cnfg.h</instance>
         <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="device_manager" Cvariant="Peripheral" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="device_manager_Peripheral"/>
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos/>
+        <targetInfos>
+          <targetInfo name="nrf51822_xxac_s130(release)"/>
+        </targetInfos>
       </file>
       <file attr="config" category="source" name="common\ble_advdata.c" version="3.1.0">
         <instance index="0">RTE\nRF_BLE\nRF51822_xxAA\ble_advdata.c</instance>
@@ -2301,6 +2311,15 @@ rf51xxx.flm))</FlashDriverDll>
       <file attr="config" category="header" name="common\ble_conn_params.h" version="3.1.0">
         <instance index="0">RTE\nRF_BLE\nRF51822_xxAA\ble_conn_params.h</instance>
         <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_conn_params" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_conn_params"/>
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s130(debug)"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="header" name="device_manager\config\device_manager_cnfg.h" version="3.1.0">
+        <instance index="0">RTE\nRF_BLE\nRF51822_xxAA\device_manager_cnfg.h</instance>
+        <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="device_manager" Cvariant="Peripheral" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="device_manager_Peripheral"/>
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
           <targetInfo name="flash_s130_nrf51_1.0.0_softdevice"/>

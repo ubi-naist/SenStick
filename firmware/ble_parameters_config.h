@@ -1,6 +1,8 @@
 #ifndef ble_parameters_config_h
 #define ble_parameters_config_h
 
+#include "ble_gap.h"
+
 // コネクションパラメータモジュールの設定値
 // アドバタイジング:
 //  1. 30秒間  インターバル 20ミリ秒
@@ -19,8 +21,16 @@
 // slave latency 0
 
 #define DEFAULT_MIN_CONN_INTERVAL_MILLISEC      (20)
-#define DEFAULT_MAX_CONN_INTERVAL_MILLISEC      (50)
+#define DEFAULT_MAX_CONN_INTERVAL_MILLISEC      (60)
 #define DEFAULT_SLAVE_LATENCY                   0
 #define DEFAULT_CONN_SUP_TIMEOUT_MILISEC        (4 * 1000)
+
+// セキュリティ・パラメータ
+#define SEC_PARAM_BOND                   0                                          /**< Perform bonding. */
+#define SEC_PARAM_MITM                   0                                          /**< Man In The Middle protection not required. */
+#define SEC_PARAM_IO_CAPABILITIES        BLE_GAP_IO_CAPS_NONE                       /**< No I/O capabilities. */
+#define SEC_PARAM_OOB                    0                                          /**< Out Of Band data not available. */
+#define SEC_PARAM_MIN_KEY_SIZE           7                                          /**< Minimum encryption key size. */
+#define SEC_PARAM_MAX_KEY_SIZE           16                                         /**< Maximum encryption key size. */
 
 #endif /* ble_parameters_config_h */

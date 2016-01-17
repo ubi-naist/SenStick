@@ -21,7 +21,7 @@
 // slave latency 0
 
 #define DEFAULT_MIN_CONN_INTERVAL_MILLISEC      (20)
-#define DEFAULT_MAX_CONN_INTERVAL_MILLISEC      (60)
+#define DEFAULT_MAX_CONN_INTERVAL_MILLISEC      (50)
 #define DEFAULT_SLAVE_LATENCY                   0
 #define DEFAULT_CONN_SUP_TIMEOUT_MILISEC        (4 * 1000)
 

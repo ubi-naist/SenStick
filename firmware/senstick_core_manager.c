@@ -203,7 +203,10 @@ static void init_twi_slaves(senstick_core_t *p_context)
     initBrightnessSensor(&(p_context->brightness_sensor_context),  &(p_context->twi));
     // 初期化処理完了待ち時間
     nrf_delay_ms(100);
-    
+}
+
+static void test_twi_slaves(senstick_core_t *p_context)
+{
     // 値取得、デバッグ
     while(1) {
         MotionSensorData_t sensor_data;
@@ -225,12 +228,11 @@ static void init_twi_slaves(senstick_core_t *p_context)
         BrightnessData_t brightness_data;
         getBrightnessData(&(p_context->brightness_sensor_context), &brightness_data);
         NRF_LOG_PRINTF_DEBUG("Brightness, %d.\n", brightness_data);
-
+        
         NRF_LOG_PRINTF_DEBUG("\n");
         nrf_delay_ms(500);
     }
 }
-
 /**
  * Public関数
  */
@@ -245,10 +247,10 @@ void init_senstick_core_manager(senstick_core_t *p_context)
     nrf_delay_ms(100);
     
     init_spi_slaves(p_context);
-
-    testLogger(&(p_context->flash_memory_context));
 //    testFlashMemory(&(p_context->flash_memory_context));
+//    testLogger(&(p_context->flash_memory_context));
     
     init_twi_slaves(p_context);
+//    test_twi_slaves(p_context);
 }
 

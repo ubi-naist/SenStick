@@ -20,4 +20,7 @@ void getNineAxesData(nine_axes_sensor_context_t *p_context, MotionSensorData_t *
 void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context);
 void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context);
 
+void setNineAxesSensorAccelerationRange(nine_axes_sensor_context_t *p_context, AccelerationRange_t range);
+void setNineAxesSensorRotationRange(nine_axes_sensor_context_t *p_context, RotationRange_t range);
+
 #endif /* twi_slave_nine_axes_sensor_h */

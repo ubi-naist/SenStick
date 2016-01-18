@@ -18,4 +18,6 @@ void initHumiditySensor(humidity_sensor_context_t *p_context, nrf_drv_twi_t *p_t
 // 相対湿度計測 12-bit精度 typ 22ミリ秒 max 30ミリ秒
 // 温度計測 14-bit精度 typ 66ミリ秒 max 85ミリ秒
 void getHumidityData(humidity_sensor_context_t *p_context, HumidityData_t *p_data);
+
+
 #endif /* twi_slave_humidity_sensor_h */

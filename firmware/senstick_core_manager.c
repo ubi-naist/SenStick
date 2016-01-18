@@ -236,21 +236,41 @@ static void test_twi_slaves(senstick_core_t *p_context)
 /**
  * Public関数
  */
-void init_senstick_core_manager(senstick_core_t *p_context)
+void initSenstickCoreManager(senstick_core_t *p_context)
 {
     memset(p_context, 0, sizeof(senstick_core_t));
     
+    // デフォルト値を設定
+    p_context->sensorSetting.accelerationRange = ACCELERATION_RANGE_2G;
+    p_context->sensorSetting.rotationRange      = ROTATION_RANGE_250DPS;
+    p_context->sensorSetting.nineAxesSensorSamplingRate     = SAMPLING_RATE_10_Hz;
+    p_context->sensorSetting.humiditySensorSamplingRate     = SAMPLING_RATE_0_1_Hz;
+    p_context->sensorSetting.pressureSensorSamplingRate     = SAMPLING_RATE_10_Hz;
+    p_context->sensorSetting.illuminationSensorSamplingRate = SAMPLING_RATE_1_Hz;
+    
+    // 周辺回路を初期化
     init_gpio();
     init_adc();
-    
     // 周辺デバイスの起動待ち時間。MPU-9250最大100ミリ秒
     nrf_delay_ms(100);
     
     init_spi_slaves(p_context);
 //    testFlashMemory(&(p_context->flash_memory_context));
 //    testLogger(&(p_context->flash_memory_context));
-    
     init_twi_slaves(p_context);
 //    test_twi_slaves(p_context);
+
+    // センサーを設定
+    setSensorSetting(p_context, &(p_context->sensorSetting));
+}
+
+void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setting)
+{
+    // 設定情報をコピー
+    p_context->sensorSetting = *p_setting;
+
+    // レンジを設定    
+    setNineAxesSensorAccelerationRange(&(p_context->nine_axes_sensor_context), p_setting->accelerationRange);
+    setNineAxesSensorRotationRange(&(p_context->nine_axes_sensor_context), p_setting->rotationRange);
 }
 

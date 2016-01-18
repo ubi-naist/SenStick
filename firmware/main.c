@@ -40,7 +40,7 @@
  */
 
 static ble_activity_service_t activity_service_context;
-static senstick_core_t manager_context;
+static senstick_core_t senstick_core_context;
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
 static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
@@ -152,7 +152,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
     dm_ble_evt_handler(p_ble_evt);
     
-    ble_activity_service_on_ble_event(&activity_service_context, p_ble_evt);
+    bleActivityServiceOnBLEEvent(&activity_service_context, p_ble_evt);
     
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
@@ -395,9 +395,60 @@ void startAdvertising(void)
 /**
  * サービスの処理
  */
-void on_activity_service_event(ble_activity_service_t * p_context, const ble_activity_service_event_t * p_event)
+// Byte
+// 0    Reserved
+// 1    Acceleration sensor config, range.
+//          0x00: 2G (default)
+//          0x01: 4G
+//          0x02: 8G
+//          0x03: 16G
+// 2    Cyro sensor config, range.
+//          0x00 250  dps (default)
+//          0x01 500  dps
+//          0x02 1000 dps
+//          0x03 2000 dps
+// 3    Nine axes sensor sampling rate.
+//          0x00    0.1 sample/sec
+//          0x01    1   sample/sec
+//          0x03    10  sample/sec (default)
+// 4    THA sensor sampling rage.
+//          0x00    0.1 sample/sec (default)
+//          0x01    1   sample/sec
+//          0x03    10  sample/sec
+// 5    HPA sensor sampling rage.
+//          0x00    0.1 sample/sec
+//          0x01    1   sample/sec
+//          0x03    10  sample/sec  (default)
+// 6    Illumination sensor sampling rage.
+//          0x00    0.1 sample/sec
+//          0x01    1   sample/sec (default)
+//          0x03    10  sample/sec
+
+// 設定及びコントロールのキャラクタリスティクスに書き込まれた設定情報を解釈します
+void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activity_service_event_t * p_event)
 {
-    
+
+    switch( p_event->event_type ) {
+        case BLE_ACTIVITY_SERVICE_SETTING_WRITTEN:
+        {
+            sensorSetting_t sensor_setting;
+            bool result;
+            if( p_event->data_length == 7) {
+                result = deserializeSensorSetting(&sensor_setting, p_event->p_data);
+                if(result) {
+                    setSensorSetting(&senstick_core_context, &sensor_setting);
+                }
+            }
+        }
+            break;
+        case BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN:
+            break;
+        default: break;
+    }
+/*
+    event.p_data      = buffer;
+    event.data_length = gatts_value.len;
+*/
 }
 
 /**
@@ -427,13 +478,13 @@ int main(void)
     device_manager_init(true);
     
     // サービス初期化
-    ble_activity_service_init_t activity_service_init;
-    activity_service_init.event_handler = on_activity_service_event;
-    err_code = ble_activity_service_init(&activity_service_context, &activity_service_init);
+    bleActivityServiceInit_t activity_service_init;
+    activity_service_init.event_handler = onActivityServiceEvent;
+    err_code = bleActivityServiceInit(&activity_service_context, &activity_service_init);
     APP_ERROR_CHECK(err_code);
     
     // コアの初期化
-    init_senstick_core_manager(&(manager_context));
+    initSenstickCoreManager(&(senstick_core_context));
     
     // アドバタイジングを開始する。
     initAdvertisingManager(&(activity_service_context.service_uuid));

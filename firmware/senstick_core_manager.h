@@ -13,7 +13,7 @@
 #include "senstick_logger.h"
 
 // 構造体の宣言
-typedef struct {
+typedef struct senstick_core_s {
     nrf_drv_twi_t twi;
     nrf_drv_spi_t spi;
     
@@ -25,12 +25,17 @@ typedef struct {
     
     flash_memory_context_t      flash_memory_context;
     senstick_logger_t           logger_context;
+
+    sensorSetting_t sensorSetting;
 } senstick_core_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。
 // 例えば、センサーからデータを読みだして、フラッシュメモリに書き出す一連のシーケンスのように、周辺IOを束ねた逐次動作を提供します。
 
-void init_senstick_core_manager(senstick_core_t *p_context);
+void initSenstickCoreManager(senstick_core_t *p_context);
+
+// サンプリングレートの設定
+void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setting);
 
 // LEDの点灯/消灯
 // TWIバスのリセット(電源落として、再起動)

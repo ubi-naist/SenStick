@@ -80,7 +80,7 @@ static uint32_t readSize(senstick_logger_t *p_context)
 /**
  * Public methods
  */
-void logger_open(senstick_logger_t *p_context, flash_memory_context_t *p_memory, bool is_writing_mode)
+void loggerOpen(senstick_logger_t *p_context, flash_memory_context_t *p_memory, bool is_writing_mode)
 {
     memset(p_context, 0, sizeof(senstick_logger_t));
 
@@ -97,7 +97,7 @@ void logger_open(senstick_logger_t *p_context, flash_memory_context_t *p_memory,
 }
 
 // ロガーを閉じます。ロギングを完了するために、このメソッドを最後に必ず呼び出すこと。
-void logger_close(senstick_logger_t *p_context)
+void loggerClose(senstick_logger_t *p_context)
 {
     if(p_context->is_writing_mode) {
         writeSize(p_context);
@@ -135,7 +135,7 @@ uint32_t logger_write(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t 
 }
 
 // p_bufferからsizeバイトを読み込みます。読み込んだサイズを返します。
-uint32_t logger_read(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t size)
+uint32_t loggerRead(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t size)
 {
     if(size == 0) {
         return 0;
@@ -162,13 +162,13 @@ uint32_t logger_read(senstick_logger_t *p_context, uint8_t *p_buffer, uint32_t s
 }
 
 // 先頭からの位置を返します。
-uint32_t logger_size(senstick_logger_t *p_context)
+uint32_t loggerSize(senstick_logger_t *p_context)
 {
     return p_context->size;
 }
 
 // 先頭からpositonバイトに移動します。まだ書き込みをしていない領域を超えてpositionを指定した場合、その飛び越えた領域の値は不定値になります。
-uint32_t logger_seek(senstick_logger_t *p_context, uint32_t position)
+uint32_t loggerSeek(senstick_logger_t *p_context, uint32_t position)
 {
     uint32_t pos = MIN(p_context->size, position);
     
@@ -185,7 +185,7 @@ void testLogger(flash_memory_context_t *p_context)
     uint8_t rd_buffer[11];
 
     // ロガーを開きます。
-    logger_open(&logger_context, p_context, true);
+    loggerOpen(&logger_context, p_context, true);
     
     // 逐次書き込み
     //    const uint32_t max_address = MX25L25635F_FLASH_SIZE;
@@ -202,16 +202,16 @@ void testLogger(flash_memory_context_t *p_context)
         // 書き込み
         logger_write(&logger_context, data, sizeof(data));
     }
-    logger_close(&logger_context);
+    loggerClose(&logger_context);
 
     // ロガーを開きます。
-    logger_open(&logger_context, p_context, false);
+    loggerOpen(&logger_context, p_context, false);
 
     // 読み込み、比較
 //    srand(1);
     rand = 0;
     for(uint32_t address = 0x00000000; address < max_address; address += sizeof(data)) {
-        logger_read(&logger_context, rd_buffer, sizeof(rd_buffer));
+        loggerRead(&logger_context, rd_buffer, sizeof(rd_buffer));
         for(int i=0; i < sizeof(data); i++) {
 //            if( rd_buffer[i] != (uint8_t)rand() ) {
             if( rd_buffer[i] != (rand++ % 256) ) {
@@ -219,6 +219,6 @@ void testLogger(flash_memory_context_t *p_context)
             }
         }
     }
-    logger_close(&logger_context);
+    loggerClose(&logger_context);
     
 }

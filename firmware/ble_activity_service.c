@@ -190,7 +190,7 @@ static void add_characteristics(ble_activity_service_t *p_context)
  * Public methods
  */
 
-uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_activity_service_init_t *p_init)
+uint32_t bleActivityServiceInit(ble_activity_service_t *p_context, const bleActivityServiceInit_t *p_init)
 {
     if(p_context == NULL || p_init == NULL) {
         return NRF_ERROR_NULL;
@@ -224,7 +224,7 @@ uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_
     return NRF_SUCCESS;
 }
 
-void ble_activity_service_on_ble_event(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
+void bleActivityServiceOnBLEEvent(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt)
 {
     if( p_context == NULL || p_ble_evt == NULL) {
         return;

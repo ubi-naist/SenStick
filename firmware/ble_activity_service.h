@@ -37,7 +37,7 @@ typedef void (*ble_activity_service_event_handler_t) (ble_activity_service_t * p
 // アクティビティサービス初期化構造体。この構造体は初期化に必要なすべてのデータとオプションを含む。
 typedef struct {
     ble_activity_service_event_handler_t event_handler;
-} ble_activity_service_init_t;
+} bleActivityServiceInit_t;
 
 // アクティビティサービスのコンテキスト構造体。サービスの実行に必要な情報が含まれる。
 struct ble_activity_service_s {
@@ -64,11 +64,11 @@ struct ble_activity_service_s {
 
 // 初期化関数
 // このサービスを使う前に、必ずこの関数を呼び出すこと。
-uint32_t ble_activity_service_init(ble_activity_service_t *p_context, const ble_activity_service_init_t *p_init);
+uint32_t bleActivityServiceInit(ble_activity_service_t *p_context, const bleActivityServiceInit_t *p_init);
 
 // BLEイベント通知関数
 // BLEのイベントをこの関数に通知します。
-void ble_activity_service_on_ble_event(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt);
+void bleActivityServiceOnBLEEvent(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt);
 
 // やり取りのメソッドあれこれ
 

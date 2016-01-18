@@ -17,11 +17,13 @@
 // レジスタアドレスの列挙型
 typedef enum {
     // 加速度、ジャイロセンサー
-    PWR_MGMT_1 = 0x6b,
-    PWR_MGMT_2 = 0x6c,
-    ACCEL_XOUT_H = 0x3b,
-    GYRO_XOUT_H = 0x43,
-
+    GYRO_CONFIG     = 0x1b,
+    ACCEL_CONFIG    = 0x1c,
+    PWR_MGMT_1      = 0x6b,
+    PWR_MGMT_2      = 0x6c,
+    ACCEL_XOUT_H    = 0x3b,
+    GYRO_XOUT_H     = 0x43,
+    
     // 磁気センサー
     HXL   = 0x03,
     CNTL1 = 0x0a,
@@ -72,7 +74,7 @@ static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationR
     // GYRO_ZOUT_H
     // GYRO_ZOUT_L
     readFromMPU9250(p_context, GYRO_XOUT_H, buffer, sizeof(buffer));
-
+    
     p_rotaionRate->x = readUInt16AsBigEndian(&(buffer[0]));
     p_rotaionRate->y = readUInt16AsBigEndian(&(buffer[1]));
     p_rotaionRate->z = readUInt16AsBigEndian(&(buffer[2]));
@@ -215,3 +217,60 @@ void getNineAxesData(nine_axes_sensor_context_t *p_context, MotionSensorData_t *
     getMagneticFieldData(p_context, &(sensor_data->magneticField));
     
 }
+
+void setNineAxesSensorAccelerationRange(nine_axes_sensor_context_t *p_context, AccelerationRange_t range)
+{
+    //    Register 28 – Accelerometer Configuration
+    //    ACCEL_CONFIG    = 0x1c,
+    //
+    //    7     ax_st_en, X Accel self-test//
+    //    6     ay_st_en, Y Accel self-test
+    //    5     az_st_en, Z Accel self-test
+    //    [4:3] ACCEL_FS_SEL[1:0]
+    //              Accel Full Scale Select:
+    //              ±2g (00), ±4g (01), ±8g (10), ±16g (11)
+    //    [2:0]
+    
+    uint8_t value = 0;
+    
+    switch (range) {
+        case ACCELERATION_RANGE_2G: value = 0x00 << 3; break;
+        case ACCELERATION_RANGE_4G: value = 0x01 << 3; break;
+        case ACCELERATION_RANGE_8G: value = 0x02 << 3; break;
+        case ACCELERATION_RANGE_16G:value = 0x03 << 3; break;
+        default: break;
+    }
+    
+    uint8_t data[] = {value};
+    writeToMPU9250(p_context, ACCEL_CONFIG, data, sizeof(data));
+}
+
+void setNineAxesSensorRotationRange(nine_axes_sensor_context_t *p_context, RotationRange_t range)
+{
+//    Register 27 – Gyroscope Configuration
+//    GYRO_CONFIG     = 0x1b,
+//    7     XGYRO_Cten, X Gyro self-test
+//    6     YGYRO_Cten, Y Gyro self-test
+//    5     ZGYRO_Cten, Z Gyro self-test
+//    4:3   GYRO_FS_SEL[1:0]
+//              Gyro Full Scale Select:
+//              00 = +250dps
+//              01= +500 dps
+//              10 = +1000 dps
+//              11 = +2000 dps
+//    2         -, Reserved
+//    1:0       Fchoice_b[1:0], Used to bypass DLPF as shown in table 1 above. NOTE: Register is Fchoice_b (inverted version of Fchoice), table 1 uses Fchoice (which is the inverted version of this register).
+    uint8_t value = 0;
+    
+    switch (range) {
+        case ROTATION_RANGE_250DPS: value = 0x00 << 3; break;
+        case ROTATION_RANGE_500DPS: value = 0x01 << 3; break;
+        case ROTATION_RANGE_1000DPS: value = 0x02 << 3; break;
+        case ROTATION_RANGE_2000DPS: value = 0x03 << 3; break;
+        default: break;
+    }
+    
+    uint8_t data[] = {value};
+    writeToMPU9250(p_context, GYRO_CONFIG, data, sizeof(data));
+}
+

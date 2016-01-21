@@ -54,6 +54,30 @@ typedef uint16_t HumidityData_t;
 // 温度データ
 typedef uint16_t TemperatureData_t;
 
+// 温度と湿度データ
+typedef struct {
+    HumidityData_t humidity;
+    TemperatureData_t temperature;
+} TemperatureAndHumidityData_t;
+
+// センサデータの種別
+typedef enum  {
+    MotionSensor,
+    BrightnessSensor,
+    UltraVioletSensor,
+    TemperatureAndHumiditySensor,
+    AirPressureSensor,
+} SensorType_t;
+
+// コールバック関数のための統合センサーデータ型
+typedef union {
+    MotionSensorData_t  motionSensorData;
+    BrightnessData_t    brightnessData;
+    UltraVioletData_t   ultraVioletData;
+    AirPressureData_t   airPressureData;
+    TemperatureAndHumidityData_t temperatureAndHumidityData;
+} SensorData_t;
+
 /**
  * センサー設定データ
  */
@@ -131,6 +155,17 @@ void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting);
 // バイト配列をセンサー設定情報に展開します。不正な値があった場合は、処理は完了せず、falseを返します。 バイト配列は7バイトの領域が確保されていなければなりません。
 bool deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src );
 
+// モーションデータを18バイトのバイト配列に展開します
+void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data);
+
+// 輝度データを2バイトのバイト配列に展開します
+void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data);
+
+// 輝度データを4バイトのバイト配列に展開します
+void serializeTemperatureAndHumidityData(uint8_t *p_dst, const TemperatureAndHumidityData_t *p_data);
+
+// 圧力データを3バイトのバイト配列に展開します
+void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data);
 
 // デバッグ用ログ関数
 void debugLogAccerationData(const AccelerationData_t *data);

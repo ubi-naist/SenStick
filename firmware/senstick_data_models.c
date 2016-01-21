@@ -17,6 +17,19 @@ uint32_t readUInt32AsLittleEndian(uint8_t *ptr)
     return ((uint32_t)ptr[0] << 0) |  ((uint32_t)ptr[1] << 8) | ((uint32_t)ptr[2] << 16) | ((uint32_t)ptr[3] << 24);
 }
 
+static void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src)
+{
+    p_dst[0] = (uint8_t)(0x0ff & (src >> 8));
+    p_dst[1] = (uint8_t)(0x0ff & (src >> 0));
+}
+
+static void uint16ToByteArrayBigEndian(uint8_t *p_dst, uint16_t src)
+{
+    p_dst[0] = (uint8_t)(0x0ff & (src >> 8));
+    p_dst[1] = (uint8_t)(0x0ff & (src >> 0));
+}
+
+
 static void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src)
 {
     p_dst[0] = (uint8_t)(0x0ff & (src >> 24));
@@ -104,6 +117,55 @@ bool deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src )
     p_setting->illuminationSensorSamplingRate   = (SamplingRate_t)p_src[6];
     
     return true;
+}
+
+void serializeAccelerationData(uint8_t *p_dst, const AccelerationData_t *p_data)
+{
+    int16ToByteArrayBigEndian(&(p_dst[0]), p_data->x);
+    int16ToByteArrayBigEndian(&(p_dst[2]), p_data->y);
+    int16ToByteArrayBigEndian(&(p_dst[4]), p_data->z);
+}
+
+void serializeRotationRateData(uint8_t *p_dst, const RotationRateData_t *p_data)
+{
+    int16ToByteArrayBigEndian(&(p_dst[0]), p_data->x);
+    int16ToByteArrayBigEndian(&(p_dst[2]), p_data->y);
+    int16ToByteArrayBigEndian(&(p_dst[4]), p_data->z);
+}
+
+void serializeMagneticFieldData(uint8_t *p_dst, const MagneticFieldData_t *p_data)
+{
+    int16ToByteArrayBigEndian(&(p_dst[0]), p_data->x);
+    int16ToByteArrayBigEndian(&(p_dst[2]), p_data->y);
+    int16ToByteArrayBigEndian(&(p_dst[4]), p_data->z);
+}
+
+
+void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data)
+{
+    serializeAccelerationData(&(p_dst[0]),   &(p_data->acceleration));
+    serializeRotationRateData(&(p_dst[6]),   &(p_data->rotaionRate));
+    serializeMagneticFieldData(&(p_dst[12]), &(p_data->magneticField));
+}
+
+void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data)
+{
+    uint16ToByteArrayBigEndian(p_dst, *p_data);
+}
+
+void serializeTemperatureAndHumidityData(uint8_t *p_dst, const TemperatureAndHumidityData_t *p_data)
+{
+    uint16ToByteArrayBigEndian(&(p_dst[0]), p_data->temperature);
+    uint16ToByteArrayBigEndian(&(p_dst[2]), p_data->humidity);
+}
+
+void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data)
+{
+    uint32_t src = *p_data;
+    
+    p_dst[0] = (uint8_t)(0x0ff & (src >> 16));
+    p_dst[1] = (uint8_t)(0x0ff & (src >> 8));
+    p_dst[2] = (uint8_t)(0x0ff & (src >> 0));
 }
 
 void debugLogAccerationData(const AccelerationData_t *data)

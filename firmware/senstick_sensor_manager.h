@@ -1,8 +1,10 @@
-#ifndef senstick_core_manager_h
-#define senstick_core_manager_h
+#ifndef senstick_sensor_manager_h
+#define senstick_sensor_manager_h
 
 #include "nrf_drv_twi.h"
 #include "nrf_drv_spi.h"
+
+#include "app_timer.h"
 
 #include "twi_slave_nine_axes_sensor.h"
 #include "twi_slave_pressure_sensor.h"
@@ -12,8 +14,18 @@
 #include "spi_slave_mx25_flash_memory.h"
 #include "senstick_logger.h"
 
-// 構造体の宣言
+// センサデータの更新コールバック
+typedef void (*sampling_callback_handler_t) (SensorType_t sensorType, const SensorData_t *p_sensorData);
+
+// コンテキストの構造体宣言
 typedef struct senstick_core_s {
+    bool is_sampling;
+    int  sampling_count;
+
+    app_timer_t timer_id_data;
+    app_timer_id_t timer_id;
+//    APP_TIMER_DEF(timer_id);
+    
     nrf_drv_twi_t twi;
     nrf_drv_spi_t spi;
     
@@ -26,20 +38,27 @@ typedef struct senstick_core_s {
     flash_memory_context_t      flash_memory_context;
     senstick_logger_t           logger_context;
 
-    sensorSetting_t sensorSetting;
+    sensorSetting_t             sensorSetting;
+
+    sampling_callback_handler_t sampling_callback_handler;
+    
 } senstick_core_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。
 // 例えば、センサーからデータを読みだして、フラッシュメモリに書き出す一連のシーケンスのように、周辺IOを束ねた逐次動作を提供します。
 
-void initSenstickCoreManager(senstick_core_t *p_context);
+void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handler_t samplingCallback);
 
 // サンプリングレートの設定
 void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setting);
 
-// LEDの点灯/消灯
-// TWIバスのリセット(電源落として、再起動)
-// バッテリー電圧の取得
+// サンプリング中?
+bool isSampling(senstick_core_t *p_context);
 
+// サンプリングの開始
+void startSampling(senstick_core_t *p_context);
 
-#endif /* senstick_core_manager_h */
+// サンプリングの停止
+void stopSampling(senstick_core_t *p_context);
+
+#endif /* senstick_sensor_manager_h */

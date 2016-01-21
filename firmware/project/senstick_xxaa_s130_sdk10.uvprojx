@@ -422,11 +422,6 @@
               <FilePath>..\main.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_core_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\senstick_core_manager.c</FilePath>
-            </File>
-            <File>
               <FileName>senstick_data_models.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_data_models.c</FilePath>
@@ -440,6 +435,11 @@
               <FileName>senstick_logger.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_logger.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -975,11 +975,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\main.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_core_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\senstick_core_manager.c</FilePath>
-            </File>
-            <File>
               <FileName>senstick_data_models.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_data_models.c</FilePath>
@@ -993,6 +988,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>senstick_logger.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_logger.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_manager.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1526,11 +1526,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\main.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_core_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\senstick_core_manager.c</FilePath>
-            </File>
-            <File>
               <FileName>senstick_data_models.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_data_models.c</FilePath>
@@ -1544,6 +1539,11 @@ rf51xxx.flm))</FlashDriverDll>
               <FileName>senstick_logger.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_logger.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_manager.c</FilePath>
             </File>
           </Files>
         </Group>

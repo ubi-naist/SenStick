@@ -109,3 +109,12 @@ void getHumidityData(humidity_sensor_context_t *p_context, HumidityData_t *p_dat
 //    *p_data = (uint16_t)(buffer[1] & 0x3f) << 8 | (uint16_t)buffer[0];
      */
 }
+
+void getTemperatureData(humidity_sensor_context_t *p_context, TemperatureData_t *p_data)
+{
+    uint8_t buffer[3];
+    readFromSHT20(p_context, TriggerTempMeasurementHoldMaster, buffer, 3);
+    
+    // データをデコードする
+    *p_data = ((uint16_t)buffer[0] << 8) | ((uint16_t)buffer[0] & 0xfc);
+}

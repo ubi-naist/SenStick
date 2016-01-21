@@ -6,6 +6,8 @@
 #include "ble.h"
 #include "ble_srv_common.h"
 
+#include "senstick_data_models.h"
+
 // SenstickのGATTサービスを提供します。
 
 // キャラクタリスティクスのデータ長
@@ -70,6 +72,7 @@ uint32_t bleActivityServiceInit(ble_activity_service_t *p_context, const bleActi
 // BLEのイベントをこの関数に通知します。
 void bleActivityServiceOnBLEEvent(ble_activity_service_t *p_context, ble_evt_t * p_ble_evt);
 
-// やり取りのメソッドあれこれ
+// 通知メソッド
+void notifySensorData(ble_activity_service_t *p_context, SensorType_t sensorType, const SensorData_t *p_sensorData);
 
 #endif /* ble_activity_service_h */

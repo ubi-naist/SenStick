@@ -22,7 +22,7 @@
 
 #include "senstick_device_definitions.h"
 #include "senstick_definitions.h"
-#include "senstick_core_manager.h"
+#include "senstick_sensor_manager.h"
 
 #include "ble_activity_service.h"
 
@@ -395,60 +395,52 @@ void startAdvertising(void)
 /**
  * サービスの処理
  */
-// Byte
-// 0    Reserved
-// 1    Acceleration sensor config, range.
-//          0x00: 2G (default)
-//          0x01: 4G
-//          0x02: 8G
-//          0x03: 16G
-// 2    Cyro sensor config, range.
-//          0x00 250  dps (default)
-//          0x01 500  dps
-//          0x02 1000 dps
-//          0x03 2000 dps
-// 3    Nine axes sensor sampling rate.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec
-//          0x03    10  sample/sec (default)
-// 4    THA sensor sampling rage.
-//          0x00    0.1 sample/sec (default)
-//          0x01    1   sample/sec
-//          0x03    10  sample/sec
-// 5    HPA sensor sampling rage.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec
-//          0x03    10  sample/sec  (default)
-// 6    Illumination sensor sampling rage.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec (default)
-//          0x03    10  sample/sec
 
 // 設定及びコントロールのキャラクタリスティクスに書き込まれた設定情報を解釈します
+// FIXME データの内容の解釈処理は、サービスの処理として実装すべきかも。
 void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activity_service_event_t * p_event)
 {
-
+    sensorSetting_t sensor_setting;
+    bool result;
+    
     switch( p_event->event_type ) {
         case BLE_ACTIVITY_SERVICE_SETTING_WRITTEN:
-        {
-            sensorSetting_t sensor_setting;
-            bool result;
+            NRF_LOG_PRINTF_DEBUG("BLE_ACTIVITY_SERVICE_SETTING_WRITTEN.\n");
             if( p_event->data_length == 7) {
                 result = deserializeSensorSetting(&sensor_setting, p_event->p_data);
                 if(result) {
                     setSensorSetting(&senstick_core_context, &sensor_setting);
                 }
             }
-        }
             break;
+            
         case BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN:
+            NRF_LOG_PRINTF_DEBUG("BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN, length:%d, data[0]:0x%02x.\n", p_event->data_length, (p_event->p_data)[0]);
+            if(p_event->data_length == 1) {
+                switch ((p_event->p_data)[0]) {
+                    case 0x01: // start flash
+                    case 0x02: // start ble
+                        startSampling(&senstick_core_context);
+                        break;
+                    case 0x31: // stop flash
+                    case 0x32: // stop ble
+                        stopSampling(&senstick_core_context);
+                        break;
+                    case 0x10: // dfu
+                        break;
+                    default:
+                        break;
+                }
+            }
             break;
         default: break;
     }
-/*
-    event.p_data      = buffer;
-    event.data_length = gatts_value.len;
-*/
+}
+
+// 設定したサンプリング周期ごとに、センサーデータが渡されるコールバック関数
+static void onSamplingCallbackHandler(SensorType_t sensorType, const SensorData_t *p_sensorData)
+{
+    notifySensorData(&activity_service_context, sensorType, p_sensorData);
 }
 
 /**
@@ -484,7 +476,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
     
     // コアの初期化
-    initSenstickCoreManager(&(senstick_core_context));
+    initSenstickCoreManager(&(senstick_core_context), onSamplingCallbackHandler);
     
     // アドバタイジングを開始する。
     initAdvertisingManager(&(activity_service_context.service_uuid));

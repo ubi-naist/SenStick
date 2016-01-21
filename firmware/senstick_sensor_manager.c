@@ -13,7 +13,8 @@
 #include "app_util_platform.h"
 #include "app_error.h"
 
-#include "senstick_core_manager.h"
+#include "senstick_definitions.h"
+#include "senstick_sensor_manager.h"
 #include "senstick_io_definitions.h"
 #include "senstick_data_models.h"
 
@@ -233,12 +234,78 @@ static void test_twi_slaves(senstick_core_t *p_context)
         nrf_delay_ms(500);
     }
 }
+
+// サンプリングレートで、通知すべきか否かを判定します
+static bool  should_report(int count, SamplingRate_t sampling_rage)
+{
+    switch (sampling_rage) {
+        case SAMPLING_RATE_0_1_Hz:  return ((count % 100) == 0);
+        case SAMPLING_RATE_1_Hz:    return ((count % 10 ) == 0);
+        case SAMPLING_RATE_10_Hz:   return true;
+        default: break;
+    }
+    return false;
+}
+
+static void sensor_timer_handler(void *p_arg)
+{
+    senstick_core_t *p_context = (senstick_core_t *)p_arg;
+    
+    SensorData_t sensor_data;
+    
+    // 加速度センサー
+    if( should_report(p_context->sampling_count, p_context->sensorSetting.nineAxesSensorSamplingRate)) {
+        getNineAxesData(&(p_context->nine_axes_sensor_context), &(sensor_data.motionSensorData));
+        (p_context->sampling_callback_handler)(MotionSensor, &sensor_data);
+    }
+    
+    // 温度と湿度
+    if( should_report(p_context->sampling_count, p_context->sensorSetting.humiditySensorSamplingRate)) {
+        getHumidityData(&(p_context->humidity_sensor_context), &(sensor_data.temperatureAndHumidityData.humidity));
+        getTemperatureData(&(p_context->humidity_sensor_context), &(sensor_data.temperatureAndHumidityData.temperature));
+        (p_context->sampling_callback_handler)(TemperatureAndHumiditySensor, &sensor_data);
+    }
+    
+    // 圧力
+    if( should_report(p_context->sampling_count, p_context->sensorSetting.pressureSensorSamplingRate)) {
+        getPressureData(&(p_context->pressure_sensor_context), &(sensor_data.airPressureData));
+        (p_context->sampling_callback_handler)(AirPressureSensor, &sensor_data);
+    }
+
+    // 照度
+    if( should_report(p_context->sampling_count, p_context->sensorSetting.illuminationSensorSamplingRate)) {
+        getBrightnessData(&(p_context->brightness_sensor_context), &(sensor_data.brightnessData));
+        (p_context->sampling_callback_handler)(AirPressureSensor, &sensor_data);
+    }
+
+    // 桁あふれしないように、丸めておきます
+    p_context->sampling_count ++;
+    p_context->sampling_count %= 10000;
+}
+
 /**
  * Public関数
  */
-void initSenstickCoreManager(senstick_core_t *p_context)
+void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handler_t samplingCallback)
 {
+    uint32_t err_code;
+    
+    // パラメータチェック
+    if(samplingCallback == NULL) {
+        APP_ERROR_CHECK(NRF_ERROR_INVALID_PARAM);
+    }
+    
+    // コンテキストの初期値設定
     memset(p_context, 0, sizeof(senstick_core_t));
+
+    p_context->sampling_callback_handler = samplingCallback;
+    
+
+    // SDK10では、SDK8と異なり、タイマー管理のデータ領域の型とID型が分離されたため、ここでID型(データ領域へのポインタ)にポインタを代入する。
+    // 構造体のメンバ変数定義では、APP_TIMER_DEFマクロが使えないため、手動でこのコードを書く必要がある。
+    p_context->timer_id = &(p_context->timer_id_data);
+    err_code = app_timer_create(&(p_context->timer_id), APP_TIMER_MODE_REPEATED, sensor_timer_handler);
+    APP_ERROR_CHECK(err_code);
     
     // デフォルト値を設定
     p_context->sensorSetting.accelerationRange = ACCELERATION_RANGE_2G;
@@ -260,7 +327,7 @@ void initSenstickCoreManager(senstick_core_t *p_context)
     init_twi_slaves(p_context);
 //    test_twi_slaves(p_context);
 
-    // センサーを設定
+    // センサー設定
     setSensorSetting(p_context, &(p_context->sensorSetting));
 }
 
@@ -268,9 +335,45 @@ void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setti
 {
     // 設定情報をコピー
     p_context->sensorSetting = *p_setting;
-
-    // レンジを設定    
+    
+    // レンジを設定
     setNineAxesSensorAccelerationRange(&(p_context->nine_axes_sensor_context), p_setting->accelerationRange);
     setNineAxesSensorRotationRange(&(p_context->nine_axes_sensor_context), p_setting->rotationRange);
+}
+
+// サンプリング中?
+bool isSampling(senstick_core_t *p_context)
+{
+    return p_context->is_sampling;
+}
+
+void startSampling(senstick_core_t *p_context)
+{
+    if( p_context->is_sampling) {
+        return;
+    }
+
+    p_context->sampling_count = 0;
+    p_context->is_sampling    = true;
+    
+    // タイマーを開始
+    uint32_t err_code = app_timer_start(p_context->timer_id,
+                                        APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), // 100ミリ秒
+                                        p_context);
+    APP_ERROR_CHECK(err_code);
+    
+    NRF_LOG_PRINTF_DEBUG("sensor_manager: startSampling.\n");
+}
+
+void stopSampling(senstick_core_t *p_context)
+{
+    if( ! p_context->is_sampling) {
+        return;
+    }
+    
+    app_timer_stop(p_context->timer_id);
+    p_context->is_sampling = false;
+    
+    NRF_LOG_PRINTF_DEBUG("sensor_manager: stopSampling.\n");    
 }
 

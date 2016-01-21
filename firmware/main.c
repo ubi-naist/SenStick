@@ -13,6 +13,8 @@
 #include "ble_hci.h"
 #include "ble_parameters_config.h"
 
+#include "ble_dis.h"
+
 #include "device_manager.h"
 
 #include "app_timer_appsh.h"
@@ -216,6 +218,28 @@ static void device_manager_init(bool erase_bonds)
     register_param.service_type           = DM_PROTOCOL_CNTXT_GATT_SRVR_ID;
     
     err_code = dm_register(&m_app_handle, &register_param);
+    APP_ERROR_CHECK(err_code);
+}
+
+// デバイスインフォアメーションサービスを初期化
+void initDeviceInformationService(void)
+{
+    uint32_t err_code;
+    ble_dis_init_t dis_init_obj;
+    
+    memset(&dis_init_obj, 0, sizeof(dis_init_obj));
+    
+    // 文字列を設定
+    ble_srv_ascii_to_utf8(&dis_init_obj.manufact_name_str, MANUFACTURER_NAME);
+    ble_srv_ascii_to_utf8(&dis_init_obj.hw_rev_str, HARDWARE_REVISION_STRING);
+    ble_srv_ascii_to_utf8(&dis_init_obj.fw_rev_str, FIRMWARE_REVISION_STRING);
+    
+    // 属性設定
+//    BLE_GAP_CONN_SEC_MODE_SET_ENC_NO_MITM(&dis_init_obj.dis_attr_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&dis_init_obj.dis_attr_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&dis_init_obj.dis_attr_md.write_perm);
+    
+    err_code = ble_dis_init(&dis_init_obj);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -468,6 +492,9 @@ int main(void)
     
     // デバイスマネージャを有効化    
     device_manager_init(true);
+    
+    // デバイスインフォアメーションサービスを追加
+    initDeviceInformationService();
     
     // サービス初期化
     bleActivityServiceInit_t activity_service_init;

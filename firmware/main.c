@@ -14,6 +14,7 @@
 #include "ble_parameters_config.h"
 
 #include "ble_dis.h"
+#include "ble_bas.h"
 
 #include "device_manager.h"
 
@@ -40,9 +41,11 @@
 /**
  * static変数
  */
+static ble_bas_t m_bas;
+APP_TIMER_DEF(main_app_timer_id);
 
 static ble_activity_service_t activity_service_context;
-static senstick_core_t senstick_core_context;
+static senstick_sensor_manager_t sensor_manager_context;
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
 static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
@@ -63,7 +66,7 @@ static void sys_evt_dispatch(uint32_t sys_evt)
 
 static void on_ble_evt(ble_evt_t * p_ble_evt)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
     
     switch (p_ble_evt->header.evt_id)
     {
@@ -154,6 +157,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
     dm_ble_evt_handler(p_ble_evt);
     
+    ble_bas_on_ble_evt(&m_bas, p_ble_evt);
     bleActivityServiceOnBLEEvent(&activity_service_context, p_ble_evt);
     
     on_ble_evt(p_ble_evt);
@@ -199,7 +203,7 @@ static uint32_t device_manager_evt_handler(dm_handle_t const * p_handle, dm_even
 // このメソッドを呼び出す前にpstorageの初期化が完了していること。
 static void device_manager_init(bool erase_bonds)
 {
-    uint32_t               err_code;
+    ret_code_t             err_code;
     dm_init_param_t        init_param = {.clear_persistent_data = erase_bonds};
     dm_application_param_t register_param;
     
@@ -224,7 +228,7 @@ static void device_manager_init(bool erase_bonds)
 // デバイスインフォアメーションサービスを初期化
 void initDeviceInformationService(void)
 {
-    uint32_t err_code;
+    ret_code_t err_code;
     ble_dis_init_t dis_init_obj;
     
     memset(&dis_init_obj, 0, sizeof(dis_init_obj));
@@ -240,6 +244,29 @@ void initDeviceInformationService(void)
     BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&dis_init_obj.dis_attr_md.write_perm);
     
     err_code = ble_dis_init(&dis_init_obj);
+    APP_ERROR_CHECK(err_code);
+}
+
+// バッテリサービスを初期化
+void initBatteryService(void)
+{
+    ret_code_t err_code;
+    ble_bas_init_t bas_init;
+    
+    memset(&(bas_init), 0, sizeof(bas_init));
+    
+    // Here the sec level for the Battery Service can be changed/increased.
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&bas_init.battery_level_char_attr_md.cccd_write_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&bas_init.battery_level_char_attr_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&bas_init.battery_level_char_attr_md.write_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&bas_init.battery_level_report_read_perm);
+    
+    bas_init.evt_handler          = NULL;
+    bas_init.support_notification = true;
+    bas_init.p_report_ref         = NULL;
+    bas_init.initial_batt_level   = getBatteryLevel(&sensor_manager_context);
+    
+    err_code = ble_bas_init(&m_bas, &bas_init);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -433,7 +460,7 @@ void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activi
             if( p_event->data_length == 7) {
                 result = deserializeSensorSetting(&sensor_setting, p_event->p_data);
                 if(result) {
-                    setSensorSetting(&senstick_core_context, &sensor_setting);
+                    setSensorSetting(&sensor_manager_context, &sensor_setting);
                 }
             }
             break;
@@ -444,11 +471,11 @@ void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activi
                 switch ((p_event->p_data)[0]) {
                     case 0x01: // start flash
                     case 0x02: // start ble
-                        startSampling(&senstick_core_context);
+                        startSampling(&sensor_manager_context);
                         break;
                     case 0x31: // stop flash
                     case 0x32: // stop ble
-                        stopSampling(&senstick_core_context);
+                        stopSampling(&sensor_manager_context);
                         break;
                     case 0x10: // dfu
                         break;
@@ -465,6 +492,18 @@ void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activi
 static void onSamplingCallbackHandler(SensorType_t sensorType, const SensorData_t *p_sensorData)
 {
     notifySensorData(&activity_service_context, sensorType, p_sensorData);
+}
+
+static void main_app_timer_handler(void *p_arg)
+{
+    ret_code_t err_code;
+    
+    // 30秒毎に呼び出されるタイマー
+    
+    // バッテリー監視
+    uint8_t battery_level = getBatteryLevel(&sensor_manager_context);
+    err_code = ble_bas_battery_level_update(&m_bas,battery_level);
+    APP_ERROR_CHECK(err_code);
 }
 
 /**
@@ -486,28 +525,39 @@ int main(void)
     err_code = pstorage_init();
     APP_ERROR_CHECK(err_code);
     
-    // スタックの初期化。
+    // スタックの初期化。GAPパラメータを設定
     ble_stack_init();
     gap_params_init();
     
-    // デバイスマネージャを有効化    
+    // BLEデバイスマネージャを初期化
     device_manager_init(true);
+    
+    // センサマネージャーの初期化
+    initSenstickCoreManager(&(sensor_manager_context), onSamplingCallbackHandler);
     
     // デバイスインフォアメーションサービスを追加
     initDeviceInformationService();
+
+    // バッテリーサービスを追加
+    initBatteryService();
     
-    // サービス初期化
+    // センサーサービスを追加
     bleActivityServiceInit_t activity_service_init;
     activity_service_init.event_handler = onActivityServiceEvent;
     err_code = bleActivityServiceInit(&activity_service_context, &activity_service_init);
     APP_ERROR_CHECK(err_code);
     
-    // コアの初期化
-    initSenstickCoreManager(&(senstick_core_context), onSamplingCallbackHandler);
-    
     // アドバタイジングを開始する。
     initAdvertisingManager(&(activity_service_context.service_uuid));
     startAdvertising();
+    
+    // アプリのタイマーを開始する。
+    err_code = app_timer_create(&main_app_timer_id, APP_TIMER_MODE_REPEATED, main_app_timer_handler );
+    APP_ERROR_CHECK(err_code);
+    err_code = app_timer_start(main_app_timer_id,
+                               APP_TIMER_TICKS(30 * 1000, APP_TIMER_PRESCALER), // 30秒
+                               NULL);
+    APP_ERROR_CHECK(err_code);
     
     for (;;) {
         // BLEのイベント待ち

@@ -101,25 +101,6 @@ static void init_gpio(void)
     // P0.27    In      32kHzクロックが供給される
 }
 
-static uint16_t getAdcValue(void)
-{
-    uint16_t value;
-    
-    // Read ADC Battery Level
-    NRF_ADC->ENABLE         = ADC_ENABLE_ENABLE_Enabled;
-    NRF_ADC->EVENTS_END     = 0;    // Stop any running conversions.
-    NRF_ADC->TASKS_START    = 1;
-    
-    while(NRF_ADC->EVENTS_END == 0); // 変換完了待ち
-    
-    NRF_ADC->EVENTS_END     = 0;
-    value                   = NRF_ADC->RESULT;
-    NRF_ADC->TASKS_STOP     = 1;
-    NRF_ADC->ENABLE         = ADC_ENABLE_ENABLE_Disabled;
-    
-    return value;
-}
-
 // ADC初期化関数
 static void init_adc(void)
 {
@@ -131,7 +112,7 @@ static void init_adc(void)
     nrf_adc_input_select(ADC_INPUT_SUPPLY_MONITORING);
 }
 
-static void init_spi_slaves(senstick_core_t *p_context)
+static void init_spi_slaves(senstick_sensor_manager_t *p_context)
 {
     ret_code_t err_code;
     // SPIインタフェース SPI0を使用。
@@ -182,7 +163,7 @@ static void init_spi_slaves(senstick_core_t *p_context)
     initFlashMemory(&(p_context->flash_memory_context), &(p_context->spi));
 }
 
-static void init_twi_slaves(senstick_core_t *p_context)
+static void init_twi_slaves(senstick_sensor_manager_t *p_context)
 {
     ret_code_t err_code;
     
@@ -206,7 +187,7 @@ static void init_twi_slaves(senstick_core_t *p_context)
     nrf_delay_ms(100);
 }
 
-static void test_twi_slaves(senstick_core_t *p_context)
+static void test_twi_slaves(senstick_sensor_manager_t *p_context)
 {
     // 値取得、デバッグ
     while(1) {
@@ -249,7 +230,7 @@ static bool  should_report(int count, SamplingRate_t sampling_rage)
 
 static void sensor_timer_handler(void *p_arg)
 {
-    senstick_core_t *p_context = (senstick_core_t *)p_arg;
+    senstick_sensor_manager_t *p_context = (senstick_sensor_manager_t *)p_arg;
     
     SensorData_t sensor_data;
     
@@ -286,7 +267,7 @@ static void sensor_timer_handler(void *p_arg)
 /**
  * Public関数
  */
-void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handler_t samplingCallback)
+void initSenstickCoreManager(senstick_sensor_manager_t *p_context, sampling_callback_handler_t samplingCallback)
 {
     uint32_t err_code;
     
@@ -296,7 +277,7 @@ void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handl
     }
     
     // コンテキストの初期値設定
-    memset(p_context, 0, sizeof(senstick_core_t));
+    memset(p_context, 0, sizeof(senstick_sensor_manager_t));
 
     p_context->sampling_callback_handler = samplingCallback;
     
@@ -331,7 +312,7 @@ void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handl
     setSensorSetting(p_context, &(p_context->sensorSetting));
 }
 
-void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setting)
+void setSensorSetting(senstick_sensor_manager_t *p_context, const sensorSetting_t *p_setting)
 {
     // 設定情報をコピー
     p_context->sensorSetting = *p_setting;
@@ -342,12 +323,12 @@ void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setti
 }
 
 // サンプリング中?
-bool isSampling(senstick_core_t *p_context)
+bool isSampling(senstick_sensor_manager_t *p_context)
 {
     return p_context->is_sampling;
 }
 
-void startSampling(senstick_core_t *p_context)
+void startSampling(senstick_sensor_manager_t *p_context)
 {
     if( p_context->is_sampling) {
         return;
@@ -365,7 +346,7 @@ void startSampling(senstick_core_t *p_context)
     NRF_LOG_PRINTF_DEBUG("sensor_manager: startSampling.\n");
 }
 
-void stopSampling(senstick_core_t *p_context)
+void stopSampling(senstick_sensor_manager_t *p_context)
 {
     if( ! p_context->is_sampling) {
         return;
@@ -377,3 +358,22 @@ void stopSampling(senstick_core_t *p_context)
     NRF_LOG_PRINTF_DEBUG("sensor_manager: stopSampling.\n");    
 }
 
+uint8_t getBatteryLevel(senstick_sensor_manager_t *p_context)
+{
+    int32_t voltage;
+    int level;
+    
+    // 電圧を取得, 入力スケール 1/3, BGR 1.2Vがリファレンス、10ビット精度なので、2^10(1024)が3.6V相当。
+    voltage = nrf_adc_convert_single(ADC_INPUT_SUPPLY_MONITORING);
+    
+    // 4.2V - 3.2V 電圧範囲で、残量は電圧にリニアで換算
+    // 入力電圧は、input-470k/220k-gnd で抵抗分圧されている。
+    voltage *= 3; // 抵抗分圧分、元に戻す. 3.14だけど整数で。
+//    int level = (voltage - (int32_t)(3.2 / 3.6 * 1024)) / (int32_t) ((4.0 - 3.2)/3.6  * 1024);
+    level = (voltage - 910) * 100 / 228;
+    // 値域を100-0にする
+    level = MIN(level, 100);
+    level = MAX(level, 0);
+    
+    return (uint8_t)level;
+}

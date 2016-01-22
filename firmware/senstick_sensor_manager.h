@@ -18,7 +18,7 @@
 typedef void (*sampling_callback_handler_t) (SensorType_t sensorType, const SensorData_t *p_sensorData);
 
 // コンテキストの構造体宣言
-typedef struct senstick_core_s {
+typedef struct senstick_sensor_manager_s {
     bool is_sampling;
     int  sampling_count;
 
@@ -42,23 +42,27 @@ typedef struct senstick_core_s {
 
     sampling_callback_handler_t sampling_callback_handler;
     
-} senstick_core_t;
+} senstick_sensor_manager_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。
 // 例えば、センサーからデータを読みだして、フラッシュメモリに書き出す一連のシーケンスのように、周辺IOを束ねた逐次動作を提供します。
 
-void initSenstickCoreManager(senstick_core_t *p_context, sampling_callback_handler_t samplingCallback);
+void initSenstickCoreManager(senstick_sensor_manager_t *p_context, sampling_callback_handler_t samplingCallback);
 
 // サンプリングレートの設定
-void setSensorSetting(senstick_core_t *p_context, const sensorSetting_t *p_setting);
+void setSensorSetting(senstick_sensor_manager_t *p_context, const sensorSetting_t *p_setting);
 
 // サンプリング中?
-bool isSampling(senstick_core_t *p_context);
+bool isSampling(senstick_sensor_manager_t *p_context);
 
 // サンプリングの開始
-void startSampling(senstick_core_t *p_context);
+void startSampling(senstick_sensor_manager_t *p_context);
 
 // サンプリングの停止
-void stopSampling(senstick_core_t *p_context);
+void stopSampling(senstick_sensor_manager_t *p_context);
+
+// バッテリーレベルの取得
+// バッテリーレベルを、0 - 100 %の整数で返します。
+uint8_t getBatteryLevel(senstick_sensor_manager_t *p_context);
 
 #endif /* senstick_sensor_manager_h */

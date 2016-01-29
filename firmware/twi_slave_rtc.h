@@ -9,6 +9,7 @@
 
 // RTCのコンテキスト構造体の型宣言。
 typedef struct rtc_context_s {
+    bool is_calender_available;
     nrf_drv_twi_t *p_twi;
 } rtc_context_t;
 
@@ -19,7 +20,7 @@ void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi);
 
 // 時計時刻を設定/取得します。
 void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting);
-void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting);
+bool getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting);
 
 // アラーム時刻を設定/取得します。
 void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_t *p_setting);

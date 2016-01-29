@@ -12,24 +12,27 @@
  */
 
 // 加速度のデータ構造体
+// 16ビット 符号付き数値。フルスケールは設定レンジ値による。2, 4, 8, 16G。
 typedef struct AccelerationData_s {
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 } AccelerationData_t;
 
 // ジャイロのデータ構造体
+// 16ビット 符号付き数値。フルスケールは設定レンジ値による。250, 500, 1000, 2000 DPS。
 typedef struct RotationRateData_s {
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 } RotationRateData_t;
 
 // 磁界のデータ構造体
+// 16-bit 符号付き数字 フルスケール f ±4800 μT
 typedef struct MagneticFieldData_s {
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
+    int16_t x;
+    int16_t y;
+    int16_t z;
 } MagneticFieldData_t;
 
 // 9軸センサーのデータ構造体
@@ -40,18 +43,24 @@ typedef struct MotionSensorData_s {
 } MotionSensorData_t;
 
 // 輝度データ
+// 単位 lx
+// 変換時間約150ミリ秒
 typedef uint16_t BrightnessData_t;
 
 // UVデータ
+// サンプリング周期275ミリ秒、単位換算 2.14 uW/cm2/step
 typedef uint16_t UltraVioletData_t;
 
 // 気圧データ
+// 24-bit, 4096 LSB/ hPa
 typedef uint32_t AirPressureData_t;
 
 // 湿度データ
+// 変換式、仕様書10ページ、RH = -6 + 125 * SRH / 2^(16)
 typedef uint16_t HumidityData_t;
 
 // 温度データ
+// 変換式、仕様書10ページ、T = -46.85 + 175.72 * St/ 2^(16)
 typedef uint16_t TemperatureData_t;
 
 // 温度と湿度データ
@@ -59,15 +68,6 @@ typedef struct {
     HumidityData_t humidity;
     TemperatureData_t temperature;
 } TemperatureAndHumidityData_t;
-
-// センサデータの種別
-typedef enum  {
-    MotionSensor,
-    BrightnessSensor,
-    UltraVioletSensor,
-    TemperatureAndHumiditySensor,
-    AirPressureSensor,
-} SensorType_t;
 
 // コールバック関数のための統合センサーデータ型
 typedef union {
@@ -77,6 +77,15 @@ typedef union {
     AirPressureData_t   airPressureData;
     TemperatureAndHumidityData_t temperatureAndHumidityData;
 } SensorData_t;
+
+// 物理的なセンサーの種別
+typedef enum {
+    MotionSensor                    = 0,
+    BrightnessSensor                = 1,
+    UltraVioletSensor               = 2,
+    TemperatureAndHumiditySensor    = 3,
+    AirPressureSensor               = 4
+} SensorDeviceType_t;
 
 /**
  * センサー設定データ
@@ -98,17 +107,11 @@ typedef enum {
     ROTATION_RANGE_2000DPS  = 0x03,
 } RotationRange_t;
 
-// サンプリング・レート
-typedef enum {
-  SAMPLING_RATE_0_1_Hz  = 0x00, // 0.1Hz
-  SAMPLING_RATE_1_Hz    = 0x01, // 1Hz
-  SAMPLING_RATE_10_Hz   = 0x02, // 10Hz
-} SamplingRate_t;
+// サンプリング・レート。ミリ秒単位。
+typedef int16_t SamplingRate_t;
 
-/**
- * RTCのデータ構造
- */
 
+// RTCのデータ構造
 typedef struct rtcSettingCommand_s {
     // RTCの数値はすべてBCD(Binary-coded decimal)。16進表記したときの各桁が0-9の値を表す。
     uint8_t second;
@@ -131,24 +134,41 @@ typedef struct rtcAlarmSettingCommand_s {
 /**
  * GATTサービス、シリアライズ
  */
+
 typedef struct sensorSettings_s {
     AccelerationRange_t accelerationRange;
     RotationRange_t     rotationRange;
 
-    SamplingRate_t nineAxesSensorSamplingRate;
-    SamplingRate_t humiditySensorSamplingRate;
-    SamplingRate_t pressureSensorSamplingRate;
-    SamplingRate_t illuminationSensorSamplingRate;
+    // サンプリングレートの単位はミリ秒
+    SamplingRate_t motionSensorSamplingPeriod;
+    SamplingRate_t temperatureAndHumiditySamplingPeriod;
+    SamplingRate_t airPressureSamplingPeriod;
+    SamplingRate_t brightnessSamplingPeriod;
+    SamplingRate_t ultraVioletSamplingPeriod;
+
+    bool is_accelerometer_sampling;
+    // ジャイロスコープの設定は、下位3ビットを軸ごとのenableに割り当てる
+    // Z/Y/X
+    uint8_t is_gyroscope_sampling;
+    bool is_humidity_sampling;
+    bool is_temperature_sampling;
+    bool is_magnetrometer_sampling;
+    bool is_barometer_sampling;
+    bool is_illumination_sampling;
 } sensorSetting_t;
 
-// 関数
+
+// 数値とバイト列との変換
 uint16_t readUInt16AsBigEndian(uint8_t *ptr);
 uint16_t readUInt16AsLittleEndian(uint8_t *ptr);
-
 uint32_t readUInt32AsLittleEndian(uint8_t *ptr);
-
-// UInt32をバイトアレイに展開します。ビッグエンディアン。配列は4バイトの領域を確保していなければなりません。
+void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src);
+void uint16ToByteArrayBigEndian(uint8_t *p_dst, uint16_t src);
+void int16ToByteArrayLittleEndian(uint8_t *p_dst, int16_t src);
 void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src);
+
+// センサー設定の周期を設定します。
+bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t device_type, int period);
 
 // センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
 void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting);

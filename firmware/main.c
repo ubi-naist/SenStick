@@ -27,11 +27,30 @@
 #include "senstick_definitions.h"
 #include "senstick_sensor_manager.h"
 
-#include "ble_activity_service.h"
+#include "ble_ti_sensortag_service.h"
 
 /**
  * 定義
  */
+static const sensorSetting_t defaultSensorSetting {
+    .accelerationRange  = ACCELERATION_RANGE_2G,
+    .rotationRange      = ROTATION_RANGE_250DPS,
+
+    .motionSensorSamplingPeriod             = 100,
+    temperatureAndHumiditySamplingPeriod    = 500,
+    airPressureSamplingPeriod               = 500,
+    brightnessSamplingPeriod                = 500,
+    ultraVioletSamplingPeriod               = 500,
+    
+    is_accelerometer_sampling   = true,
+    is_gyroscope_sampling       = 0x07,
+    is_humidity_sampling        = true;
+    is_temperature_sampling     = true;
+    is_magnetrometer_sampling   = true;
+    is_barometer_sampling       = true;
+    is_illumination_sampling    = true;
+};
+
 
 // Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1
@@ -44,14 +63,14 @@
 static ble_bas_t m_bas;
 APP_TIMER_DEF(main_app_timer_id);
 
-static ble_activity_service_t activity_service_context;
+static  ble_sensortag_service_t sensortag_service_context;
+//static ble_activity_service_t activity_service_context;
 static senstick_sensor_manager_t sensor_manager_context;
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
 static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
  * 関数宣言
  */
-
 
 /**
  * イベントハンドラ
@@ -158,7 +177,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     dm_ble_evt_handler(p_ble_evt);
     
     ble_bas_on_ble_evt(&m_bas, p_ble_evt);
-    bleActivityServiceOnBLEEvent(&activity_service_context, p_ble_evt);
+    bleSensorTagServiceOnBLEEvent(&sensortag_service_context, p_ble_evt);
     
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
@@ -449,56 +468,28 @@ void startAdvertising(void)
 
 // 設定及びコントロールのキャラクタリスティクスに書き込まれた設定情報を解釈します
 // FIXME データの内容の解釈処理は、サービスの処理として実装すべきかも。
-void onActivityServiceEvent(ble_activity_service_t * p_context, const ble_activity_service_event_t * p_event)
-{
-    sensorSetting_t sensor_setting;
-    bool result;
-    
-    switch( p_event->event_type ) {
-        case BLE_ACTIVITY_SERVICE_SETTING_WRITTEN:
-            NRF_LOG_PRINTF_DEBUG("BLE_ACTIVITY_SERVICE_SETTING_WRITTEN.\n");
-            if( p_event->data_length == 7) {
-                result = deserializeSensorSetting(&sensor_setting, p_event->p_data);
-                if(result) {
-                    setSensorSetting(&sensor_manager_context, &sensor_setting);
-                }
-            }
-            break;
-            
-        case BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN:
-            NRF_LOG_PRINTF_DEBUG("BLE_ACTIVITY_SERVICE_CONTROL_WRITTEN, length:%d, data[0]:0x%02x.\n", p_event->data_length, (p_event->p_data)[0]);
-            if(p_event->data_length == 1) {
-                switch ((p_event->p_data)[0]) {
-                    case 0x01: // start flash
-                    case 0x02: // start ble
-                        startSampling(&sensor_manager_context);
-                        break;
-                    case 0x31: // stop flash
-                    case 0x32: // stop ble
-                        stopSampling(&sensor_manager_context);
-                        break;
-                    case 0x10: // dfu
-                        break;
-                    default:
-                        break;
-                }
-            }
-            break;
-        default: break;
-    }
-}
 
 // 設定したサンプリング周期ごとに、センサーデータが渡されるコールバック関数
-static void onSamplingCallbackHandler(SensorType_t sensorType, const SensorData_t *p_sensorData)
+static void onSamplingCallbackHandler(SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
 {
-    notifySensorData(&activity_service_context, sensorType, p_sensorData);
+    // センサータグサービスに通知する
+    notifySensorData(&sensortag_service_context, sensorType, p_sensorData);
+    // TBD ロガーに記録する。100ミリ秒ごとの区切りを渡す必要があるけど、どうする?
 }
 
+// センサー設定が変更されるたびに呼び出されるコールバック関数
+static void onSensorSettingChangedHandler(ble_sensortag_service_t * p_context, sensorSetting_t *p_setting)
+{
+    // TBD
+    // センサー設定を、センサマネージャとロガーに反映させる。
+    setSensorManagerSetting(&sensor_manager_context, p_setting);
+    // ロガーは一旦停止する。センサマネージャは新しい設定でセンサーを初期化する。
+}
+
+// 30秒毎に呼び出されるタイマー
 static void main_app_timer_handler(void *p_arg)
 {
     ret_code_t err_code;
-    
-    // 30秒毎に呼び出されるタイマー
     
     // バッテリー監視
     uint8_t battery_level = getBatteryLevel(&sensor_manager_context);
@@ -533,7 +524,7 @@ int main(void)
     device_manager_init(true);
     
     // センサマネージャーの初期化
-    initSenstickCoreManager(&(sensor_manager_context), onSamplingCallbackHandler);
+    initSensorManager(&(sensor_manager_context), onSamplingCallbackHandler);
     
     // デバイスインフォアメーションサービスを追加
     initDeviceInformationService();
@@ -541,11 +532,9 @@ int main(void)
     // バッテリーサービスを追加
     initBatteryService();
     
+    // センサータグサービスを追加
+    bleSensorTagServiceInit(&sensortag_service_context, &defaultSensorSetting, onSensorSettingChangedHandler);
     // センサーサービスを追加
-    bleActivityServiceInit_t activity_service_init;
-    activity_service_init.event_handler = onActivityServiceEvent;
-    err_code = bleActivityServiceInit(&activity_service_context, &activity_service_init);
-    APP_ERROR_CHECK(err_code);
     
     // アドバタイジングを開始する。
     initAdvertisingManager(&(activity_service_context.service_uuid));
@@ -558,6 +547,9 @@ int main(void)
                                APP_TIMER_TICKS(30 * 1000, APP_TIMER_PRESCALER), // 30秒
                                NULL);
     APP_ERROR_CHECK(err_code);
+    
+    // センサーセンシング及びロギングを開始
+    sensorManagerStartSampling(&sensor_manager_context);
     
     for (;;) {
         // BLEのイベント待ち

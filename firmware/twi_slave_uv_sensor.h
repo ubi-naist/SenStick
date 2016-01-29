@@ -15,11 +15,8 @@ typedef struct {
 // 初期化関数。センサ使用前に必ずこの関数を呼出ます。
 void initUVSensor(uv_sensor_context_t *p_context, nrf_drv_twi_t *p_twi);
 
+// UVA sensitivity, RSET =240kΩ,IT =1T, typ. 5 μW/cm2/step
+// 560kohm 1T、サンプリング周期275ミリ秒。 2.14 uW/cm2/step。
 void getUVSensorData(uv_sensor_context_t *p_context, UltraVioletData_t *p_data);
-
-//void getNineAxesData(nine_axes_sensor_context_t *p_context, MotionSensorData_t *sensor_data);
-
-//void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context);
-//void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context);
 
 #endif /* twi_slave_uv_sensor_h */

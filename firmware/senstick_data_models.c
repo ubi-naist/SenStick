@@ -17,25 +17,77 @@ uint32_t readUInt32AsLittleEndian(uint8_t *ptr)
     return ((uint32_t)ptr[0] << 0) |  ((uint32_t)ptr[1] << 8) | ((uint32_t)ptr[2] << 16) | ((uint32_t)ptr[3] << 24);
 }
 
-static void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src)
+void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src)
+{
+    p_dst[0] = (0x0ff & (src >> 8));
+    p_dst[1] = (0x0ff & (src >> 0));
+}
+
+void int16ToByteArrayLittleEndian(uint8_t *p_dst, int16_t src)
+{
+    p_dst[0] = (0x0ff & (src >> 0));
+    p_dst[1] = (0x0ff & (src >> 8));
+}
+
+void uint16ToByteArrafyBigEndian(uint8_t *p_dst, uint16_t src)
 {
     p_dst[0] = (uint8_t)(0x0ff & (src >> 8));
     p_dst[1] = (uint8_t)(0x0ff & (src >> 0));
 }
 
-static void uint16ToByteArrayBigEndian(uint8_t *p_dst, uint16_t src)
+void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src)
 {
-    p_dst[0] = (uint8_t)(0x0ff & (src >> 8));
-    p_dst[1] = (uint8_t)(0x0ff & (src >> 0));
+    p_dst[0] = (0x0ff & (src >> 24));
+    p_dst[1] = (0x0ff & (src >> 16));
+    p_dst[2] = (0x0ff & (src >>  8));
+    p_dst[3] = (0x0ff & (src >>  0));
 }
 
-
-static void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src)
+bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t device_type, int period)
 {
-    p_dst[0] = (uint8_t)(0x0ff & (src >> 24));
-    p_dst[1] = (uint8_t)(0x0ff & (src >> 16));
-    p_dst[2] = (uint8_t)(0x0ff & (src >>  8));
-    p_dst[3] = (uint8_t)(0x0ff & (src >>  0));
+    bool isChanged = false;
+    period = (period / 10) * 10;
+    switch ( device_type) {
+        case MotionSensor:
+            if(period >= 10 && p_setting->motionSensorSamplingPeriod != period) {
+                p_setting->motionSensorSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case BrightnessSensor:
+            if(period >= 200 && p_setting->brightnessSamplingPeriod != period) {
+                p_setting->brightnessSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case UltraVioletSensor:
+            if(period >= 300 && p_setting->ultraVioletSamplingPeriod != period) {
+                p_setting->ultraVioletSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case TemperatureAndHumiditySensor:
+            if(period >= 100 && p_setting->temperatureAndHumiditySamplingPeriod != period) {
+                p_setting->temperatureAndHumiditySamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case AirPressureSensor:
+            if(period >= 100 && p_setting->airPressureSamplingPeriod != period) {
+                p_setting->airPressureSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+
+        default:
+            APP_ERROR_CHECK(NRF_ERROR_INVALID_PARAM);
+            break;
+    }
+    return isChanged;
 }
 
 // Byte

@@ -88,13 +88,6 @@ static void init_gpio(void)
                      NRF_GPIO_PIN_NOSENSE);
     nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
     
-    // SPIのnCS
-//    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false); // 引数は init_high。初期値をlowにする。
-    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_LOW;
-    out_config.task_pin = false;
-    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_SPI_nCS, &out_config);
-    APP_ERROR_CHECK(err_code);
-    
     // 以下のピンは、今は利用しない
     // P0.08    In      9軸センサーINT
     // P0.09    In      RTC INTIR
@@ -110,57 +103,6 @@ static void init_adc(void)
     // Initialize and configure ADC
     nrf_adc_configure(&nrf_adc_config);
     nrf_adc_input_select(ADC_INPUT_SUPPLY_MONITORING);
-}
-
-static void init_spi_slaves(senstick_sensor_manager_t *p_context)
-{
-    ret_code_t err_code;
-    // SPIインタフェース SPI0を使用。
-    
-    /*
-     #define NRF_DRV_SPI_INSTANCE(id)                        \
-     {                                                       \
-     .p_registers  = NRF_DRV_SPI_PERIPHERAL(id),         \     #define NRF_DRV_SPI_PERIPHERAL(id)  (void *)CONCAT_2(NRF_SPI, id)
-     .irq          = CONCAT_3(SPI, id, _IRQ),            \
-     .drv_inst_idx = CONCAT_3(SPI, id, _INSTANCE_INDEX), \
-     .use_easy_dma = CONCAT_3(SPI, id, _USE_EASY_DMA)    \
-     }     */
-    p_context->spi.p_registers  = NRF_SPI0;
-    p_context->spi.irq          = SPI0_IRQ;
-    p_context->spi.drv_inst_idx = SPI0_INSTANCE_INDEX;
-    p_context->spi.use_easy_dma = SPI0_USE_EASY_DMA;
-    
-//    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
-    /*
-#define NRF_DRV_SPI_DEFAULT_CONFIG(id)                       \
-    {                                                            \
-        .sck_pin      = CONCAT_3(SPI, id, _CONFIG_SCK_PIN),      \
-        .mosi_pin     = CONCAT_3(SPI, id, _CONFIG_MOSI_PIN),     \
-        .miso_pin     = CONCAT_3(SPI, id, _CONFIG_MISO_PIN),     \
-        .ss_pin       = NRF_DRV_SPI_PIN_NOT_USED,                \
-        .irq_priority = CONCAT_3(SPI, id, _CONFIG_IRQ_PRIORITY), \
-        .orc          = 0xFF,                                    \
-        .frequency    = NRF_DRV_SPI_FREQ_4M,                     \
-        .mode         = NRF_DRV_SPI_MODE_0,                      \
-        .bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST,         \
-    }
-     */
-    nrf_drv_spi_config_t config;
-    config.sck_pin      = SPI0_CONFIG_SCK_PIN;
-    config.mosi_pin     = SPI0_CONFIG_MOSI_PIN;
-    config.miso_pin     = SPI0_CONFIG_MISO_PIN;
-    config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
-    config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
-    config.orc          = 0xff;
-    config.frequency    = NRF_DRV_SPI_FREQ_4M;
-//    config.frequency    = NRF_DRV_SPI_FREQ_250K;
-    config.mode         = NRF_DRV_SPI_MODE_0;
-    config.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
-    
-    err_code = nrf_drv_spi_init(&(p_context->spi), &config, NULL);
-    APP_ERROR_CHECK(err_code);
-    
-    initFlashMemory(&(p_context->flash_memory_context), &(p_context->spi));
 }
 
 static void init_twi_slaves(senstick_sensor_manager_t *p_context)
@@ -186,7 +128,7 @@ static void init_twi_slaves(senstick_sensor_manager_t *p_context)
     // 初期化処理完了待ち時間
     nrf_delay_ms(100);
 }
-
+/*
 static void test_twi_slaves(senstick_sensor_manager_t *p_context)
 {
     // 値取得、デバッグ
@@ -215,6 +157,7 @@ static void test_twi_slaves(senstick_sensor_manager_t *p_context)
         nrf_delay_ms(500);
     }
 }
+*/
 
 // サンプリングレートで、通知すべきか否かを判定します
 static bool  should_report(int count, SamplingRate_t sampling_rage)
@@ -267,7 +210,7 @@ static void sensor_timer_handler(void *p_arg)
 /**
  * Public関数
  */
-void initSenstickCoreManager(senstick_sensor_manager_t *p_context, sampling_callback_handler_t samplingCallback)
+void initSensorManager(senstick_sensor_manager_t *p_context, sampling_callback_handler_t samplingCallback)
 {
     uint32_t err_code;
     
@@ -302,17 +245,14 @@ void initSenstickCoreManager(senstick_sensor_manager_t *p_context, sampling_call
     // 周辺デバイスの起動待ち時間。MPU-9250最大100ミリ秒
     nrf_delay_ms(100);
     
-    init_spi_slaves(p_context);
-//    testFlashMemory(&(p_context->flash_memory_context));
-//    testLogger(&(p_context->flash_memory_context));
     init_twi_slaves(p_context);
 //    test_twi_slaves(p_context);
 
     // センサー設定
-    setSensorSetting(p_context, &(p_context->sensorSetting));
+    setSensorManagerSetting(p_context, &(p_context->sensorSetting));
 }
 
-void setSensorSetting(senstick_sensor_manager_t *p_context, const sensorSetting_t *p_setting)
+void setSensorManagerSetting(senstick_sensor_manager_t *p_context, const sensorSetting_t *p_setting)
 {
     // 設定情報をコピー
     p_context->sensorSetting = *p_setting;
@@ -323,12 +263,12 @@ void setSensorSetting(senstick_sensor_manager_t *p_context, const sensorSetting_
 }
 
 // サンプリング中?
-bool isSampling(senstick_sensor_manager_t *p_context)
+bool isSensorManagerSampling(senstick_sensor_manager_t *p_context)
 {
     return p_context->is_sampling;
 }
 
-void startSampling(senstick_sensor_manager_t *p_context)
+void sensorManagerStartSampling(senstick_sensor_manager_t *p_context)
 {
     if( p_context->is_sampling) {
         return;
@@ -346,7 +286,7 @@ void startSampling(senstick_sensor_manager_t *p_context)
     NRF_LOG_PRINTF_DEBUG("sensor_manager: startSampling.\n");
 }
 
-void stopSampling(senstick_sensor_manager_t *p_context)
+void sensorManagerStopSampling(senstick_sensor_manager_t *p_context)
 {
     if( ! p_context->is_sampling) {
         return;

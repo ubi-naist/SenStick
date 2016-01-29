@@ -123,10 +123,17 @@ void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setti
         p_setting->month,
         p_setting->year };
     writeToRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
+    
+    p_context->is_calender_avaialbe = true;
 }
 
-void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
+bool getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
 {
+    // カレンダーが初期化されていない。
+    if( ! p_context->is_calender_avaialbe) {
+        return false;
+    }
+    
     NRF_LOG_PRINTF_DEBUG("\ngetRTCDateTime()");
     
     // レジスタのアドレス並びは以下のとおり:
@@ -163,6 +170,8 @@ void getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
     p_setting->day       = data[4];
     p_setting->month     = data[5];
     p_setting->year      = data[6];
+    
+    return true;
 }
 
 void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_t *p_setting)

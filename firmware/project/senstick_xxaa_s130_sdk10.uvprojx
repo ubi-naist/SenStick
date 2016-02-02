@@ -371,7 +371,7 @@
             <vShortWch>0</vShortWch>
             <VariousControls>
               <MiscControls>--c99</MiscControls>
-              <Define>DEBUG NRF_LOG_USES_RTT=1 BLE_STACK_SUPPORT_REQD S130 SOFTDEVICE_PRESENT NRF51 SWI_DISABLE0</Define>
+              <Define>DOXYGEN NRF_LOG_USES_RTT=1 BLE_STACK_SUPPORT_REQD S130 SOFTDEVICE_PRESENT NRF51 SWI_DISABLE0</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\firmware;..\segger_rtt</IncludePath>
             </VariousControls>
@@ -427,25 +427,35 @@
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>ble_activity_service.c</FileName>
+              <FileName>ble_logger_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ble_activity_service.c</FilePath>
+              <FilePath>..\ble_logger_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_logger.c</FileName>
+              <FileName>ble_ti_sensortag_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_logger.c</FilePath>
+              <FilePath>..\ble_ti_sensortag_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_sensor_manager.c</FileName>
+              <FileName>senstick_tests.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_sensor_manager.c</FilePath>
+              <FilePath>..\senstick_tests.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>twi</GroupName>
           <Files>
+            <File>
+              <FileName>twi_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_sensor_manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
+            </File>
             <File>
               <FileName>twi_slave_rtc.c</FileName>
               <FileType>1</FileType>
@@ -472,11 +482,6 @@
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
             <File>
-              <FileName>twi_slave_utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_utility.c</FilePath>
-            </File>
-            <File>
               <FileName>twi_slave_uv_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_uv_sensor.c</FilePath>
@@ -487,6 +492,11 @@
           <GroupName>spi</GroupName>
           <Files>
             <File>
+              <FileName>flash_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\flash_logger.c</FilePath>
+            </File>
+            <File>
               <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
@@ -496,6 +506,11 @@
         <Group>
           <GroupName>gpio</GroupName>
           <Files>
+            <File>
+              <FileName>gpio_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_manager.c</FilePath>
+            </File>
             <File>
               <FileName>gpio_uart.c</FileName>
               <FileType>1</FileType>
@@ -980,25 +995,35 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>ble_activity_service.c</FileName>
+              <FileName>ble_logger_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ble_activity_service.c</FilePath>
+              <FilePath>..\ble_logger_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_logger.c</FileName>
+              <FileName>ble_ti_sensortag_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_logger.c</FilePath>
+              <FilePath>..\ble_ti_sensortag_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_sensor_manager.c</FileName>
+              <FileName>senstick_tests.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_sensor_manager.c</FilePath>
+              <FilePath>..\senstick_tests.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>twi</GroupName>
           <Files>
+            <File>
+              <FileName>twi_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_sensor_manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
+            </File>
             <File>
               <FileName>twi_slave_rtc.c</FileName>
               <FileType>1</FileType>
@@ -1025,11 +1050,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
             <File>
-              <FileName>twi_slave_utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_utility.c</FilePath>
-            </File>
-            <File>
               <FileName>twi_slave_uv_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_uv_sensor.c</FilePath>
@@ -1040,6 +1060,11 @@ rf51xxx.flm))</FlashDriverDll>
           <GroupName>spi</GroupName>
           <Files>
             <File>
+              <FileName>flash_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\flash_logger.c</FilePath>
+            </File>
+            <File>
               <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
@@ -1049,6 +1074,11 @@ rf51xxx.flm))</FlashDriverDll>
         <Group>
           <GroupName>gpio</GroupName>
           <Files>
+            <File>
+              <FileName>gpio_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_manager.c</FilePath>
+            </File>
             <File>
               <FileName>gpio_uart.c</FileName>
               <FileType>1</FileType>
@@ -1531,25 +1561,35 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\senstick_data_models.c</FilePath>
             </File>
             <File>
-              <FileName>ble_activity_service.c</FileName>
+              <FileName>ble_logger_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ble_activity_service.c</FilePath>
+              <FilePath>..\ble_logger_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_logger.c</FileName>
+              <FileName>ble_ti_sensortag_service.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_logger.c</FilePath>
+              <FilePath>..\ble_ti_sensortag_service.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_sensor_manager.c</FileName>
+              <FileName>senstick_tests.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_sensor_manager.c</FilePath>
+              <FilePath>..\senstick_tests.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>twi</GroupName>
           <Files>
+            <File>
+              <FileName>twi_sensor_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_sensor_manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_utility.c</FilePath>
+            </File>
             <File>
               <FileName>twi_slave_rtc.c</FileName>
               <FileType>1</FileType>
@@ -1576,11 +1616,6 @@ rf51xxx.flm))</FlashDriverDll>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
             <File>
-              <FileName>twi_slave_utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_utility.c</FilePath>
-            </File>
-            <File>
               <FileName>twi_slave_uv_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_uv_sensor.c</FilePath>
@@ -1591,6 +1626,11 @@ rf51xxx.flm))</FlashDriverDll>
           <GroupName>spi</GroupName>
           <Files>
             <File>
+              <FileName>flash_logger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\flash_logger.c</FilePath>
+            </File>
+            <File>
               <FileName>spi_slave_mx25_flash_memory.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
@@ -1600,6 +1640,11 @@ rf51xxx.flm))</FlashDriverDll>
         <Group>
           <GroupName>gpio</GroupName>
           <Files>
+            <File>
+              <FileName>gpio_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_manager.c</FilePath>
+            </File>
             <File>
               <FileName>gpio_uart.c</FileName>
               <FileType>1</FileType>

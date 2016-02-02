@@ -124,13 +124,13 @@ void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setti
         p_setting->year };
     writeToRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
     
-    p_context->is_calender_avaialbe = true;
+    p_context->is_calender_available = true;
 }
 
 bool getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
 {
     // カレンダーが初期化されていない。
-    if( ! p_context->is_calender_avaialbe) {
+    if( ! p_context->is_calender_available) {
         return false;
     }
     

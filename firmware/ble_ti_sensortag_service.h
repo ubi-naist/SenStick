@@ -14,7 +14,7 @@ typedef void (*ble_sensortag_service_event_handler_t) (ble_sensortag_service_t *
 
 // アクティビティサービスのコンテキスト構造体。サービスの実行に必要な情報が含まれる。
 struct ble_sensortag_service_s {
-    ble_activity_service_event_handler_t setting_changed_event_handler;     // イベントハンドラ
+    ble_sensortag_service_event_handler_t setting_changed_event_handler;     // イベントハンドラ
     
     ble_uuid_t base_uuid;
 
@@ -22,38 +22,38 @@ struct ble_sensortag_service_s {
     uint16_t ir_temperature_service_handle;
     ble_gatts_char_handles_t ir_temperature_value_char_handle;
     ble_gatts_char_handles_t ir_temperature_configration_char_handle;
-    ble_gatts_char_handles_t ir_temperature_priod_char_handle;
+    ble_gatts_char_handles_t ir_temperature_period_char_handle;
     
     uint16_t accelerometer_service_handle;
     ble_gatts_char_handles_t accelerometer_value_char_handle;
     ble_gatts_char_handles_t accelerometer_configration_char_handle;
-    ble_gatts_char_handles_t accelerometer_priod_char_handle;
+    ble_gatts_char_handles_t accelerometer_period_char_handle;
     
     uint16_t humidity_service_handle;
     ble_gatts_char_handles_t humidity_value_char_handle;
     ble_gatts_char_handles_t humidity_configration_char_handle;
-    ble_gatts_char_handles_t humidity_priod_char_handle;
+    ble_gatts_char_handles_t humidity_period_char_handle;
     
     uint16_t magnetometer_service_handle;
     ble_gatts_char_handles_t magnetometer_value_char_handle;
     ble_gatts_char_handles_t magnetometer_configration_char_handle;
-    ble_gatts_char_handles_t magnetometer_priod_char_handle;
+    ble_gatts_char_handles_t magnetometer_period_char_handle;
     
     uint16_t barometer_service_handle;
     ble_gatts_char_handles_t barometer_value_char_handle;
     ble_gatts_char_handles_t barometer_configration_char_handle;
     ble_gatts_char_handles_t barometer_calibration_char_handle;
-    ble_gatts_char_handles_t barometer_priod_char_handle;
+    ble_gatts_char_handles_t barometer_period_char_handle;
 
     uint16_t gyroscope_service_handle;
     ble_gatts_char_handles_t gyroscope_value_char_handle;
     ble_gatts_char_handles_t gyroscope_configration_char_handle;
-    ble_gatts_char_handles_t gyroscope_priod_char_handle;
+    ble_gatts_char_handles_t gyroscope_period_char_handle;
     
     uint16_t illumination_service_handle;
     ble_gatts_char_handles_t illumination_value_char_handle;
     ble_gatts_char_handles_t illumination_configration_char_handle;
-    ble_gatts_char_handles_t illumination_priod_char_handle;
+    ble_gatts_char_handles_t illumination_period_char_handle;
     
     uint16_t connection_handle;
     uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
@@ -68,7 +68,7 @@ struct ble_sensortag_service_s {
     bool is_barometer_notifying;
     bool is_gyroscope_notifying;
     bool is_illumination_notifying;
-} ble_sensortag_service_t;
+};// ble_sensortag_service_t;
 
 // 初期化関数
 // このサービスを使う前に、必ずこの関数を呼び出すこと。

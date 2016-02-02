@@ -11,7 +11,7 @@
  APP_ERROR_CHECK(err_code);
 
  
- static void init_spi_slaves(senstick_sensor_manager_t *p_context)
+ static void init_spi_slaves(sensor_manager_t *p_context)
  {
  ret_code_t err_code;
  // SPIインタフェース SPI0を使用。

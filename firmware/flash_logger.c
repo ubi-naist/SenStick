@@ -4,7 +4,7 @@
 #include "nordic_common.h"
 #include "app_error.h"
 
-#include "senstick_logger.h"
+#include "flash_logger.h"
 
 #define MAGIC_WORD  0xc0ffeede
 #define SECTOR_SIZE (4 * 1024)

@@ -25,32 +25,14 @@
 
 #include "senstick_device_definitions.h"
 #include "senstick_definitions.h"
-#include "senstick_sensor_manager.h"
+#include "twi_sensor_manager.h"
+#include "gpio_manager.h"
 
 #include "ble_ti_sensortag_service.h"
 
 /**
  * 定義
  */
-static const sensorSetting_t defaultSensorSetting {
-    .accelerationRange  = ACCELERATION_RANGE_2G,
-    .rotationRange      = ROTATION_RANGE_250DPS,
-
-    .motionSensorSamplingPeriod             = 100,
-    temperatureAndHumiditySamplingPeriod    = 500,
-    airPressureSamplingPeriod               = 500,
-    brightnessSamplingPeriod                = 500,
-    ultraVioletSamplingPeriod               = 500,
-    
-    is_accelerometer_sampling   = true,
-    is_gyroscope_sampling       = 0x07,
-    is_humidity_sampling        = true;
-    is_temperature_sampling     = true;
-    is_magnetrometer_sampling   = true;
-    is_barometer_sampling       = true;
-    is_illumination_sampling    = true;
-};
-
 
 // Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1
@@ -63,9 +45,10 @@ static const sensorSetting_t defaultSensorSetting {
 static ble_bas_t m_bas;
 APP_TIMER_DEF(main_app_timer_id);
 
-static  ble_sensortag_service_t sensortag_service_context;
+static gpio_manager_t gpio_manager_context;
+static ble_sensortag_service_t sensortag_service_context;
 //static ble_activity_service_t activity_service_context;
-static senstick_sensor_manager_t sensor_manager_context;
+static sensor_manager_t sensor_manager_context;
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
 static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
@@ -283,7 +266,7 @@ void initBatteryService(void)
     bas_init.evt_handler          = NULL;
     bas_init.support_notification = true;
     bas_init.p_report_ref         = NULL;
-    bas_init.initial_batt_level   = getBatteryLevel(&sensor_manager_context);
+    bas_init.initial_batt_level   = getBatteryLevel(&gpio_manager_context);
     
     err_code = ble_bas_init(&m_bas, &bas_init);
     APP_ERROR_CHECK(err_code);
@@ -434,8 +417,10 @@ void initAdvertisingManager(ble_uuid_t *p_uuid)
     // スキャンレスポンスを構築する。
     ble_advdata_t scan_response_data;
     memset(&scan_response_data, 0, sizeof(scan_response_data));
-    scan_response_data.uuids_complete.uuid_cnt = 1;
-    scan_response_data.uuids_complete.p_uuids  = p_uuid;
+    if(p_uuid != NULL) {
+        scan_response_data.uuids_complete.uuid_cnt = 1;
+        scan_response_data.uuids_complete.p_uuids  = p_uuid;
+    }
 
     // アドバタイジングモードのオプション設定
     ble_adv_modes_config_t options;
@@ -474,16 +459,15 @@ static void onSamplingCallbackHandler(SensorDeviceType_t sensorType, const Senso
 {
     // センサータグサービスに通知する
     notifySensorData(&sensortag_service_context, sensorType, p_sensorData);
-    // TBD ロガーに記録する。100ミリ秒ごとの区切りを渡す必要があるけど、どうする?
+    // TBD ロガーに記録する。
 }
 
 // センサー設定が変更されるたびに呼び出されるコールバック関数
 static void onSensorSettingChangedHandler(ble_sensortag_service_t * p_context, sensorSetting_t *p_setting)
 {
-    // TBD
     // センサー設定を、センサマネージャとロガーに反映させる。
     setSensorManagerSetting(&sensor_manager_context, p_setting);
-    // ロガーは一旦停止する。センサマネージャは新しい設定でセンサーを初期化する。
+    // TBD ロガーは一旦停止する。センサマネージャは新しい設定でセンサーを初期化する。
 }
 
 // 30秒毎に呼び出されるタイマー
@@ -492,7 +476,7 @@ static void main_app_timer_handler(void *p_arg)
     ret_code_t err_code;
     
     // バッテリー監視
-    uint8_t battery_level = getBatteryLevel(&sensor_manager_context);
+    uint8_t battery_level = getBatteryLevel(&gpio_manager_context);
     err_code = ble_bas_battery_level_update(&m_bas,battery_level);
     APP_ERROR_CHECK(err_code);
 }
@@ -504,6 +488,26 @@ int main(void)
 {
     ret_code_t err_code;
 
+    sensorSetting_t defaultSensorSetting;
+    {
+        defaultSensorSetting.accelerationRange  = ACCELERATION_RANGE_2G;
+        defaultSensorSetting.rotationRange      = ROTATION_RANGE_250DPS;
+        
+        defaultSensorSetting.motionSensorSamplingPeriod             = 100;
+        defaultSensorSetting.temperatureAndHumiditySamplingPeriod   = 500;
+        defaultSensorSetting.airPressureSamplingPeriod              = 500;
+        defaultSensorSetting.brightnessSamplingPeriod               = 500;
+        defaultSensorSetting.ultraVioletSamplingPeriod              = 500;
+        
+        defaultSensorSetting.is_accelerometer_sampling   = true;
+        defaultSensorSetting.is_gyroscope_sampling       = 0x07;
+        defaultSensorSetting.is_humidity_sampling        = true;
+        defaultSensorSetting.is_temperature_sampling     = true;
+        defaultSensorSetting.is_magnetrometer_sampling   = true;
+        defaultSensorSetting.is_barometer_sampling       = true;
+        defaultSensorSetting.is_illumination_sampling    = true;
+    }
+    
     // RTTログを有効に
     NRF_LOG_INIT();
     NRF_LOG_PRINTF_DEBUG("Start....\n");
@@ -523,8 +527,11 @@ int main(void)
     // BLEデバイスマネージャを初期化
     device_manager_init(true);
     
+    // GPIOの初期化
+    initGPIOManager(&gpio_manager_context);
+    
     // センサマネージャーの初期化
-    initSensorManager(&(sensor_manager_context), onSamplingCallbackHandler);
+    initSensorManager(&sensor_manager_context, &gpio_manager_context, &defaultSensorSetting,onSamplingCallbackHandler);
     
     // デバイスインフォアメーションサービスを追加
     initDeviceInformationService();
@@ -537,7 +544,8 @@ int main(void)
     // センサーサービスを追加
     
     // アドバタイジングを開始する。
-    initAdvertisingManager(&(activity_service_context.service_uuid));
+//    initAdvertisingManager(&(sensortag_service_context.service_uuid));
+    initAdvertisingManager(NULL); // TBD ロギング等適当なサービスのUUIDを後で入れること。
     startAdvertising();
     
     // アプリのタイマーを開始する。

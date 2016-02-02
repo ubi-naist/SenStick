@@ -53,8 +53,10 @@
 		F8EB5E6B1C5348A200D82482 /* ble_ti_sensortag_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_ti_sensortag_service.h; sourceTree = "<group>"; };
 		F8EB5E6C1C5A3D3200D82482 /* ble_logger_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_logger_service.c; sourceTree = "<group>"; };
 		F8EB5E6D1C5A3D3200D82482 /* ble_logger_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_logger_service.h; sourceTree = "<group>"; };
-		F8EB5E6F1C5B051C00D82482 /* gpio_io_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_io_manager.c; sourceTree = "<group>"; };
-		F8EB5E701C5B051C00D82482 /* gpio_io_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_io_manager.h; sourceTree = "<group>"; };
+		F8EB5E6F1C5B051C00D82482 /* gpio_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_manager.c; sourceTree = "<group>"; };
+		F8EB5E701C5B051C00D82482 /* gpio_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_manager.h; sourceTree = "<group>"; };
+		F8EB5E741C5B775E00D82482 /* senstick_tests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_tests.c; sourceTree = "<group>"; };
+		F8EB5E751C5B775E00D82482 /* senstick_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_tests.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -69,6 +71,7 @@
 				F8AC9D441C223A9500366AEF /* gpio */,
 				F8AC9D531C223C0900366AEF /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
+				F8EB5E731C5B774D00D82482 /* tests */,
 				F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */,
 				F8AC9D681C26927100366AEF /* RTE */,
 				F8AC9D661C263F6100366AEF /* components */,
@@ -112,8 +115,8 @@
 		F8AC9D441C223A9500366AEF /* gpio */ = {
 			isa = PBXGroup;
 			children = (
-				F8EB5E701C5B051C00D82482 /* gpio_io_manager.h */,
-				F8EB5E6F1C5B051C00D82482 /* gpio_io_manager.c */,
+				F8EB5E701C5B051C00D82482 /* gpio_manager.h */,
+				F8EB5E6F1C5B051C00D82482 /* gpio_manager.c */,
 				F8AC9D461C223AB200366AEF /* gpio_battery_monitor.h */,
 				F8AC9D451C223AB200366AEF /* gpio_battery_monitor.c */,
 				F8AC9D481C223AE300366AEF /* gpio_button_monitoring.h */,
@@ -166,6 +169,15 @@
 				F8AC9D371C22377600366AEF /* senstick_io_definitions.h */,
 			);
 			name = definitions;
+			sourceTree = "<group>";
+		};
+		F8EB5E731C5B774D00D82482 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				F8EB5E751C5B775E00D82482 /* senstick_tests.h */,
+				F8EB5E741C5B775E00D82482 /* senstick_tests.c */,
+			);
+			name = tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

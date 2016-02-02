@@ -39,7 +39,7 @@ typedef struct MagneticFieldData_s {
 typedef struct MotionSensorData_s {
     AccelerationData_t  acceleration;
     MagneticFieldData_t magneticField;
-    RotationRateData_t  rotaionRate;
+    RotationRateData_t  rotationRate;
 } MotionSensorData_t;
 
 // 輝度データ
@@ -110,7 +110,6 @@ typedef enum {
 // サンプリング・レート。ミリ秒単位。
 typedef int16_t SamplingRate_t;
 
-
 // RTCのデータ構造
 typedef struct rtcSettingCommand_s {
     // RTCの数値はすべてBCD(Binary-coded decimal)。16進表記したときの各桁が0-9の値を表す。
@@ -147,29 +146,36 @@ typedef struct sensorSettings_s {
     SamplingRate_t ultraVioletSamplingPeriod;
 
     bool is_accelerometer_sampling;
-    // ジャイロスコープの設定は、下位3ビットを軸ごとのenableに割り当てる
-    // Z/Y/X
+    // ジャイロスコープの設定は、下位3ビットを軸ごとのenableに割り当てる, Z/Y/X
     uint8_t is_gyroscope_sampling;
     bool is_humidity_sampling;
     bool is_temperature_sampling;
     bool is_magnetrometer_sampling;
     bool is_barometer_sampling;
     bool is_illumination_sampling;
+    bool is_uv_sampling;
+    
 } sensorSetting_t;
 
 
 // 数値とバイト列との変換
 uint16_t readUInt16AsBigEndian(uint8_t *ptr);
 uint16_t readUInt16AsLittleEndian(uint8_t *ptr);
+
 uint32_t readUInt32AsLittleEndian(uint8_t *ptr);
+
 void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src);
-void uint16ToByteArrayBigEndian(uint8_t *p_dst, uint16_t src);
 void int16ToByteArrayLittleEndian(uint8_t *p_dst, int16_t src);
+
+void uint16ToByteArrayBigEndian(uint8_t *p_dst, uint16_t src);
+void uint16ToByteArrayLittleEndian(uint8_t *p_dst, uint16_t src);
+
 void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src);
 
 // センサー設定の周期を設定します。
 bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t device_type, int period);
 
+/*
 // センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
 void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting);
 // バイト配列をセンサー設定情報に展開します。不正な値があった場合は、処理は完了せず、falseを返します。 バイト配列は7バイトの領域が確保されていなければなりません。
@@ -186,7 +192,7 @@ void serializeTemperatureAndHumidityData(uint8_t *p_dst, const TemperatureAndHum
 
 // 圧力データを3バイトのバイト配列に展開します
 void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data);
-
+*/
 // デバッグ用ログ関数
 void debugLogAccerationData(const AccelerationData_t *data);
 

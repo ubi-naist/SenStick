@@ -35,6 +35,12 @@ void uint16ToByteArrafyBigEndian(uint8_t *p_dst, uint16_t src)
     p_dst[1] = (uint8_t)(0x0ff & (src >> 0));
 }
 
+void uint16ToByteArrayLittleEndian(uint8_t *p_dst, uint16_t src)
+{
+    p_dst[0] = (0x0ff & (src >> 0));
+    p_dst[1] = (0x0ff & (src >> 8));
+}
+
 void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src)
 {
     p_dst[0] = (0x0ff & (src >> 24));
@@ -119,6 +125,7 @@ bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t devic
 //          0x01    1   sample/sec (default)
 //          0x02    10  sample/sec
 // センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
+/*
 void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting)
 {
     p_dst[0] = 0;
@@ -196,7 +203,7 @@ void serializeMagneticFieldData(uint8_t *p_dst, const MagneticFieldData_t *p_dat
 void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data)
 {
     serializeAccelerationData(&(p_dst[0]),   &(p_data->acceleration));
-    serializeRotationRateData(&(p_dst[6]),   &(p_data->rotaionRate));
+    serializeRotationRateData(&(p_dst[6]),   &(p_data->rotationRate));
     serializeMagneticFieldData(&(p_dst[12]), &(p_data->magneticField));
 }
 
@@ -219,7 +226,7 @@ void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data)
     p_dst[1] = (uint8_t)(0x0ff & (src >> 8));
     p_dst[2] = (uint8_t)(0x0ff & (src >> 0));
 }
-
+*/
 void debugLogAccerationData(const AccelerationData_t *data)
 {
     NRF_LOG_PRINTF_DEBUG("Accs. x:%d, y:%d, z:%d .\n", data->x, data->y, data->z);

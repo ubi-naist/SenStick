@@ -63,7 +63,7 @@ static void getAccelerationData(nine_axes_sensor_context_t *p_context, Accelerat
     p_acceleration->z = readUInt16AsBigEndian(&(buffer[2]));
 }
 
-static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationRateData_t *p_rotaionRate)
+static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationRateData_t *p_rotationRate)
 {
     uint8_t buffer[6];
     // ジャイロのデータは一連の連続するアドレスから読み出す。
@@ -75,9 +75,9 @@ static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationR
     // GYRO_ZOUT_L
     readFromMPU9250(p_context, GYRO_XOUT_H, buffer, sizeof(buffer));
     
-    p_rotaionRate->x = readUInt16AsBigEndian(&(buffer[0]));
-    p_rotaionRate->y = readUInt16AsBigEndian(&(buffer[1]));
-    p_rotaionRate->z = readUInt16AsBigEndian(&(buffer[2]));
+    p_rotationRate->x = readUInt16AsBigEndian(&(buffer[0]));
+    p_rotationRate->y = readUInt16AsBigEndian(&(buffer[1]));
+    p_rotationRate->z = readUInt16AsBigEndian(&(buffer[2]));
 }
 
 static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, MagneticFieldData_t *p_magneticField)
@@ -213,7 +213,7 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
 void getNineAxesData(nine_axes_sensor_context_t *p_context, MotionSensorData_t *sensor_data)
 {
     getAccelerationData(p_context,  &(sensor_data->acceleration));
-    getRotationRateData(p_context,  &(sensor_data->rotaionRate));
+    getRotationRateData(p_context,  &(sensor_data->rotationRate));
     getMagneticFieldData(p_context, &(sensor_data->magneticField));
     
 }

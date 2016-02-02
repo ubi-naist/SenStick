@@ -62,7 +62,7 @@ static void notifyToClient(const ble_sensortag_service_t *p_context, uint16_t va
     }
 }
 
-static int8_t void convertAccelerationValue(const sensorSetting_t *p_setting, const int16_t value)
+static int8_t convertAccelerationValue(const sensorSetting_t *p_setting, const int16_t value)
 {
     switch(p_setting->accelerationRange) {
         default:
@@ -76,14 +76,14 @@ static void notifyAcceleromterData(const ble_sensortag_service_t *p_context, con
 {
     int8_t buffer[3];
     // X/Y/Zの順番で、フルスケール+-2G、符号付き1.6固定小数点で1バイトで表現する
-    buffer[0] = convertAccelerationValue(p_setting, p_acceleration->x);
-    buffer[1] = convertAccelerationValue(p_setting, p_acceleration->y);
-    buffer[2] = convertAccelerationValue(p_setting, p_acceleration->z);
+    buffer[0] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->x);
+    buffer[1] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->y);
+    buffer[2] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->z);
 
-    setCharacteristicsValue(p_context, p_context->accelerometer_value_char_handle.value_handle, buffer, 3);
+    setCharacteristicsValue(p_context, p_context->accelerometer_value_char_handle.value_handle, (uint8_t *)buffer, 3);
     
     if(p_context->is_accelerometer_notifying) {
-        notifyToClient(p_context, p_context->accelerometer_value_char_handle.value_handle, buffer, 3);
+        notifyToClient(p_context, p_context->accelerometer_value_char_handle.value_handle, (uint8_t *)buffer, 3);
     }
 }
 
@@ -105,18 +105,19 @@ static void notifyGyroscopeData(ble_sensortag_service_t *p_context, const Rotati
     uint8_t buffer[6];
     memset(buffer, 0, sizeof(buffer));
     // マスクに合わせてX/Y/Zを設定
-    if( p_setting->is_gyroscope_sampling & 0x01 != 0) {
-        convertRotationValue(&(buffer[0]), p_setting, p_rotation->x);
+    if( p_context->sensor_setting.is_gyroscope_sampling & 0x01 != 0) {
+        convertRotationValue(&(buffer[0]), &(p_context->sensor_setting), p_rotation->x);
     }
-    if( p_setting->is_gyroscope_sampling & 0x02 != 0) {
-        convertRotationValue(&(buffer[2]), p_setting, p_rotation->y);
+    if( p_context->sensor_setting.is_gyroscope_sampling & 0x02 != 0) {
+        convertRotationValue(&(buffer[2]), &(p_context->sensor_setting), p_rotation->y);
     }
-    if( p_setting->is_gyroscope_sampling & 0x04 != 0) {
-        convertRotationValue(&(buffer[4]), p_setting, p_rotation->z);
+    if( p_context->sensor_setting.is_gyroscope_sampling & 0x04 != 0) {
+        convertRotationValue(&(buffer[4]), &(p_context->sensor_setting), p_rotation->z);
     }
-    
+
+    // 値を設定
     setCharacteristicsValue(p_context, p_context->gyroscope_value_char_handle.value_handle, buffer, 6);
-    
+    // 通知
     if(p_context->is_gyroscope_notifying) {
         notifyToClient(p_context, p_context->gyroscope_value_char_handle.value_handle, buffer, 6);
     }
@@ -146,9 +147,9 @@ static void notifyMagnetrometer(ble_sensortag_service_t *p_context, const Magnet
 {
     uint8_t buffer[6];
     
-    convertMagnetrometerValue(&(buffer[0]), p_setting, p_magneticField->x);
-    convertMagnetrometerValue(&(buffer[2]), p_setting, p_magneticField->y);
-    convertMagnetrometerValue(&(buffer[4]), p_setting, p_magneticField->z);
+    convertMagnetrometerValue(&(buffer[0]), &(p_context->sensor_setting), p_magneticField->x);
+    convertMagnetrometerValue(&(buffer[2]), &(p_context->sensor_setting), p_magneticField->y);
+    convertMagnetrometerValue(&(buffer[4]), &(p_context->sensor_setting), p_magneticField->z);
     
     setCharacteristicsValue(p_context, p_context->magnetometer_value_char_handle.value_handle, buffer, 6);
     
@@ -179,7 +180,7 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
     // CCCDへの書き込み確認
     if(p_evt_write->len == 2) {
         if(p_evt_write->handle == p_context->accelerometer_value_char_handle.cccd_handle) {
-            p_context->is_accelerometer_notifying = = ble_srv_is_notification_enabled(p_evt_write->data);
+            p_context->is_accelerometer_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
             return;
         } else if(p_evt_write->handle == p_context->humidity_value_char_handle.cccd_handle) {
             p_context->is_humidity_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
@@ -237,7 +238,7 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
         }
 
         // サンプリング周期 を設定する。
-        uint16_t period = value * 10; // 周期は10ミリ秒単位
+        uint16_t period = config * 10; // 周期は10ミリ秒単位
         if(p_evt_write->handle == p_context->accelerometer_period_char_handle.value_handle
            || p_evt_write->handle == p_context->magnetometer_period_char_handle.value_handle
            || p_evt_write->handle == p_context->gyroscope_period_char_handle.value_handle ) {
@@ -273,7 +274,7 @@ static void onDisconnect(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_e
     p_context->is_illumination_notifying    = false;
 }
 
-static uint32_t addNotifiableCharacteristics(const ble_sensortag_service_t *p_context, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
+static uint32_t addNotifiableCharacteristics(const ble_sensortag_service_t *p_context, uint16_t *p_service_handler, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
 {
     ble_gatts_char_md_t char_md;
     ble_gatts_attr_md_t attribute_md;
@@ -310,10 +311,10 @@ static uint32_t addNotifiableCharacteristics(const ble_sensortag_service_t *p_co
     attr_value.p_attr_md = &attribute_md;
     attr_value.max_len   = value_len;
     
-    return sd_ble_gatts_characteristic_add(p_context->service_handle, &char_md, &attr_value, p_handle);
+    return sd_ble_gatts_characteristic_add(*p_service_handler, &char_md, &attr_value, p_handle);
 }
 
-static uint32_t addCharacteristics(const ble_sensortag_service_t *p_context, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
+static uint32_t addCharacteristics(const ble_sensortag_service_t *p_context, uint16_t *p_service_handler, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
 {
     ble_gatts_char_md_t char_md;
     ble_gatts_attr_md_t attribute_md;
@@ -340,7 +341,7 @@ static uint32_t addCharacteristics(const ble_sensortag_service_t *p_context, ble
     attr_value.p_attr_md = &attribute_md;
     attr_value.max_len   = value_len;
     
-    return sd_ble_gatts_characteristic_add(p_context->service_handle, &char_md, &attr_value, p_handle);
+    return sd_ble_gatts_characteristic_add(*p_service_handler, &char_md, &attr_value, p_handle);
 }
 
 static void addAService(ble_sensortag_service_t *p_context,
@@ -359,13 +360,13 @@ static void addAService(ble_sensortag_service_t *p_context,
     APP_ERROR_CHECK(err_code);
     
     // キャラクタリスティクスを登録
-    err_code = addNotiableCharacteristics(p_context, p_value_char_handler, value_char_uuid, value_char_length);
+    err_code = addNotifiableCharacteristics(p_context, p_service_handler, p_value_char_handler, value_char_uuid, true, false, value_char_length); // read-only
     APP_ERROR_CHECK(err_code);
     
-    err_code = addCharacteristics(p_context, p_configration_char_handler, configration_char_uuid, true, true, 1);
+    err_code = addCharacteristics(p_context, p_service_handler, p_configration_char_handler, configration_char_uuid, true, true, 1);
     APP_ERROR_CHECK(err_code);
     
-    err_code = addCharacteristics(p_context, p_period_char_handler, period_char_uuid, true, true, 1);
+    err_code = addCharacteristics(p_context, p_service_handler, p_period_char_handler, period_char_uuid, true, true, 1);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -374,58 +375,59 @@ static void addServices(ble_sensortag_service_t *p_context)
     ret_code_t err_code;
     
     addAService(p_context,
-                &(p_context->temperature_service_handle),               0xaa00, 4,
-                &(p_context->temperature_value_char_handle),            0xaa01,
-                &(p_context->temperature_configration_char_handle),     0xaa02,
-                &(p_context->temperature_priod_char_handle),            0xaa03);
+                &(p_context->ir_temperature_service_handle),               0xaa00,
+                &(p_context->ir_temperature_value_char_handle),            0xaa01, 4,
+                &(p_context->ir_temperature_configration_char_handle),     0xaa02,
+                &(p_context->ir_temperature_period_char_handle),           0xaa03);
 
     addAService(p_context,
-                &(p_context->accelerometer_service_handle),             0xaa10, 3,
-                &(p_context->accelerometer_value_char_handle),          0xaa11,
+                &(p_context->accelerometer_service_handle),             0xaa10,
+                &(p_context->accelerometer_value_char_handle),          0xaa11, 3,
                 &(p_context->accelerometer_configration_char_handle),   0xaa12,
-                &(p_context->accelerometer_priod_char_handle),          0xaa13);
+                &(p_context->accelerometer_period_char_handle),         0xaa13);
 
     addAService(p_context,
-                &(p_context->humidity_service_handle),              0xaa20, 4,
-                &(p_context->humidity_value_char_handle),           0xaa21,
+                &(p_context->humidity_service_handle),              0xaa20,
+                &(p_context->humidity_value_char_handle),           0xaa21, 4,
                 &(p_context->humidity_configration_char_handle),    0xaa22,
-                &(p_context->humidity_priod_char_handle),           0xaa23);
+                &(p_context->humidity_period_char_handle),          0xaa23);
     
     addAService(p_context,
-                &(p_context->magnetometer_service_handle),              0xaa30, 6,
-                &(p_context->magnetometer_value_char_handle),           0xaa31,
+                &(p_context->magnetometer_service_handle),              0xaa30,
+                &(p_context->magnetometer_value_char_handle),           0xaa31, 6,
                 &(p_context->magnetometer_configration_char_handle),    0xaa32,
-                &(p_context->magnetometer_priod_char_handle),           0xaa33);
+                &(p_context->magnetometer_period_char_handle),          0xaa33);
     
 
     addAService(p_context,
-                &(p_context->magnetometer_service_handle),              0xaa40, 4,
-                &(p_context->magnetometer_value_char_handle),           0xaa41,
-                &(p_context->magnetometer_configration_char_handle),    0xaa42,
-                &(p_context->magnetometer_priod_char_handle),           0xaa44);
+                &(p_context->barometer_service_handle),              0xaa40,
+                &(p_context->barometer_value_char_handle),           0xaa41, 4,
+                &(p_context->barometer_configration_char_handle),    0xaa42,
+                &(p_context->barometer_period_char_handle),          0xaa44);
     // キャリブレーション・キャラクタリスティクスを追加
-    err_code = addCharacteristics(p_context, &(p_context->magnetometer_calibration_char_handle), 0xaa43, true, false, 16);
+    err_code = addCharacteristics(p_context, &(p_context->barometer_service_handle), &(p_context->barometer_calibration_char_handle), 0xaa43, true, false, 16);
     APP_ERROR_CHECK(err_code);
     
     addAService(p_context,
-                &(p_context->magnetometer_service_handle),              0xaa50, 6,
-                &(p_context->magnetometer_value_char_handle),           0xaa51,
-                &(p_context->magnetometer_configration_char_handle),    0xaa52,
-                &(p_context->magnetometer_priod_char_handle),           0xaa53);
+                &(p_context->gyroscope_service_handle),              0xaa50,
+                &(p_context->gyroscope_value_char_handle),           0xaa51, 6,
+                &(p_context->gyroscope_configration_char_handle),    0xaa52,
+                &(p_context->gyroscope_period_char_handle),          0xaa53);
     
     addAService(p_context,
-                &(p_context->illumination_service_handle),              0xaa80, 6,
-                &(p_context->illumination_char_handle),                 0xaa81,
+                &(p_context->illumination_service_handle),              0xaa80,
+                &(p_context->illumination_value_char_handle),           0xaa81, 6,
                 &(p_context->illumination_configration_char_handle),    0xaa82,
-                &(p_context->illumination_priod_char_handle),           0xaa83);
+                &(p_context->illumination_period_char_handle),          0xaa83);
 }
+
 /**
  * Public methods
  */
 
 uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const sensorSetting_t *p_setting, ble_sensortag_service_event_handler_t setting_changed_event_handler)
 {
-    if(p_context == NULL || p_init == NULL) {
+    if(p_context == NULL || p_setting == NULL || setting_changed_event_handler == NULL) {
         return NRF_ERROR_NULL;
     }
     
@@ -434,7 +436,7 @@ uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const senso
     // サービス構造体を初期化
     memset(p_context, 0, sizeof(ble_sensortag_service_t));
     
-    p_context->event_handler     = event_handler;
+    p_context->setting_changed_event_handler = setting_changed_event_handler;
     p_context->connection_handle = BLE_CONN_HANDLE_INVALID;
     
     // ベースUUIDを登録
@@ -470,25 +472,13 @@ void bleSensorTagServiceOnBLEEvent(ble_sensortag_service_t *p_context, ble_evt_t
     }
 }
 
-void notifySensorData(const ble_sensortag_service_t *p_context, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+void notifySensorData(ble_sensortag_service_t *p_context, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
 {
     switch(sensorType) {
-            // TIのサービスは加速度など個別に通知するので、ここでは9軸で扱う部分は、コメントアウトしておく。
-            /*
         case MotionSensor:
-            notifyAcceleromterData(p_context, p_setting, &(p_sensorData->motionSensorData->acceleration));
-            notifyGyroscopeData(p_context, p_setting, &(p_sensorData->motionSensorData->rotationRate));
-            notifyMagnetrometer(p_context, p_setting, &(p_sensorData->motionSensorData->magneticField));
-            break;
-             */
-        case AccelerationData:
-            notifyAcceleromterData(p_context, &(p_sensorData->motionSensorData->acceleration));
-            break;
-        case RotationRateData:
-            notifyGyroscopeData(p_context, &(p_sensorData->motionSensorData->rotationRate));
-            break;
-        case MagneticFieldData:
-            notifyMagnetrometer(p_context, &(p_sensorData->motionSensorData->magneticField));
+            notifyAcceleromterData(p_context, &(p_sensorData->motionSensorData.acceleration));
+            notifyGyroscopeData(p_context, &(p_sensorData->motionSensorData.rotationRate));
+            notifyMagnetrometer(p_context, &(p_sensorData->motionSensorData.magneticField));
             break;
         case TemperatureAndHumiditySensor:
             notifyHumidity(p_context, &(p_sensorData->temperatureAndHumidityData));
@@ -507,46 +497,49 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
 
     // BLEのサービスに反映
     uint8_t data;
-    
-    data = (uint8_t)is_temperature_sampling;
+
+    /*
+    // IR温度計は実装されていない
+    data = (uint8_t)p_context->sensor_setting.is_temperature_sampling;
     setCharacteristicsValue(p_context, p_context->temperature_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.temperatureSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->temperature_priod_char_handle.value_handle, &data, 1);
+    setCharacteristicsValue(p_context, p_context->temperature_period_char_handle.value_handle, &data, 1);
+    */
     
-    data = (uint8_t)is_accelerometer_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_accelerometer_sampling;
     setCharacteristicsValue(p_context, p_context->accelerometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.accelerometerSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->accelerometer_priod_char_handle.value_handle, &data, 1);
+    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    setCharacteristicsValue(p_context, p_context->accelerometer_period_char_handle.value_handle, &data, 1);
     
-    data = (uint8_t)is_humidity_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_humidity_sampling;
     setCharacteristicsValue(p_context, p_context->humidity_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.humiditySamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->humidity_priod_char_handle.value_handle, &data, 1);
+    data = (uint8_t)(p_context->sensor_setting.temperatureAndHumiditySamplingPeriod / 10 );
+    setCharacteristicsValue(p_context, p_context->humidity_period_char_handle.value_handle, &data, 1);
 
-    data = (uint8_t)is_magnetrometer_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_magnetrometer_sampling;
     setCharacteristicsValue(p_context, p_context->magnetometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.magnetrometerSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->magnetometer_priod_char_handle.value_handle, &data, 1);
+    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    setCharacteristicsValue(p_context, p_context->magnetometer_period_char_handle.value_handle, &data, 1);
 
-    data = (uint8_t)is_barometer_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_barometer_sampling;
     setCharacteristicsValue(p_context, p_context->barometer_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.airPressureSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->barometer_priod_char_handle.value_handle, &data, 1);
+    setCharacteristicsValue(p_context, p_context->barometer_period_char_handle.value_handle, &data, 1);
     // キャリブレ
     // C1 - C4は符号なし、C5-C8は符号ありの16ビット整数。C3=400 (0x190)、それ以外は0。
     // {0x00, 0x00, 0x00, 0x00, <0x90, 0x01,> 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
-    const uint8_t cnf_data[] = {0x00, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t cnf_data[] = {0x00, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     setCharacteristicsValue(p_context, p_context->magnetometer_configration_char_handle.value_handle, cnf_data, sizeof(cnf_data));
     
-    data = (uint8_t)is_gyroscope_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_gyroscope_sampling;
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.rotationRateSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->brightnessSamplingPeriod.value_handle, &data, 1);
+    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    setCharacteristicsValue(p_context, p_context->gyroscope_period_char_handle.value_handle, &data, 1);
     
-    data = (uint8_t)is_illumination_sampling;
+    data = (uint8_t)p_context->sensor_setting.is_illumination_sampling;
     setCharacteristicsValue(p_context, p_context->illumination_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.rotationRateSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->illumination_priod_char_handle.value_handle, &data, 1);
+    data = (uint8_t)(p_context->sensor_setting.brightnessSamplingPeriod / 10 );
+    setCharacteristicsValue(p_context, p_context->illumination_period_char_handle.value_handle, &data, 1);
 }
 
 void getSensorTagSetting(ble_sensortag_service_t *p_context, sensorSetting_t *p_dst)

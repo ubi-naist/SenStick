@@ -477,8 +477,11 @@ static void main_app_timer_handler(void *p_arg)
     
     // バッテリー監視
     uint8_t battery_level = getBatteryLevel(&gpio_manager_context);
-    err_code = ble_bas_battery_level_update(&m_bas,battery_level);
-    APP_ERROR_CHECK(err_code);
+    if( m_conn_handle != BLE_CONN_HANDLE_INVALID) {
+        err_code = ble_bas_battery_level_update(&m_bas,battery_level);
+//        APP_ERROR_CHECK(err_code);
+    }
+    
 }
 
 /**

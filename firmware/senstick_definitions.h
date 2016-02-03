@@ -9,6 +9,6 @@
 
 /* Scheduler のパラメータ */
 #define SCHED_MAX_EVENT_DATA_SIZE       MAX(APP_TIMER_SCHED_EVT_SIZE, BLE_STACK_HANDLER_SCHED_EVT_SIZE)       /**< Maximum size of scheduler events. */
-#define SCHED_QUEUE_SIZE                10
+#define SCHED_QUEUE_SIZE                20
 
 #endif /* senstick_definitions_h */

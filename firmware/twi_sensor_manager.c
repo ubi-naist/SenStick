@@ -22,6 +22,8 @@
  * Private メソッド
  */
 
+#define SAMPLING_PERIOD_MS 100
+
 static void init_twi_slaves(sensor_manager_t *p_context)
 {
     /*
@@ -54,7 +56,7 @@ static void sensor_timer_handler(void *p_arg)
     
     // カウンターをカウントアップ
     for(int i = 0; i < NUM_OF_SENSOR_DEVICES; i++) {
-        (p_context->remaining_counter[i]) += 10;
+        (p_context->remaining_counter[i]) += SAMPLING_PERIOD_MS;
     }
 
     // センサーごとに、タイマーを増加、時間になっていたら、通知
@@ -174,7 +176,7 @@ void sensorManagerStartSampling(sensor_manager_t *p_context)
     memset(p_context->remaining_counter, 0, sizeof(p_context->remaining_counter));
     // サンプリングカウンタを開始
     err_code = app_timer_start(p_context->timer_id,
-                               APP_TIMER_TICKS(10, APP_TIMER_PRESCALER), // 10ミリ秒
+                               APP_TIMER_TICKS(SAMPLING_PERIOD_MS, APP_TIMER_PRESCALER), 
                                p_context);
     APP_ERROR_CHECK(err_code);
     

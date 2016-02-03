@@ -529,7 +529,7 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     // C1 - C4は符号なし、C5-C8は符号ありの16ビット整数。C3=400 (0x190)、それ以外は0。
     // {0x00, 0x00, 0x00, 0x00, <0x90, 0x01,> 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
     uint8_t cnf_data[] = {0x00, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    setCharacteristicsValue(p_context, p_context->magnetometer_configration_char_handle.value_handle, cnf_data, sizeof(cnf_data));
+    setCharacteristicsValue(p_context, p_context->barometer_calibration_char_handle.value_handle, cnf_data, sizeof(cnf_data));
     
     data = (uint8_t)p_context->sensor_setting.is_gyroscope_sampling;
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);

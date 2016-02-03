@@ -313,8 +313,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x1c000</StartAddress>
-                <Size>0x12000</Size>
+                <StartAddress>0x18000</StartAddress>
+                <Size>0x14000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -338,8 +338,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20002800</StartAddress>
-                <Size>0x1800</Size>
+                <StartAddress>0x20002000</StartAddress>
+                <Size>0x2000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -1653,13 +1653,6 @@
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
         </targetInfos>
       </component>
-      <component Cclass="nRF_SoftDevice" Cgroup="s110_hex" Cvendor="NordicSemiconductor" Cversion="8.0.3" condition="s110_hex">
-        <package name="nRF_SoftDevice_S110" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_S110/" vendor="NordicSemiconductor" version="8.0.3"/>
-        <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
-          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
-        </targetInfos>
-      </component>
     </components>
     <files>
       <file attr="config" category="source" name="bsp\bsp.c" version="10.0.0">
@@ -2200,13 +2193,10 @@
         </targetInfos>
       </file>
       <file attr="config" category="other" name="hex\s110_nrf51_8.0.0_softdevice.hex" version="8.0.3">
-        <instance index="0">RTE\nRF_SoftDevice\nRF51822_xxAA\s110_nrf51_8.0.0_softdevice.hex</instance>
+        <instance index="0" removed="1">RTE\nRF_SoftDevice\nRF51822_xxAA\s110_nrf51_8.0.0_softdevice.hex</instance>
         <component Cclass="nRF_SoftDevice" Cgroup="s110_hex" Cvendor="NordicSemiconductor" Cversion="8.0.3" condition="s110_hex"/>
         <package name="nRF_SoftDevice_S110" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_S110/" vendor="NordicSemiconductor" version="8.0.3"/>
-        <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
-          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="doc" name="doc\s130_nrf51822_1.0.0_licence_agreement.txt" version="1.0.2">
         <instance index="0" removed="1">RTE\nRF_SoftDevice\nRF51822_xxAA\s130_nrf51822_1.0.0_licence_agreement.txt</instance>

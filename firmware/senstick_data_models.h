@@ -67,7 +67,7 @@ typedef uint16_t TemperatureData_t;
 typedef struct {
     HumidityData_t humidity;
     TemperatureData_t temperature;
-} TemperatureAndHumidityData_t;
+} HumidityAndTemperatureData_t;
 
 // コールバック関数のための統合センサーデータ型
 typedef union {
@@ -75,7 +75,7 @@ typedef union {
     BrightnessData_t    brightnessData;
     UltraVioletData_t   ultraVioletData;
     AirPressureData_t   airPressureData;
-    TemperatureAndHumidityData_t temperatureAndHumidityData;
+    HumidityAndTemperatureData_t humidityAndTemperatureData;
 } SensorData_t;
 
 // 物理的なセンサーの種別
@@ -83,7 +83,7 @@ typedef enum {
     MotionSensor                    = 0,
     BrightnessSensor                = 1,
     UltraVioletSensor               = 2,
-    TemperatureAndHumiditySensor    = 3,
+    HumidityAndTemperatureSensor    = 3,
     AirPressureSensor               = 4
 } SensorDeviceType_t;
 
@@ -140,7 +140,7 @@ typedef struct sensorSettings_s {
 
     // サンプリングレートの単位はミリ秒
     SamplingRate_t motionSensorSamplingPeriod;
-    SamplingRate_t temperatureAndHumiditySamplingPeriod;
+    SamplingRate_t humidityAndTemperatureSamplingPeriod;
     SamplingRate_t airPressureSamplingPeriod;
     SamplingRate_t brightnessSamplingPeriod;
     SamplingRate_t ultraVioletSamplingPeriod;
@@ -188,7 +188,7 @@ void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data);
 void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data);
 
 // 輝度データを4バイトのバイト配列に展開します
-void serializeTemperatureAndHumidityData(uint8_t *p_dst, const TemperatureAndHumidityData_t *p_data);
+void serializeHumidityAndTemperatureData(uint8_t *p_dst, const HumidityAndTemperatureData_t *p_data);
 
 // 圧力データを3バイトのバイト配列に展開します
 void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data);

@@ -75,9 +75,9 @@ bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t devic
             }
             break;
             
-        case TemperatureAndHumiditySensor:
-            if(period >= 100 && p_setting->temperatureAndHumiditySamplingPeriod != period) {
-                p_setting->temperatureAndHumiditySamplingPeriod = period;
+        case HumidityAndTemperatureSensor:
+            if(period >= 100 && p_setting->humidityAndTemperatureSamplingPeriod != period) {
+                p_setting->humidityAndTemperatureSamplingPeriod = period;
                 isChanged = true;
             }
             break;
@@ -212,7 +212,7 @@ void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data)
     uint16ToByteArrayBigEndian(p_dst, *p_data);
 }
 
-void serializeTemperatureAndHumidityData(uint8_t *p_dst, const TemperatureAndHumidityData_t *p_data)
+void serializeHumidityAndTemperatureData(uint8_t *p_dst, const HumidityAndTemperatureData_t *p_data)
 {
     uint16ToByteArrayBigEndian(&(p_dst[0]), p_data->temperature);
     uint16ToByteArrayBigEndian(&(p_dst[2]), p_data->humidity);

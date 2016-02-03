@@ -84,12 +84,12 @@ static void sensor_timer_handler(void *p_arg)
         }
     }
     
-    if(p_context->remaining_counter[TemperatureAndHumiditySensor] >= p_context->sensor_setting.temperatureAndHumiditySamplingPeriod) {
-        p_context->remaining_counter[TemperatureAndHumiditySensor] = 0;
+    if(p_context->remaining_counter[HumidityAndTemperatureSensor] >= p_context->sensor_setting.humidityAndTemperatureSamplingPeriod) {
+        p_context->remaining_counter[HumidityAndTemperatureSensor] = 0;
         if(p_context->sensor_setting.is_humidity_sampling) {
-            getHumidityData(&(p_context->humidity_sensor_context), &(sensor_data.temperatureAndHumidityData.humidity));
-            getTemperatureData(&(p_context->humidity_sensor_context), &(sensor_data.temperatureAndHumidityData.temperature));
-            (p_context->sampling_callback_handler)(TemperatureAndHumiditySensor, &sensor_data);
+            getHumidityData(&(p_context->humidity_sensor_context), &(sensor_data.humidityAndTemperatureData.humidity));
+            getTemperatureData(&(p_context->humidity_sensor_context), &(sensor_data.humidityAndTemperatureData.temperature));
+            (p_context->sampling_callback_handler)(HumidityAndTemperatureSensor, &sensor_data);
         }
     }
     

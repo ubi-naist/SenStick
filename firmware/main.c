@@ -497,7 +497,7 @@ int main(void)
         defaultSensorSetting.rotationRange      = ROTATION_RANGE_250DPS;
         
         defaultSensorSetting.motionSensorSamplingPeriod             = 100;
-        defaultSensorSetting.temperatureAndHumiditySamplingPeriod   = 500;
+        defaultSensorSetting.humidityAndTemperatureSamplingPeriod   = 500;
         defaultSensorSetting.airPressureSamplingPeriod              = 500;
         defaultSensorSetting.brightnessSamplingPeriod               = 500;
         defaultSensorSetting.ultraVioletSamplingPeriod              = 500;

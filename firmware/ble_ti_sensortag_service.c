@@ -123,7 +123,7 @@ static void notifyGyroscopeData(ble_sensortag_service_t *p_context, const Rotati
     }
 }
 
-static void notifyHumidity(ble_sensortag_service_t *p_context, const TemperatureAndHumidityData_t *p_data)
+static void notifyHumidity(ble_sensortag_service_t *p_context, const HumidityAndTemperatureData_t *p_data)
 {
     uint8_t buffer[4];
 
@@ -244,7 +244,7 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
            || p_evt_write->handle == p_context->gyroscope_period_char_handle.value_handle ) {
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), MotionSensor, period);
         } else if(p_evt_write->handle == p_context->humidity_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), TemperatureAndHumiditySensor, period);
+            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), HumidityAndTemperatureSensor, period);
         } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AirPressureSensor, period);
         } else if(p_evt_write->handle == p_context->illumination_period_char_handle.value_handle) {
@@ -480,8 +480,8 @@ void notifySensorData(ble_sensortag_service_t *p_context, SensorDeviceType_t sen
             notifyGyroscopeData(p_context, &(p_sensorData->motionSensorData.rotationRate));
             notifyMagnetrometer(p_context, &(p_sensorData->motionSensorData.magneticField));
             break;
-        case TemperatureAndHumiditySensor:
-            notifyHumidity(p_context, &(p_sensorData->temperatureAndHumidityData));
+        case HumidityAndTemperatureSensor:
+            notifyHumidity(p_context, &(p_sensorData->humidityAndTemperatureData));
             break;
         case AirPressureSensor:
             notifyBarometer(p_context, &(p_sensorData->airPressureData));
@@ -513,7 +513,7 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     
     data = (uint8_t)p_context->sensor_setting.is_humidity_sampling;
     setCharacteristicsValue(p_context, p_context->humidity_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.temperatureAndHumiditySamplingPeriod / 10 );
+    data = (uint8_t)(p_context->sensor_setting.humidityAndTemperatureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->humidity_period_char_handle.value_handle, &data, 1);
 
     data = (uint8_t)p_context->sensor_setting.is_magnetrometer_sampling;

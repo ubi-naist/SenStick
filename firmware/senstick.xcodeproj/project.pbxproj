@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		F85DA1E51C4127C10090705F /* flash_logger.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = flash_logger.c; sourceTree = "<group>"; };
-		F85DA1E61C4127C10090705F /* flash_logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = flash_logger.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
 		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
@@ -57,6 +55,10 @@
 		F8EB5E701C5B051C00D82482 /* gpio_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_manager.h; sourceTree = "<group>"; };
 		F8EB5E741C5B775E00D82482 /* senstick_tests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_tests.c; sourceTree = "<group>"; };
 		F8EB5E751C5B775E00D82482 /* senstick_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_tests.h; sourceTree = "<group>"; };
+		F8EB5E791C61E8D500D82482 /* sensor_data_logger.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_data_logger.c; sourceTree = "<group>"; };
+		F8EB5E7A1C61E8D500D82482 /* sensor_data_logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_data_logger.h; sourceTree = "<group>"; };
+		F8EB5E7D1C62E6A500D82482 /* flash_sector_list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = flash_sector_list.c; sourceTree = "<group>"; };
+		F8EB5E7E1C62E6A500D82482 /* flash_sector_list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = flash_sector_list.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -69,6 +71,7 @@
 				F8EB5E711C5B053C00D82482 /* model */,
 				F8AC9D3F1C22396400366AEF /* services */,
 				F8AC9D441C223A9500366AEF /* gpio */,
+				F8EB5E781C61E8B800D82482 /* logger */,
 				F8AC9D531C223C0900366AEF /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
 				F8EB5E731C5B774D00D82482 /* tests */,
@@ -132,8 +135,6 @@
 		F8AC9D531C223C0900366AEF /* spi */ = {
 			isa = PBXGroup;
 			children = (
-				F85DA1E61C4127C10090705F /* flash_logger.h */,
-				F85DA1E51C4127C10090705F /* flash_logger.c */,
 				F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */,
 				F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */,
 			);
@@ -178,6 +179,17 @@
 				F8EB5E741C5B775E00D82482 /* senstick_tests.c */,
 			);
 			name = tests;
+			sourceTree = "<group>";
+		};
+		F8EB5E781C61E8B800D82482 /* logger */ = {
+			isa = PBXGroup;
+			children = (
+				F8EB5E7A1C61E8D500D82482 /* sensor_data_logger.h */,
+				F8EB5E791C61E8D500D82482 /* sensor_data_logger.c */,
+				F8EB5E7E1C62E6A500D82482 /* flash_sector_list.h */,
+				F8EB5E7D1C62E6A500D82482 /* flash_sector_list.c */,
+			);
+			name = logger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

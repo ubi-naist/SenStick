@@ -24,6 +24,5 @@ void writeFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *da
 void readFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *data, uint8_t data_length);
 // 4kバイト単位のセクターのデータを消去します
 void eraseSector(flash_memory_context_t *p_context, uint32_t address);
-void testFlashMemory(flash_memory_context_t *p_context);
 
 #endif

@@ -1,4 +1,71 @@
-#include "flash_filesystem.h"
+#include "flash_stream.h"
+
+#define FLASH_SECTOR_SIZE           MX25L25635F_SECTOR_SIZE             // 4KB
+#define INVALID_SECTOR_INDEX        0xffff
+
+/**
+ * Private methods
+ */
+// セクター先頭にあるセクター情報を読み込みます
+void readSectorHeader(flash_memory_context_t *p_flash_context, uint16_t index, sector_header_t *p_header)
+{
+    flashRawRead(p_flash_context, index * FLASH_SECTOR_SIZE, p_header, , sizeof(sector_header_s));
+}
+// セクター先頭にあるセクター情報を読み込みます
+void writeSectorHeader(flash_memory_context_t *p_flash_context, uint16_t index, sector_header_t *p_header)
+{
+    flashRawWrite(p_flash_context, index * FLASH_SECTOR_SIZE, p_header, , sizeof(sector_header_s));
+}
+
+// セクターを割り当てます
+sector_index_t allocateSector()
+{}
+
+/**
+ * Public methods
+ */
+bool streamOpen(flash_stream_t *p_stream, uint8_t stream_id, flash_memory_context_t *p_flash)
+{
+    if(stream_id > MAX_STREAM_ID) {
+        return false;
+    }
+
+    // 初期値設定
+    p_stream->p_flash   = p_flash;
+    p_stream->stream_id = stream_id;
+    // ヘッダ情報を読みだし
+    sector_header_t header;
+    flashRawRead(p_flash_context, p_stream->stream_id * sizeof(sector_header_s), &header, sizeof(sector_header_t));
+    p_stream->first_sector  = header.next_index;
+    p_stream->size          = header.size;
+    p_stream->can_write     = (first_sector == INVALID_SECTOR_INDEX);
+    
+    // 最初のセクションを割当
+    if(first_sector == INVALID_SECTOR_INDEX) {
+        first_sector = allocateSector();
+    }
+    p_stream->write_position =
+    // 読みだし、書き出し位置を設定
+    if( p_stream->first_sector.next_index == INVALID_SECTOR_INDEX) {}
+    stream_position_t write_position;
+    stream_position_t read_position;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define FLASH_BYTE_SIZE             MX25L25635F_FLASH_SIZE              // 32 MB
+
+#define FLASH_SECTOR_MAX_INDEX      (FLASH_BYTE_SIZE / FLASH_SECTOR_SIZE - 1 )
 
 #define SECTOR_HEADER_SIZE      (sizeof(sector_header_info_t))
 #define MAX_DATA_SIZE_OF_SECTOR (FLASH_SECTOR_SIZE - SECTOR_HEADER_SIZE)
@@ -8,13 +75,29 @@
  */
 
 // セクター先頭にあるセクター情報を読み込みます
-void readSectorHeader(flash_sector_list_t *p_context, sector_index_t index, sector_header_info_t *p_sector_header)
+void readSectorHeader(flash_memory_context_t *p_flash_context, sector_index_t index, sector_header_info_t *p_sector_header)
 {
     flashRawRead(p_context->p_flash_context, FLASH_SECTOR_SIZE * index, p_sector_header, sizeof(sector_header_info_t));
 }
+// セクター先頭にあるセクター情報を読み込みます
+void writeSectorHeader(flash_memory_context_t *p_flash_context, sector_index_t index, sector_header_info_t *p_sector_header)
+{
+    flashRawWrite(p_context->p_flash_context, FLASH_SECTOR_SIZE * index, p_sector_header, sizeof(sector_header_info_t));
+}
 
+/**
+ * Public methods
+ */
+int sectorWriteData(flash_memory_context_t *p_memory, sector_index_t sector_index, int position, const uint8_t *p_buffer, const int size)
+{
+    
+}
+void sectorWriteDataSize(flash_memory_context_t *p_memory, sector_index_t sector_index, int size);
+int sectorReadData(flash_memory_context_t *p_memory, sector_index_t sector_index, int position, const uint8_t *p_buffer, const int size);
+
+/*
 // 空きセクターを見つけます
-sector_index_t findEmptySector(flash_sector_list_t *p_context, sector_index_t start)
+sector_index_t findEmptySector(flash_stream_t *p_context, sector_index_t start)
 {
     sector_header_info_t header;
     sector_index_t index = start;
@@ -38,7 +121,7 @@ sector_index_t findEmptySector(flash_sector_list_t *p_context, sector_index_t st
 }
 
 // セクターを割り当てます。成功すればtrue。次のセクターにアクセス可能状態になります
-bool allocateSector(flash_sector_list_t *p_context)
+bool allocateSector(flash_stream_t *p_context)
 {
     // 次のセクターを割り当てます
     sector_index_t next_sector = p_context->allocator(p_context->p_flash_context, )
@@ -60,7 +143,7 @@ bool allocateSector(flash_sector_list_t *p_context)
 }
 
 // 次のセクターを開きます。成功すればtrue。次のセクターにアクセス可能状態になります
-bool getNextSector(flash_sector_list_t *p_context)
+bool getNextSector(flash_stream_t *p_context)
 {
     sector_index_t next_sector = p_context->sector.header.next_index;
     // 無効なセクターであればここで終了。
@@ -75,69 +158,89 @@ bool getNextSector(flash_sector_list_t *p_context)
     
     return true;
 }
-
+*/
 /**
  * Public methods
  */
 
-uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, const uint8_t *p_buffer, const uint32_t size)
+bool sectorOpen(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info, sector_index_t index)
 {
-    // 末尾がフラッシュの領域を超える場合は、書き込み失敗
-    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
-        return 0;
+    if(index > FLASH_SECTOR_MAX_INDEX) {
+        return false;
     }
+
+    // 初期化
+    memset(p_sector_info, 0xff, sizeof(sector_info_t));
+    p_sector_info->index    = index;
+    p_sector_info->position = 0;
     
-    uint32_t index = 0;
-    uint32_t write_position = address;
-    do {
-        // 256バイト単位で書き込むので、書き込み可能サイズを求める
-        int page_size      = 256 - (write_position % 256);
-        uint8_t write_size = (uint8_t) MIN(255, MIN(page_size, size));
-        // 書き込む
-        writeFlash(p_memory, write_position, &(p_buffer[index]), write_size);
-        // 書き込み位置を更新、全て書き終わるまで繰り返す
-        index += write_size;
-        write_position += write_size;
-    } while (index < size);
-    
-    return index;
+    // ヘッダ情報を読みだす
+    readSectorHeader(p_flash_context, index, &(p_sector_info->header));
+
+    return true;
 }
 
-uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, const uint32_t size)
+void sectorClose(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info)
 {
-    // 末尾がフラッシュの領域を超える場合は、読み出し失敗
-    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
-        return 0;
+    if(p_sector_info->available_data_size < (FLASH_SECTOR_SIZE - sizeof(sector_header_info_t))) {
+        return;
     }
-    
-    if(size == 0) {
-        return 0;
-    }
-    
-    uint32_t index = 0;
-    uint32_t read_position = address;
-    do {
-        // 読みだし可能サイズ
-        int remainingSize = (size - read_position);
-        // 256バイト単位で読みだすので、読み出し可能サイズを求める
-        int page_size      = 256 - (read_position % 256);
-        uint8_t read_size  = (uint8_t) MIN(255, MIN( MIN(size, page_size), remainingSize));
-        if(readSize <= 0) {
-            return index;
-        }
-        // 先頭セクターはファイル情報に使うので、1セクター分アドレスをずらす
-        readFlash(p_memory, read_position, &(p_buffer[index]), (uint8_t)read_size);
-        // 位置などを変更する
-        index           += read_size;
-        read_position   += read_size;
-    } while (index < size);
-    
-    return index;
+    // ヘッダを変更する
+    p_sector_info->header.available_data_size   = p_sector_info->position;
+    p_sector_info->header.next_index            = FLASH_SECTOR_INVALID_INDEX;
+    writeSectorHeader(p_flash_context, index, &(p_sector_info->header));
 }
 
-bool sectorListOpen(flash_sector_list_t *p_list, flash_memory_context_t *p_flash_context, sector_index_t index, sector_allocater_handler_t allocator)
+bool sectorSetPosition(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info, int position)
 {
-    memset(p_list, 0, sizeof(flash_sector_list_t));
+    if(position > p_sector_info)
+}
+
+int  sectorGetSize(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info)
+{
+}
+int  sectorWrite(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info, const uint8_t *p_buffer, const int size);
+int  sectorRead(flash_memory_context_t *p_flash_context, sector_info_t *p_sector_info, uint8_t *p_buffer, const int size);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bool sectorListOpen(flash_stream_t *p_list, flash_memory_context_t *p_flash_context, sector_index_t index, sector_allocater_handler_t allocator)
+{
+    memset(p_list, 0, sizeof(flash_stream_t));
     p_list->p_flash_context     = p_flash_context;
     p_flash->allocator          = allocator;
     p_list->first_sector_index  = index;
@@ -150,7 +253,7 @@ bool sectorListOpen(flash_sector_list_t *p_list, flash_memory_context_t *p_flash
 }
 
 // データをユニット単位で書き込みます。書き込んだユニット数を返します。
-int sectorListWrite(flash_sector_list_t *p_list, uint8_t *p_buffer, const int numOfData, const int sizeofData)
+int sectorListWrite(flash_stream_t *p_list, uint8_t *p_buffer, const int numOfData, const int sizeofData)
 {
     int index = 0;
     do{
@@ -177,7 +280,7 @@ int sectorListWrite(flash_sector_list_t *p_list, uint8_t *p_buffer, const int nu
     return index;
 }
 
-int sectorListRead(flash_sector_list_t *p_list, uint8_t *p_buffer, const int numOfData, const int sizeofData)
+int sectorListRead(flash_stream_t *p_list, uint8_t *p_buffer, const int numOfData, const int sizeofData)
 {
     int index = 0;
     do{
@@ -208,7 +311,7 @@ int sectorListRead(flash_sector_list_t *p_list, uint8_t *p_buffer, const int num
 }
 
 // リストを閉じます。
-void sectorListClose(flash_sector_list_t *p_list)
+void sectorListClose(flash_stream_t *p_list)
 {
     // セクターインデックス番号を確認
     if( p_context->sector.index > FLASH_SECTOR_MAX_INDEX) {

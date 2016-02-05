@@ -25,4 +25,10 @@ void readFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *dat
 // 4kバイト単位のセクターのデータを消去します
 void eraseSector(flash_memory_context_t *p_context, uint32_t address);
 
+// p_bufferからsizeバイトを書き込みます。書き込めたサイズを返します。セクターは事前に消去されているとします。
+uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, const uint8_t *p_buffer, const uint32_t size);
+
+// p_bufferからsizeバイトを読み込みます。読み込んだサイズを返します。
+uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, const uint32_t size);
+
 #endif

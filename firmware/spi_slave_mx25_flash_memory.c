@@ -335,4 +335,58 @@ void readFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *dat
     readFromSPISlaveWithAddress(p_context->p_spi, FLASH_CMD_READ4B, address, data, data_length);
 }
 
+uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, const uint8_t *p_buffer, const uint32_t size)
+{
+    // 末尾がフラッシュの領域を超える場合は、書き込み失敗
+    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
+        return 0;
+    }
+    
+    uint32_t index = 0;
+    uint32_t write_position = address;
+    do {
+        // 256バイト単位で書き込むので、書き込み可能サイズを求める
+        int page_size      = 256 - (write_position % 256);
+        uint8_t write_size = (uint8_t) MIN(255, MIN(page_size, size));
+        // 書き込む
+        writeFlash(p_memory, write_position, &(p_buffer[index]), write_size);
+        // 書き込み位置を更新、全て書き終わるまで繰り返す
+        index += write_size;
+        write_position += write_size;
+    } while (index < size);
+    
+    return index;
+}
+
+uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, const uint32_t size)
+{
+    // 末尾がフラッシュの領域を超える場合は、読み出し失敗
+    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
+        return 0;
+    }
+    
+    if(size == 0) {
+        return 0;
+    }
+    
+    uint32_t index = 0;
+    uint32_t read_position = address;
+    do {
+        // 読みだし可能サイズ
+        int remainingSize = (size - read_position);
+        // 256バイト単位で読みだすので、読み出し可能サイズを求める
+        int page_size      = 256 - (read_position % 256);
+        uint8_t read_size  = (uint8_t) MIN(255, MIN( MIN(size, page_size), remainingSize));
+        if(readSize <= 0) {
+            return index;
+        }
+        // 先頭セクターはファイル情報に使うので、1セクター分アドレスをずらす
+        readFlash(p_memory, read_position, &(p_buffer[index]), (uint8_t)read_size);
+        // 位置などを変更する
+        index           += read_size;
+        read_position   += read_size;
+    } while (index < size);
+    
+    return index;
+}
 

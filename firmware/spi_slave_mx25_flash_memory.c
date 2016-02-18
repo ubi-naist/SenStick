@@ -299,7 +299,22 @@ void eraseSector(flash_memory_context_t *p_context, uint32_t address)
     waitFlashReady(p_context);
 }
 
-void writeFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *data, uint8_t data_length)
+void eraseFlash(flash_memory_context_t *p_context)
+{
+    // Write in progressフラグをチェック
+    if( IsFlashBusy(p_context) ) {
+        APP_ERROR_CHECK(NRF_ERROR_BUSY);
+    }
+    
+    // weビットを立てる。
+    writeCommandWriteEnable(p_context);
+
+    writeToSPISlave(p_context->p_spi, FLASH_CMD_CE, NULL, 0);
+    
+    waitFlashReady(p_context);
+}
+
+void writeFlash(flash_memory_context_t *p_context, uint32_t address,  uint8_t *data, uint8_t data_length)
 {
     // アドレスチェック
     if( address > MX25L25635F_FLASH_SIZE) {
@@ -335,10 +350,10 @@ void readFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *dat
     readFromSPISlaveWithAddress(p_context->p_spi, FLASH_CMD_READ4B, address, data, data_length);
 }
 
-uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, const uint8_t *p_buffer, const uint32_t size)
+uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, uint32_t size)
 {
     // 末尾がフラッシュの領域を超える場合は、書き込み失敗
-    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
+    if( (address + size) >= FLASH_BYTE_SIZE) {
         return 0;
     }
     
@@ -358,10 +373,10 @@ uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, const
     return index;
 }
 
-uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, const uint32_t size)
+uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, uint32_t size)
 {
     // 末尾がフラッシュの領域を超える場合は、読み出し失敗
-    if( (address + sizeof) >= FLASH_BYTE_SIZE) {
+    if( (address + size) >= FLASH_BYTE_SIZE) {
         return 0;
     }
     
@@ -377,7 +392,7 @@ uint32_t flashRawRead(flash_memory_context_t *p_memory, uint32_t address, uint8_
         // 256バイト単位で読みだすので、読み出し可能サイズを求める
         int page_size      = 256 - (read_position % 256);
         uint8_t read_size  = (uint8_t) MIN(255, MIN( MIN(size, page_size), remainingSize));
-        if(readSize <= 0) {
+        if(read_size <= 0) {
             return index;
         }
         // 先頭セクターはファイル情報に使うので、1セクター分アドレスをずらす

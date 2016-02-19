@@ -299,6 +299,8 @@ void eraseSector(flash_memory_context_t *p_context, uint32_t address)
     waitFlashReady(p_context);
 }
 
+/*
+ // チップ全体消去は110秒、約2分かかるため、使わない。
 void eraseFlash(flash_memory_context_t *p_context)
 {
     // Write in progressフラグをチェック
@@ -313,6 +315,7 @@ void eraseFlash(flash_memory_context_t *p_context)
     
     waitFlashReady(p_context);
 }
+*/
 
 void writeFlash(flash_memory_context_t *p_context, uint32_t address,  uint8_t *data, uint8_t data_length)
 {

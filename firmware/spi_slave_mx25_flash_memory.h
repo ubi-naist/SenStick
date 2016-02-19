@@ -26,8 +26,9 @@ void writeFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *da
 void readFlash(flash_memory_context_t *p_context, uint32_t address, uint8_t *data, uint8_t data_length);
 // 4kバイト単位のセクターのデータを消去します
 void eraseSector(flash_memory_context_t *p_context, uint32_t address);
-// チップ全体をフォーマットします
-void eraseFlash(flash_memory_context_t *p_context);
+// チップ全体を消去します。
+// チップ全体の消去には2分ほどかかるため、その間デバイスを止めることはできないから、使わないことに。
+//void eraseFlash(flash_memory_context_t *p_context);
 
 // p_bufferからsizeバイトを書き込みます。書き込めたサイズを返します。セクターは事前に消去されているとします。
 uint32_t flashRawWrite(flash_memory_context_t *p_memory, uint32_t address, uint8_t *p_buffer, uint32_t size);

@@ -3,6 +3,6 @@
 
 #include "sensor_data_storage.h"
 
-void do_storage_test(flash_memory_context_t *p_flash);
+void do_storage_test(flash_stream_context_t *p_stream);
 
 #endif /* test_storage_h */

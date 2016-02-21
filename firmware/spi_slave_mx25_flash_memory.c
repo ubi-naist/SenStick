@@ -189,7 +189,7 @@ static void readConfigrationRegister(flash_memory_context_t *p_context, uint8_t 
 {
     readFromSPISlave(p_context->p_spi, FLASH_CMD_RDCR, p_data, 1);
 }
-
+/*
 static void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
 {
     uint8_t buffer[3];
@@ -197,7 +197,7 @@ static void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
     readFromSPISlave(p_context->p_spi, FLASH_CMD_RDID, buffer, 3);
     
     *p_data = ((uint32_t)buffer[0] << 16) |  ((uint32_t)buffer[1] << 8) | ((uint32_t)buffer[2] << 0);
-}
+}*/
 
 static bool IsFlashBusy(flash_memory_context_t *p_context)
 {
@@ -225,7 +225,7 @@ static void writeCommandWriteEnable(flash_memory_context_t *p_context)
 {
     writeToSPISlave(p_context->p_spi, FLASH_CMD_WREN, NULL, 0);
 }
-
+/*
 static void writeStatusConfigrationRegister(flash_memory_context_t *p_context, uint8_t status, uint8_t config)
 {
     // Write in progressフラグをチェック
@@ -242,7 +242,7 @@ static void writeStatusConfigrationRegister(flash_memory_context_t *p_context, u
     writeToSPISlave(p_context->p_spi, FLASH_CMD_WRSR, buffer, sizeof(buffer));
     
     waitFlashReady(p_context);
-}
+}*/
 
 static bool isAddress4ByteMode(flash_memory_context_t *p_context)
 {

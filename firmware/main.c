@@ -587,13 +587,13 @@ int main(void)
     err_code = nrf_drv_spi_init(&spi, &config, NULL);
     APP_ERROR_CHECK(err_code);
     
-    flash_memory_context_t flash;
-    initFlashMemory(&flash, &spi);
+    // メモリ単体テスト
+//    testFlashMemory(&(stream.flash_context));
 
-    testFlashMemory(&flash);
-    
-    //テストコード
-    do_storage_test(&flash);
+    // メモリへの書き込みテスト
+    flash_stream_context_t stream;
+    initFlashStream(&stream, &spi);
+    do_storage_test(&stream);
     /** **/
     
     // アドバタイジングを開始する。

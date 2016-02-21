@@ -1,4 +1,7 @@
 #include <string.h>
+#include "app_error.h"
+#include "app_util_platform.h"
+
 #include "flash_stream.h"
 
 #define STREAM_SIGNATURE    0xc0ffeea5
@@ -91,11 +94,43 @@ static void allocateSector(flash_stream_context_t *p_context, uint32_t address)
  */
 
 // フラッシュメモリへのストリーム書き込みを提供します
-void initFlashStream(flash_stream_context_t *p_context, nrf_drv_spi_t *p_spi)
-{
+void initFlashStream(flash_stream_context_t *p_context)
+{    
+    ret_code_t err_code;
+    
     memset(p_context, 0, sizeof(flash_stream_context_t));
     
-    initFlashMemory(&(p_context->flash_context), p_spi);
+    //IO設定
+    nrf_drv_gpiote_out_config_t out_config;
+    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_HIGH;
+    out_config.task_pin = false;
+    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_SPI_nCS, &out_config);
+    APP_ERROR_CHECK(err_code);
+    
+    // SPIインタフェース SPI0を使用。
+    (p_context->spi).p_registers  = NRF_SPI0;
+    (p_context->spi).irq          = SPI0_IRQ;
+    (p_context->spi).drv_inst_idx = SPI0_INSTANCE_INDEX;
+    (p_context->spi).use_easy_dma = SPI0_USE_EASY_DMA;
+    
+    //    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
+    nrf_drv_spi_config_t config;
+    config.sck_pin      = SPI0_CONFIG_SCK_PIN;
+    config.mosi_pin     = SPI0_CONFIG_MOSI_PIN;
+    config.miso_pin     = SPI0_CONFIG_MISO_PIN;
+    config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
+    config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
+    config.orc          = 0xff;
+    config.frequency    = NRF_DRV_SPI_FREQ_4M;
+    //    config.frequency    = NRF_DRV_SPI_FREQ_250K;
+    config.mode         = NRF_DRV_SPI_MODE_0;
+    config.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
+    
+    err_code = nrf_drv_spi_init(&(p_context->spi), &config, NULL);
+    APP_ERROR_CHECK(err_code);
+    
+    //フラッシュメモリ
+    initFlashMemory(&(p_context->flash_context), &(p_context->spi));
     
     // フォーマット確認、必要な場合はフォーマット
     uint32_t signature;

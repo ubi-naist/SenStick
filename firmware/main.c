@@ -30,8 +30,6 @@
 
 #include "ble_ti_sensortag_service.h"
 
-#include "nrf_drv_gpiote.h"
-#include "nrf_drv_spi.h"
 #include "app_util_platform.h"
 
 #include "senstick_tests.h"
@@ -554,45 +552,12 @@ int main(void)
     // センサーサービスを追加
 
     /** **/
-    //テストコード
-    // SPIのnCS
-    //    out_config = GPIOTE_CONFIG_OUT_SIMPLE(false); // 引数は init_high。初期値をlowにする。
-    nrf_drv_gpiote_out_config_t out_config;
-    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_HIGH;
-    out_config.task_pin = false;
-    err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_SPI_nCS, &out_config);
-    APP_ERROR_CHECK(err_code);
-        
-    // SPIインタフェース SPI0を使用。
-    nrf_drv_spi_t spi;
-    spi.p_registers  = NRF_SPI0;
-    spi.irq          = SPI0_IRQ;
-    spi.drv_inst_idx = SPI0_INSTANCE_INDEX;
-    spi.use_easy_dma = SPI0_USE_EASY_DMA;
-    
-    //    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
-    
-    nrf_drv_spi_config_t config;
-    config.sck_pin      = SPI0_CONFIG_SCK_PIN;
-    config.mosi_pin     = SPI0_CONFIG_MOSI_PIN;
-    config.miso_pin     = SPI0_CONFIG_MISO_PIN;
-    config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
-    config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
-    config.orc          = 0xff;
-    config.frequency    = NRF_DRV_SPI_FREQ_4M;
-    //    config.frequency    = NRF_DRV_SPI_FREQ_250K;
-    config.mode         = NRF_DRV_SPI_MODE_0;
-    config.bit_order    = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
-    
-    err_code = nrf_drv_spi_init(&spi, &config, NULL);
-    APP_ERROR_CHECK(err_code);
-    
     // メモリ単体テスト
-//    testFlashMemory(&(stream.flash_context));
+    //    testFlashMemory(&(stream.flash_context));
 
     // メモリへの書き込みテスト
     flash_stream_context_t stream;
-    initFlashStream(&stream, &spi);
+    initFlashStream(&stream);
     do_storage_test(&stream);
     /** **/
     

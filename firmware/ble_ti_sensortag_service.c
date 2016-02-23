@@ -194,9 +194,6 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
         } else if(p_evt_write->handle == p_context->gyroscope_value_char_handle.cccd_handle) {
             p_context->is_gyroscope_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
             return;
-        } else if(p_evt_write->handle == p_context->illumination_value_char_handle.cccd_handle) {
-            p_context->is_illumination_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
-            return;
         }
     }
 
@@ -227,8 +224,6 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
             p_context->is_barometer_sampling = config;
         } else if(p_evt_write->handle == p_context->gyroscope_configration_char_handle.value_handle) {
             p_context->is_gyroscope_sampling = config;
-        } else if(p_evt_write->handle == p_context->illumination_configration_char_handle.value_handle) {
-            p_context->is_illumination_sampling = config;
         }
 
         // サンプリング周期 を設定する。
@@ -243,10 +238,7 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), HumidityAndTemperatureSensor, period);
         } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AirPressureSensor, period);
-        } else if(p_evt_write->handle == p_context->illumination_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), BrightnessSensor, period);
         }
-        // TBD UVセンサー
     }
 
     // isSettingChanged が trueであれば、通知する。
@@ -267,7 +259,6 @@ static void onDisconnect(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_e
     p_context->is_magnetrometer_notifying   = false;
     p_context->is_barometer_notifying       = false;
     p_context->is_gyroscope_notifying       = false;
-    p_context->is_illumination_notifying    = false;
 }
 
 static uint32_t addNotifiableCharacteristics(const ble_sensortag_service_t *p_context, uint16_t *p_service_handler, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
@@ -409,12 +400,6 @@ static void addServices(ble_sensortag_service_t *p_context)
                 &(p_context->gyroscope_value_char_handle),           0xaa51, 6,
                 &(p_context->gyroscope_configration_char_handle),    0xaa52,
                 &(p_context->gyroscope_period_char_handle),          0xaa53);
-    
-    addAService(p_context,
-                &(p_context->illumination_service_handle),              0xaa80,
-                &(p_context->illumination_value_char_handle),           0xaa81, 6,
-                &(p_context->illumination_configration_char_handle),    0xaa82,
-                &(p_context->illumination_period_char_handle),          0xaa83);
 }
 
 /**
@@ -535,11 +520,6 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.gyroSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->gyroscope_period_char_handle.value_handle, &data, 1);
-    
-    data = (uint8_t)p_context->is_illumination_sampling;
-    setCharacteristicsValue(p_context, p_context->illumination_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.brightnessSamplingPeriod / 10 );
-    setCharacteristicsValue(p_context, p_context->illumination_period_char_handle.value_handle, &data, 1);
 }
 
 void getSensorTagSetting(ble_sensortag_service_t *p_context, sensorSetting_t *p_dst)

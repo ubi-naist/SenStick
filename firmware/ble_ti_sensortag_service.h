@@ -50,11 +50,6 @@ struct ble_sensortag_service_s {
     ble_gatts_char_handles_t gyroscope_configration_char_handle;
     ble_gatts_char_handles_t gyroscope_period_char_handle;
     
-    uint16_t illumination_service_handle;
-    ble_gatts_char_handles_t illumination_value_char_handle;
-    ble_gatts_char_handles_t illumination_configration_char_handle;
-    ble_gatts_char_handles_t illumination_period_char_handle;
-    
     uint16_t connection_handle;
     uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
 

@@ -29,10 +29,9 @@
 #include "gpio_manager.h"
 
 #include "ble_ti_sensortag_service.h"
+#include "ble_logger_service.h"
 
-#include "app_util_platform.h"
-
-#include "senstick_tests.h"
+#include "sensor_data_storage.h"
 #include "test_storage.h"
 
 /**
@@ -52,8 +51,9 @@ APP_TIMER_DEF(main_app_timer_id);
 
 static gpio_manager_t gpio_manager_context;
 static ble_sensortag_service_t sensortag_service_context;
-//static ble_activity_service_t activity_service_context;
+static ble_logger_service_t logger_service_context;
 static sensor_manager_t sensor_manager_context;
+
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;
 static dm_application_instance_t m_app_handle; // Application identifier allocated by device manager
 /**
@@ -166,6 +166,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     
     ble_bas_on_ble_evt(&m_bas, p_ble_evt);
     bleSensorTagServiceOnBLEEvent(&sensortag_service_context, p_ble_evt);
+    bleLoggerServiceOnBleEvent(&logger_service_context, p_ble_evt);
     
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
@@ -293,7 +294,10 @@ static void ble_stack_init(void)
     ble_enable_params_t ble_enable_params;
     
     memset(&ble_enable_params, 0, sizeof(ble_enable_params));
-    ble_enable_params.gatts_enable_params.attr_tab_size   = BLE_GATTS_ATTR_TAB_SIZE_DEFAULT;
+//    ble_enable_params.gatts_enable_params.attr_tab_size   = BLE_GATTS_ATTR_TAB_SIZE_DEFAULT;
+    // S110のみ有効。
+    // GATTサーバのメモリが標準量0x700では足りないので、0x400増やす。リンカでメモリスタート位置を0x20002000から0x20002400に変更している。
+    ble_enable_params.gatts_enable_params.attr_tab_size   = 0x300 + 0x700;
     ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
     
     err_code = sd_ble_enable(&ble_enable_params);
@@ -464,15 +468,23 @@ static void onSamplingCallbackHandler(SensorDeviceType_t sensorType, const Senso
 {
     // センサータグサービスに通知する
     notifySensorData(&sensortag_service_context, sensorType, p_sensorData);
-    // TBD ロガーに記録する。
+    // ロガーに通知、データ書き込み
+    bleLoggerServiceWrite(&logger_service_context, sensorType, p_sensorData);
 }
 
-// センサー設定が変更されるたびに呼び出されるコールバック関数
+// サービス経由で外部から、センサー設定が変更されるたびに呼び出されるコールバック関数
 static void onSensorSettingChangedHandler(ble_sensortag_service_t * p_context, sensorSetting_t *p_setting)
 {
-    // センサー設定を、センサマネージャとロガーに反映させる。
+    // センサー設定を、センサマネージャに反映させる。
     setSensorManagerSetting(&sensor_manager_context, p_setting);
-    // TBD ロガーは一旦停止する。センサマネージャは新しい設定でセンサーを初期化する。
+    // ロガーは一旦停止する。
+    bleLoggerServiceStopLogging(&logger_service_context);
+}
+
+// ロガーから呼び出される、コールバック関数
+static void onLoggerHandler(ble_logger_service_t * p_context)
+{
+    // TBD
 }
 
 // 30秒毎に呼び出されるタイマー
@@ -486,7 +498,6 @@ static void main_app_timer_handler(void *p_arg)
         err_code = ble_bas_battery_level_update(&m_bas,battery_level);
 //        APP_ERROR_CHECK(err_code);
     }
-    
 }
 
 /**
@@ -548,17 +559,22 @@ int main(void)
     initBatteryService();
     
     // センサータグサービスを追加
-    bleSensorTagServiceInit(&sensortag_service_context, &defaultSensorSetting, onSensorSettingChangedHandler);
-    // センサーサービスを追加
+    err_code = bleSensorTagServiceInit(&sensortag_service_context, &defaultSensorSetting, onSensorSettingChangedHandler);
+    APP_ERROR_CHECK(err_code);
+    // ロガーサービスを追加
+    err_code = bleLoggerServiceInit(&logger_service_context, onLoggerHandler);
+    APP_ERROR_CHECK(err_code);
 
     /** **/
     // メモリ単体テスト
     //    testFlashMemory(&(stream.flash_context));
 
     // メモリへの書き込みテスト
+    /*
     flash_stream_context_t stream;
     initFlashStream(&stream);
     do_storage_test(&stream);
+     */
     /** **/
     
     // アドバタイジングを開始する。

@@ -12,11 +12,13 @@
 
 // センサ種別ごとのデータ書き込み開始位置
 const int SENSOR_DATA_STARTING_POSITION[NUMBER_OF_SENSOR_DEVICE +1] = {
-    (DATA_STARTING_POSITION),                                       // MotionSensor                    = 0,
-    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * 18),             // BrightnessSensor                = 1,
-    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2)),        // UltraVioletSensor               = 2,
-    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2 +2)),     // HumidityAndTemperatureSensor    = 3,
-    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2 +2 +4)),  // AirPressureSensor               = 4
+    (DATA_STARTING_POSITION),                                       // Acceleration = 0
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * 6),              // Gyro
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * 12),             // MagneticField
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * 18),             // BrightnessSensor
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2)),        // UltraVioletSensor
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2 +2)),     // HumidityAndTemperatureSensor
+    (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2 +2 +4)),  // AirPressureSensor
     
     (DATA_STARTING_POSITION + MAX_SAMPLING_COUNT * (18 +2 +2 +4 +4))// 終端
 };
@@ -39,7 +41,9 @@ static void writeHeader(flash_stream_context_t *p_stream, sensor_data_storage_he
 static int sizeOfSensorData(SensorDeviceType_t type)
 {
     switch (type) {
-        case MotionSensor:                  return sizeof(MotionSensorData_t);
+        case AccelerationSensor:            return sizeof(AccelerationData_t);
+        case GyroSensor:                    return sizeof(RotationRateData_t);
+        case MagneticFieldSensor:           return sizeof(MagneticFieldData_t);
         case BrightnessSensor:              return sizeof(BrightnessData_t);
         case UltraVioletSensor:             return sizeof(UltraVioletData_t);
         case HumidityAndTemperatureSensor:  return sizeof(HumidityAndTemperatureData_t);

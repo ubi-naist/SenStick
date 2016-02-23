@@ -31,25 +31,25 @@ void test01(flash_stream_context_t *p_stream)
     result = storageOpen(&storage, 0xff, p_stream, &setting, &rtc, abstract); // 書き込みで開く
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 ); // IDは0のはず
-    ASSERT( storageGetSampleCount(&storage, MotionSensor) == 0 );
+    ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 0 );
     // 適当にデータを1つ書いてみる
     SensorData_t data;
-    memset(&data.data.motionSensor, 0, sizeof(data.data.motionSensor));
-    data.type = MotionSensor;
-    data.data.motionSensor.acceleration.x = 1;
-    data.data.motionSensor.rotationRate.z = 3;
+    memset(&data.data.acceleration, 0, sizeof(data.data.acceleration));
+    data.type = AccelerationSensor;
+    data.data.acceleration.x = 1;
+    data.data.acceleration.z = 3;
     storageWrite(&storage, &data);
     // 書き込みデータ数は1つ
-    ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
+    ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 1 );
     // 1つ読みだしてみる
-    ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
-    storageRead(&storage,  MotionSensor, &data);
+    ASSERT( storageGetSamplePosition(&storage, AccelerationSensor) == 0 );
+    memset(&data.data.acceleration, 0xff, sizeof(data.data.acceleration));
+    storageRead(&storage, AccelerationSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.data.motionSensor.acceleration.x == 1 );
-    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
+    ASSERT(data.data.acceleration.x == 1 );
+    ASSERT(data.data.acceleration.z == 3 );
     // 読み込み位置が移動しているかを確認
-    ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
+    ASSERT(storageGetSamplePosition(&storage, AccelerationSensor) == 1 );
     // 閉じてみる
     storageClose(&storage);
     
@@ -62,16 +62,16 @@ void test01(flash_stream_context_t *p_stream)
     result = storageOpen(&storage, 0, p_stream, &setting, &rtc, abstract);
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 );
-    ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
+    ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 1 );
     // 1つ読みだしてみる
-    ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
-    storageRead(&storage,  MotionSensor, &data);
+    ASSERT( storageGetSamplePosition(&storage, AccelerationSensor) == 0 );
+    memset(&data.data.acceleration, 0xff, sizeof(data.data.acceleration));
+    storageRead(&storage,  AccelerationSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.data.motionSensor.acceleration.x == 1 );
-    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
+    ASSERT(data.data.acceleration.x == 1 );
+    ASSERT(data.data.acceleration.z == 3 );
     // 読み込み位置が移動しているかを確認
-    ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
+    ASSERT(storageGetSamplePosition(&storage, AccelerationSensor) == 1 );
     // 閉じてみる
 //    storageClose(&storage);
 
@@ -82,16 +82,16 @@ void test01(flash_stream_context_t *p_stream)
     result = storageOpen(&storage, 0, p_stream, &setting, &rtc, abstract);
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 );
-    ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
+    ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 1 );
     // 1つ読みだしてみる
-    ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
-    storageRead(&storage,  MotionSensor, &data);
+    ASSERT( storageGetSamplePosition(&storage, AccelerationSensor) == 0 );
+    memset(&data.data.acceleration, 0xff, sizeof(data.data.acceleration));
+    storageRead(&storage,  AccelerationSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.data.motionSensor.acceleration.x == 1 );
-    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
+    ASSERT(data.data.acceleration.x == 1 );
+    ASSERT(data.data.acceleration.z == 3 );
     // 読み込み位置が移動しているかを確認
-    ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
+    ASSERT(storageGetSamplePosition(&storage, AccelerationSensor) == 1 );
     // 閉じてみる
     storageClose(&storage);
 }

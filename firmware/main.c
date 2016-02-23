@@ -512,19 +512,13 @@ int main(void)
         defaultSensorSetting.accelerationRange  = ACCELERATION_RANGE_2G;
         defaultSensorSetting.rotationRange      = ROTATION_RANGE_250DPS;
         
-        defaultSensorSetting.motionSensorSamplingPeriod             = 100;
+        defaultSensorSetting.accelerationSamplingPeriod             = 100;
+        defaultSensorSetting.gyroSamplingPeriod                     = 100;
+        defaultSensorSetting.magneticFieldSamplingPeriod            = 100;
         defaultSensorSetting.humidityAndTemperatureSamplingPeriod   = 500;
         defaultSensorSetting.airPressureSamplingPeriod              = 500;
         defaultSensorSetting.brightnessSamplingPeriod               = 500;
         defaultSensorSetting.ultraVioletSamplingPeriod              = 500;
-        
-        defaultSensorSetting.is_accelerometer_sampling   = true;
-        defaultSensorSetting.is_gyroscope_sampling       = 0x07;
-        defaultSensorSetting.is_humidity_sampling        = true;
-        defaultSensorSetting.is_temperature_sampling     = true;
-        defaultSensorSetting.is_magnetrometer_sampling   = true;
-        defaultSensorSetting.is_barometer_sampling       = true;
-        defaultSensorSetting.is_illumination_sampling    = true;
     }
     
     // RTTログを有効に

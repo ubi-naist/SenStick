@@ -1,6 +1,8 @@
 #include <string.h>
 
-#include "nrf_delay.h"
+#include <nrf_delay.h>
+#include <nrf_assert.h>
+#include <app_error.h>
 
 #include "twi_slave_utility.h"
 #include "twi_slave_nine_axes_sensor.h"
@@ -210,12 +212,23 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
     writeToMPU9250(p_context, CNTL1, data1, sizeof(data1));
 }
 
-void getNineAxesData(nine_axes_sensor_context_t *p_context, MotionSensorData_t *sensor_data)
+void getNineAxesData(nine_axes_sensor_context_t *p_context, SensorDeviceType_t type, SensorData_t *p_data)
 {
-    getAccelerationData(p_context,  &(sensor_data->acceleration));
-    getRotationRateData(p_context,  &(sensor_data->rotationRate));
-    getMagneticFieldData(p_context, &(sensor_data->magneticField));
-    
+    p_data->type = type;
+    switch (type) {
+        case AccelerationSensor:
+            getAccelerationData(p_context,  &(p_data->data.acceleration));
+            break;
+        case GyroSensor:
+            getRotationRateData(p_context,  &(p_data->data.rotationRate));
+            break;
+        case MagneticFieldSensor:
+            getMagneticFieldData(p_context, &(p_data->data.magneticField));
+            break;
+        default:
+            ASSERT(NRF_ERROR_INVALID_PARAM);
+            break;
+    }
 }
 
 void setNineAxesSensorAccelerationRange(nine_axes_sensor_context_t *p_context, AccelerationRange_t range)

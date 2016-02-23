@@ -35,13 +35,6 @@ typedef struct MagneticFieldData_s {
     int16_t z;
 } MagneticFieldData_t;
 
-// 9軸センサーのデータ構造体
-typedef struct MotionSensorData_s {
-    AccelerationData_t  acceleration;
-    MagneticFieldData_t magneticField;
-    RotationRateData_t  rotationRate;
-} MotionSensorData_t;
-
 // 輝度データ
 // 単位 lx
 // 変換時間約150ミリ秒
@@ -71,17 +64,21 @@ typedef struct {
 
 // 物理的なセンサーの種別
 typedef enum {
-    MotionSensor                    = 0,
-    BrightnessSensor                = 1,
-    UltraVioletSensor               = 2,
-    HumidityAndTemperatureSensor    = 3,
-    AirPressureSensor               = 4,
+    AccelerationSensor              = 0,
+    GyroSensor                      = 1,
+    MagneticFieldSensor             = 2,
+    BrightnessSensor                = 3,
+    UltraVioletSensor               = 4,
+    HumidityAndTemperatureSensor    = 5,
+    AirPressureSensor               = 6,
     
-    SensorDeviceNone = 5, // 末尾
+    SensorDeviceNone = 7, // 末尾
 } SensorDeviceType_t;
 
 typedef union {
-    MotionSensorData_t  motionSensor;
+    AccelerationData_t  acceleration;
+    RotationRateData_t  rotationRate;
+    MagneticFieldData_t magneticField;
     BrightnessData_t    brightness;
     UltraVioletData_t   ultraViolet;
     AirPressureData_t   airPressure;
@@ -145,23 +142,14 @@ typedef struct sensorSettings_s {
     AccelerationRange_t accelerationRange;
     RotationRange_t     rotationRange;
     
-    // サンプリングレートの単位はミリ秒
-    SamplingRate_t motionSensorSamplingPeriod;
+    // サンプリングレートの単位はミリ秒, 0はサンプリング対象外
+    SamplingRate_t accelerationSamplingPeriod;
+    SamplingRate_t gyroSamplingPeriod;
+    SamplingRate_t magneticFieldSamplingPeriod;
     SamplingRate_t humidityAndTemperatureSamplingPeriod;
     SamplingRate_t airPressureSamplingPeriod;
     SamplingRate_t brightnessSamplingPeriod;
     SamplingRate_t ultraVioletSamplingPeriod;
-    
-    bool is_accelerometer_sampling;
-    // ジャイロスコープの設定は、下位3ビットを軸ごとのenableに割り当てる, Z/Y/X
-    uint8_t is_gyroscope_sampling;
-    bool is_humidity_sampling;
-    bool is_temperature_sampling;
-    bool is_magnetrometer_sampling;
-    bool is_barometer_sampling;
-    bool is_illumination_sampling;
-    bool is_uv_sampling;
-    
 } sensorSetting_t;
 
 

@@ -54,9 +54,23 @@ bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t devic
     bool isChanged = false;
     period = (period / 10) * 10;
     switch ( device_type) {
-        case MotionSensor:
-            if(period >= 10 && p_setting->motionSensorSamplingPeriod != period) {
-                p_setting->motionSensorSamplingPeriod = period;
+        case AccelerationSensor:
+            if(period >= 10 && p_setting->accelerationSamplingPeriod != period) {
+                p_setting->accelerationSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case GyroSensor:
+            if(period >= 10 && p_setting->gyroSamplingPeriod != period) {
+                p_setting->gyroSamplingPeriod = period;
+                isChanged = true;
+            }
+            break;
+            
+        case MagneticFieldSensor:
+            if(period >= 10 && p_setting->magneticFieldSamplingPeriod != period) {
+                p_setting->magneticFieldSamplingPeriod = period;
                 isChanged = true;
             }
             break;

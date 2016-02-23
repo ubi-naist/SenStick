@@ -68,6 +68,15 @@ struct ble_sensortag_service_s {
     bool is_barometer_notifying;
     bool is_gyroscope_notifying;
     bool is_illumination_notifying;
+    // サンプリング設定
+    bool is_accelerometer_sampling;
+    bool is_humidity_sampling;
+    bool is_magnetrometer_sampling;
+    bool is_barometer_sampling;
+    bool is_gyroscope_sampling;
+    bool is_illumination_sampling;
+    uint8_t gyroSamplingPeriod;
+    
 };// ble_sensortag_service_t;
 
 // 初期化関数

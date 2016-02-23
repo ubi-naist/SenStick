@@ -16,7 +16,7 @@
 typedef void (*sampling_callback_handler_t) (const SensorData_t *p_sensorData);
 
 // 物理的なセンサーデバイスの数
-#define NUM_OF_SENSOR_DEVICES   5
+#define NUM_OF_SENSOR_DEVICES   7
 
 // コンテキストの構造体宣言
 typedef struct sensor_manager_s {

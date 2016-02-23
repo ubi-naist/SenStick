@@ -6,7 +6,7 @@
 
 #include "flash_stream.h"
 
-#define NUMBER_OF_SENSOR_DEVICE 5
+#define NUMBER_OF_SENSOR_DEVICE 7
 
 // ヘッダ情報
 typedef struct sensor_data_storage_header_s {

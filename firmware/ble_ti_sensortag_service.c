@@ -100,18 +100,18 @@ static void convertRotationValue(uint8_t *p_dst, const sensorSetting_t *p_settin
 
     int16ToByteArrayLittleEndian(p_dst, (int16_t)v);
 }
-static void notifyGyroscopeData(ble_sensortag_service_t *p_context, const RotationRateData_t *p_rotation)
+static void notifyRotationRateData(ble_sensortag_service_t *p_context, const RotationRateData_t *p_rotation)
 {
     uint8_t buffer[6];
     memset(buffer, 0, sizeof(buffer));
     // マスクに合わせてX/Y/Zを設定
-    if( p_context->sensor_setting.is_gyroscope_sampling & 0x01 != 0) {
+    if( p_context->is_gyroscope_sampling & 0x01 != 0) {
         convertRotationValue(&(buffer[0]), &(p_context->sensor_setting), p_rotation->x);
     }
-    if( p_context->sensor_setting.is_gyroscope_sampling & 0x02 != 0) {
+    if( p_context->is_gyroscope_sampling & 0x02 != 0) {
         convertRotationValue(&(buffer[2]), &(p_context->sensor_setting), p_rotation->y);
     }
-    if( p_context->sensor_setting.is_gyroscope_sampling & 0x04 != 0) {
+    if( p_context->is_gyroscope_sampling & 0x04 != 0) {
         convertRotationValue(&(buffer[4]), &(p_context->sensor_setting), p_rotation->z);
     }
 
@@ -218,31 +218,27 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
         
         // configration を設定する。
         if(p_evt_write->handle == p_context->accelerometer_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_accelerometer_sampling = config;
-            isSettingChanged = true;
+            p_context->is_accelerometer_sampling = config;
         } else if(p_evt_write->handle == p_context->humidity_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_humidity_sampling = config;
-            isSettingChanged = true;
+            p_context->is_humidity_sampling = config;
         } else if(p_evt_write->handle == p_context->magnetometer_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_magnetrometer_sampling = config;
-            isSettingChanged = true;
+            p_context->is_magnetrometer_sampling = config;
         } else if(p_evt_write->handle == p_context->barometer_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_barometer_sampling = config;
-            isSettingChanged = true;
+            p_context->is_barometer_sampling = config;
         } else if(p_evt_write->handle == p_context->gyroscope_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_gyroscope_sampling = config;
-            isSettingChanged = true;
+            p_context->is_gyroscope_sampling = config;
         } else if(p_evt_write->handle == p_context->illumination_configration_char_handle.value_handle) {
-            p_context->sensor_setting.is_illumination_sampling = config;
-            isSettingChanged = true;
+            p_context->is_illumination_sampling = config;
         }
 
         // サンプリング周期 を設定する。
         uint16_t period = config * 10; // 周期は10ミリ秒単位
-        if(p_evt_write->handle == p_context->accelerometer_period_char_handle.value_handle
-           || p_evt_write->handle == p_context->magnetometer_period_char_handle.value_handle
-           || p_evt_write->handle == p_context->gyroscope_period_char_handle.value_handle ) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), MotionSensor, period);
+        if(p_evt_write->handle == p_context->accelerometer_period_char_handle.value_handle) {
+            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AccelerationSensor, period);
+        } else if(p_evt_write->handle == p_context->magnetometer_period_char_handle.value_handle) {
+            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), MagneticFieldSensor, period);
+        } else if(p_evt_write->handle == p_context->gyroscope_period_char_handle.value_handle ) {
+            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), GyroSensor, period);
         } else if(p_evt_write->handle == p_context->humidity_period_char_handle.value_handle) {
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), HumidityAndTemperatureSensor, period);
         } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
@@ -475,10 +471,14 @@ void bleSensorTagServiceOnBLEEvent(ble_sensortag_service_t *p_context, ble_evt_t
 void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_sensorData)
 {
     switch(p_sensorData->type) {
-        case MotionSensor:
-            notifyAcceleromterData(p_context, &(p_sensorData->data.motionSensor.acceleration));
-            notifyGyroscopeData(p_context, &(p_sensorData->data.motionSensor.rotationRate));
-            notifyMagnetrometer(p_context, &(p_sensorData->data.motionSensor.magneticField));
+        case AccelerationSensor:
+            notifyAcceleromterData(p_context, &(p_sensorData->data.acceleration));
+            break;
+        case GyroSensor:
+            notifyRotationRateData(p_context, &(p_sensorData->data.rotationRate));
+            break;
+        case MagneticFieldSensor:
+            notifyMagnetrometer(p_context, &(p_sensorData->data.magneticField));
             break;
         case HumidityAndTemperatureSensor:
             notifyHumidity(p_context, &(p_sensorData->data.humidityAndTemperature));
@@ -500,28 +500,28 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
 
     /*
     // IR温度計は実装されていない
-    data = (uint8_t)p_context->sensor_setting.is_temperature_sampling;
+    data = (uint8_t)p_context->is_temperature_sampling;
     setCharacteristicsValue(p_context, p_context->temperature_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.temperatureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->temperature_period_char_handle.value_handle, &data, 1);
     */
     
-    data = (uint8_t)p_context->sensor_setting.is_accelerometer_sampling;
+    data = (uint8_t)p_context->is_accelerometer_sampling;
     setCharacteristicsValue(p_context, p_context->accelerometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    data = (uint8_t)(p_context->sensor_setting.accelerationSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->accelerometer_period_char_handle.value_handle, &data, 1);
     
-    data = (uint8_t)p_context->sensor_setting.is_humidity_sampling;
+    data = (uint8_t)p_context->is_humidity_sampling;
     setCharacteristicsValue(p_context, p_context->humidity_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.humidityAndTemperatureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->humidity_period_char_handle.value_handle, &data, 1);
 
-    data = (uint8_t)p_context->sensor_setting.is_magnetrometer_sampling;
+    data = (uint8_t)p_context->is_magnetrometer_sampling;
     setCharacteristicsValue(p_context, p_context->magnetometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    data = (uint8_t)(p_context->sensor_setting.magneticFieldSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->magnetometer_period_char_handle.value_handle, &data, 1);
 
-    data = (uint8_t)p_context->sensor_setting.is_barometer_sampling;
+    data = (uint8_t)p_context->is_barometer_sampling;
     setCharacteristicsValue(p_context, p_context->barometer_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.airPressureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->barometer_period_char_handle.value_handle, &data, 1);
@@ -531,12 +531,12 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     uint8_t cnf_data[] = {0x00, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     setCharacteristicsValue(p_context, p_context->barometer_calibration_char_handle.value_handle, cnf_data, sizeof(cnf_data));
     
-    data = (uint8_t)p_context->sensor_setting.is_gyroscope_sampling;
+    data = (uint8_t)p_context->is_gyroscope_sampling;
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.motionSensorSamplingPeriod / 10 );
+    data = (uint8_t)(p_context->sensor_setting.gyroSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->gyroscope_period_char_handle.value_handle, &data, 1);
     
-    data = (uint8_t)p_context->sensor_setting.is_illumination_sampling;
+    data = (uint8_t)p_context->is_illumination_sampling;
     setCharacteristicsValue(p_context, p_context->illumination_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.brightnessSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->illumination_period_char_handle.value_handle, &data, 1);

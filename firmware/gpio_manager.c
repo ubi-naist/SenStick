@@ -1,14 +1,14 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "nordic_common.h"
+#include <nordic_common.h>
 
-#include "nrf_drv_gpiote.h"
-#include "nrf_delay.h"
-#include "nrf_log.h"
-#include "nrf_drv_config.h"
-#include "nrf_adc.h"
-#include "app_error.h"
+#include <nrf_drv_gpiote.h>
+#include <nrf_delay.h>
+#include <nrf_log.h>
+#include <nrf_drv_config.h>
+#include <nrf_adc.h>
+#include <app_error.h>
 
 #include "senstick_definitions.h"
 #include "senstick_io_definitions.h"
@@ -108,6 +108,8 @@ void initGPIOManager(gpio_manager_t *p_context)
     
     init_gpio();
     init_adc();
+    
+    LEDDriverInit(&(p_context->led_driver_context));
 }
 
 void setTWIPowerSupply(gpio_manager_t *p_context, bool available)
@@ -137,4 +139,9 @@ uint8_t getBatteryLevel(gpio_manager_t *p_context)
     level = MAX(level, 0);
     
     return (uint8_t)level;
+}
+
+void setLEDBlink(gpio_manager_t *p_context, uint16_t period, uint16_t blink)
+{
+    setLEDDriverBlinkMode(&(p_context->led_driver_context), period, blink);
 }

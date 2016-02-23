@@ -1585,6 +1585,13 @@
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
         </targetInfos>
       </component>
+      <component Cclass="nRF_Libraries" Cgroup="app_button" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_button">
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
+      </component>
       <component Cclass="nRF_Libraries" Cgroup="app_error" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_error">
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
@@ -2053,6 +2060,24 @@
         <component Cclass="nRF_Libraries" Cgroup="retarget" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="retarget"/>
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="button\app_button.c" version="3.1.0">
+        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_button.c</instance>
+        <component Cclass="nRF_Libraries" Cgroup="app_button" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_button"/>
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="header" name="button\app_button.h" version="3.1.0">
+        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_button.h</instance>
+        <component Cclass="nRF_Libraries" Cgroup="app_button" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_button"/>
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
       </file>
       <file attr="config" category="source" name="util\app_error.c" version="3.1.0">
         <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_error.c</instance>

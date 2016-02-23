@@ -17,19 +17,6 @@
 #include "gpio_manager.h"
 
 /*
- * イベントハンドラ
- */
-static void gpio_event_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
-{
-    switch(pin) {
-        case PIN_NUMBER_TACT_SWITCH:
-            break;
-        default:
-            break;
-    }
-}
-
-/*
  * Private methods
  */
 
@@ -39,7 +26,6 @@ static void init_gpio(void)
     ret_code_t err_code;
     
     nrf_drv_gpiote_out_config_t out_config;
-    nrf_drv_gpiote_in_config_t in_config;
     
     // gpioteモジュールを初期化する
     if(!nrf_drv_gpiote_is_init()) {
@@ -56,15 +42,19 @@ static void init_gpio(void)
     APP_ERROR_CHECK(err_code);
     
     // タクトスイッチの設定
+    // app_buttonを使うため、そちら側で初期化される。
     // P0.20    In      タクトスイッチ接続。スイッチオンでGNDに落とされる。
     // 引数は high accuracy。精度はいらないのでfalseを指定。
     //    in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(false);
+    /*
+    nrf_drv_gpiote_in_config_t in_config;     
     in_config.is_watcher  = false;
     in_config.hi_accuracy = false;
     in_config.sense       = NRF_GPIOTE_POLARITY_HITOLO;
     in_config.pull        = NRF_GPIO_PIN_PULLUP;
     err_code = nrf_drv_gpiote_in_init(PIN_NUMBER_TACT_SWITCH, &in_config, gpio_event_handler);
     APP_ERROR_CHECK(err_code);
+     */
     
     // TWIのデバイス電源設定
     // 引数は init_high。初期値をhighにする。
@@ -102,7 +92,7 @@ static void init_adc(void)
 /*
  * Public methods
  */
-void initGPIOManager(gpio_manager_t *p_context)
+void initGPIOManager(gpio_manager_t *p_context, button_callback_handler_t button_handler)
 {
     memset(p_context, 0, sizeof(gpio_manager_t));
     
@@ -110,6 +100,7 @@ void initGPIOManager(gpio_manager_t *p_context)
     init_adc();
     
     LEDDriverInit(&(p_context->led_driver_context));
+    buttonMonitoringInit(button_handler);
 }
 
 void setTWIPowerSupply(gpio_manager_t *p_context, bool available)

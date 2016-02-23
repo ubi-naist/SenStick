@@ -1,6 +1,7 @@
 #ifndef gpio_manager_h
 #define gpio_manager_h
 
+#include "gpio_button_monitoring.h"
 #include "gpio_led_driver.h"
 
 //コールバック
@@ -13,7 +14,7 @@ typedef struct gpio_manager_s {
 } gpio_manager_t;
 
 // 初期化関数。最初に必ずこの関数を呼び出すこと。
-void initGPIOManager(gpio_manager_t *p_context); //,  const sensorSetting_t *p_setting, sampling_callback_handler_t samplingCallback);
+void initGPIOManager(gpio_manager_t *p_context, button_callback_handler_t button_handler); //,  const sensorSetting_t *p_setting, sampling_callback_handler_t samplingCallback);
 
 // TWIのパワー供給
 void setTWIPowerSupply(gpio_manager_t *p_context, bool available);

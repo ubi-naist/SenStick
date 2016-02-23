@@ -487,6 +487,11 @@ static void onLoggerHandler(ble_logger_service_t * p_context)
     // TBD
 }
 
+static void button_callback_handler(ButtonStatus_t status, ButtonStatus_t previous_status)
+{
+    NRF_LOG_PRINTF_DEBUG("Button: %d prev %d.\n", status, previous_status);
+}
+
 // 30秒毎に呼び出されるタイマー
 static void main_app_timer_handler(void *p_arg)
 {
@@ -541,7 +546,7 @@ int main(void)
     device_manager_init(true);
     
     // GPIOの初期化
-    initGPIOManager(&gpio_manager_context);
+    initGPIOManager(&gpio_manager_context, button_callback_handler);
     
     // センサマネージャーの初期化
     initSensorManager(&sensor_manager_context, &gpio_manager_context, &defaultSensorSetting,onSamplingCallbackHandler);

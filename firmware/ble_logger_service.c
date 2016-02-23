@@ -237,7 +237,7 @@ void bleLoggerServiceStartLogging(ble_logger_service_t *p_context, const sensorS
 void bleLoggerServiceStopLogging(ble_logger_service_t *p_context)
 {}
 
-void bleLoggerServiceWrite(ble_logger_service_t *p_context, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+void bleLoggerServiceWrite(ble_logger_service_t *p_context, const SensorData_t *p_sensorData)
 {
 }
 

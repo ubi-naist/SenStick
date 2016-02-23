@@ -472,19 +472,19 @@ void bleSensorTagServiceOnBLEEvent(ble_sensortag_service_t *p_context, ble_evt_t
     }
 }
 
-void notifySensorData(ble_sensortag_service_t *p_context, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_sensorData)
 {
-    switch(sensorType) {
+    switch(p_sensorData->type) {
         case MotionSensor:
-            notifyAcceleromterData(p_context, &(p_sensorData->motionSensorData.acceleration));
-            notifyGyroscopeData(p_context, &(p_sensorData->motionSensorData.rotationRate));
-            notifyMagnetrometer(p_context, &(p_sensorData->motionSensorData.magneticField));
+            notifyAcceleromterData(p_context, &(p_sensorData->data.motionSensor.acceleration));
+            notifyGyroscopeData(p_context, &(p_sensorData->data.motionSensor.rotationRate));
+            notifyMagnetrometer(p_context, &(p_sensorData->data.motionSensor.magneticField));
             break;
         case HumidityAndTemperatureSensor:
-            notifyHumidity(p_context, &(p_sensorData->humidityAndTemperatureData));
+            notifyHumidity(p_context, &(p_sensorData->data.humidityAndTemperature));
             break;
         case AirPressureSensor:
-            notifyBarometer(p_context, &(p_sensorData->airPressureData));
+            notifyBarometer(p_context, &(p_sensorData->data.airPressure));
             break;
         default:
             break;

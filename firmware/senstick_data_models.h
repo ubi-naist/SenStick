@@ -69,23 +69,30 @@ typedef struct {
     TemperatureData_t temperature;
 } HumidityAndTemperatureData_t;
 
-// コールバック関数のための統合センサーデータ型
-typedef union {
-    MotionSensorData_t  motionSensorData;
-    BrightnessData_t    brightnessData;
-    UltraVioletData_t   ultraVioletData;
-    AirPressureData_t   airPressureData;
-    HumidityAndTemperatureData_t humidityAndTemperatureData;
-} SensorData_t;
-
 // 物理的なセンサーの種別
 typedef enum {
     MotionSensor                    = 0,
     BrightnessSensor                = 1,
     UltraVioletSensor               = 2,
     HumidityAndTemperatureSensor    = 3,
-    AirPressureSensor               = 4
+    AirPressureSensor               = 4,
+    
+    SensorDeviceNone = 5, // 末尾
 } SensorDeviceType_t;
+
+typedef union {
+    MotionSensorData_t  motionSensor;
+    BrightnessData_t    brightness;
+    UltraVioletData_t   ultraViolet;
+    AirPressureData_t   airPressure;
+    HumidityAndTemperatureData_t humidityAndTemperature;
+} SensorDataUnion_t;
+
+// コールバック関数のための統合センサーデータ型
+typedef struct SensorData_s {
+    SensorDeviceType_t type;
+    SensorDataUnion_t  data;
+} SensorData_t;
 
 /**
  * センサー設定データ
@@ -137,14 +144,14 @@ typedef struct rtcAlarmSettingCommand_s {
 typedef struct sensorSettings_s {
     AccelerationRange_t accelerationRange;
     RotationRange_t     rotationRange;
-
+    
     // サンプリングレートの単位はミリ秒
     SamplingRate_t motionSensorSamplingPeriod;
     SamplingRate_t humidityAndTemperatureSamplingPeriod;
     SamplingRate_t airPressureSamplingPeriod;
     SamplingRate_t brightnessSamplingPeriod;
     SamplingRate_t ultraVioletSamplingPeriod;
-
+    
     bool is_accelerometer_sampling;
     // ジャイロスコープの設定は、下位3ビットを軸ごとのenableに割り当てる, Z/Y/X
     uint8_t is_gyroscope_sampling;
@@ -176,23 +183,23 @@ void uint32ToByteArrayBigEndian(uint8_t *p_dst, uint32_t src);
 bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t device_type, int period);
 
 /*
-// センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
-void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting);
-// バイト配列をセンサー設定情報に展開します。不正な値があった場合は、処理は完了せず、falseを返します。 バイト配列は7バイトの領域が確保されていなければなりません。
-bool deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src );
-
-// モーションデータを18バイトのバイト配列に展開します
-void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data);
-
-// 輝度データを2バイトのバイト配列に展開します
-void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data);
-
-// 輝度データを4バイトのバイト配列に展開します
-void serializeHumidityAndTemperatureData(uint8_t *p_dst, const HumidityAndTemperatureData_t *p_data);
-
-// 圧力データを3バイトのバイト配列に展開します
-void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data);
-*/
+ // センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
+ void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting);
+ // バイト配列をセンサー設定情報に展開します。不正な値があった場合は、処理は完了せず、falseを返します。 バイト配列は7バイトの領域が確保されていなければなりません。
+ bool deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src );
+ 
+ // モーションデータを18バイトのバイト配列に展開します
+ void serializeMotionData(uint8_t *p_dst, const MotionSensorData_t *p_data);
+ 
+ // 輝度データを2バイトのバイト配列に展開します
+ void serializeBrightnessData(uint8_t *p_dst, const BrightnessData_t *p_data);
+ 
+ // 輝度データを4バイトのバイト配列に展開します
+ void serializeHumidityAndTemperatureData(uint8_t *p_dst, const HumidityAndTemperatureData_t *p_data);
+ 
+ // 圧力データを3バイトのバイト配列に展開します
+ void serializeAirPressureData(uint8_t *p_dst, const AirPressureData_t *p_data);
+ */
 // デバッグ用ログ関数
 void debugLogAccerationData(const AccelerationData_t *data);
 

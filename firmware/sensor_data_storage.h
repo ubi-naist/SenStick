@@ -34,8 +34,8 @@ typedef struct {
 bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream_context_t *p_stream, sensorSetting_t *p_sensor_setting, rtcSettingCommand_t *p_date, char *p_abstract);
 void storageClose(sensor_data_storage_t *p_storage);
 
-int storageWrite(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData);
-int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData);
+int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorData);
+int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, SensorData_t *p_sensorData);
 
 // データが記録されているデータユニット数を取得します。
 int storageGetUnitCount(sensor_data_storage_t *p_storage);

@@ -79,7 +79,7 @@ uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const senso
 void bleSensorTagServiceOnBLEEvent(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt);
 
 // 通知メソッド
-void notifySensorData(ble_sensortag_service_t *p_context, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData);
+void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_sensorData);
 
 // センサーの設定を設定します。BLEのサービスの値に反映されます。
 void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_dst);

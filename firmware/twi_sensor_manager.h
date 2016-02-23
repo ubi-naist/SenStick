@@ -13,7 +13,7 @@
 #include "gpio_manager.h"
 
 // センサデータの更新コールバック
-typedef void (*sampling_callback_handler_t) (SensorDeviceType_t sensorType, const SensorData_t *p_sensorData);
+typedef void (*sampling_callback_handler_t) (const SensorData_t *p_sensorData);
 
 // 物理的なセンサーデバイスの数
 #define NUM_OF_SENSOR_DEVICES   5

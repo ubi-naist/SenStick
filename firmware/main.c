@@ -464,12 +464,12 @@ void startAdvertising(void)
 // FIXME データの内容の解釈処理は、サービスの処理として実装すべきかも。
 
 // 設定したサンプリング周期ごとに、センサーデータが渡されるコールバック関数
-static void onSamplingCallbackHandler(SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+static void onSamplingCallbackHandler(const SensorData_t *p_sensorData)
 {
     // センサータグサービスに通知する
-    notifySensorData(&sensortag_service_context, sensorType, p_sensorData);
+    notifySensorData(&sensortag_service_context, p_sensorData);
     // ロガーに通知、データ書き込み
-    bleLoggerServiceWrite(&logger_service_context, sensorType, p_sensorData);
+    bleLoggerServiceWrite(&logger_service_context, p_sensorData);
 }
 
 // サービス経由で外部から、センサー設定が変更されるたびに呼び出されるコールバック関数

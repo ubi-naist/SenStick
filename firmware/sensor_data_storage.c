@@ -108,15 +108,16 @@ void storageClose(sensor_data_storage_t *p_storage)
     writeHeader(p_storage->p_stream, &(p_storage->header));
 }
 
-int storageWrite(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorData)
 {
     ASSERT(p_storage->can_write);
-
+    ASSERT(p_sensorData->type < SensorDeviceNone);
+    
     // アドレス, サイズを取得
-    int address = p_storage->writing_position[sensorType];
-    int size = sizeOfSensorData(sensorType);
+    int address = p_storage->writing_position[p_sensorData->type];
+    int size = sizeOfSensorData(p_sensorData->type);
     // 最大書き込みサンプル数をチェック
-    int sample_count = (address - SENSOR_DATA_STARTING_POSITION[sensorType]) / size;
+    int sample_count = (address - SENSOR_DATA_STARTING_POSITION[p_sensorData->type]) / size;
     if( sample_count > (MAX_SAMPLING_COUNT -1)) {
         return 0;
     }
@@ -124,13 +125,18 @@ int storageWrite(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType
     // 書き込む
     writeStream(p_storage->p_stream, address, (uint8_t *)p_sensorData, size);
     // 次のアドレスを保存
-    p_storage->writing_position[sensorType] += size;
+    p_storage->writing_position[p_sensorData->type] += size;
     // TBD フラッシュ末尾?
     return size;
 }
 
-int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, const SensorData_t *p_sensorData)
+int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, SensorData_t *p_sensorData)
 {
+    ASSERT(sensorType < SensorDeviceNone);
+    
+    // タイプを書き込み
+    p_sensorData->type = sensorType;
+
     // アドレス, サイズを取得
     int address = p_storage->reading_position[sensorType];
     int size = sizeOfSensorData(sensorType);

@@ -63,41 +63,46 @@ static void sensor_timer_handler(void *p_arg)
     if(p_context->remaining_counter[MotionSensor] >= p_context->sensor_setting.motionSensorSamplingPeriod) {
         p_context->remaining_counter[MotionSensor] = 0;
         if(p_context->sensor_setting.is_gyroscope_sampling != 0 || p_context->sensor_setting.is_accelerometer_sampling || p_context->sensor_setting.is_magnetrometer_sampling ) {
-            getNineAxesData(&(p_context->nine_axes_sensor_context), &(sensor_data.motionSensorData));
-            (p_context->sampling_callback_handler)(MotionSensor, &sensor_data);
+            getNineAxesData(&(p_context->nine_axes_sensor_context), &(sensor_data.data.motionSensor));
+            sensor_data.type = MotionSensor;
+            (p_context->sampling_callback_handler)(&sensor_data);
         }
     }
     
     if(p_context->remaining_counter[BrightnessSensor] >= p_context->sensor_setting.brightnessSamplingPeriod) {
         p_context->remaining_counter[BrightnessSensor] = 0;
         if(p_context->sensor_setting.is_illumination_sampling) {
-            getBrightnessData(&(p_context->brightness_sensor_context), &(sensor_data.brightnessData));
-            (p_context->sampling_callback_handler)(BrightnessSensor, &sensor_data);
+            getBrightnessData(&(p_context->brightness_sensor_context), &(sensor_data.data.brightness));
+            sensor_data.type = BrightnessSensor;
+            (p_context->sampling_callback_handler)(&sensor_data);
         }
     }
     
     if(p_context->remaining_counter[UltraVioletSensor] >= p_context->sensor_setting.ultraVioletSamplingPeriod) {
         p_context->remaining_counter[UltraVioletSensor] = 0;
         if(p_context->sensor_setting.is_uv_sampling) {
-            getUVSensorData(&(p_context->uv_sensor_context), &(sensor_data.ultraVioletData));
-            (p_context->sampling_callback_handler)(UltraVioletSensor, &sensor_data);
+            getUVSensorData(&(p_context->uv_sensor_context), &(sensor_data.data.ultraViolet));
+            sensor_data.type = UltraVioletSensor;
+            (p_context->sampling_callback_handler)(&sensor_data);
         }
     }
     
     if(p_context->remaining_counter[HumidityAndTemperatureSensor] >= p_context->sensor_setting.humidityAndTemperatureSamplingPeriod) {
         p_context->remaining_counter[HumidityAndTemperatureSensor] = 0;
         if(p_context->sensor_setting.is_humidity_sampling) {
-            getHumidityData(&(p_context->humidity_sensor_context), &(sensor_data.humidityAndTemperatureData.humidity));
-            getTemperatureData(&(p_context->humidity_sensor_context), &(sensor_data.humidityAndTemperatureData.temperature));
-            (p_context->sampling_callback_handler)(HumidityAndTemperatureSensor, &sensor_data);
+            getHumidityData(&(p_context->humidity_sensor_context), &(sensor_data.data.humidityAndTemperature.humidity));
+            getTemperatureData(&(p_context->humidity_sensor_context), &(sensor_data.data.humidityAndTemperature.temperature));
+            sensor_data.type = HumidityAndTemperatureSensor;
+            (p_context->sampling_callback_handler)(&sensor_data);
         }
     }
     
     if(p_context->remaining_counter[AirPressureSensor] >= p_context->sensor_setting.airPressureSamplingPeriod) {
         p_context->remaining_counter[AirPressureSensor] = 0;
         if(p_context->sensor_setting.is_barometer_sampling) {
-            getPressureData(&(p_context->pressure_sensor_context), &(sensor_data.airPressureData));
-            (p_context->sampling_callback_handler)(AirPressureSensor, &sensor_data);
+            getPressureData(&(p_context->pressure_sensor_context), &(sensor_data.data.airPressure));
+            sensor_data.type = AirPressureSensor;
+            (p_context->sampling_callback_handler)(&sensor_data);
         }
     }
 }

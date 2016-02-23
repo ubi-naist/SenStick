@@ -34,19 +34,20 @@ void test01(flash_stream_context_t *p_stream)
     ASSERT( storageGetSampleCount(&storage, MotionSensor) == 0 );
     // 適当にデータを1つ書いてみる
     SensorData_t data;
-    memset(&data.motionSensorData, 0, sizeof(data.motionSensorData));
-    data.motionSensorData.acceleration.x = 1;
-    data.motionSensorData.rotationRate.z = 3;
-    storageWrite(&storage,  MotionSensor, &data);
+    memset(&data.data.motionSensor, 0, sizeof(data.data.motionSensor));
+    data.type = MotionSensor;
+    data.data.motionSensor.acceleration.x = 1;
+    data.data.motionSensor.rotationRate.z = 3;
+    storageWrite(&storage, &data);
     // 書き込みデータ数は1つ
     ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
     // 1つ読みだしてみる
     ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.motionSensorData, 0xff, sizeof(data.motionSensorData));
+    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
     storageRead(&storage,  MotionSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.motionSensorData.acceleration.x == 1 );
-    ASSERT(data.motionSensorData.rotationRate.z == 3 );
+    ASSERT(data.data.motionSensor.acceleration.x == 1 );
+    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
     // 読み込み位置が移動しているかを確認
     ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
     // 閉じてみる
@@ -64,11 +65,11 @@ void test01(flash_stream_context_t *p_stream)
     ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
     // 1つ読みだしてみる
     ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.motionSensorData, 0xff, sizeof(data.motionSensorData));
+    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
     storageRead(&storage,  MotionSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.motionSensorData.acceleration.x == 1 );
-    ASSERT(data.motionSensorData.rotationRate.z == 3 );
+    ASSERT(data.data.motionSensor.acceleration.x == 1 );
+    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
     // 読み込み位置が移動しているかを確認
     ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
     // 閉じてみる
@@ -84,11 +85,11 @@ void test01(flash_stream_context_t *p_stream)
     ASSERT( storageGetSampleCount(&storage, MotionSensor) == 1 );
     // 1つ読みだしてみる
     ASSERT( storageGetSamplePosition(&storage, MotionSensor) == 0 );
-    memset(&data.motionSensorData, 0xff, sizeof(data.motionSensorData));
+    memset(&data.data.motionSensor, 0xff, sizeof(data.data.motionSensor));
     storageRead(&storage,  MotionSensor, &data);
     // 全部見るのは辛いから, データの頭と末尾で確認
-    ASSERT(data.motionSensorData.acceleration.x == 1 );
-    ASSERT(data.motionSensorData.rotationRate.z == 3 );
+    ASSERT(data.data.motionSensor.acceleration.x == 1 );
+    ASSERT(data.data.motionSensor.rotationRate.z == 3 );
     // 読み込み位置が移動しているかを確認
     ASSERT(storageGetSamplePosition(&storage, MotionSensor) == 1 );
     // 閉じてみる

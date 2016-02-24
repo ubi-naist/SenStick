@@ -25,6 +25,6 @@ uint8_t getBatteryLevel(gpio_manager_t *p_context);
 
 // LEDの点滅モードを設定。
 // 点滅周期(ミリ秒単位)、点滅回数, 停止するときは、いずれかに0を指定
-void setLEDBlink(gpio_manager_t *p_context, uint16_t period, uint16_t blink);
+void setLEDBlink(gpio_manager_t *p_context, uint16_t period, uint16_t blink, bool repeat);
 
 #endif /* gpio_manager_h */

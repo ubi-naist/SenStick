@@ -132,7 +132,7 @@ uint8_t getBatteryLevel(gpio_manager_t *p_context)
     return (uint8_t)level;
 }
 
-void setLEDBlink(gpio_manager_t *p_context, uint16_t period, uint16_t blink)
+void setLEDBlink(gpio_manager_t *p_context, uint16_t period, uint16_t blink, bool repeat)
 {
-    setLEDDriverBlinkMode(&(p_context->led_driver_context), period, blink);
+    setLEDDriverBlinkMode(&(p_context->led_driver_context), period, blink, repeat);
 }

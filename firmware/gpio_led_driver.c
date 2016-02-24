@@ -24,8 +24,16 @@ static void timer_handler(void *p_arg)
     LEDDriver_t *p_context = (LEDDriver_t *)p_arg;
   
     // インデックスをすすめる。
-    p_context->index = (p_context->index +1) % p_context->pattern_length;
-
+    // もし雲繰り返しではないならば、LEDを消して終了する。
+    (p_context->index)++;
+    if(p_context->index >= p_context->pattern_length) {
+        p_context->index %= p_context->pattern_length;
+        if( ! p_context->repeat) {
+            setLED(false);
+            return;
+        }
+    }
+    
     // indexが奇数の場合はLEDを点灯。
     setLED((p_context->index % 2) != 0);
     
@@ -57,7 +65,7 @@ void LEDDriverInit(LEDDriver_t *p_context)
     APP_ERROR_CHECK(err_code);
 }
 
-void setLEDDriverBlinkMode(LEDDriver_t *p_context, uint16_t period, uint16_t mode)
+void setLEDDriverBlinkMode(LEDDriver_t *p_context, uint16_t period, uint16_t mode, bool repeat)
 {
     ret_code_t err_code;
     
@@ -88,6 +96,7 @@ void setLEDDriverBlinkMode(LEDDriver_t *p_context, uint16_t period, uint16_t mod
     }
 
     // 点灯
+    p_context->repeat = repeat;
     p_context->is_blinking = true;
     p_context->index = 0;
     err_code = app_timer_start(p_context->timer_id,

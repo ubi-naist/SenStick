@@ -52,7 +52,7 @@ static int sizeOfSensorData(SensorDeviceType_t type)
     }
 }
 
-bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream_context_t *p_stream, sensorSetting_t *p_sensor_setting, rtcSettingCommand_t *p_date, char *p_abstract)
+bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream_context_t *p_stream, sensorSetting_t *p_sensor_setting, ble_date_time_t *p_date, char *p_abstract)
 {
     p_storage->p_stream         = p_stream;
     p_storage->header.data_id   = 0xff;
@@ -89,7 +89,7 @@ bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream
         memcpy(p_storage->header.end_position, p_storage->header.starting_position, sizeof(int) * NUMBER_OF_SENSOR_DEVICE);
         // 書き込みなのでメタデータをコピーする
         memcpy(&(p_storage->header.sensor_setting), p_sensor_setting, sizeof(sensorSetting_t));
-        memcpy(&(p_storage->header.date), p_date, sizeof(rtcSettingCommand_t));
+        memcpy(&(p_storage->header.date), p_date, sizeof(ble_date_time_t));
     } else {
         // 書き込み不可能なので、ヘッダのstarting/ending positiionは有効なデータ範囲を示している。設定する必要はない。
     }
@@ -176,9 +176,9 @@ void storageGetSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_sett
     memcpy(p_setting,&(p_storage->header.sensor_setting), sizeof(sensorSetting_t));
 }
 
-void storageGetDateTime(sensor_data_storage_t *p_storage, rtcSettingCommand_t *p_date)
+void storageGetDateTime(sensor_data_storage_t *p_storage, ble_date_time_t *p_date)
 {
-    memcpy(p_date, &(p_storage->header.date), sizeof(rtcSettingCommand_t));
+    memcpy(p_date, &(p_storage->header.date), sizeof(ble_date_time_t));
 }
 
 uint8_t storageGetID(sensor_data_storage_t *p_storage)

@@ -16,7 +16,7 @@ void test01(flash_stream_context_t *p_stream)
 {
     sensor_data_storage_t storage;    
     sensorSetting_t setting;
-    rtcSettingCommand_t rtc;
+    ble_date_time_t date;
     char abstract[21];
     abstract[0] = 0;
     
@@ -28,7 +28,7 @@ void test01(flash_stream_context_t *p_stream)
     
     // 書き込みで開いてみる
     bool result;
-    result = storageOpen(&storage, 0xff, p_stream, &setting, &rtc, abstract); // 書き込みで開く
+    result = storageOpen(&storage, 0xff, p_stream, &setting, &date, abstract); // 書き込みで開く
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 ); // IDは0のはず
     ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 0 );
@@ -59,7 +59,7 @@ void test01(flash_stream_context_t *p_stream)
     // 開いて読んでみる
     memset(&storage, 0, sizeof(storage));
     
-    result = storageOpen(&storage, 0, p_stream, &setting, &rtc, abstract);
+    result = storageOpen(&storage, 0, p_stream, &setting, &date, abstract);
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 );
     ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 1 );
@@ -79,7 +79,7 @@ void test01(flash_stream_context_t *p_stream)
     // 開いて読んでみる
     memset(&storage, 0, sizeof(storage));
     
-    result = storageOpen(&storage, 0, p_stream, &setting, &rtc, abstract);
+    result = storageOpen(&storage, 0, p_stream, &setting, &date, abstract);
     ASSERT(result); // 開けてないとだめ
     ASSERT( storageGetID(&storage) == 0 );
     ASSERT( storageGetSampleCount(&storage, AccelerationSensor) == 1 );

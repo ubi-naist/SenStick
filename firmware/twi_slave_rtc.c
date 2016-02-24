@@ -15,6 +15,28 @@
  * Definitions
  */
 
+// RTCのデータ構造
+typedef struct rtcSettingCommand_s {
+    // RTCの数値はすべてBCD(Binary-coded decimal)。16進表記したときの各桁が0-9の値を表す。
+    uint8_t second;
+    uint8_t minute;
+    uint8_t hour;       // BCD 24時間表記。
+    uint8_t dayOfWeek;  // 曜日(1が日曜日 7が土曜日)
+    uint8_t day;
+    uint8_t month;
+    uint8_t year;       // BCD 西暦の下2桁
+} rtcSettingCommand_t;
+
+// RTC_ALARM_SETTING_COMMAND
+/*
+typedef struct rtcAlarmSettingCommand_s {
+    // RTCの数値はすべてBCD
+    uint8_t minute;
+    uint8_t hour;
+    uint8_t dayOfWeekBitFields;  // 曜日(1が日曜日 7が土曜日)
+} rtcAlarmSettingCommand_t;
+*/
+
 // RTC内部レジスタのタイプ。4ビットの値は、RTC内部のレジスタアドレスに対応する
 typedef enum {
     RTCSecondCountRegister  = 0x00,
@@ -42,6 +64,37 @@ typedef enum {
 /**
  * Private methods
  */
+
+static uint8_t convertToBCD(uint8_t value)
+{
+    return ((value / 10) << 4) | (value % 10);
+}
+
+static void convertBLEDateTimeToRTCSetting(rtcSettingCommand_t *p_setting, ble_date_time_t *p_date)
+{
+    p_setting->second   = convertToBCD(p_date->seconds);
+    p_setting->minute   = convertToBCD(p_date->minutes);
+    p_setting->hour     = convertToBCD(p_date->hours);
+    p_setting->dayOfWeek= 1;
+    p_setting->day      = convertToBCD(p_date->day);
+    p_setting->month    = convertToBCD(p_date->month);
+    p_setting->year     = convertToBCD((uint8_t)(p_date->year % 100));
+}
+
+static uint8_t convertFromBCD(uint8_t value)
+{
+    return ((value & 0xf0) >> 4) * 10 + (value & 0x0f);
+}
+
+static void convertRTCSettingToBLEDateTime(ble_date_time_t *p_date, rtcSettingCommand_t *p_setting)
+{
+    p_date->seconds  = convertFromBCD(p_setting->second);
+    p_date->minutes  = convertFromBCD(p_setting->minute);
+    p_date->hours    = convertFromBCD(p_setting->hour);
+    p_date->day      = convertFromBCD(p_setting->day);
+    p_date->month    = convertFromBCD(p_setting->month);
+    p_date->year     = (uint16_t)convertFromBCD(p_setting->year) + 2000;
+}
 
 // RTCに書き込みます。TWI_RTC_ADDRESSは megane_io_definitions.h で定義されているI2Cバス上のRTCのアドレスです。
 static void writeToRTC(rtc_context_t *p_context, RTCRegister_t target_register, const uint8_t *data, uint32_t data_length)
@@ -83,10 +136,15 @@ void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi)
     p_context->p_twi = p_twi;
 }
 
-void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setting)
+void setRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
 {
+    rtcSettingCommand_t setting;
+
+    convertBLEDateTimeToRTCSetting(&setting, p_date);
+    
     // 値はBCDなので注意すること
-    NRF_LOG_PRINTF_DEBUG("\nsetRTCDateTime() y:%0x m:%0x d:%0x dow:%0x h:%0x m:%0x", p_setting->year, p_setting->month, p_setting->day, p_setting->dayOfWeek, p_setting->hour, p_setting->minute);
+    NRF_LOG_PRINTF_DEBUG("setRTCDateTime y:%0x m:%0x d:%0x dow:%0x h:%0x m:%0x\n", setting.year, setting.month, setting.day, setting.dayOfWeek, setting.hour, setting.minute);
+    
     // チップ仕様書 p.29 時刻の設定は、1回のスタートからストップコンディションの間に、0.5秒以内に完了させる制約がある。
     // 時刻を設定する。レジスタのアドレスが連続しているので、値を1度に書き込む。
     // レジスタのアドレス並びは以下のとおり:
@@ -115,68 +173,70 @@ void setRTCDateTime(rtc_context_t *p_context, const rtcSettingCommand_t *p_setti
      } rtcSettingCommand_t;
      */
     uint8_t data[] = {
-        p_setting->second,
-        p_setting->minute,
-        p_setting->hour,
-        (p_setting->dayOfWeek -1),
-        p_setting->day,
-        p_setting->month,
-        p_setting->year };
+        setting.second,
+        setting.minute,
+        setting.hour,
+        (setting.dayOfWeek -1),
+        setting.day,
+        setting.month,
+        setting.year };
     writeToRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
     
-    p_context->is_calender_available = true;
+//    p_context->is_calender_available = true;
 }
 
-bool getRTCDateTime(rtc_context_t *p_context, rtcSettingCommand_t *p_setting)
+void getRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
 {
+    rtcSettingCommand_t setting;
+    
     // カレンダーが初期化されていない。
-    if( ! p_context->is_calender_available) {
-        return false;
-    }
+//    if( ! p_context->is_calender_available) {
+//        return false;
+//    }
     
     NRF_LOG_PRINTF_DEBUG("\ngetRTCDateTime()");
     
     // レジスタのアドレス並びは以下のとおり:
-    /*
-     RTCSecondCountRegister      = 0x00,
-     RTCMinuteCountRegister      = 0x01,
-     RTCHourCountRegister        = 0x02,
-     RTCDayOfWeekCountRegister   = 0x03,
-     RTCDayCountRegister     = 0x04,
-     RTCMonthCountRegister   = 0x05,
-     RTCYearCountRegister    = 0x06,
-     */
+//     RTCSecondCountRegister      = 0x00,
+//     RTCMinuteCountRegister      = 0x01,
+//     RTCHourCountRegister        = 0x02,
+//     RTCDayOfWeekCountRegister   = 0x03,
+//     RTCDayCountRegister     = 0x04,
+//     RTCMonthCountRegister   = 0x05,
+//     RTCYearCountRegister    = 0x06,
+
     uint8_t data[7];
     readFromRTC(p_context, RTCSecondCountRegister, data, sizeof(data));
     
     // 構造体は次の通り。
     // dayOfWeek は、曜日(1が日曜日 7が土曜日)なので、気をつけること。
-    /*
-     typedef struct {
-     // RTCの数値はすべてBCD
-     uint8_t second;
-     uint8_t minute;
-     uint8_t hour;       // BCD 24時間表記。
-     uint8_t dayOfWeek;  // 曜日(1が日曜日 7が土曜日)
-     uint8_t day;
-     uint8_t month;
-     uint8_t year;       // BCD 西暦の下2桁
-     } rtcSettingCommand_t;
-     */
-    p_setting->second    = data[0];
-    p_setting->minute    = data[1];
-    p_setting->hour      = data[2];
-    p_setting->dayOfWeek = data[3] +1; // RTCは週曜日始まりを0として記録するので、+1する。
-    p_setting->day       = data[4];
-    p_setting->month     = data[5];
-    p_setting->year      = data[6];
-    
-    return true;
-}
+//     typedef struct {
+//     // RTCの数値はすべてBCD
+//     uint8_t second;
+//     uint8_t minute;
+//     uint8_t hour;       // BCD 24時間表記。
+//     uint8_t dayOfWeek;  // 曜日(1が日曜日 7が土曜日)
+//     uint8_t day;
+//     uint8_t month;
+//     uint8_t year;       // BCD 西暦の下2桁
+//     } rtcSettingCommand_t;
 
+    setting.second    = data[0];
+    setting.minute    = data[1];
+    setting.hour      = data[2];
+    setting.dayOfWeek = data[3] +1; // RTCは週曜日始まりを0として記録するので、+1する。
+    setting.day       = data[4];
+    setting.month     = data[5];
+    setting.year      = data[6];
+    
+    convertRTCSettingToBLEDateTime(p_date, &setting);
+    
+//    return true;
+}
+/*
 void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_t *p_setting)
 {
-    NRF_LOG_PRINTF_DEBUG("\nsetRTCAlarmDateTime() h:%0x m:%0x dow_bits:0x%0x", p_setting->hour, p_setting->minute, p_setting->dayOfWeekBitFields);
+    NRF_LOG_PRINTF_DEBUG("\nsetRTCAlarmDateTime() h:%0x m:%0x dow_bits:0x%0x", p_setting.hour, p_setting.minute, p_setting.dayOfWeekBitFields);
     
     // アラームの現状のフラグを習得。
     bool isAlarm = getRTCAlarmEnable(p_context);
@@ -192,14 +252,14 @@ void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_
     // アラーム時刻を設定する。レジスタのアドレスが連続しているので、3つの値を1度に書き込む。
     // rtcAlarmSettingCommand_t の dayOfWeek は、曜日(1が日曜日 7が土曜日)なので、気をつけること。
     uint8_t alarm_w_data[] = {
-        p_setting->minute,
-        p_setting->hour,
-        p_setting->dayOfWeekBitFields };
-    /*
-     RTCAlarm_DayOfWeek_MinuteRegister       = 0x08,
-     RTCAlarm_DayOfWeek_HourRegister         = 0x09,
-     RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
-     */
+        p_setting.minute,
+        p_setting.hour,
+        p_setting.dayOfWeekBitFields };
+//
+//     RTCAlarm_DayOfWeek_MinuteRegister       = 0x08,
+//     RTCAlarm_DayOfWeek_HourRegister         = 0x09,
+//     RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
+
     writeToRTC(p_context, RTCAlarm_DayOfWeek_MinuteRegister, alarm_w_data, sizeof(alarm_w_data));
     
     // アラームのフラグを再度設定
@@ -207,23 +267,25 @@ void setRTCAlarmDateTime(rtc_context_t *p_context, const rtcAlarmSettingCommand_
         setRTCAlarmEnable(p_context, true);
     }
 }
-
+*/
+/*
 void getRTCAlarmDateTime(rtc_context_t *p_context, rtcAlarmSettingCommand_t *p_setting)
 {
     NRF_LOG_PRINTF_DEBUG("\ngetRTCAlarmDateTime()");
     // レジスタのアドレス並びは以下のとおり:
-    /*
-     RTCAlarm_DayOfWeek_MinuteRegister       = 0x08,
-     RTCAlarm_DayOfWeek_HourRegister         = 0x09,
-     RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
-     */
+
+//     RTCAlarm_DayOfWeek_MinuteRegister       = 0x08,
+//     RTCAlarm_DayOfWeek_HourRegister         = 0x09,
+//     RTCAlarm_DayOfWeek_DayOfWeekRegister    = 0x0a,
+
     uint8_t data[3];
     readFromRTC(p_context, RTCAlarm_DayOfWeek_MinuteRegister, data, sizeof(data));
-    p_setting->minute               = data[0];
-    p_setting->hour                 = data[1];
-    p_setting->dayOfWeekBitFields   = data[2]; // アラームのdayOfWeekはビットフラグなので、時刻設定のように+1のような加工は必要はない。
+    p_setting.minute               = data[0];
+    p_setting.hour                 = data[1];
+    p_setting.dayOfWeekBitFields   = data[2]; // アラームのdayOfWeekはビットフラグなので、時刻設定のように+1のような加工は必要はない。
 }
-
+*/
+/*
 void clearRTCAlarm(rtc_context_t *p_context)
 {
     NRF_LOG_PRINTF_DEBUG("\nclearRTCAlarm()");
@@ -294,4 +356,4 @@ bool getRTCAlarmEnable(rtc_context_t *p_context)
     return result;
 }
 
-
+*/

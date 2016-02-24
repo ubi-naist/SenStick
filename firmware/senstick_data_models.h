@@ -114,26 +114,6 @@ typedef enum {
 // サンプリング・レート。ミリ秒単位。
 typedef int16_t SamplingRate_t;
 
-// RTCのデータ構造
-typedef struct rtcSettingCommand_s {
-    // RTCの数値はすべてBCD(Binary-coded decimal)。16進表記したときの各桁が0-9の値を表す。
-    uint8_t second;
-    uint8_t minute;
-    uint8_t hour;       // BCD 24時間表記。
-    uint8_t dayOfWeek;  // 曜日(1が日曜日 7が土曜日)
-    uint8_t day;
-    uint8_t month;
-    uint8_t year;       // BCD 西暦の下2桁
-} rtcSettingCommand_t;
-
-// RTC_ALARM_SETTING_COMMAND
-typedef struct rtcAlarmSettingCommand_s {
-    // RTCの数値はすべてBCD
-    uint8_t minute;
-    uint8_t hour;
-    uint8_t dayOfWeekBitFields;  // 曜日(1が日曜日 7が土曜日)
-} rtcAlarmSettingCommand_t;
-
 /**
  * GATTサービス、シリアライズ
  */

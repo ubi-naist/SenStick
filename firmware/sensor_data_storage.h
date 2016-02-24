@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <sdk_common.h>
+#include <ble_date_time.h>
+
 #include "flash_stream.h"
 
 #define NUMBER_OF_SENSOR_DEVICE 7
@@ -16,7 +19,7 @@ typedef struct sensor_data_storage_header_s {
     char    abstract[21];
     
     sensorSetting_t     sensor_setting;
-    rtcSettingCommand_t date;
+    ble_date_time_t date;
 } sensor_data_storage_header_t;
 
 typedef struct {
@@ -31,7 +34,7 @@ typedef struct {
 // ストレージを開きます。
 // 読みだす時には、データID 0-99を指定します。
 // 書き込むときには、IDに -1 を指定します。
-bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream_context_t *p_stream, sensorSetting_t *p_sensor_setting, rtcSettingCommand_t *p_date, char *p_abstract);
+bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream_context_t *p_stream, sensorSetting_t *p_sensor_setting, ble_date_time_t *p_date, char *p_abstract);
 void storageClose(sensor_data_storage_t *p_storage);
 
 int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorData);
@@ -46,7 +49,7 @@ int storageSeekSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType
 
 uint8_t storageGetID(sensor_data_storage_t *p_storage);
 void storageGetSensorSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_sensor_setting);
-void storageGetDate(sensor_data_storage_t *p_storage, rtcSettingCommand_t *p_date);
+void storageGetDate(sensor_data_storage_t *p_storage, ble_date_time_t *p_date);
 void storageGetAbstract(sensor_data_storage_t *p_storage, char *p_str);
 
 #endif /* sensor_data_storage_h */

@@ -9,7 +9,11 @@
 
 #include "flash_stream.h"
 
-#define NUMBER_OF_SENSOR_DEVICE 7
+// データユニットの数
+#define NUMBER_OF_DATA_UNIT         100
+
+// センサデバイスの数
+#define NUMBER_OF_SENSOR_DEVICE     7
 
 // ヘッダ情報
 typedef struct sensor_data_storage_header_s {
@@ -41,7 +45,9 @@ int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorD
 int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, SensorData_t *p_sensorData);
 
 // データが記録されているデータユニット数を取得します。
-int storageGetUnitCount(sensor_data_storage_t *p_storage);
+int storageGetUnitCount(flash_stream_context_t *p_stream);
+// データユニット数と残容量を0-100%で返します。加速度、角速度、磁場、照度、UV、気圧、湿度温度、の順番。
+void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_num_of_unit, uint8_t *p_data);
 
 int storageGetSampleCount(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType);
 int storageGetSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType);

@@ -12,6 +12,8 @@
 
 #include "ble_logger_service.h"
 
+#define GATT_MAX_DATA_LENGTH 20
+
 const ble_uuid128_t ble_logger_base_uuid128 = {
     {
         //F000XXXX-0451-4000-B000-000000000000
@@ -28,14 +30,144 @@ const ble_uuid128_t ble_logger_base_uuid128 = {
  */
 
 
+// 書き込みサービスの、コントロールポイントの読み出しをサポートします。
+void process_writing_control_point_read_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t *p_length)
+{
+    *p_length = 3;
+    // 書込しているか否かは、p_writingのポインタがNULLか否かで判定可能
+    buffer[0] = (p_context->p_writing != NULL);
+}
+void process_writing_control_point_write_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t length)
+{
+    if(buffer[0] == 0x01) {
+        bleLoggingServiceStartLogging(p_context);
+    }
+    if(buffer[1] == 0x01) {
+        bleLoggerServiceFormatStorage(p_context);
+    }
+    if(buffer[2] == 0x01) {
+        // DFU開始を要求, ロギングを停止してから。
+        bleLoggerServiceStopLogging(p_context);
+        (p_context->event_handler)(p_context, REQUEST_DFU);
+    }
+}
+
+// ストレージのステータス読み出し
+void process_writing_control_point_read_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t *p_length)
+{
+    *p_length = 1 + NUM_OF_SENSOR_DEVICE;
+    // ストレージのステータスを読みだし
+    storageGetRemainingCapacity(p_context->p_stream, &(buffer[0]), &(buffer[1]));
+}
+
+// RTCの設定
+void process_rtc_write_request(p_context, buffer, length)
+{
+    ble_date_time_t date;
+    ble_date_time_decode(&date, buffer);
+    setRTCDateTime(p_context->p_rtc_context, &date);
+}
+void process_rtc_read_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t *p_length)
+{
+    *p_length = 7;
+    
+    ble_date_time_t date;
+    getRTCDateTime(p_context->p_rtc_context, &date);
+    ble_date_time_encode(&date, buffer);
+}
+
+// RTCの設定
+void process_rtc_write_request(p_context, buffer, length)
+{
+    ble_date_time_t date;
+    ble_date_time_decode(&date, buffer);
+    setRTCDateTime(p_context->p_rtc_context, &date);
+}
+void process_rtc_read_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t *p_length)
+{
+    *p_length = 7;
+    
+    ble_date_time_t date;
+    getRTCDateTime(p_context->p_rtc_context, &date);
+    ble_date_time_encode(&date, buffer);
+}
+
+// on the flyでの読み出し処理
+static void on_rw_auth_req(ble_logger_service_t *p_context, ble_evt_t *p_ble_evt)
+{
+    ret_code_t err_code;
+    ble_gatts_evt_rw_authorize_request_t * p_auth_req = p_ble_evt->evt.gatts_evt->params.authorize_request;
+
+    // バッファを用意
+    uint8_t buffer[GATT_MAX_DATA_LENGTH];
+    uint8_t length = 0;
+    memset(buffer, 0, sizeof(buffer));
+    
+    ble_gatts_rw_authorize_reply_params_t param;
+    memset(&reply_params, 0, sizeof(reply_params));
+    
+    if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_READ) {
+        // ハンドルで判別して読み出し処理
+        if( p_auth_req->read.handle == p_context->writing_control_point_char_handles.value_handle) {
+            process_writing_control_point_read_request(p_context, buffer, &length);
+        } else if ( p_auth_req->read.handle == p_context->storage_status_char_handles.value_handle) {
+            process_storage_status_read_request(p_context, buffer, &length);
+        } else if ( p_auth_req->read.handle == p_context->rtc_char_handles.value_handle) {
+            process_rtc_read_request(p_context, buffer, &length);
+        }
+        
+        reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
+        reply_params.read.gatt_status   = BLE_GATT_STATUS_SUCCESS;
+        reply_params.read.update        = (length != 0);
+        reply_params.read.offset        = 0;
+        reply_params.read.len           = length;
+        reply_params.read.p_data        = buffer;
+    } else {
+        reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_WRITE;
+        reply_params.write.gatt_status = BLE_GATT_STATUS_ATTERR_WRITE_NOT_PERMITTED;
+        NRF_LOG_PRINTF_DEBUG("on_rw_auth_req(), auth write\n");
+    }
+    
+    err_code = sd_ble_gatts_rw_authorize_reply(p_context->conn_handle, &reply_params);
+    APP_ERROR_CHECK(err_code);
+}
+
 static void onWrite(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
 {
-//    ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+    ret_code_t err_code;
+    ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
+    
+    uint8_t buffer[GATT_MAX_DATA_LENGTH];
+    uint8_t length = (uint8_t) MIN(GATT_MAX_DATA_LENGTH, p_evt_write->len); // 長さを指定値に制約
+    
+    ble_gatts_value_t gatts_value;
+    memset(&gatts_value, 0, sizeof(gatts_value));
+    gatts_value.len     = length;
+    gatts_value.offset  = 0;
+    gatts_value.p_value = buffer;
+    err_code = sd_ble_gatts_value_get(p_context->connection_handle,
+                                      p_evt_write->handle,
+                                      &gatts_value);
+    APP_ERROR_CHECK(err_code);
+
+    // value handle への書き込み
+    if(p_evt_write->handle == p_context->writing_control_point_char_handles.value_handle) {
+        process_writing_control_point_write_request(p_context, buffer, length);
+    } else if ( p_evt_write->handle == p_context->rtc_char_handles.value_handle) {
+        process_rtc_write_request(p_context, buffer, length);
+    }
+        /*
+        hoge()
+    } else if((p_evt_write->handle == p_context->notification_characteristic_handle.cccd_handle) && (p_evt_write->len == 2)) {
+        // cccd書き込み
+        p_context->is_notification_enabled = ble_srv_is_notification_enabled(p_evt_write->data);
+    }
+    else*/
 }
 
 static void onDisconnect(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
 {
-
+    
 }
 
 static void addServices(ble_logger_service_t *p_context)
@@ -49,7 +181,7 @@ static void addServices(ble_logger_service_t *p_context)
     uuid.type = p_context->uuid_type;
     err_code  = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &uuid, &(p_context->writing_service_handle));
     APP_ERROR_CHECK(err_code);
-
+    
     // params初期設定
     memset(&params, 0 , sizeof(params));
     // UUID
@@ -72,7 +204,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_OPEN;
     err_code = characteristic_add(p_context->writing_service_handle, &params, &p_context->writing_control_point_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // ステータス
     params.uuid         = 0xbb02;
     params.max_len      = 8;
@@ -82,7 +214,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->writing_service_handle, &params, &p_context->storage_status_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // RTC
     params.uuid         = 0xbb03;
     params.max_len      = 7;
@@ -102,7 +234,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->writing_service_handle, &params, &p_context->writing_abstract_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     
     // 読み出しのサービスを登録
     uuid.uuid = 0xcc00;
@@ -119,7 +251,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->reading_service_handle, &params, &p_context->reading_target_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // 読み出しコントロールポイント
     params.uuid         = 0xcc02;
     params.max_len      = 3;
@@ -139,7 +271,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->reading_service_handle, &params, &p_context->reading_status_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // データポイント
     params.uuid         = 0xcc04;
     params.max_len      = 20;
@@ -159,7 +291,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->reading_service_handle, &params, &p_context->meta_data_sensor_setting_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // 時間
     params.uuid         = 0xcc06;
     params.max_len      = 7;
@@ -169,7 +301,7 @@ static void addServices(ble_logger_service_t *p_context)
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->reading_service_handle, &params, &p_context->meta_data_datetime_char_handles);
     APP_ERROR_CHECK(err_code);
-
+    
     // アブストラクト
     params.uuid         = 0xcc07;
     params.max_len      = 20;
@@ -206,9 +338,11 @@ uint32_t bleLoggerServiceInit(ble_logger_service_t *p_context, ble_logger_servic
     // サービスを追加
     addServices(p_context);
     
+    // ストリームを開く
+    initFlashStream(&(p_context->flash_stream));
+    
     return NRF_SUCCESS;
 }
-
 
 void bleLoggerServiceOnBleEvent(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
 {
@@ -226,18 +360,74 @@ void bleLoggerServiceOnBleEvent(ble_logger_service_t *p_context, ble_evt_t * p_b
         case BLE_GATTS_EVT_WRITE:
             onWrite(p_context, p_ble_evt);
             break;
+        case BLE_EVT_TX_COMPLETE:
+            break;
+        case BLE_GATTS_EVT_RW_AUTHORIZE_REQUEST:
+            on_rw_auth_req(p_context, p_ble_evt);
         default:
             break;
     }
 }
 
-void bleLoggerServiceStartLogging(ble_logger_service_t *p_context, const sensorSetting_t *p_setting)
-{}
+// センサー設定。ロギングを開始する前に、必ずこれを呼び出します。
+void bleLoggerSetSensorSetting(ble_logger_service_t *p_context, sensorSetting_t *p_setting)
+{
+    p_context->p_setting = p_setting;
+}
+
+void bleLoggerServiceStartLogging(ble_logger_service_t *p_context, sensorSetting_t *p_setting)
+{
+    ASSERT(p_context->p_setting != NULL);
+    
+    // 現在読みだしているストリームが、書き込み途中のストリームであるなら、割当バッファを切り替える
+    bool isReadingRecordingData = (p_context->p_writing != NULL) && (p_context->p_writing == p_context->p_reading);
+    if(isReadingRecordingData) {
+        p_context->writing_storage_index = (p_context->writing_storage_index +1 ) % 2;
+    }
+    
+    // 今のロギングを停止する
+    bleLoggerServiceStopLogging(p_context);
+    
+    // 現在日時を取得
+    ble_date_time_t date;
+    getRTCDateTime(p_context->p_rtc_context, &date);
+    
+    // ストレージを割り当てる
+    p_context->p_writing = &(p_context->wiring_storage[p_context->writing_storage_index]);
+    // 新しいストリームを開く
+    bool result = storageOpen(p_context->p_writing, -1, &(p_context->flash_stream), p_context->p_setting, &date, p_context->abstract);
+    if( ! result) {
+        p_context->p_writing = NULL;
+    }
+    
+    // イベント通知
+    (p_context->event_handler)(p_context, START_RECORDING);
+}
 
 void bleLoggerServiceStopLogging(ble_logger_service_t *p_context)
-{}
+{
+    if(p_context->p_writing == NULL) {
+        return;
+    }
+    
+    storageClose(p_context->p_writing);
+    p_context->p_writing = NULL;
+    
+    // イベント通知
+    (p_context->event_handler)(p_context, STOP_RECORDING);
+}
 
 void bleLoggerServiceWrite(ble_logger_service_t *p_context, const SensorData_t *p_sensorData)
 {
+    if(p_context->p_writing == NULL) {
+        return;
+    }
+    
+    int size = storageWrite(p_context->p_writing, p_sensorData);
+    if(size == 0) {
+        // DISK FULLイベント通知
+        (p_context->event_handler)(p_context, STORAGE_FULL);
+        bleLoggerServiceStopLogging(p_context);
+    }
 }
 

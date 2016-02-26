@@ -2,8 +2,6 @@
 #include "nrf_assert.h"
 #include "sensor_data_storage.h"
 
-// データユニットの数
-#define NUMBER_OF_DATA_UNIT         100
 // ヘッダのサイズ
 #define HEADER_AREA_SIZE            (sizeof(sensor_data_storage_header_t) * NUMBER_OF_DATA_UNIT)
 // センサデータすべての合計が30バイト。1バイト当たりの割当容量
@@ -110,6 +108,8 @@ void storageClose(sensor_data_storage_t *p_storage)
     memcpy(p_storage->header.end_position, p_storage->writing_position, sizeof(int) * NUMBER_OF_SENSOR_DEVICE);
     //ヘッダを書き込む
     writeHeader(p_storage->p_stream, &(p_storage->header));
+    //書き込み可能フラグを落とす
+    p_storage->can_write = false;
 }
 
 int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorData)
@@ -158,18 +158,62 @@ int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType,
     return size;
 }
 
-int storageGetUnitCount(sensor_data_storage_t *p_storage)
+int storageGetUnitCount(flash_stream_context_t *p_stream)
 {
     // フォーマットされていたら、ヘッダを読む
     sensor_data_storage_header_t header;
     for(int i = 0; i < NUMBER_OF_DATA_UNIT; i++ ) {
-        int length = readHeader(p_storage->p_stream, i, &header);
+        int length = readHeader(p_stream, i, &header);
         if(length == 0 || header.data_id == 0xff) {
             return i;
         }
     }
     return NUMBER_OF_DATA_UNIT;
 }
+
+void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_num_of_unit, uint8_t *p_data)
+{
+    // 初期値
+    *p_num_of_unit = NUMBER_OF_DATA_UNIT;
+    memset(p_data, 100, NUMBER_OF_SENSOR_DEVICE);
+
+    // フォーマットされていたら、ヘッダを読む
+    sensor_data_storage_header_t header;
+    int unit = -1;
+    for(int i = 0; i < NUMBER_OF_DATA_UNIT; i++ ) {
+        int length = readHeader(p_stream, i, &header);
+        if(length == 0 || header.data_id == 0xff) {
+            break;
+        }
+        unit = i;
+    }
+    // 何も記録されていない
+    if(unit < 0 ) {
+        return;
+    }
+    // 値を設定
+    *p_num_of_unit = NUMBER_OF_DATA_UNIT - unit -1;
+    for(int i=0; i < NUMBER_OF_SENSOR_DEVICE; i++) {
+        int remaining_byte_capacity = (SENSOR_DATA_STARTING_POSITION[i +1] - header.end_position[i]);
+        int remaining_count = remaining_byte_capacity / sizeOfSensorData(i);
+        int remaining_capacity_percent = (100 * remaining_count) / MAX_SAMPLING_COUNT;
+        remaining_capacity_percent = MIN(100, remaining_capacity_percent);
+        p_dat[i] = (uint8_t) remaining_capacity_percent;
+    }
+}
+
+typedef struct sensor_data_storage_header_s {
+    uint8_t data_id;                                      // データID 0-99
+    int     starting_position[NUMBER_OF_SENSOR_DEVICE];   // データ開始ポイント, バイト単位
+    int     end_position[NUMBER_OF_SENSOR_DEVICE];        // データ終了ポイント, バイト単位
+    char    abstract[21];
+    
+    sensorSetting_t     sensor_setting;
+    ble_date_time_t date;
+} sensor_data_storage_header_t;
+
+
+
 
 void storageGetSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_setting)
 {

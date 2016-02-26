@@ -73,7 +73,6 @@
 				F8EB5E711C5B053C00D82482 /* model */,
 				F8AC9D3F1C22396400366AEF /* services */,
 				F8AC9D441C223A9500366AEF /* gpio */,
-				F8EB5E781C61E8B800D82482 /* logger */,
 				F8AC9D531C223C0900366AEF /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
 				F8EB5E731C5B774D00D82482 /* tests */,
@@ -137,6 +136,8 @@
 		F8AC9D531C223C0900366AEF /* spi */ = {
 			isa = PBXGroup;
 			children = (
+				F8EB5E7E1C62E6A500D82482 /* sensor_data_storage.h */,
+				F8EB5E7D1C62E6A500D82482 /* sensor_data_storage.c */,
 				F8F47E9E1C76B753005668FA /* flash_stream.h */,
 				F8F47E9D1C76B753005668FA /* flash_stream.c */,
 				F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */,
@@ -179,21 +180,12 @@
 		F8EB5E731C5B774D00D82482 /* tests */ = {
 			isa = PBXGroup;
 			children = (
+				F809DE861C69E0AC000062E1 /* test_storage.h */,
+				F809DE851C69E0AC000062E1 /* test_storage.c */,
 				F8EB5E751C5B775E00D82482 /* senstick_tests.h */,
 				F8EB5E741C5B775E00D82482 /* senstick_tests.c */,
 			);
 			name = tests;
-			sourceTree = "<group>";
-		};
-		F8EB5E781C61E8B800D82482 /* logger */ = {
-			isa = PBXGroup;
-			children = (
-				F809DE861C69E0AC000062E1 /* test_storage.h */,
-				F809DE851C69E0AC000062E1 /* test_storage.c */,
-				F8EB5E7E1C62E6A500D82482 /* sensor_data_storage.h */,
-				F8EB5E7D1C62E6A500D82482 /* sensor_data_storage.c */,
-			);
-			name = logger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

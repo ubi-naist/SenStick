@@ -57,7 +57,7 @@ bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream
 
     // もしもdata_idが 0xff であれば書き込み。最後尾のIDを取得する。
     if(data_id == 0xff) {
-        data_id = storageGetUnitCount(p_storage);
+        data_id = storageGetUnitCount(p_stream);
     }
     // パラメータの値チェック
     if(data_id >= NUMBER_OF_DATA_UNIT) {
@@ -195,25 +195,12 @@ void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_nu
     *p_num_of_unit = NUMBER_OF_DATA_UNIT - unit -1;
     for(int i=0; i < NUMBER_OF_SENSOR_DEVICE; i++) {
         int remaining_byte_capacity = (SENSOR_DATA_STARTING_POSITION[i +1] - header.end_position[i]);
-        int remaining_count = remaining_byte_capacity / sizeOfSensorData(i);
+        int remaining_count = remaining_byte_capacity / sizeOfSensorData((SensorDeviceType_t)i);
         int remaining_capacity_percent = (100 * remaining_count) / MAX_SAMPLING_COUNT;
         remaining_capacity_percent = MIN(100, remaining_capacity_percent);
-        p_dat[i] = (uint8_t) remaining_capacity_percent;
+        p_data[i] = (uint8_t) remaining_capacity_percent;
     }
 }
-
-typedef struct sensor_data_storage_header_s {
-    uint8_t data_id;                                      // データID 0-99
-    int     starting_position[NUMBER_OF_SENSOR_DEVICE];   // データ開始ポイント, バイト単位
-    int     end_position[NUMBER_OF_SENSOR_DEVICE];        // データ終了ポイント, バイト単位
-    char    abstract[21];
-    
-    sensorSetting_t     sensor_setting;
-    ble_date_time_t date;
-} sensor_data_storage_header_t;
-
-
-
 
 void storageGetSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_setting)
 {

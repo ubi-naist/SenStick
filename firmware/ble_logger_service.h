@@ -7,10 +7,10 @@
 #include <ble.h>
 #include <ble_srv_common.h>
 
-
 #include "senstick_data_models.h"
-#include "twi_slave_rtc.h"
 #include "sensor_data_storage.h"
+
+#include "twi_sensor_manager.h"
 
 //
 typedef enum {
@@ -48,7 +48,7 @@ struct ble_logger_service_s {
     uint16_t connection_handle;
     uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
     
-    rtc_context_t *p_rtc_context;
+    sensor_manager_t *p_sensor_manager_context;
     
     // ストレージ
     flash_stream_context_t flash_stream;
@@ -67,7 +67,7 @@ struct ble_logger_service_s {
 
 // 初期化関数。
 // サービスを使う間に必ずこの関数を呼び出すこと。
-uint32_t bleLoggerServiceInit(ble_logger_service_t *p_context, rtc_context_t *p_rtc_context, ble_logger_service_event_handler_t logger_event_handler);
+uint32_t bleLoggerServiceInit(ble_logger_service_t *p_context, sensor_manager_t *p_sensor_manager_context, ble_logger_service_event_handler_t logger_event_handler);
 
 // BLEイベント通知。mainはこのメソッドを通じてBLEイベントを伝えます。
 void bleLoggerServiceOnBleEvent(ble_logger_service_t *p_context, ble_evt_t *p_ble_evt);

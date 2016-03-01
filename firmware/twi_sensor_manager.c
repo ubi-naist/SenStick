@@ -47,6 +47,8 @@ static void init_twi_slaves(sensor_manager_t *p_context)
     initPressureSensor(&(p_context->pressure_sensor_context),  &(p_context->twi));
     initBrightnessSensor(&(p_context->brightness_sensor_context),  &(p_context->twi));
     initUVSensor(&(p_context->uv_sensor_context),  &(p_context->twi));
+    initRTC(&(p_context->rtc_context),  &(p_context->twi));
+    
 }
 
 static void sensor_timer_handler(void *p_arg)
@@ -205,3 +207,16 @@ void sensorManagerStopSampling(sensor_manager_t *p_context)
     app_timer_stop(p_context->timer_id);
     p_context->is_sampling = false;
 }
+
+void setRTCDateTime(sensor_manager_t *p_context, ble_date_time_t *p_date)
+{
+    setTWIRTCDateTime(&(p_context->rtc_context), p_date);
+}
+
+void getRTCDateTime(sensor_manager_t *p_context, ble_date_time_t *p_date)
+{
+    getTWIRTCDateTime(&(p_context->rtc_context), p_date);
+}
+
+
+

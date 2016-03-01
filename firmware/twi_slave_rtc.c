@@ -136,7 +136,7 @@ void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi)
     p_context->p_twi = p_twi;
 }
 
-void setRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
+void setTWIRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
 {
     rtcSettingCommand_t setting;
 
@@ -185,7 +185,7 @@ void setRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
 //    p_context->is_calender_available = true;
 }
 
-void getRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
+void getTWIRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date)
 {
     rtcSettingCommand_t setting;
     

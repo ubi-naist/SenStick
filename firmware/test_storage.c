@@ -54,7 +54,7 @@ void test01(flash_stream_context_t *p_stream)
     storageClose(&storage);
     
     // データの数は1のはず
-    ASSERT( storageGetUnitCount(&storage) == 1 );
+    ASSERT( storageGetUnitCount(storage.p_stream) == 1 );
     
     // 開いて読んでみる
     memset(&storage, 0, sizeof(storage));

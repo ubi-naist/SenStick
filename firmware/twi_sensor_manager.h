@@ -9,6 +9,7 @@
 #include "twi_slave_humidity_sensor.h"
 #include "twi_slave_uv_sensor.h"
 #include "twi_slave_brightness_sensor.h"
+#include "twi_slave_rtc.h"
 
 #include "gpio_manager.h"
 
@@ -34,6 +35,8 @@ typedef struct sensor_manager_s {
     humidity_sensor_context_t   humidity_sensor_context;
     uv_sensor_context_t         uv_sensor_context;
     brightness_sensor_context_t brightness_sensor_context;
+
+    rtc_context_t rtc_context;
     
     // タイマー
     app_timer_t timer_id_data;
@@ -65,5 +68,9 @@ void sensorManagerStartSampling(sensor_manager_t *p_context);
 
 // サンプリングの停止
 void sensorManagerStopSampling(sensor_manager_t *p_context);
+
+// 時計時刻を設定/取得します。
+void setRTCDateTime(sensor_manager_t *p_context, ble_date_time_t *p_date);
+void getRTCDateTime(sensor_manager_t *p_context, ble_date_time_t *p_date);
 
 #endif /* senstick_sensor_manager_h */

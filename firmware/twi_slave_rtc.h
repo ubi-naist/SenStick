@@ -22,8 +22,8 @@ typedef struct rtc_context_s {
 void initRTC(rtc_context_t *p_context, nrf_drv_twi_t *p_twi);
 
 // 時計時刻を設定/取得します。
-void setRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date);
-void getRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date);
+void setTWIRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date);
+void getTWIRTCDateTime(rtc_context_t *p_context, ble_date_time_t *p_date);
 
 // アラーム時刻を設定/取得します。
 void setRTCAlarmDateTime(rtc_context_t *p_context, ble_date_time_t *p_date);

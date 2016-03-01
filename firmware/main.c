@@ -482,7 +482,7 @@ static void onSensorSettingChangedHandler(ble_sensortag_service_t * p_context, s
 }
 
 // ロガーから呼び出される、コールバック関数
-static void onLoggerHandler(ble_logger_service_t * p_context)
+static void onLoggerHandler(ble_logger_service_t * p_context, logger_service_event_type_t event)
 {
     // TBD
 }
@@ -561,7 +561,7 @@ int main(void)
     err_code = bleSensorTagServiceInit(&sensortag_service_context, &defaultSensorSetting, onSensorSettingChangedHandler);
     APP_ERROR_CHECK(err_code);
     // ロガーサービスを追加
-    err_code = bleLoggerServiceInit(&logger_service_context, onLoggerHandler);
+    err_code = bleLoggerServiceInit(&logger_service_context, &sensor_manager_context, onLoggerHandler);
     APP_ERROR_CHECK(err_code);
 
     /** **/

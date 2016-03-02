@@ -122,7 +122,7 @@ static void on_rw_auth_req(ble_logger_service_t *p_context, ble_evt_t *p_ble_evt
         } else if ( p_auth_req->request.read.handle == p_context->reading_status_char_handles.value_handle) {
             process_reading_status_read_request(p_context, buffer, &length);
         } else {
-            NRF_LOG_PRINTF_DEBUG("on_rw_auth_req(), unexpected handler 0x%04x.\n", p_auth_req->request.read.handle);
+//            NRF_LOG_PRINTF_DEBUG("on_rw_auth_req(), unexpected handler 0x%04x.\n", p_auth_req->request.read.handle);
         }
         
         reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
@@ -169,7 +169,7 @@ static void onWrite(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
     } else if (p_evt_write->handle == p_context->reading_control_point_char_handles.value_handle) {
         process_reading_control_point_write_request(p_context, buffer, length);
     } else  {
-        NRF_LOG_PRINTF_DEBUG("onWrite(), unexpected handler 0x%02x.\n", p_evt_write->handle);
+//        NRF_LOG_PRINTF_DEBUG("onWrite(), unexpected handler 0x%02x.\n", p_evt_write->handle);
     }
         /*
         hoge()

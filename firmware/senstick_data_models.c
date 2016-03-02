@@ -7,9 +7,19 @@ uint16_t readUInt16AsBigEndian(uint8_t *ptr)
     return ((uint16_t)ptr[0] << 8) | (uint16_t)ptr[1];
 }
 
+int16_t readInt16AsBigEndian(uint8_t *ptr)
+{
+    return ((int16_t)ptr[0] << 8) | ptr[1];
+}
+
 uint16_t readUInt16AsLittleEndian(uint8_t *ptr)
 {
     return ((uint16_t)ptr[0] << 0) | ((uint16_t)ptr[1] << 8);
+}
+
+int16_t readInt16AsLittleEndian(uint8_t *ptr)
+{
+    return ptr[0] | ((int16_t)ptr[1] << 8);
 }
 
 uint32_t readUInt32AsLittleEndian(uint8_t *ptr)

@@ -142,7 +142,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             break;
             
         case BLE_GATTS_EVT_WRITE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_WRITE");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_WRITE");
             break;
             
         case BLE_GATTS_EVT_TIMEOUT:

@@ -135,8 +135,9 @@ typedef struct sensorSettings_s {
 
 // 数値とバイト列との変換
 uint16_t readUInt16AsBigEndian(uint8_t *ptr);
+int16_t readInt16AsBigEndian(uint8_t *ptr);
 uint16_t readUInt16AsLittleEndian(uint8_t *ptr);
-
+int16_t readInt16AsLittleEndian(uint8_t *ptr);
 uint32_t readUInt32AsLittleEndian(uint8_t *ptr);
 
 void int16ToByteArrayBigEndian(uint8_t *p_dst, int16_t src);

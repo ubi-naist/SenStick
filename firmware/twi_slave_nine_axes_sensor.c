@@ -60,9 +60,9 @@ static void getAccelerationData(nine_axes_sensor_context_t *p_context, Accelerat
     // ACCEL_ZOUT_H
     // ACCEL_ZOUT_L
     readFromMPU9250(p_context, ACCEL_XOUT_H, buffer, sizeof(buffer));
-    p_acceleration->x = readUInt16AsBigEndian(&(buffer[0]));
-    p_acceleration->y = readUInt16AsBigEndian(&(buffer[1]));
-    p_acceleration->z = readUInt16AsBigEndian(&(buffer[2]));
+    p_acceleration->x = readInt16AsBigEndian(&(buffer[0]));
+    p_acceleration->y = readInt16AsBigEndian(&(buffer[2]));
+    p_acceleration->z = readInt16AsBigEndian(&(buffer[4]));
 }
 
 static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationRateData_t *p_rotationRate)
@@ -77,9 +77,9 @@ static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationR
     // GYRO_ZOUT_L
     readFromMPU9250(p_context, GYRO_XOUT_H, buffer, sizeof(buffer));
     
-    p_rotationRate->x = readUInt16AsBigEndian(&(buffer[0]));
-    p_rotationRate->y = readUInt16AsBigEndian(&(buffer[1]));
-    p_rotationRate->z = readUInt16AsBigEndian(&(buffer[2]));
+    p_rotationRate->x = readInt16AsBigEndian(&(buffer[0]));
+    p_rotationRate->y = readInt16AsBigEndian(&(buffer[2]));
+    p_rotationRate->z = readInt16AsBigEndian(&(buffer[4]));
 }
 
 static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, MagneticFieldData_t *p_magneticField)
@@ -94,9 +94,9 @@ static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, Magnetic
     // HZH
     readFromMPU9250(p_context, HXL, buffer, sizeof(buffer));
     
-    p_magneticField->x = readUInt16AsLittleEndian(&(buffer[0]));
-    p_magneticField->y = readUInt16AsLittleEndian(&(buffer[1]));
-    p_magneticField->z = readUInt16AsLittleEndian(&(buffer[2]));
+    p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
+    p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
+    p_magneticField->z = readInt16AsLittleEndian(&(buffer[4]));
 }
 
 /**

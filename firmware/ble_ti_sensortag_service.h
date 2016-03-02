@@ -17,12 +17,6 @@ struct ble_sensortag_service_s {
     ble_sensortag_service_event_handler_t setting_changed_event_handler;     // イベントハンドラ
     
     ble_uuid_t base_uuid;
-
-    // IR温度計。このサービスは、使わない。
-    uint16_t ir_temperature_service_handle;
-    ble_gatts_char_handles_t ir_temperature_value_char_handle;
-    ble_gatts_char_handles_t ir_temperature_configration_char_handle;
-    ble_gatts_char_handles_t ir_temperature_period_char_handle;
     
     uint16_t accelerometer_service_handle;
     ble_gatts_char_handles_t accelerometer_value_char_handle;

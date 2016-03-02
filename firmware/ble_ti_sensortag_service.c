@@ -360,12 +360,6 @@ static void addAService(ble_sensortag_service_t *p_context,
 static void addServices(ble_sensortag_service_t *p_context)
 {
     ret_code_t err_code;
-    /*
-    addAService(p_context,
-                &(p_context->ir_temperature_service_handle),               0xaa00,
-                &(p_context->ir_temperature_value_char_handle),            0xaa01, 4,
-                &(p_context->ir_temperature_configration_char_handle),     0xaa02,
-                &(p_context->ir_temperature_period_char_handle),           0xaa03);*/
 
     addAService(p_context,
                 &(p_context->accelerometer_service_handle),             0xaa10,

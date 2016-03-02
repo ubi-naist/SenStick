@@ -64,12 +64,14 @@ static void notifyToClient(const ble_sensortag_service_t *p_context, uint16_t va
 
 static int8_t convertAccelerationValue(const sensorSetting_t *p_setting, const int16_t value)
 {
+    // 符号付き1.14固定小数点を、物理値に戻して、符号付き1.6固定小数点に変換する。
+    // フルスケール2Gの場合 (value * 2) >> 8
     switch(p_setting->accelerationRange) {
         default:
-        case ACCELERATION_RANGE_2G:  return (int8_t)(value >> 14);
-        case ACCELERATION_RANGE_4G:  return (int8_t)(value >> 13);
-        case ACCELERATION_RANGE_8G:  return (int8_t)(value >> 12);
-        case ACCELERATION_RANGE_16G: return (int8_t)(value >> 11);
+        case ACCELERATION_RANGE_2G:  return (int8_t)(value >> 10);
+        case ACCELERATION_RANGE_4G:  return (int8_t)(value >> 9);
+        case ACCELERATION_RANGE_8G:  return (int8_t)(value >> 8);
+        case ACCELERATION_RANGE_16G: return (int8_t)(value >> 7);
     }
 }
 static void notifyAcceleromterData(const ble_sensortag_service_t *p_context, const AccelerationData_t *p_acceleration)

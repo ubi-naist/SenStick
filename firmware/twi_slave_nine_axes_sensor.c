@@ -25,12 +25,24 @@ typedef enum {
     PWR_MGMT_2      = 0x6c,
     ACCEL_XOUT_H    = 0x3b,
     GYRO_XOUT_H     = 0x43,
+
+    I2C_MST_CTRL    = 0x24,
+    I2C_SLV0_ADDR   = 0x25,
+    I2C_SLV0_REG    = 0x26,
+    I2C_SLV0_CTRL   = 0x27,
+    EXT_SENS_DATA_00= 0x49,
     
-    // 磁気センサー
-    HXL   = 0x03,
-    CNTL1 = 0x0a,
-    CNTL2 = 0x0b,
+    USER_CTRL = 0x6a,
+    INT_PIN_CFG = 0x37,
+    
 } MPU9250Register_t;
+
+typedef enum {
+    ST1   = 0x02,
+    HXL   = 0x03,
+    ST2   = 0x09,
+    CNTL1  = 0x0a,
+} AK8963Register_t;
 
 /**
  * private methods
@@ -47,6 +59,17 @@ static void writeToMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Registe
 static void readFromMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Register_t target_register, uint8_t *data, uint8_t data_length)
 {
     readFromTwiSlave(p_context->p_twi, TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
+}
+
+static void writeToAK8963(nine_axes_sensor_context_t *p_context, AK8963Register_t target_register, const uint8_t *data, uint8_t data_length)
+{
+    writeToTwiSlave(p_context->p_twi, TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
+}
+
+// MPU9250から読み込みます。
+static void readFromAK8963(nine_axes_sensor_context_t *p_context, AK8963Register_t target_register, uint8_t *data, uint8_t data_length)
+{
+    readFromTwiSlave(p_context->p_twi, TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 static void getAccelerationData(nine_axes_sensor_context_t *p_context, AccelerationData_t *p_acceleration)
@@ -84,7 +107,7 @@ static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationR
 
 static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, MagneticFieldData_t *p_magneticField)
 {
-    uint8_t buffer[6];
+    uint8_t buffer[7];
     // 地磁気のデータは一連の連続するアドレスから読み出す。
     // HXL 0x03
     // HXH
@@ -92,7 +115,9 @@ static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, Magnetic
     // HYH
     // HZL
     // HZH
-    readFromMPU9250(p_context, HXL, buffer, sizeof(buffer));
+    //
+    // 内部データはHZHの次のアドレスにあるST2を読みだすことで、読み出しロックが解除されて、次のデータに更新される。そのため7バイトを読みだす。
+    readFromAK8963(p_context, HXL, buffer, sizeof(buffer));
     
     p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
     p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
@@ -120,6 +145,32 @@ void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_
     // D0: =
     const uint8_t data[] = {0x80};
     writeToMPU9250(p_context, PWR_MGMT_1, data, sizeof(data));
+
+    // INT Pin / Bypass Enable Configuration
+    // 7: ACTL
+    //          1 – The logic level for INT pin is active low. 0 – The logic level for INT pin is active high.
+    // 6: OPEN
+    //          1 – INT pin is configured as open drain. 0 – INT pin is configured as push-pull.
+    // 5: LATCH_INT_EN
+    //          1 – INT pin level held until interrupt status is cleared. 0 – INT pin indicates interrupt pulse’s is width 50us.
+    // 4: INT_ANYRD_2CLEAR
+    //          1 – Interrupt status is cleared if any read operation is performed.
+    //          0 – Interrupt status is cleared only by reading INT_STATUS register
+    // 3: ACTL_FSYNC
+    //          1 – The logic level for the FSYNC pin as an interrupt is active low. 0 – The logic level for the FSYNC pin as an interrupt is active high.
+    // 2: FSYNC_INT_MODE_EN
+    //          1 – This enables the FSYNC pin to be used as an interrupt. A transition to the active level described by the ACTL_FSYNC bit will cause an interrupt.
+    //              The status of the interrupt is read in the I2C Master Status register PASS_THROUGH bit.
+    //          0 – This disables the FSYNC pin from causing an interrupt.
+    // 1: BYPASS_EN
+    //          When asserted, the i2c_master interface pins(ES_CL and ES_DA) will go into ‘bypass mode’ when the i2c master interface is disabled.
+    //          The pins will float high due to the internal pull-up if not enabled and the i2c master interface is disabled.
+    // 0:       RESERVED
+    //
+    // enable I2C BYPASS_EN
+    const uint8_t data2[] = {0x02};
+    writeToMPU9250(p_context, INT_PIN_CFG, data2, sizeof(data2));
+
     
     // CNTL1
     // D4: BIT              0   0: 14-bit output, 1: 16-bit output
@@ -130,8 +181,9 @@ void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_
     // D2: =
     // D1: =
     // D0: =
-    const uint8_t data1[] = {0x01};
-    writeToMPU9250(p_context, CNTL1, data1, sizeof(data1));
+    const uint8_t data3[] = {0x16};
+    writeToAK8963(p_context, CNTL1, data3, sizeof(data3));
+    
 }
 
 void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
@@ -170,7 +222,7 @@ void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1: =
     // D0: =
     const uint8_t data3[] = {0x00};
-    writeToMPU9250(p_context, CNTL1, data3, sizeof(data3));
+    writeToAK8963(p_context, CNTL1, data3, sizeof(data3));
 }
 
 void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
@@ -208,8 +260,8 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D2: =
     // D1: =
     // D0: =
-    const uint8_t data1[] = {0x01};
-    writeToMPU9250(p_context, CNTL1, data1, sizeof(data1));
+    const uint8_t data1[] = {0x16};
+    writeToAK8963(p_context, CNTL1, data1, sizeof(data1));
 }
 
 void getNineAxesData(nine_axes_sensor_context_t *p_context, SensorDeviceType_t type, SensorData_t *p_data)

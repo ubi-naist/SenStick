@@ -53,4 +53,5 @@
 #define TWI_VEML6070_ADDRESS    0x38 // UVセンサー。書き込み及び下位バイト読み出しアドレス。
 #define TWI_VEML6070_RD_ADDRESS 0x39 // UVセンサー。上位バイト読み出しアドレス。
 #define TWI_BH1780GLI_ADDRESS   0x29 // 照度センサー。0010_1001 0x29
+#define TWI_AK8963_ADDRESS      0x0c // 
 #endif /* senstick_io_definitions_h */

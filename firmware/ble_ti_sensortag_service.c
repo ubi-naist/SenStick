@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include <nordic_common.h>
+#include <nrf_log.h>
 
 #include <ble.h>
 #include <ble_gatts.h>
@@ -89,18 +90,18 @@ static void notifyAcceleromterData(const ble_sensortag_service_t *p_context, con
     }
 }
 
-static void convertRotationValue(uint8_t *p_dst, const sensorSetting_t *p_setting, const int16_t value)
+static void convertRotationValue(uint8_t *p_dst, const sensorSetting_t *p_setting, int16_t value)
 {
-    int32_t v = value * 500 * 8 / 65536;
+    // 16-bitフルスケールで、+-250に相当。
     switch(p_setting->rotationRange) {
         default:
-        case ROTATION_RANGE_250DPS:  v /= 8; break;
-        case ROTATION_RANGE_500DPS:  v /= 4; break;
-        case ROTATION_RANGE_1000DPS: v /= 2; break;
-        case ROTATION_RANGE_2000DPS: v /= 1; break;
+        case ROTATION_RANGE_250DPS:  value /= 1; break;
+        case ROTATION_RANGE_500DPS:  value /= 2; break;
+        case ROTATION_RANGE_1000DPS: value /= 4; break;
+        case ROTATION_RANGE_2000DPS: value /= 8; break;
     }
 
-    int16ToByteArrayLittleEndian(p_dst, (int16_t)v);
+    int16ToByteArrayLittleEndian(p_dst, value);
 }
 static void notifyRotationRateData(ble_sensortag_service_t *p_context, const RotationRateData_t *p_rotation)
 {
@@ -123,6 +124,8 @@ static void notifyRotationRateData(ble_sensortag_service_t *p_context, const Rot
     if(p_context->is_gyroscope_notifying) {
         notifyToClient(p_context, p_context->gyroscope_value_char_handle.value_handle, buffer, 6);
     }
+    
+    NRF_LOG_PRINTF_DEBUG("mag: x:%d ,y:%d ,z:%d.\n", p_rotation->x, p_rotation->y, p_rotation->z);
 }
 
 static void notifyHumidity(ble_sensortag_service_t *p_context, const HumidityAndTemperatureData_t *p_data)
@@ -141,8 +144,8 @@ static void notifyHumidity(ble_sensortag_service_t *p_context, const HumidityAnd
 
 static void convertMagnetrometerValue(uint8_t *p_dst, const sensorSetting_t *p_setting, const int16_t value)
 {
-    // 値はフルスケール、±4800 μT。これをGATTの値のスケール+-1000に直す。
-    int16_t v = (int16_t)(((int32_t)value * 48) / 10);
+    // 値はフルスケール、±4912 μT。これをGATTの値のスケール+-1000に直す。
+    int16_t v = (value * 1000) / 4912;
     int16ToByteArrayLittleEndian(p_dst, v);
 }
 static void notifyMagnetrometer(ble_sensortag_service_t *p_context, const MagneticFieldData_t *p_magneticField)
@@ -158,6 +161,8 @@ static void notifyMagnetrometer(ble_sensortag_service_t *p_context, const Magnet
     if(p_context->is_magnetrometer_notifying) {
         notifyToClient(p_context, p_context->magnetometer_value_char_handle.value_handle, buffer, 6);
     }
+
+//    NRF_LOG_PRINTF_DEBUG("mag: x:%d ,y:%d ,z:%d.\n", p_magneticField->x, p_magneticField->y, p_magneticField->z);
 }
 
 static void notifyBarometer(ble_sensortag_service_t *p_context, const AirPressureData_t *p_data)

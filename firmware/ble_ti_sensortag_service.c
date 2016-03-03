@@ -125,7 +125,7 @@ static void notifyRotationRateData(ble_sensortag_service_t *p_context, const Rot
         notifyToClient(p_context, p_context->gyroscope_value_char_handle.value_handle, buffer, 6);
     }
     
-    NRF_LOG_PRINTF_DEBUG("mag: x:%d ,y:%d ,z:%d.\n", p_rotation->x, p_rotation->y, p_rotation->z);
+//    NRF_LOG_PRINTF_DEBUG("rot: x:%d ,y:%d ,z:%d.\n", p_rotation->x, p_rotation->y, p_rotation->z);
 }
 
 static void notifyHumidity(ble_sensortag_service_t *p_context, const HumidityAndTemperatureData_t *p_data)
@@ -164,7 +164,7 @@ static void notifyMagnetrometer(ble_sensortag_service_t *p_context, const Magnet
 
 //    NRF_LOG_PRINTF_DEBUG("mag: x:%d ,y:%d ,z:%d.\n", p_magneticField->x, p_magneticField->y, p_magneticField->z);
 }
-
+/*
 static void notifyBarometer(ble_sensortag_service_t *p_context, const AirPressureData_t *p_data)
 {
     uint8_t buffer[4];
@@ -178,6 +178,7 @@ static void notifyBarometer(ble_sensortag_service_t *p_context, const AirPressur
         notifyToClient(p_context, p_context->barometer_value_char_handle.value_handle, buffer, 4);
     }
 }
+ */
 
 static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
 {
@@ -195,9 +196,9 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
         } else if(p_evt_write->handle == p_context->magnetometer_value_char_handle.cccd_handle) {
             p_context->is_magnetrometer_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
             return;
-        } else if(p_evt_write->handle == p_context->barometer_value_char_handle.cccd_handle) {
-            p_context->is_barometer_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
-            return;
+//        } else if(p_evt_write->handle == p_context->barometer_value_char_handle.cccd_handle) {
+//            p_context->is_barometer_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
+//            return;
         } else if(p_evt_write->handle == p_context->gyroscope_value_char_handle.cccd_handle) {
             p_context->is_gyroscope_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
             return;
@@ -227,8 +228,8 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
             p_context->is_humidity_sampling = config;
         } else if(p_evt_write->handle == p_context->magnetometer_configration_char_handle.value_handle) {
             p_context->is_magnetrometer_sampling = config;
-        } else if(p_evt_write->handle == p_context->barometer_configration_char_handle.value_handle) {
-            p_context->is_barometer_sampling = config;
+//        } else if(p_evt_write->handle == p_context->barometer_configration_char_handle.value_handle) {
+//            p_context->is_barometer_sampling = config;
         } else if(p_evt_write->handle == p_context->gyroscope_configration_char_handle.value_handle) {
             p_context->is_gyroscope_sampling = config;
         }
@@ -243,8 +244,8 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), GyroSensor, period);
         } else if(p_evt_write->handle == p_context->humidity_period_char_handle.value_handle) {
             isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), HumidityAndTemperatureSensor, period);
-        } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AirPressureSensor, period);
+//        } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
+//            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AirPressureSensor, period);
         }
     }
 
@@ -264,7 +265,7 @@ static void onDisconnect(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_e
     p_context->is_accelerometer_notifying   = false;
     p_context->is_humidity_notifying        = false;
     p_context->is_magnetrometer_notifying   = false;
-    p_context->is_barometer_notifying       = false;
+//    p_context->is_barometer_notifying       = false;
     p_context->is_gyroscope_notifying       = false;
 }
 
@@ -366,7 +367,7 @@ static void addAService(ble_sensortag_service_t *p_context,
 
 static void addServices(ble_sensortag_service_t *p_context)
 {
-    ret_code_t err_code;
+//    ret_code_t err_code;
 
     addAService(p_context,
                 &(p_context->accelerometer_service_handle),             0xaa10,
@@ -386,15 +387,16 @@ static void addServices(ble_sensortag_service_t *p_context)
                 &(p_context->magnetometer_configration_char_handle),    0xaa32,
                 &(p_context->magnetometer_period_char_handle),          0xaa33);
     
-
+/*
     addAService(p_context,
                 &(p_context->barometer_service_handle),              0xaa40,
                 &(p_context->barometer_value_char_handle),           0xaa41, 4,
                 &(p_context->barometer_configration_char_handle),    0xaa42,
                 &(p_context->barometer_period_char_handle),          0xaa44);
+*/
     // キャリブレーション・キャラクタリスティクスを追加
-    err_code = addCharacteristics(p_context, &(p_context->barometer_service_handle), &(p_context->barometer_calibration_char_handle), 0xaa43, true, false, 16);
-    APP_ERROR_CHECK(err_code);
+//    err_code = addCharacteristics(p_context, &(p_context->barometer_service_handle), &(p_context->barometer_calibration_char_handle), 0xaa43, true, false, 16);
+//    APP_ERROR_CHECK(err_code);
     
     addAService(p_context,
                 &(p_context->gyroscope_service_handle),              0xaa50,
@@ -469,9 +471,9 @@ void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_
         case HumidityAndTemperatureSensor:
             notifyHumidity(p_context, &(p_sensorData->data.humidityAndTemperature));
             break;
-        case AirPressureSensor:
-            notifyBarometer(p_context, &(p_sensorData->data.airPressure));
-            break;
+//        case AirPressureSensor:
+//            notifyBarometer(p_context, &(p_sensorData->data.airPressure));
+//            break;
         default:
             break;
     }
@@ -507,6 +509,7 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     data = (uint8_t)(p_context->sensor_setting.magneticFieldSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->magnetometer_period_char_handle.value_handle, &data, 1);
 
+    /*
     data = (uint8_t)p_context->is_barometer_sampling;
     setCharacteristicsValue(p_context, p_context->barometer_configration_char_handle.value_handle, &data, 1);
     data = (uint8_t)(p_context->sensor_setting.airPressureSamplingPeriod / 10 );
@@ -516,6 +519,7 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     // {0x00, 0x00, 0x00, 0x00, <0x90, 0x01,> 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
     uint8_t cnf_data[] = {0x00, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     setCharacteristicsValue(p_context, p_context->barometer_calibration_char_handle.value_handle, cnf_data, sizeof(cnf_data));
+    */
     
     data = (uint8_t)p_context->is_gyroscope_sampling;
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);

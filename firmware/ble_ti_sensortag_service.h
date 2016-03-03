@@ -32,13 +32,13 @@ struct ble_sensortag_service_s {
     ble_gatts_char_handles_t magnetometer_value_char_handle;
     ble_gatts_char_handles_t magnetometer_configration_char_handle;
     ble_gatts_char_handles_t magnetometer_period_char_handle;
-    
+    /*
     uint16_t barometer_service_handle;
     ble_gatts_char_handles_t barometer_value_char_handle;
     ble_gatts_char_handles_t barometer_configration_char_handle;
     ble_gatts_char_handles_t barometer_calibration_char_handle;
     ble_gatts_char_handles_t barometer_period_char_handle;
-
+     */
     uint16_t gyroscope_service_handle;
     ble_gatts_char_handles_t gyroscope_value_char_handle;
     ble_gatts_char_handles_t gyroscope_configration_char_handle;
@@ -54,14 +54,14 @@ struct ble_sensortag_service_s {
     bool is_accelerometer_notifying;
     bool is_humidity_notifying;
     bool is_magnetrometer_notifying;
-    bool is_barometer_notifying;
+//    bool is_barometer_notifying;
     bool is_gyroscope_notifying;
     bool is_illumination_notifying;
     // サンプリング設定
     bool is_accelerometer_sampling;
     bool is_humidity_sampling;
     bool is_magnetrometer_sampling;
-    bool is_barometer_sampling;
+//    bool is_barometer_sampling;
     bool is_gyroscope_sampling;
     bool is_illumination_sampling;
     uint8_t gyroSamplingPeriod;

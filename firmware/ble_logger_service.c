@@ -201,7 +201,7 @@ static void addServices(ble_logger_service_t *p_context)
     memset(&params, 0 , sizeof(params));
     // UUID
     params.uuid_type = p_context->uuid_type;
-    // 値の長さ
+    // 値はスタック側
     params.is_value_user = false;
     // 初期値
     //params.init_len = 0;

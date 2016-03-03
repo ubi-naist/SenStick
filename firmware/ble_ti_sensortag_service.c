@@ -2,6 +2,7 @@
 
 #include <nordic_common.h>
 #include <nrf_log.h>
+#include <ble_srv_common.h>
 
 #include <ble.h>
 #include <ble_gatts.h>
@@ -269,76 +270,6 @@ static void onDisconnect(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_e
     p_context->is_gyroscope_notifying       = false;
 }
 
-static uint32_t addNotifiableCharacteristics(const ble_sensortag_service_t *p_context, uint16_t *p_service_handler, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
-{
-    ble_gatts_char_md_t char_md;
-    ble_gatts_attr_md_t attribute_md;
-    ble_gatts_attr_t    attr_value;
-    ble_gatts_attr_md_t cccd_md;
-    
-    // UUIDを用意
-    ble_uuid_t characteristics_uuid;
-    characteristics_uuid.type = p_context->uuid_type;
-    characteristics_uuid.uuid = uuid_sub;
-    
-    // クライアント・キャラクタリスティクス・コンフィグレーション・ディスクリプタ メタデータ
-    memset(&cccd_md, 0, sizeof(cccd_md));
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(cccd_md.read_perm));
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(cccd_md.write_perm));
-    cccd_md.vloc = BLE_GATTS_VLOC_STACK;
-    
-    // ノーティフィケーション・キャラクタリスティクスのメタデータ
-    memset(&char_md, 0, sizeof(char_md));
-    char_md.char_props.read  = is_read;
-    char_md.char_props.write = is_write;
-    char_md.char_props.notify   = 1;
-    char_md.p_cccd_md           = &cccd_md; // CCCDのメタデータを設定する
-    
-    memset(&attribute_md, 0, sizeof(attribute_md));
-    attribute_md.vloc = BLE_GATTS_VLOC_STACK;  // Attributeの値のメモリ領域は、スタックに管理させる
-//    attribute_md.vlen = 1; // variable lengthの場合は設定する
-    
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.read_perm)); // 書き込みおよび読み出しパーミションは、オープン。
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.write_perm));
-    
-    memset(&attr_value, 0, sizeof(attr_value));
-    attr_value.p_uuid    = &characteristics_uuid;
-    attr_value.p_attr_md = &attribute_md;
-    attr_value.max_len   = value_len;
-    
-    return sd_ble_gatts_characteristic_add(*p_service_handler, &char_md, &attr_value, p_handle);
-}
-
-static uint32_t addCharacteristics(const ble_sensortag_service_t *p_context, uint16_t *p_service_handler, ble_gatts_char_handles_t *p_handle, const uint16_t uuid_sub, bool is_read, bool is_write, const int value_len)
-{
-    ble_gatts_char_md_t char_md;
-    ble_gatts_attr_md_t attribute_md;
-    ble_gatts_attr_t    attr_value;
-    
-    // UUIDを用意
-    ble_uuid_t characteristics_uuid;
-    characteristics_uuid.type = p_context->uuid_type;
-    characteristics_uuid.uuid = uuid_sub;
-    
-    // 読み書き属性
-    memset(&char_md, 0, sizeof(char_md));
-    char_md.char_props.read  = is_read;
-    char_md.char_props.write = is_write;
-    
-    memset(&attribute_md, 0, sizeof(attribute_md));
-    attribute_md.vloc = BLE_GATTS_VLOC_STACK;  // Attributeの値のメモリ領域は、スタックに管理させる
-//    attribute_md.vlen = 1; // variable lengthの場合は設定する
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.read_perm)); // 書き込みおよび読み出しパーミションは、オープン。
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&(attribute_md.write_perm));
-    
-    memset(&attr_value, 0, sizeof(attr_value));
-    attr_value.p_uuid    = &characteristics_uuid;
-    attr_value.p_attr_md = &attribute_md;
-    attr_value.max_len   = value_len;
-    
-    return sd_ble_gatts_characteristic_add(*p_service_handler, &char_md, &attr_value, p_handle);
-}
-
 static void addAService(ble_sensortag_service_t *p_context,
                         uint16_t *p_service_handler, uint16_t service_uuid,
                         ble_gatts_char_handles_t *p_value_char_handler, uint16_t value_char_uuid, uint8_t value_char_length,
@@ -346,6 +277,7 @@ static void addAService(ble_sensortag_service_t *p_context,
                         ble_gatts_char_handles_t *p_period_char_handler, uint16_t period_char_uuid)
 {
     ret_code_t err_code;
+    ble_add_char_params_t params;
     
     // サービスを登録
     ble_uuid_t uuid;
@@ -354,14 +286,51 @@ static void addAService(ble_sensortag_service_t *p_context,
     err_code  = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &uuid, p_service_handler);
     APP_ERROR_CHECK(err_code);
     
-    // キャラクタリスティクスを登録
-    err_code = addNotifiableCharacteristics(p_context, p_service_handler, p_value_char_handler, value_char_uuid, true, false, value_char_length); // read-only
+    // params初期設定
+    memset(&params, 0 , sizeof(params));
+    // UUID
+    params.uuid_type = p_context->uuid_type;
+    // 値はスタック側
+    params.is_value_user     = false;
+    // その他共通設定
+    params.is_var_len        = false;
+    params.is_defered_read   = false;
+    params.is_defered_write  = false;
+    
+    // 値をNotifyするキャラクタリスティクス
+    params.uuid              = value_char_uuid;
+    params.max_len           = value_char_length;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = true;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_NO_ACCESS;
+    params.cccd_write_access = SEC_OPEN;
+    err_code = characteristic_add(*p_service_handler, &params, p_value_char_handler);
+    APP_ERROR_CHECK(err_code);
+
+    // 通知設定
+    params.uuid              = configration_char_uuid;
+    params.max_len           = 1;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_OPEN;
+    params.cccd_write_access = SEC_NO_ACCESS;
+    err_code = characteristic_add(*p_service_handler, &params, p_configration_char_handler);
     APP_ERROR_CHECK(err_code);
     
-    err_code = addCharacteristics(p_context, p_service_handler, p_configration_char_handler, configration_char_uuid, true, true, 1);
-    APP_ERROR_CHECK(err_code);
-    
-    err_code = addCharacteristics(p_context, p_service_handler, p_period_char_handler, period_char_uuid, true, true, 1);
+    // 周期設定
+    params.uuid              = period_char_uuid;
+    params.max_len           = 1;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_OPEN;
+    params.cccd_write_access = SEC_NO_ACCESS;
+    err_code = characteristic_add(*p_service_handler, &params, p_period_char_handler);
     APP_ERROR_CHECK(err_code);
 }
 

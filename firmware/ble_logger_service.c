@@ -216,6 +216,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = true;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = true;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_OPEN;
@@ -228,6 +231,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = true;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -240,6 +246,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = true;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -252,6 +261,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = true;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -271,6 +283,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -283,6 +298,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -295,6 +313,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = true;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -307,6 +328,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = true;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -319,6 +343,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -331,6 +358,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = false;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
@@ -343,6 +373,9 @@ static void addServices(ble_logger_service_t *p_context)
     params.is_var_len   = true;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;

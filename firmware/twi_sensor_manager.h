@@ -48,6 +48,9 @@ typedef struct sensor_manager_s {
 
     // センサー設定
     sensorSetting_t             sensor_setting;
+
+    // センサーがあるかどうかの判定
+    bool is_sensor[NUM_OF_SENSOR_DEVICES];
 } sensor_manager_t;
 
 // Senstickの、TWIおよびGPIOの統合動作を提供します。

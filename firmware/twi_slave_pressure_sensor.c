@@ -118,3 +118,18 @@ void getPressureData(pressure_sensor_context_t *p_context, AirPressureData_t *p_
     const uint8_t data_CTRL_REG2[] = {0x11};
     writeToLPS25HB(p_context, CTRL_REG2, data_CTRL_REG2, sizeof(data_CTRL_REG2));
 }
+
+bool isPressureSensor(nrf_drv_twi_t *p_twi)
+{
+    ret_code_t err_code;
+    
+    // I2Cバスのアドレス TWI_LPS25HB_ADDRESS に、ターゲットのレジスタ CTRL_REG1 に 1バイト 0x80 を書き込む。
+    // 先頭バイトは、レジスタアドレス
+    uint8_t buffer[1 + 1]; // data_length + 1
+    buffer[0] = CTRL_REG1;
+    buffer[1] = 0x80;
+    
+    // I2C書き込み
+    err_code = nrf_drv_twi_tx(p_twi, TWI_LPS25HB_ADDRESS, buffer, sizeof(buffer), false);
+    return (err_code == NRF_SUCCESS);
+}

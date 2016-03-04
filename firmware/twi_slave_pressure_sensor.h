@@ -17,4 +17,7 @@ void initPressureSensor(pressure_sensor_context_t *p_context, nrf_drv_twi_t *p_t
 
 void getPressureData(pressure_sensor_context_t *p_context, AirPressureData_t *p_data);
 
+// バス上にセンサーがあるかどうかを判定します。
+bool isPressureSensor(nrf_drv_twi_t *p_twi);
+
 #endif /* twi_slave_pressure_sensor_h */

@@ -186,6 +186,11 @@ void setSensorManagerSetting(sensor_manager_t *p_context, const sensorSetting_t 
     memset(p_context->remaining_counter, 0, sizeof(p_context->remaining_counter));
 }
 
+void getSensorManagerSetting(sensor_manager_t *p_context, sensorSetting_t *p_setting)
+{
+    *p_setting = p_context->sensor_setting;
+}
+
 // サンプリング中?
 bool isSensorManagerSampling(sensor_manager_t *p_context)
 {

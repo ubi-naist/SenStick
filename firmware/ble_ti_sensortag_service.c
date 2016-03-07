@@ -450,7 +450,7 @@ void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_
 
 void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_src)
 {
-    memcpy(&(p_context->sensor_setting), p_src, sizeof(p_context->sensor_setting));
+    p_context->sensor_setting = *p_src;
 
     // BLEのサービスに反映
     uint8_t data;
@@ -498,6 +498,6 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
 
 void getSensorTagSetting(ble_sensortag_service_t *p_context, sensorSetting_t *p_dst)
 {
-    memcpy(p_dst, &(p_context->sensor_setting), sizeof(p_context->sensor_setting));
+    *p_dst = p_context->sensor_setting;
 }
 

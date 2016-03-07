@@ -58,7 +58,8 @@ typedef struct sensor_manager_s {
 
 void initSensorManager(sensor_manager_t *p_context, gpio_manager_t *p_gpio_manager_context, const sensorSetting_t *p_setting,  sampling_callback_handler_t samplingCallback);
 
-// サンプリングレートの設定
+// センサ設定の取得/設定
+void getSensorManagerSetting(sensor_manager_t *p_context, sensorSetting_t *p_setting);
 void setSensorManagerSetting(sensor_manager_t *p_context, const sensorSetting_t *p_setting);
 
 // サンプリング中?

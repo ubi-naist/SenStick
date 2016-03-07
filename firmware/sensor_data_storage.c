@@ -86,8 +86,8 @@ bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream
         // 終了位位置は開始位置と同じ
         memcpy(p_storage->header.end_position, p_storage->header.starting_position, sizeof(int) * NUMBER_OF_SENSOR_DEVICE);
         // 書き込みなのでメタデータをコピーする
-        memcpy(&(p_storage->header.sensor_setting), p_sensor_setting, sizeof(sensorSetting_t));
-        memcpy(&(p_storage->header.date), p_date, sizeof(ble_date_time_t));
+        p_storage->header.sensor_setting = *p_sensor_setting;
+        p_storage->header.date = *p_date;
     } else {
         // 書き込み不可能なので、ヘッダのstarting/ending positiionは有効なデータ範囲を示している。設定する必要はない。
     }
@@ -204,12 +204,12 @@ void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_nu
 
 void storageGetSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_setting)
 {
-    memcpy(p_setting,&(p_storage->header.sensor_setting), sizeof(sensorSetting_t));
+    *p_setting = p_storage->header.sensor_setting;
 }
 
 void storageGetDateTime(sensor_data_storage_t *p_storage, ble_date_time_t *p_date)
 {
-    memcpy(p_date, &(p_storage->header.date), sizeof(ble_date_time_t));
+    *p_date = p_storage->header.date;
 }
 
 uint8_t storageGetID(sensor_data_storage_t *p_storage)

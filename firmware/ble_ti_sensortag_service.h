@@ -3,19 +3,16 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "ble.h"
-#include "ble_srv_common.h"
+
+#include <ble.h>
+#include <ble_srv_common.h>
 
 #include "senstick_data_models.h"
-
-// イベントハンドラ
-typedef struct ble_sensortag_service_s ble_sensortag_service_t;
-typedef void (*ble_sensortag_service_event_handler_t) (ble_sensortag_service_t * p_context, sensorSetting_t *p_setting);
+#include "twi_sensor_manager.h"
 
 // アクティビティサービスのコンテキスト構造体。サービスの実行に必要な情報が含まれる。
-struct ble_sensortag_service_s {
-    ble_sensortag_service_event_handler_t setting_changed_event_handler;     // イベントハンドラ
-    
+typedef struct ble_sensortag_service_s {
+    // BLEサービスとキャラクタリスティクスのデータ
     ble_uuid_t base_uuid;
     
     uint16_t accelerometer_service_handle;
@@ -46,8 +43,6 @@ struct ble_sensortag_service_s {
     
     uint16_t connection_handle;
     uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
-
-    sensorSetting_t sensor_setting;    // センサーの設定
     
     // cccdの値保存
     bool is_temperature_notifying;
@@ -57,6 +52,7 @@ struct ble_sensortag_service_s {
 //    bool is_barometer_notifying;
     bool is_gyroscope_notifying;
     bool is_illumination_notifying;
+
     // サンプリング設定
     bool is_accelerometer_sampling;
     bool is_humidity_sampling;
@@ -66,11 +62,12 @@ struct ble_sensortag_service_s {
     bool is_illumination_sampling;
     uint8_t gyroSamplingPeriod;
     
-};// ble_sensortag_service_t;
+    sensor_manager_t *p_sensor_manager_context;
+} ble_sensortag_service_t;
 
 // 初期化関数
 // このサービスを使う前に、必ずこの関数を呼び出すこと。
-uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const sensorSetting_t *p_setting, ble_sensortag_service_event_handler_t setting_changed_event_handler);
+uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, sensor_manager_t *p_sensor_manager_context);
 
 // BLEイベント通知関数
 // BLEのイベントをこの関数に通知します。
@@ -80,10 +77,7 @@ void bleSensorTagServiceOnBLEEvent(ble_sensortag_service_t *p_context, ble_evt_t
 void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_sensorData);
 
 // センサーの設定を設定します。BLEのサービスの値に反映されます。
-void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_dst);
-
-// センサーの設定を取得します
-void getSensorTagSetting(ble_sensortag_service_t *p_context, sensorSetting_t *p_dst);
+void updateSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_dst);
 
 #endif /* ble_ti_sensortag_service_h */
 

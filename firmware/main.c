@@ -474,11 +474,11 @@ static void onSamplingCallbackHandler(const SensorData_t *p_sensorData)
     bleLoggerServiceWrite(&logger_service_context, p_sensorData);
 }
 
-// サービス経由で外部から、センサー設定が変更されるたびに呼び出されるコールバック関数
-static void onSensorSettingChangedHandler(ble_sensortag_service_t * p_context, sensorSetting_t *p_setting)
+// センサー設定が変更されるたびに呼び出されるコールバック関数
+static void onSensorSettingChangedHandler(sensorSetting_t *p_setting)
 {
     // センサー設定を、センサマネージャに反映させる。
-    setSensorManagerSetting(&sensor_manager_context, p_setting);
+//    setSensorManagerSetting(&sensor_manager_context, p_setting);
     // ロガーは一旦停止する。
     bleLoggerServiceStopLogging(&logger_service_context);
 }
@@ -551,7 +551,7 @@ int main(void)
     initGPIOManager(&gpio_manager_context, button_callback_handler);
     
     // センサマネージャーの初期化
-    initSensorManager(&sensor_manager_context, &gpio_manager_context, &defaultSensorSetting,onSamplingCallbackHandler);
+    initSensorManager(&sensor_manager_context, &gpio_manager_context, &defaultSensorSetting, onSensorSettingChangedHandler, onSamplingCallbackHandler);
     
     // デバイスインフォアメーションサービスを追加
     initDeviceInformationService();
@@ -560,7 +560,7 @@ int main(void)
     initBatteryService();
     
     // センサータグサービスを追加
-    err_code = bleSensorTagServiceInit(&sensortag_service_context, &defaultSensorSetting, onSensorSettingChangedHandler);
+    err_code = bleSensorTagServiceInit(&sensortag_service_context, &sensor_manager_context);
     APP_ERROR_CHECK(err_code);
     // ロガーサービスを追加
     err_code = bleLoggerServiceInit(&logger_service_context, &sensor_manager_context, onLoggerHandler);

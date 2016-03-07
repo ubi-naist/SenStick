@@ -134,7 +134,8 @@ static void sensor_timer_handler(void *p_arg)
 /**
  * Public関数
  */
-void initSensorManager(sensor_manager_t *p_context, gpio_manager_t *p_gpio_manager_context, const sensorSetting_t *p_setting, sampling_callback_handler_t samplingCallback)
+void initSensorManager(sensor_manager_t *p_context, gpio_manager_t *p_gpio_manager_context, const sensorSetting_t *p_setting,
+                       sensor_setting_callback_handler_t settingCallback, sampling_callback_handler_t samplingCallback)
 {
     ret_code_t err_code;
     
@@ -143,7 +144,8 @@ void initSensorManager(sensor_manager_t *p_context, gpio_manager_t *p_gpio_manag
     
     // 引数の保存
     p_context->p_gpio_manager_context       = p_gpio_manager_context;
-    p_context->sensor_setting                = *p_setting;
+    p_context->sensor_setting               = *p_setting;
+    p_context->setting_callback_handler     = settingCallback;
     p_context->sampling_callback_handler    = samplingCallback;
     
     // SDK10では、SDK8と異なり、タイマー管理のデータ領域の型とID型が分離されたため、ここでID型(データ領域へのポインタ)にポインタを代入する。
@@ -184,6 +186,11 @@ void setSensorManagerSetting(sensor_manager_t *p_context, const sensorSetting_t 
     
     // カウンタを初期化
     memset(p_context->remaining_counter, 0, sizeof(p_context->remaining_counter));
+
+    // 設定変更通知
+    if(p_context->setting_callback_handler != NULL) {
+        (p_context->setting_callback_handler)(&p_context->sensor_setting);
+    }
 }
 
 void getSensorManagerSetting(sensor_manager_t *p_context, sensorSetting_t *p_setting)

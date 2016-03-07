@@ -79,10 +79,13 @@ static int8_t convertAccelerationValue(const sensorSetting_t *p_setting, const i
 static void notifyAcceleromterData(const ble_sensortag_service_t *p_context, const AccelerationData_t *p_acceleration)
 {
     int8_t buffer[3];
+    sensorSetting_t setting;
+    getSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
+    
     // X/Y/Zの順番で、フルスケール+-2G、符号付き1.6固定小数点で1バイトで表現する
-    buffer[0] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->x);
-    buffer[1] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->y);
-    buffer[2] = convertAccelerationValue(&(p_context->sensor_setting), p_acceleration->z);
+    buffer[0] = convertAccelerationValue(&setting, p_acceleration->x);
+    buffer[1] = convertAccelerationValue(&setting, p_acceleration->y);
+    buffer[2] = convertAccelerationValue(&setting, p_acceleration->z);
 
     setCharacteristicsValue(p_context, p_context->accelerometer_value_char_handle.value_handle, (uint8_t *)buffer, 3);
     
@@ -108,15 +111,18 @@ static void notifyRotationRateData(ble_sensortag_service_t *p_context, const Rot
 {
     uint8_t buffer[6];
     memset(buffer, 0, sizeof(buffer));
+    sensorSetting_t setting;
+    getSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
+    
     // マスクに合わせてX/Y/Zを設定
     if( p_context->is_gyroscope_sampling & 0x01 != 0) {
-        convertRotationValue(&(buffer[0]), &(p_context->sensor_setting), p_rotation->x);
+        convertRotationValue(&(buffer[0]), &setting, p_rotation->x);
     }
     if( p_context->is_gyroscope_sampling & 0x02 != 0) {
-        convertRotationValue(&(buffer[2]), &(p_context->sensor_setting), p_rotation->y);
+        convertRotationValue(&(buffer[2]), &setting, p_rotation->y);
     }
     if( p_context->is_gyroscope_sampling & 0x04 != 0) {
-        convertRotationValue(&(buffer[4]), &(p_context->sensor_setting), p_rotation->z);
+        convertRotationValue(&(buffer[4]), &setting, p_rotation->z);
     }
 
     // 値を設定
@@ -152,10 +158,12 @@ static void convertMagnetrometerValue(uint8_t *p_dst, const sensorSetting_t *p_s
 static void notifyMagnetrometer(ble_sensortag_service_t *p_context, const MagneticFieldData_t *p_magneticField)
 {
     uint8_t buffer[6];
+    sensorSetting_t setting;
+    getSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
     
-    convertMagnetrometerValue(&(buffer[0]), &(p_context->sensor_setting), p_magneticField->x);
-    convertMagnetrometerValue(&(buffer[2]), &(p_context->sensor_setting), p_magneticField->y);
-    convertMagnetrometerValue(&(buffer[4]), &(p_context->sensor_setting), p_magneticField->z);
+    convertMagnetrometerValue(&(buffer[0]), &setting, p_magneticField->x);
+    convertMagnetrometerValue(&(buffer[2]), &setting, p_magneticField->y);
+    convertMagnetrometerValue(&(buffer[4]), &setting, p_magneticField->z);
     
     setCharacteristicsValue(p_context, p_context->magnetometer_value_char_handle.value_handle, buffer, 6);
     
@@ -207,6 +215,7 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
     }
 
     bool isSettingChanged = false;
+    sensorSetting_t setting;
     ret_code_t err_code;
     ble_gatts_value_t gatts_value;
 
@@ -235,24 +244,27 @@ static void onWrite(ble_sensortag_service_t *p_context, ble_evt_t * p_ble_evt)
             p_context->is_gyroscope_sampling = config;
         }
 
+
+        getSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
+        
         // サンプリング周期 を設定する。
         uint16_t period = config * 10; // 周期は10ミリ秒単位
         if(p_evt_write->handle == p_context->accelerometer_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AccelerationSensor, period);
+            isSettingChanged = setSensorSettingPeriod(&setting, AccelerationSensor, period);
         } else if(p_evt_write->handle == p_context->magnetometer_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), MagneticFieldSensor, period);
+            isSettingChanged = setSensorSettingPeriod(&setting, MagneticFieldSensor, period);
         } else if(p_evt_write->handle == p_context->gyroscope_period_char_handle.value_handle ) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), GyroSensor, period);
+            isSettingChanged = setSensorSettingPeriod(&setting, GyroSensor, period);
         } else if(p_evt_write->handle == p_context->humidity_period_char_handle.value_handle) {
-            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), HumidityAndTemperatureSensor, period);
+            isSettingChanged = setSensorSettingPeriod(&setting, HumidityAndTemperatureSensor, period);
 //        } else if(p_evt_write->handle == p_context->barometer_period_char_handle.value_handle) {
-//            isSettingChanged = setSensorSettingPeriod(&(p_context->sensor_setting), AirPressureSensor, period);
+//            isSettingChanged = setSensorSettingPeriod(&(hoge), AirPressureSensor, period);
         }
     }
 
     // isSettingChanged が trueであれば、通知する。
     if(isSettingChanged) {
-        (p_context->setting_changed_event_handler)(p_context, &(p_context->sensor_setting));
+        setSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
     }
 }
 
@@ -377,10 +389,9 @@ static void addServices(ble_sensortag_service_t *p_context)
 /**
  * Public methods
  */
-
-uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const sensorSetting_t *p_setting, ble_sensortag_service_event_handler_t setting_changed_event_handler)
+uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, sensor_manager_t *p_sensor_manager_context)
 {
-    if(p_context == NULL || p_setting == NULL || setting_changed_event_handler == NULL) {
+    if(p_context == NULL || p_sensor_manager_context == NULL) {
         return NRF_ERROR_NULL;
     }
     
@@ -388,8 +399,8 @@ uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const senso
     
     // サービス構造体を初期化
     memset(p_context, 0, sizeof(ble_sensortag_service_t));
-    
-    p_context->setting_changed_event_handler = setting_changed_event_handler;
+
+    p_context->p_sensor_manager_context = p_sensor_manager_context;
     p_context->connection_handle = BLE_CONN_HANDLE_INVALID;
     
     // ベースUUIDを登録
@@ -400,7 +411,9 @@ uint32_t bleSensorTagServiceInit(ble_sensortag_service_t *p_context, const senso
     addServices(p_context);
     
     // 初期値設定
-    setSensorTagSetting(p_context, p_setting);
+    sensorSetting_t setting;
+    getSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
+    updateSensorTagSetting(p_context, &setting);
     
     return NRF_SUCCESS;
 }
@@ -448,10 +461,8 @@ void notifySensorData(ble_sensortag_service_t *p_context, const SensorData_t *p_
     }
 }
 
-void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_src)
+void updateSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting_t *p_src)
 {
-    p_context->sensor_setting = *p_src;
-
     // BLEのサービスに反映
     uint8_t data;
 
@@ -459,29 +470,29 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     // IR温度計は実装されていない
     data = (uint8_t)p_context->is_temperature_sampling;
     setCharacteristicsValue(p_context, p_context->temperature_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.temperatureSamplingPeriod / 10 );
+    data = (uint8_t)(hoge.temperatureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->temperature_period_char_handle.value_handle, &data, 1);
     */
     
     data = (uint8_t)p_context->is_accelerometer_sampling;
     setCharacteristicsValue(p_context, p_context->accelerometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.accelerationSamplingPeriod / 10 );
+    data = (uint8_t)(p_src->accelerationSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->accelerometer_period_char_handle.value_handle, &data, 1);
     
     data = (uint8_t)p_context->is_humidity_sampling;
     setCharacteristicsValue(p_context, p_context->humidity_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.humidityAndTemperatureSamplingPeriod / 10 );
+    data = (uint8_t)(p_src->humidityAndTemperatureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->humidity_period_char_handle.value_handle, &data, 1);
 
     data = (uint8_t)p_context->is_magnetrometer_sampling;
     setCharacteristicsValue(p_context, p_context->magnetometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.magneticFieldSamplingPeriod / 10 );
+    data = (uint8_t)(p_src->magneticFieldSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->magnetometer_period_char_handle.value_handle, &data, 1);
 
     /*
     data = (uint8_t)p_context->is_barometer_sampling;
     setCharacteristicsValue(p_context, p_context->barometer_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.airPressureSamplingPeriod / 10 );
+    data = (uint8_t)(p_src->airPressureSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->barometer_period_char_handle.value_handle, &data, 1);
     // キャリブレ
     // C1 - C4は符号なし、C5-C8は符号ありの16ビット整数。C3=400 (0x190)、それ以外は0。
@@ -492,12 +503,8 @@ void setSensorTagSetting(ble_sensortag_service_t *p_context, const sensorSetting
     
     data = (uint8_t)p_context->is_gyroscope_sampling;
     setCharacteristicsValue(p_context, p_context->gyroscope_configration_char_handle.value_handle, &data, 1);
-    data = (uint8_t)(p_context->sensor_setting.gyroSamplingPeriod / 10 );
+    data = (uint8_t)(p_src->gyroSamplingPeriod / 10 );
     setCharacteristicsValue(p_context, p_context->gyroscope_period_char_handle.value_handle, &data, 1);
 }
 
-void getSensorTagSetting(ble_sensortag_service_t *p_context, sensorSetting_t *p_dst)
-{
-    *p_dst = p_context->sensor_setting;
-}
 

@@ -1,4 +1,3 @@
-#include "ble_logger_service.h"
 #include <string.h>
 
 #include <nordic_common.h>
@@ -30,7 +29,52 @@ const ble_uuid128_t ble_logger_base_uuid128 = {
 /**
  * Private methods
  */
+static void setCharacteristicsValue(ble_logger_service_t *p_context, uint16_t value_handle, uint8_t *p_data, uint16_t data_length)
+{
+    ret_code_t err_code;
+    
+    ble_gatts_value_t gatts_value;
+    memset(&gatts_value, 0, sizeof(gatts_value));
+    gatts_value.p_value = p_data;
+    gatts_value.len     = data_length;
+    gatts_value.offset  = 0;
+    
+    // update database
+    err_code = sd_ble_gatts_value_set(p_context->connection_handle, value_handle, &gatts_value);
+    APP_ERROR_CHECK(err_code);
+}
 
+static void notifyToClient(ble_logger_service_t *p_context, uint16_t value_handle, uint8_t *data, uint16_t length)
+{
+    if(data == NULL || length == 0 || p_context->connection_handle == BLE_CONN_HANDLE_INVALID) {
+        return;
+    }
+    
+    ble_gatts_hvx_params_t params;
+    memset(&params, 0, sizeof(params));
+    params.type   = BLE_GATT_HVX_NOTIFICATION;
+    params.handle = value_handle;
+    params.p_data = data;
+    params.p_len  = &length;
+    params.offset = 0;
+    
+    int32_t err_code = sd_ble_gatts_hvx(p_context->connection_handle, &params);
+    if( (err_code != NRF_SUCCESS) && (err_code != NRF_ERROR_INVALID_STATE) && (err_code != BLE_ERROR_NO_TX_BUFFERS) && (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING) ) {
+        APP_ERROR_CHECK(err_code);
+    }
+}
+
+static void notify_streaming_data_point(ble_logger_service_t *p_context, const SensorData_t *p_sensorData)
+{
+    // notify フラグが立っていなければ、何もしない
+    if( ! p_context->is_streaming_data_point_notifying) { return; }
+    
+    uint8_t buff[20];
+    uint8_t len = serializeSensorData(buff, p_sensorData);
+    if(len == 0) return;
+    
+    notifyToClient(p_context, p_context->streaming_data_point_char_handles.value_handle, buff, len);
+}
 
 // 書き込みサービスの、コントロールポイントの読み出しをサポートします。
 void process_writing_control_point_read_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t *p_length)
@@ -97,6 +141,19 @@ void process_reading_control_point_write_request(ble_logger_service_t *p_context
     // 読み出し動作を設定。もしものcccdが立っているなら、notificationをキック。
 }
 
+void process_streaming_sensor_setting_write_request(ble_logger_service_t *p_context, uint8_t *buffer, uint8_t length)
+{
+    // バイトサイズ確認
+    if(length != SENSOR_SETTINGS_SERIALIZED_SIZE) {
+        return;
+    }
+    // デシリアライズ
+    sensorSetting_t setting;
+    deserializeSensorSetting(&setting, buffer);
+    // 設定更新
+    setSensorManagerSetting(p_context->p_sensor_manager_context, &setting);
+}
+
 // on the flyでの読み出し処理
 static void on_rw_auth_req(ble_logger_service_t *p_context, ble_evt_t *p_ble_evt)
 {
@@ -143,12 +200,13 @@ static void on_rw_auth_req(ble_logger_service_t *p_context, ble_evt_t *p_ble_evt
 
 static void onWrite(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
 {
-    ret_code_t err_code;
+//    ret_code_t err_code;
     ble_gatts_evt_write_t *p_evt_write = &p_ble_evt->evt.gatts_evt.params.write;
     
-    uint8_t buffer[GATT_MAX_DATA_LENGTH];
-    uint8_t length = (uint8_t) MIN(GATT_MAX_DATA_LENGTH, p_evt_write->len); // 長さを指定値に制約
-    
+//    uint8_t buffer[GATT_MAX_DATA_LENGTH];
+//    uint8_t length = (uint8_t) MIN(GATT_MAX_DATA_LENGTH, p_evt_write->len); // 長さを指定値に制約
+
+    /*
     ble_gatts_value_t gatts_value;
     memset(&gatts_value, 0, sizeof(gatts_value));
     gatts_value.len     = length;
@@ -158,31 +216,32 @@ static void onWrite(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
                                       p_evt_write->handle,
                                       &gatts_value);
     APP_ERROR_CHECK(err_code);
+     */
 
     // value handle への書き込み
     if(p_evt_write->handle == p_context->writing_control_point_char_handles.value_handle) {
-        process_writing_control_point_write_request(p_context, buffer, length);
+        process_writing_control_point_write_request(p_context, p_evt_write->data, p_evt_write->len);
     } else if ( p_evt_write->handle == p_context->rtc_char_handles.value_handle) {
-        process_rtc_write_request(p_context, buffer, length);
+        process_rtc_write_request(p_context, p_evt_write->data, p_evt_write->len);
     } else if (p_evt_write->handle == p_context->reading_target_char_handles.value_handle) {
-        process_reading_target_write_request(p_context, buffer, length);
+        process_reading_target_write_request(p_context, p_evt_write->data, p_evt_write->len);
     } else if (p_evt_write->handle == p_context->reading_control_point_char_handles.value_handle) {
-        process_reading_control_point_write_request(p_context, buffer, length);
-    } else  {
+        process_reading_control_point_write_request(p_context, p_evt_write->data, p_evt_write->len);
+    } else if (p_evt_write->handle == p_context->streaming_sensor_setting_char_handles.value_handle) {
+        process_streaming_sensor_setting_write_request(p_context, p_evt_write->data, p_evt_write->len);
+    }
+    // cccd書き込み
+    if(p_evt_write->len == 2) {
+        if(p_evt_write->handle == p_context->streaming_sensor_setting_char_handles.cccd_handle) {
+            p_context->is_streaming_data_point_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
+        }
+    }
 //        NRF_LOG_PRINTF_DEBUG("onWrite(), unexpected handler 0x%02x.\n", p_evt_write->handle);
-    }
-        /*
-        hoge()
-    } else if((p_evt_write->handle == p_context->notification_characteristic_handle.cccd_handle) && (p_evt_write->len == 2)) {
-        // cccd書き込み
-        p_context->is_notification_enabled = ble_srv_is_notification_enabled(p_evt_write->data);
-    }
-    else*/
 }
 
 static void onDisconnect(ble_logger_service_t *p_context, ble_evt_t * p_ble_evt)
 {
-    
+    p_context->is_streaming_data_point_notifying = false;
 }
 
 static void addServices(ble_logger_service_t *p_context)
@@ -270,7 +329,6 @@ static void addServices(ble_logger_service_t *p_context)
     err_code = characteristic_add(p_context->writing_service_handle, &params, &p_context->writing_abstract_char_handles);
     APP_ERROR_CHECK(err_code);
     
-    
     // 読み出しのサービスを登録
     uuid.uuid = 0xcc00;
     uuid.type = p_context->uuid_type;
@@ -339,7 +397,7 @@ static void addServices(ble_logger_service_t *p_context)
     
     // サンプリングなどセンサ設定
     params.uuid         = 0xcc05;
-    params.max_len      = 16;
+    params.max_len      = SENSOR_SETTINGS_SERIALIZED_SIZE;
     params.is_var_len   = false;
     params.is_defered_read   = false;
     params.is_defered_write  = false;
@@ -380,6 +438,42 @@ static void addServices(ble_logger_service_t *p_context)
     params.write_access      = SEC_NO_ACCESS;
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->reading_service_handle, &params, &p_context->meta_data_abstract_char_handles);
+    APP_ERROR_CHECK(err_code);
+    
+    // ストリーミングのサービスを登録
+    uuid.uuid = 0xdd00;
+    uuid.type = p_context->uuid_type;
+    err_code  = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &uuid, &(p_context->streaming_service_handle));
+    APP_ERROR_CHECK(err_code);
+    
+    // センサーの設定
+    params.uuid         = 0xdd01;
+    params.max_len      = SENSOR_SETTINGS_SERIALIZED_SIZE;
+    params.is_var_len   = false;
+    params.is_defered_read   = false;
+    params.is_defered_write  = false;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_OPEN;
+    params.cccd_write_access = SEC_NO_ACCESS;
+    err_code = characteristic_add(p_context->streaming_service_handle, &params, &p_context->streaming_sensor_setting_char_handles);
+    APP_ERROR_CHECK(err_code);
+    
+    // ストリーミングのデータポイント
+    params.uuid         = 0xdd02;
+    params.max_len      = 20;
+    params.is_var_len   = true;
+    params.is_defered_read   = false;
+    params.is_defered_write  = false;
+    params.char_props.read   = false;
+    params.char_props.write  = false;
+    params.char_props.notify = true;
+    params.read_access       = SEC_NO_ACCESS;
+    params.write_access      = SEC_NO_ACCESS;
+    params.cccd_write_access = SEC_OPEN;
+    err_code = characteristic_add(p_context->streaming_service_handle, &params, &p_context->streaming_data_point_char_handles);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -444,6 +538,11 @@ void bleLoggerServiceOnBleEvent(ble_logger_service_t *p_context, ble_evt_t * p_b
 void bleLoggerSetSensorSetting(ble_logger_service_t *p_context, sensorSetting_t *p_setting)
 {
     p_context->p_setting = p_setting;
+    
+    // キャラクタリスティクスに書き込み。
+    uint8_t data[SENSOR_SETTINGS_SERIALIZED_SIZE];
+    serializeSensorSetting(data, p_setting);
+    setCharacteristicsValue(p_context, p_context->streaming_sensor_setting_char_handles.value_handle, data, sizeof(data));
 }
 
 void bleLoggerServiceStartLogging(ble_logger_service_t *p_context)
@@ -488,6 +587,10 @@ void bleLoggerServiceStopLogging(ble_logger_service_t *p_context)
 
 void bleLoggerServiceWrite(ble_logger_service_t *p_context, const SensorData_t *p_sensorData)
 {
+    // BLE通知
+    notify_streaming_data_point(p_context, p_sensorData);
+
+    // フラッシュ保存
     if(p_context->p_writing == NULL) {
         return;
     }

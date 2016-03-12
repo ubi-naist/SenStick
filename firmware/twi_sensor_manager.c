@@ -131,6 +131,19 @@ static void sensor_timer_handler(void *p_arg)
     }
 }
 
+static void setSensorManagerSettingWithoutCallback(sensor_manager_t *p_context, const sensorSetting_t *p_setting)
+{
+    // 設定情報をコピー
+    p_context->sensor_setting = *p_setting;
+    
+    // レンジ設定に反映
+    setNineAxesSensorAccelerationRange(&(p_context->nine_axes_sensor_context), p_setting->accelerationRange);
+    setNineAxesSensorRotationRange(&(p_context->nine_axes_sensor_context), p_setting->rotationRange);
+    
+    // カウンタを初期化
+    memset(p_context->remaining_counter, 0, sizeof(p_context->remaining_counter));
+}
+
 /**
  * Public関数
  */
@@ -172,22 +185,14 @@ void initSensorManager(sensor_manager_t *p_context, gpio_manager_t *p_gpio_manag
     init_twi_slaves(p_context);
     
     // 設定を反映
-    setSensorManagerSetting(p_context, p_setting);
+    setSensorManagerSettingWithoutCallback(p_context, p_setting);
 }
 
 void setSensorManagerSetting(sensor_manager_t *p_context, const sensorSetting_t *p_setting)
 {
-    // 設定情報をコピー
-    p_context->sensor_setting = *p_setting;
-    
-    // レンジ設定に反映
-    setNineAxesSensorAccelerationRange(&(p_context->nine_axes_sensor_context), p_setting->accelerationRange);
-    setNineAxesSensorRotationRange(&(p_context->nine_axes_sensor_context), p_setting->rotationRange);
-    
-    // カウンタを初期化
-    memset(p_context->remaining_counter, 0, sizeof(p_context->remaining_counter));
+    setSensorManagerSettingWithoutCallback(p_context, p_setting);
 
-    // 設定変更通知
+    // コールバック関数を呼び出し。設定変更通知。
     if(p_context->setting_callback_handler != NULL) {
         (p_context->setting_callback_handler)(&p_context->sensor_setting);
     }

@@ -1,11 +1,7 @@
 #ifndef ble_ti_sensortag_service_h
 #define ble_ti_sensortag_service_h
 
-#include <stdint.h>
-#include <stdbool.h>
-
-#include <ble.h>
-#include <ble_srv_common.h>
+#include "service_utility.h"
 
 #include "senstick_data_models.h"
 #include "twi_sensor_manager.h"

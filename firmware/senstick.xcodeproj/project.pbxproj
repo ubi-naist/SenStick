@@ -9,6 +9,8 @@
 /* Begin PBXFileReference section */
 		F809DE851C69E0AC000062E1 /* test_storage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_storage.c; sourceTree = "<group>"; };
 		F809DE861C69E0AC000062E1 /* test_storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_storage.h; sourceTree = "<group>"; };
+		F837ECD01C8DA295004BE653 /* service_utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = service_utility.c; sourceTree = "<group>"; };
+		F837ECD11C8DA295004BE653 /* service_utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service_utility.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
 		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
@@ -108,6 +110,8 @@
 		F8AC9D3F1C22396400366AEF /* services */ = {
 			isa = PBXGroup;
 			children = (
+				F837ECD11C8DA295004BE653 /* service_utility.h */,
+				F837ECD01C8DA295004BE653 /* service_utility.c */,
 				F8EB5E6B1C5348A200D82482 /* ble_ti_sensortag_service.h */,
 				F8EB5E6A1C5348A200D82482 /* ble_ti_sensortag_service.c */,
 				F8EB5E6D1C5A3D3200D82482 /* ble_logger_service.h */,

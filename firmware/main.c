@@ -476,11 +476,10 @@ static void onSamplingCallbackHandler(const SensorData_t *p_sensorData)
 
 // センサー設定が変更されるたびに呼び出されるコールバック関数
 static void onSensorSettingChangedHandler(sensorSetting_t *p_setting)
-{
-    // センサー設定を、センサマネージャに反映させる。
-//    setSensorManagerSetting(&sensor_manager_context, p_setting);
-    // ロガーは一旦停止する。
+{    
+    // ロガーは一旦停止、のち設定を更新。
     bleLoggerServiceStopLogging(&logger_service_context);
+    bleLoggerSetSensorSetting(&logger_service_context, p_setting);
 }
 
 // ロガーから呼び出される、コールバック関数

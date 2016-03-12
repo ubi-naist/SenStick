@@ -1,6 +1,9 @@
+#include <nordic_common.h>
+#include <nrf_log.h>
+#include <app_error.h>
+
+
 #include "senstick_data_models.h"
-#include "nrf_log.h"
-#include "app_error.h"
 
 uint16_t readUInt16AsBigEndian(uint8_t *ptr)
 {
@@ -121,86 +124,121 @@ bool setSensorSettingPeriod(sensorSetting_t *p_setting, SensorDeviceType_t devic
 }
 
 // Byte
-// 0    Reserved
-// 1    Acceleration sensor config, range.
+// 0    Acceleration sensor config, range.
 //          0x00: 2G (default)
 //          0x01: 4G
 //          0x02: 8G
 //          0x03: 16G
-// 2    Cyro sensor config, range.
+// 1    Cyro sensor config, range.
 //          0x00 250  dps (default)
 //          0x01 500  dps
 //          0x02 1000 dps
 //          0x03 2000 dps
-// 3    Nine axes sensor sampling rate.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec
-//          0x02    10  sample/sec (default)
-// 4    THA sensor sampling rage.
-//          0x00    0.1 sample/sec (default)
-//          0x01    1   sample/sec
-//          0x02    10  sample/sec
-// 5    HPA sensor sampling rage.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec
-//          0x02    10  sample/sec  (default)
-// 6    Illumination sensor sampling rage.
-//          0x00    0.1 sample/sec
-//          0x01    1   sample/sec (default)
-//          0x02    10  sample/sec
+//
+// 符号なし16-bit整数、リトルエンディアン
+// 2:3      加速度サンプリングレート   (ミリ秒)
+// 4:5      ジャイロサンプリングレート (ミリ秒)
+// 6:7      磁気サンプリングレート
+// 8:9      湿度温度サンプリングレート
+// 10:11    気圧サンプリングレート
+// 12:13    輝度サンプリングレート
+// 14:15    UVサンプリングレート
+uint8_t serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting)
+{
+    p_dst[0] = (uint8_t)p_setting->accelerationRange;
+    p_dst[1] = (uint8_t)p_setting->rotationRange;
+    
+    uint16ToByteArrayLittleEndian(&p_dst[2], p_setting->accelerationSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[4], p_setting->gyroSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[6], p_setting->magneticFieldSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[8], p_setting->humidityAndTemperatureSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[10], p_setting->airPressureSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[12], p_setting->brightnessSamplingPeriod);
+    uint16ToByteArrayLittleEndian(&p_dst[14], p_setting->ultraVioletSamplingPeriod);
+    
+    return 16;
+}
+
+static uint16_t readPeriod(uint8_t *p_src)
+{
+    uint16_t value = readUInt16AsLittleEndian(p_src);
+    value = MIN(10, (value / 10) * 10); // 10以上、10ミリ秒の倍数に。
+    return value;
+}
+
+void deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src)
+{
+    if((uint8_t)p_src[0] <= (uint8_t)ACCELERATION_RANGE_16G) {
+        p_setting->accelerationRange = (AccelerationRange_t)p_src[0];
+    }
+    if((uint8_t)p_src[1] <= (uint8_t)ROTATION_RANGE_2000DPS) {
+        p_setting->rotationRange = (RotationRange_t)p_src[1];
+    }
+    
+    p_setting->accelerationSamplingPeriod       = readPeriod(&p_src[2]);
+    p_setting->gyroSamplingPeriod               = readPeriod(&p_src[4]);
+    p_setting->magneticFieldSamplingPeriod      = readPeriod(&p_src[6]);
+    p_setting->humidityAndTemperatureSamplingPeriod  = readPeriod(&p_src[8]);
+    p_setting->airPressureSamplingPeriod         = readPeriod(&p_src[10]);
+    p_setting->brightnessSamplingPeriod          = readPeriod(&p_src[12]);
+    p_setting->ultraVioletSamplingPeriod         = readPeriod(&p_src[14]);
+}
+
+uint8_t serializeSensorData(uint8_t *p_dst, const SensorData_t *p_data)
+{
+    switch (p_data->type) {
+        case AccelerationSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            int16ToByteArrayLittleEndian(&p_dst[1], p_data->data.acceleration.x);
+            int16ToByteArrayLittleEndian(&p_dst[3], p_data->data.acceleration.y);
+            int16ToByteArrayLittleEndian(&p_dst[5], p_data->data.acceleration.z);
+            return (1 + 2*3);
+            
+        case GyroSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            int16ToByteArrayLittleEndian(&p_dst[1], p_data->data.rotationRate.x);
+            int16ToByteArrayLittleEndian(&p_dst[3], p_data->data.rotationRate.y);
+            int16ToByteArrayLittleEndian(&p_dst[5], p_data->data.rotationRate.z);
+            return (1 + 2*3);
+            
+        case MagneticFieldSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            int16ToByteArrayLittleEndian(&p_dst[1], p_data->data.magneticField.x);
+            int16ToByteArrayLittleEndian(&p_dst[3], p_data->data.magneticField.y);
+            int16ToByteArrayLittleEndian(&p_dst[5], p_data->data.magneticField.z);
+            return (1 + 2*3);
+            
+        case BrightnessSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            uint16ToByteArrayLittleEndian(&p_dst[1], p_data->data.brightness);
+            return (1+ 2);
+            
+        case UltraVioletSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            uint16ToByteArrayLittleEndian(&p_dst[1], p_data->data.ultraViolet);
+            return (1+ 2);
+            
+        case HumidityAndTemperatureSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            uint16ToByteArrayLittleEndian(&p_dst[1], p_data->data.humidityAndTemperature.humidity);
+            uint16ToByteArrayLittleEndian(&p_dst[3], p_data->data.humidityAndTemperature.temperature);
+            return (1+ 2 *2);
+            
+        case AirPressureSensor:
+            p_dst[0] = (uint8_t)p_data->type;
+            uint32ToByteArrayBigEndian(&p_dst[1], p_data->data.airPressure);
+            return (1+ 4);
+        default:
+            return 0;
+    }
+}
+
 // センサー設定をバイナリ配列に展開します。このバイナリ配列はGATTの設定キャラクタリスティクスにそのまま使用できます。 バイト配列は7バイトの領域が確保されていなければなりません。
 /*
-void serializeSensorSetting(uint8_t *p_dst, const sensorSetting_t *p_setting)
-{
-    p_dst[0] = 0;
-    p_dst[1] = (uint8_t)p_setting->accelerationRange;
-    p_dst[2] = (uint8_t)p_setting->rotationRange;
-    p_dst[3] = (uint8_t)p_setting->nineAxesSensorSamplingRate;
-    p_dst[4] = (uint8_t)p_setting->humiditySensorSamplingRate;
-    p_dst[5] = (uint8_t)p_setting->pressureSensorSamplingRate;
-    p_dst[6] = (uint8_t)p_setting->illuminationSensorSamplingRate;
-}
+
 
 // バイト配列をセンサー設定情報に展開します。不正な値があった場合は、処理は完了せず、falseを返します。 バイト配列は7バイトの領域が確保されていなければなりません。
-bool deserializeSensorSetting(sensorSetting_t *p_setting, uint8_t *p_src )
-{
-    switch (p_src[1]) {
-        case ACCELERATION_RANGE_2G:
-        case ACCELERATION_RANGE_4G:
-        case ACCELERATION_RANGE_8G:
-        case ACCELERATION_RANGE_16G:
-            p_setting->accelerationRange = (AccelerationRange_t)p_src[1];
-            break;
-        default:
-            return false;
-    }
-    
-    switch (p_src[2]) {
-        case ROTATION_RANGE_250DPS:
-        case ROTATION_RANGE_500DPS:
-        case ROTATION_RANGE_1000DPS:
-        case ROTATION_RANGE_2000DPS:
-            p_setting->rotationRange = (RotationRange_t)p_src[2];
-            break;
-        default:
-            return false;
-    }
 
-    // レートの項目全てについて、値範囲を確認
-    for(int i=3; i<7; i++) {
-        // 0x02よりも大きな値は不正値。
-        if( p_src[i] > 0x02 ) {
-            return false;
-        }
-    }
-    
-    p_setting->nineAxesSensorSamplingRate       = (SamplingRate_t)p_src[3];
-    p_setting->humiditySensorSamplingRate       = (SamplingRate_t)p_src[4];
-    p_setting->pressureSensorSamplingRate       = (SamplingRate_t)p_src[5];
-    p_setting->illuminationSensorSamplingRate   = (SamplingRate_t)p_src[6];
-    
-    return true;
-}
 
 void serializeAccelerationData(uint8_t *p_dst, const AccelerationData_t *p_data)
 {

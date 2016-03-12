@@ -1,11 +1,7 @@
 #ifndef ble_logger_service_h
 #define ble_logger_service_h
 
-#include <stdint.h>
-#include <stdbool.h>
-
-#include <ble.h>
-#include <ble_srv_common.h>
+#include "service_utility.h"
 
 #include "senstick_data_models.h"
 #include "sensor_data_storage.h"
@@ -45,8 +41,14 @@ struct ble_logger_service_s {
     ble_gatts_char_handles_t meta_data_datetime_char_handles;
     ble_gatts_char_handles_t meta_data_abstract_char_handles;
     
+    uint16_t streaming_service_handle;
+    ble_gatts_char_handles_t streaming_sensor_setting_char_handles;
+    ble_gatts_char_handles_t streaming_data_point_char_handles;
+    
     uint16_t connection_handle;
     uint8_t	 uuid_type;                // ベンダーUUIDを登録した時に取得される、UUIDタイプ
+    
+    bool is_streaming_data_point_notifying;
     
     sensor_manager_t *p_sensor_manager_context;
     

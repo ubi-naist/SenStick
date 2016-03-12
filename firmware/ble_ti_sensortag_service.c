@@ -1,8 +1,8 @@
 #include <string.h>
 
 #include <nordic_common.h>
-#include <nrf_log.h>
 #include <ble_srv_common.h>
+#include <nrf_log.h>
 
 #include <ble.h>
 #include <ble_gatts.h>

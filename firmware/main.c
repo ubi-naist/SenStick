@@ -578,8 +578,26 @@ int main(void)
     /** **/
     
     // アドバタイジングを開始する。
-//    initAdvertisingManager(&(sensortag_service_context.service_uuid));
-    initAdvertisingManager(NULL); // TBD ロギング等適当なサービスのUUIDを後で入れること。
+    const ble_uuid128_t senstick_advertising_uuid128 = {
+        {
+            //F000XXXX-0451-4000-B000-000000000000
+            // XXXX = 0xbb00
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0xB0,
+            0x00, 0x40,
+            0x51, 0x04,
+            0x00, 0x00, 0x00, 0xF0
+        }
+    };
+    uint8_t	 uuid_type;
+    err_code = sd_ble_uuid_vs_add(&senstick_advertising_uuid128, &uuid_type);
+    APP_ERROR_CHECK(err_code);
+    
+    ble_uuid_t uuid;
+    uuid.uuid = 0xbb00;
+    uuid.type = uuid_type;
+    
+    initAdvertisingManager(&uuid);
     startAdvertising();
     
     // アプリのタイマーを開始する。

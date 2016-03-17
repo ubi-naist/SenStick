@@ -8,12 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		F86322B21C979B20001B53A0 /* SenStickSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F86322B11C979B20001B53A0 /* SenStickSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */; };
+		F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */; };
+		F86322CA1C98E356001B53A0 /* streamingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C91C98E356001B53A0 /* streamingService.swift */; };
+		F86322CC1C98E369001B53A0 /* loggingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CB1C98E368001B53A0 /* loggingService.swift */; };
+		F86322CE1C98E37B001B53A0 /* logReadoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CD1C98E37B001B53A0 /* logReadoutService.swift */; };
+		F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F86322AE1C979B20001B53A0 /* SenStickSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SenStickSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86322B11C979B20001B53A0 /* SenStickSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SenStickSDK.h; sourceTree = "<group>"; };
 		F86322B31C979B20001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDeviceManager.swift; sourceTree = "<group>"; };
+		F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDevice.swift; sourceTree = "<group>"; };
+		F86322C91C98E356001B53A0 /* streamingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = streamingService.swift; sourceTree = "<group>"; };
+		F86322CB1C98E368001B53A0 /* loggingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loggingService.swift; sourceTree = "<group>"; };
+		F86322CD1C98E37B001B53A0 /* logReadoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = logReadoutService.swift; sourceTree = "<group>"; };
+		F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickUUIDs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +60,12 @@
 			children = (
 				F86322B11C979B20001B53A0 /* SenStickSDK.h */,
 				F86322B31C979B20001B53A0 /* Info.plist */,
+				F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */,
+				F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */,
+				F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */,
+				F86322C91C98E356001B53A0 /* streamingService.swift */,
+				F86322CB1C98E368001B53A0 /* loggingService.swift */,
+				F86322CD1C98E37B001B53A0 /* logReadoutService.swift */,
 			);
 			path = SenStickSDK;
 			sourceTree = "<group>";
@@ -130,6 +148,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */,
+				F86322CA1C98E356001B53A0 /* streamingService.swift in Sources */,
+				F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */,
+				F86322CC1C98E369001B53A0 /* loggingService.swift in Sources */,
+				F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */,
+				F86322CE1C98E37B001B53A0 /* logReadoutService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +252,7 @@
 		F86322B71C979B20001B53A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -238,12 +263,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wa-fu-u.SenStickSDK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		F86322B81C979B20001B53A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -276,6 +303,7 @@
 				F86322B81C979B20001B53A0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

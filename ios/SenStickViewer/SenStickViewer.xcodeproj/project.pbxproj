@@ -14,6 +14,7 @@
 		F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322991C979B03001B53A0 /* Assets.xcassets */; };
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
 		F86322C11C979B73001B53A0 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F86322BE1C979B62001B53A0 /* SenStickSDK.framework */; };
+		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		F863229C1C979B03001B53A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
+		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		F86322841C979B03001B53A0 = {
 			isa = PBXGroup;
 			children = (
+				F86322C31C979B92001B53A0 /* images.xcassets */,
 				F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */,
 				F863228F1C979B03001B53A0 /* SenStickViewer */,
 				F863228E1C979B03001B53A0 /* Products */,
@@ -77,10 +80,10 @@
 		F863228F1C979B03001B53A0 /* SenStickViewer */ = {
 			isa = PBXGroup;
 			children = (
+				F86322961C979B03001B53A0 /* Main.storyboard */,
 				F86322901C979B03001B53A0 /* AppDelegate.swift */,
 				F86322921C979B03001B53A0 /* MasterViewController.swift */,
 				F86322941C979B03001B53A0 /* DetailViewController.swift */,
-				F86322961C979B03001B53A0 /* Main.storyboard */,
 				F86322991C979B03001B53A0 /* Assets.xcassets */,
 				F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */,
 				F863229E1C979B03001B53A0 /* Info.plist */,
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */,
+				F86322C41C979B92001B53A0 /* images.xcassets in Resources */,
 				F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */,
 				F86322981C979B03001B53A0 /* Main.storyboard in Resources */,
 			);

@@ -12,10 +12,14 @@ import CoreBluetooth
 public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
 {
     let queue: dispatch_queue_t   = dispatch_queue_create("senstick.ble-queue", DISPATCH_QUEUE_SERIAL)
-    var centralManager: CBCentralManager!
 
-    // Properties
-    public private(set) var devices:[SenStickDevice] = []
+    var manager: CBCentralManager
+    var scanStopTime: NSDate = NSDate.init()
+    
+    // Properties, KVO
+    public var devices:[SenStickDevice] = []
+    public private(set) var state: CBCentralManagerState = .Unknown
+    public private(set) var isScanning: Bool = false
     
     // Initializer, Singleton design pattern.
     public static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
@@ -23,55 +27,69 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     private override init() {
         super.init()
         
-        centralManager = CBCentralManager.init(delegate: self, queue: queue)
+        manager = CBCentralManager.init(delegate: self, queue: queue)
     }
     
     // MARK: Public methods
-    public func scan(duration:NSTimeInterval)
+    public func scan(duration:NSTimeInterval = 15.0)
     {
-        retrievePeripherals()
-        
-        if centralManager!.isScanning && centralManager!.state == CBCentralManagerState.PoweredOn {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(duration * Double(NSEC_PER_SEC))), self.queue, { self.centralManager?.stopScan() })
+        // スキャン時間は1秒以上、30秒以下に制約
+        let scanDuration = max(1, min(30, duration))
+
+        // 接続済のペリフェラルを取得する
+        if manager.state == CBCentralManagerState.PoweredOn {
+            for peripheral in (manager.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
+                addPeripheral(peripheral)
+            }
         }
-    }
-    
-    public func connect(peripheral:CBPeripheral)
-    {
-        centralManager?.connectPeripheral(peripheral, options: nil)
+        
+        // 電源がONでかつスキャンしていなければ、スキャンを開始する
+        if manager.state == CBCentralManagerState.PoweredOn && !manager.isScanning {
+            manager.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)
+            isScanning = true
+        }
+
+        // スキャン停止タイマーをセット, スキャンメソッドは何度も呼び出される可能性があるので、ストップが何度も呼び出されても不意なスキャン停止が起きないように、スキャン停止は絶対時間で判定する
+        scanStopTime = NSDate(timeIntervalSinceNow: scanDuration - 0.5)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(scanDuration * Double(NSEC_PER_SEC))), queue, {
+            if self.scanStopTime.timeIntervalSinceNow < 0 {
+                self.manager.stopScan()
+                self.isScanning = false
+            }
+        })
     }
     
     // MARK: Private methods
-    func retrievePeripherals()
-    {
-        for peripheral in (centralManager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
-            addPeripheral(peripheral)
-        }
-    }
-
     func addPeripheral(peripheral: CBPeripheral)
     {
-        //すでに配列にあるかどうか探す, なければ追加
-        if let _ = devices.indexOf({$0.peripheral == peripheral}) {
-        } else {
-            let device = SenStickDevice(peripheral)
-            devices.append(device)
+        //すでに配列にあるかどうか探す, なければ追加。KVOを活かすため、配列それ自体を代入する
+        if !devices.contains({ element -> Bool in element.peripheral == peripheral }) {
+            var devs = devices
+            devs.append(SenStickDevice(manager:manager, peripheral: peripheral))
+            self.devices = devs
         }
     }
 
     // MARK: CBCentralManagerDelegate
     public func centralManagerDidUpdateState(central: CBCentralManager)
     {
+        // BLEの処理は独立したキューで走っているので、KVOを活かすためにメインキューで代入する
+        dispatch_async(dispatch_get_main_queue(), {
+            self.state = central.state
+            })
+        
         switch central.state {
-        case CBCentralManagerState.PoweredOn:
-            scan(5.0) // 5秒ほどスキャン
-        default:
-            devices = []
+            case CBCentralManagerState.PoweredOn:
+                // 電源ONで5秒ほどスキャンする
+                scan(5.0)
         }
     }
     
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
     {
+        dispatch_async(dispatch_get_main_queue(), {
+            addPeripheral(peripheral)
+        })
     }
     
     public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)

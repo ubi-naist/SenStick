@@ -7,25 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F80AD0AE1CAA662C00291197 /* SenStickControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */; };
+		F80AD0B01CAA667E00291197 /* SenStickService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AD0AF1CAA667E00291197 /* SenStickService.swift */; };
 		F86322B21C979B20001B53A0 /* SenStickSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F86322B11C979B20001B53A0 /* SenStickSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */; };
 		F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */; };
 		F86322CA1C98E356001B53A0 /* streamingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C91C98E356001B53A0 /* streamingService.swift */; };
-		F86322CC1C98E369001B53A0 /* loggingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CB1C98E368001B53A0 /* loggingService.swift */; };
 		F86322CE1C98E37B001B53A0 /* logReadoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CD1C98E37B001B53A0 /* logReadoutService.swift */; };
 		F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */; };
+		F86322D21C9A86F2001B53A0 /* SenStickDevice+controlSerivce.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322D11C9A86F2001B53A0 /* SenStickDevice+controlSerivce.swift */; };
+		F86322D41C9A8809001B53A0 /* serviceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322D31C9A8809001B53A0 /* serviceProtocol.swift */; };
+		F87A07CF1C9ADB130029231D /* SenStickServicesFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A07CE1C9ADB130029231D /* SenStickServicesFacade.swift */; };
+		F87A07D11C9BAE1F0029231D /* SenStickDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */; };
+		F87A07D31C9C3E2E0029231D /* SenStickDataModels+packable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A07D21C9C3E2E0029231D /* SenStickDataModels+packable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickControlService.swift; sourceTree = "<group>"; };
+		F80AD0AF1CAA667E00291197 /* SenStickService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickService.swift; sourceTree = "<group>"; };
 		F86322AE1C979B20001B53A0 /* SenStickSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SenStickSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86322B11C979B20001B53A0 /* SenStickSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SenStickSDK.h; sourceTree = "<group>"; };
 		F86322B31C979B20001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDeviceManager.swift; sourceTree = "<group>"; };
 		F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDevice.swift; sourceTree = "<group>"; };
 		F86322C91C98E356001B53A0 /* streamingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = streamingService.swift; sourceTree = "<group>"; };
-		F86322CB1C98E368001B53A0 /* loggingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loggingService.swift; sourceTree = "<group>"; };
 		F86322CD1C98E37B001B53A0 /* logReadoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = logReadoutService.swift; sourceTree = "<group>"; };
 		F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickUUIDs.swift; sourceTree = "<group>"; };
+		F86322D11C9A86F2001B53A0 /* SenStickDevice+controlSerivce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SenStickDevice+controlSerivce.swift"; sourceTree = "<group>"; };
+		F86322D31C9A8809001B53A0 /* serviceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = serviceProtocol.swift; sourceTree = "<group>"; };
+		F87A07CE1C9ADB130029231D /* SenStickServicesFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickServicesFacade.swift; sourceTree = "<group>"; };
+		F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDataModels.swift; sourceTree = "<group>"; };
+		F87A07D21C9C3E2E0029231D /* SenStickDataModels+packable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SenStickDataModels+packable.swift"; sourceTree = "<group>"; };
+		F8A0BA261CA4DE260099B235 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +52,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F80AD0B11CAA668400291197 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F87A07CE1C9ADB130029231D /* SenStickServicesFacade.swift */,
+				F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		F86322A41C979B20001B53A0 = {
 			isa = PBXGroup;
 			children = (
@@ -58,13 +80,19 @@
 		F86322B01C979B20001B53A0 /* SenStickSDK */ = {
 			isa = PBXGroup;
 			children = (
+				F8A0BA261CA4DE260099B235 /* MyPlayground.playground */,
 				F86322B11C979B20001B53A0 /* SenStickSDK.h */,
 				F86322B31C979B20001B53A0 /* Info.plist */,
 				F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */,
 				F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */,
 				F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */,
+				F80AD0AF1CAA667E00291197 /* SenStickService.swift */,
+				F80AD0B11CAA668400291197 /* Services */,
+				F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */,
+				F87A07D21C9C3E2E0029231D /* SenStickDataModels+packable.swift */,
+				F86322D11C9A86F2001B53A0 /* SenStickDevice+controlSerivce.swift */,
+				F86322D31C9A8809001B53A0 /* serviceProtocol.swift */,
 				F86322C91C98E356001B53A0 /* streamingService.swift */,
-				F86322CB1C98E368001B53A0 /* loggingService.swift */,
 				F86322CD1C98E37B001B53A0 /* logReadoutService.swift */,
 			);
 			path = SenStickSDK;
@@ -149,11 +177,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */,
+				F80AD0B01CAA667E00291197 /* SenStickService.swift in Sources */,
 				F86322CA1C98E356001B53A0 /* streamingService.swift in Sources */,
+				F87A07CF1C9ADB130029231D /* SenStickServicesFacade.swift in Sources */,
+				F80AD0AE1CAA662C00291197 /* SenStickControlService.swift in Sources */,
 				F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */,
-				F86322CC1C98E369001B53A0 /* loggingService.swift in Sources */,
+				F86322D21C9A86F2001B53A0 /* SenStickDevice+controlSerivce.swift in Sources */,
 				F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */,
 				F86322CE1C98E37B001B53A0 /* logReadoutService.swift in Sources */,
+				F86322D41C9A8809001B53A0 /* serviceProtocol.swift in Sources */,
+				F87A07D31C9C3E2E0029231D /* SenStickDataModels+packable.swift in Sources */,
+				F87A07D11C9BAE1F0029231D /* SenStickDataModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

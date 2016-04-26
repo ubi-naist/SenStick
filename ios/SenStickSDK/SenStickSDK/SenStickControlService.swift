@@ -9,84 +9,106 @@
 import Foundation
 import CoreBluetooth
 
-class SenStickControlService : NSObject, SenStickService
+public class SenStickControlService : NSObject, SenStickService
 {
-    static let ServiceUUID: CBUUID = SenStickUUIDs.senstickServiceUUID
-    static let CharacteristicsUUIDs : [CBUUID] = [SenStickUUIDs.senstickControlPointUUID]
-    
+    // Variables
     unowned let device: SenStickDevice
-    let controlPointCharacteristic: CBCharacteristic
+    
+    let statusChar:            CBCharacteristic
+    let controlPointChar:      CBCharacteristic
+    let availableLogCountChar: CBCharacteristic
+    let dateTimeChar:          CBCharacteristic
+    let abstractChar:          CBCharacteristic
+    
+    // Properties, KVO-compatible
+    
+    public private(set) var status: SenStickStatus
+    public private(set) var availableLogCount: UInt8
+    public private(set) var dateTime: NSDate
+    public private(set) var abstract: String
     
     // イニシャライザ
-    required init?(device:SenStickDevice)
+    required public init?(device:SenStickDevice)
     {
-        super.init()
-
-        guard let ctr_char = SenStickDevice.findCharacteristic(device, uuid: SenStickUUIDs.senstickControlPointUUID) else {
-            return nil
-        }
-        
         self.device = device
-        controlPointCharacteristic = ctr_char
+        
+        // サービス/キャラクタリスティクスがあることを確認
+        guard let service = device.findService(SenStickUUIDs.ControlServiceUUID) else { return nil }
+        guard let _statusChar            = device.findCharacteristic(service, uuid: SenStickUUIDs.StatusCharUUID) else { return nil }
+        guard let _controlChar           = device.findCharacteristic(service, uuid: SenStickUUIDs.ControlPointCharUUID) else { return nil }
+        guard let _availableLogCountChar = device.findCharacteristic(service, uuid: SenStickUUIDs.AvailableLogCountCharUUID) else { return nil }
+        guard let _dateTimeChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.DateTimeCharUUID) else { return nil }
+        guard let _abstractChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.AbstractCharUUID) else { return nil }
+        
+        statusChar            = _statusChar
+        controlPointChar      = _controlChar
+        availableLogCountChar = _availableLogCountChar
+        dateTimeChar          = _dateTimeChar
+        abstractChar          = _abstractChar
+        
+        self.status            = .Stopping
+        self.availableLogCount = 0
+        self.dateTime          = NSDate.distantPast()
+        self.abstract          = ""
+        
+        super.init()
         
         // Notifyを有効に。初期値読み出し。
-        device.setNotify(controlPointCharacteristic, enabled: true)
-        device.readValue(controlPointCharacteristic)
+        device.setNotify(statusChar, enabled: true)
+        device.setNotify(controlPointChar, enabled: true)
+        device.setNotify(availableLogCountChar, enabled: true)
+        device.readValue(dateTimeChar)
+        device.readValue(abstractChar)
     }
     
-    func didUpdateValue(peripheral: CBPeripheral, data:NSData)
-    
-    
-    
-    
-    // インスタンスの構築、サービスとキャラクタリスティクスを検索して内部保存。必要があればキャラクタリスティクスの読み出し。
-    // 初期化のためのフラグを内部で保存していないとダメか?
-    // Connectingの状態ではあるんだよね。でもサービスはサービスで隠蔽できるけど。読み出し処理が終わらないとダメだよね。その遷移の状態をどう扱えばいいだろうか。
-    // 状態としては不定。デバイス自体はCBPeripheralで取れているのだけど、Connectingでサービスそれ自体は独立しているから、なくてもいい。
-    // SenStickDeviceが取れても、サービスはしばらく不定でいい。で、コールバックが帰ってきて初期化まですめば、それを戻せばいいけど、どこで戻るのかがわからない。
-    // でもサービスがあってCharがあれば、戻ってくるよね?
-    static func hoge(CBPeripheral: peripheral) -> SenStickControlService? {
-    
+    // 値更新通知
+    func didUpdateValue(characteristic: CBCharacteristic, data:[UInt8])
+    {
+        guard data.count > 0  else { return }
+        
+        switch characteristic.UUID {
+        case SenStickUUIDs.StatusCharUUID:
+            if let s = SenStickStatus(rawValue: data[0]) {
+                status = s
+            }
+            
+        case SenStickUUIDs.AvailableLogCountCharUUID:
+            if availableLogCount != data[0] {
+                dateTime = NSDate.distantPast()
+                abstract = ""
+            }
+            availableLogCount = data[0]
+            
+        case SenStickUUIDs.DateTimeCharUUID:
+            if let datetime = NSDate.unpack(data) {
+                dateTime = datetime
+            }
+            
+        case SenStickUUIDs.AbstractCharUUID:
+            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+                abstract = s
+            }
+        default:
+            debugPrint("\(#function) unexpedted characteristics UUID, \(characteristic).")
+            break
+        }
     }
-    // Variables
-    // Properties
-    // Initializer
+    
     // Public methods
-    // センシングを示す
-    // ロギングをせいmす
-    // スリープを示す
-    // ストレージのフォーマット
-    // DFUモード
-    
-    private(set) var isSensing    : Bool
-    private(set) var isLogging    : Bool
-    private(set) var isFormatting : Bool
-
-    init()
+    public func writeDateTime(datetime: NSDate)
     {
-        // デバイス上を対の読み出し
+        device.writeValue(dateTimeChar, value: datetime.pack())
+        device.readValue(dateTimeChar)
     }
     
-    // センシングのステートを変更します
-    func setSensing(shouldStart:Bool, callback:(device:SenStickDevice, service:SenStickControlService) -> Void)
+    public func writeAbstract(abstract: String)
     {
+        device.writeValue(abstractChar, value: [UInt8](abstract.utf8))
+        device.readValue(abstractChar)
     }
     
-    func stopSensing() -> Void {
-        
+    public func writeCommand(command: SenStickControlCommand)
+    {
+        device.writeValue(controlPointChar, value: [command.rawValue])
     }
-    
-    func startlogging() -> Void {
-        
-    }
-    
-    func stopLogging() -> Void {
-        
-    }
-    
-    func startFormat() -> Void {
-        
-    }
-    
-
 }

@@ -11,12 +11,8 @@ import CoreBluetooth
 
 protocol SenStickService
 {
-    static var ServiceUUID : CBUUID {get}
-    static var CharacteristicsUUIDs : [CBUUID] {get}
-
-    // イニシャライザ
     init?(device: SenStickDevice)
     
     // 値が更新される都度CBPeripheralDelegateから呼びだされます
-    func didUpdateValue(device: SenStickDevice, characteristic: CBCharacteristic, data: NSData)
+    func didUpdateValue(characteristic: CBCharacteristic, data:[UInt8])
 }

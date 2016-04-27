@@ -8,43 +8,60 @@
 
 /* Begin PBXBuildFile section */
 		F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322901C979B03001B53A0 /* AppDelegate.swift */; };
-		F86322931C979B03001B53A0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322921C979B03001B53A0 /* MasterViewController.swift */; };
 		F86322951C979B03001B53A0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322941C979B03001B53A0 /* DetailViewController.swift */; };
 		F86322981C979B03001B53A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86322961C979B03001B53A0 /* Main.storyboard */; };
 		F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322991C979B03001B53A0 /* Assets.xcassets */; };
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
-		F86322C11C979B73001B53A0 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F86322BE1C979B62001B53A0 /* SenStickSDK.framework */; };
 		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
+		F8C17E1C1CCF271A00030B99 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; };
+		F8C17E1D1CCF271A00030B99 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F8FCC92E1CCF6195003BCC5A /* DeviceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92D1CCF6195003BCC5A /* DeviceCellView.swift */; };
+		F8FCC9301CCF61CD003BCC5A /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F86322BD1C979B62001B53A0 /* PBXContainerItemProxy */ = {
+		F8C17E111CCF25D500030B99 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */;
+			containerPortal = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = F86322AE1C979B20001B53A0;
 			remoteInfo = SenStickSDK;
 		};
-		F86322BF1C979B6E001B53A0 /* PBXContainerItemProxy */ = {
+		F8C17E1E1CCF271A00030B99 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */;
+			containerPortal = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = F86322AD1C979B20001B53A0;
 			remoteInfo = SenStickSDK;
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F8C17E201CCF271A00030B99 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F8C17E1D1CCF271A00030B99 /* SenStickSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F863228D1C979B03001B53A0 /* SenStickViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86322901C979B03001B53A0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F86322921C979B03001B53A0 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		F86322941C979B03001B53A0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		F86322971C979B03001B53A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F86322991C979B03001B53A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F863229C1C979B03001B53A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
 		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
+		F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
+		F8FCC92D1CCF6195003BCC5A /* DeviceCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCellView.swift; sourceTree = "<group>"; };
+		F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F86322C11C979B73001B53A0 /* SenStickSDK.framework in Frameworks */,
+				F8C17E1C1CCF271A00030B99 /* SenStickSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,8 +79,8 @@
 		F86322841C979B03001B53A0 = {
 			isa = PBXGroup;
 			children = (
+				F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */,
 				F86322C31C979B92001B53A0 /* images.xcassets */,
-				F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */,
 				F863228F1C979B03001B53A0 /* SenStickViewer */,
 				F863228E1C979B03001B53A0 /* Products */,
 			);
@@ -82,7 +99,8 @@
 			children = (
 				F86322961C979B03001B53A0 /* Main.storyboard */,
 				F86322901C979B03001B53A0 /* AppDelegate.swift */,
-				F86322921C979B03001B53A0 /* MasterViewController.swift */,
+				F8FCC92D1CCF6195003BCC5A /* DeviceCellView.swift */,
+				F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */,
 				F86322941C979B03001B53A0 /* DetailViewController.swift */,
 				F86322991C979B03001B53A0 /* Assets.xcassets */,
 				F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */,
@@ -91,10 +109,10 @@
 			path = SenStickViewer;
 			sourceTree = "<group>";
 		};
-		F86322BA1C979B62001B53A0 /* Products */ = {
+		F8C17E0E1CCF25D500030B99 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F86322BE1C979B62001B53A0 /* SenStickSDK.framework */,
+				F8C17E121CCF25D500030B99 /* SenStickSDK.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,11 +127,12 @@
 				F86322891C979B03001B53A0 /* Sources */,
 				F863228A1C979B03001B53A0 /* Frameworks */,
 				F863228B1C979B03001B53A0 /* Resources */,
+				F8C17E201CCF271A00030B99 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F86322C01C979B6E001B53A0 /* PBXTargetDependency */,
+				F8C17E1F1CCF271A00030B99 /* PBXTargetDependency */,
 			);
 			name = SenStickViewer;
 			productName = SenStickViewer;
@@ -148,8 +167,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = F86322BA1C979B62001B53A0 /* Products */;
-					ProjectRef = F86322B91C979B62001B53A0 /* SenStickSDK.xcodeproj */;
+					ProductGroup = F8C17E0E1CCF25D500030B99 /* Products */;
+					ProjectRef = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -160,11 +179,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		F86322BE1C979B62001B53A0 /* SenStickSDK.framework */ = {
+		F8C17E121CCF25D500030B99 /* SenStickSDK.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = SenStickSDK.framework;
-			remoteRef = F86322BD1C979B62001B53A0 /* PBXContainerItemProxy */;
+			remoteRef = F8C17E111CCF25D500030B99 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -189,7 +208,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F86322951C979B03001B53A0 /* DetailViewController.swift in Sources */,
-				F86322931C979B03001B53A0 /* MasterViewController.swift in Sources */,
+				F8FCC92E1CCF6195003BCC5A /* DeviceCellView.swift in Sources */,
+				F8FCC9301CCF61CD003BCC5A /* DeviceTableViewController.swift in Sources */,
 				F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,10 +217,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F86322C01C979B6E001B53A0 /* PBXTargetDependency */ = {
+		F8C17E1F1CCF271A00030B99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SenStickSDK;
-			targetProxy = F86322BF1C979B6E001B53A0 /* PBXContainerItemProxy */;
+			targetProxy = F8C17E1E1CCF271A00030B99 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -309,6 +329,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SenStickViewer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wa-fu-u.SenStickViewer";
@@ -320,6 +341,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SenStickViewer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wa-fu-u.SenStickViewer";

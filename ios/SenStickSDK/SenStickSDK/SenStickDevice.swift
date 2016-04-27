@@ -16,9 +16,12 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     let peripheral: CBPeripheral
     
     // MARK: Properties
+    public private(set) var name: String
+    public private(set) var identifier: NSUUID
+    
     public private(set) var state : CBPeripheralState
     
-    public private(set) var controlService:   SenStickControlService?
+    public private(set) var controlService: SenStickControlService?
     public private(set) var metaDataService : SenStickMetaDataService?
     public private(set) var accelerationSensorService: AccelerationSensorService?
     
@@ -28,9 +31,11 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         self.manager    = manager
         self.peripheral = peripheral
         self.state      = peripheral.state
+        self.name       = peripheral.name ?? ""
+        self.identifier = peripheral.identifier
         
         super.init()
-        
+
         self.peripheral.delegate = self
         addObserver(self.peripheral, forKeyPath: "state", options: [.New], context: nil)
     }
@@ -48,6 +53,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             state = peripheral.state
             switch peripheral.state {
             case .Disconnected:
+                onDisconnect()
                 break
             case .Connected:
                 findSensticServices()
@@ -62,6 +68,13 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     }
     
     // Private methods
+    func onDisconnect()
+    {
+        self.controlService            = nil
+        self.metaDataService           = nil
+        self.accelerationSensorService = nil
+    }
+    
     func findSensticServices()
     {
         // サービスの発見
@@ -140,13 +153,14 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         }
     }
     
-    //    optional public func peripheralDidUpdateName(peripheral: CBPeripheral)
+    public func peripheralDidUpdateName(peripheral: CBPeripheral)
+    {
+        self.name = peripheral.name ?? ""
+    }
+    
     //    optional public func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService])
     //    optional public func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?)
-    //    optional public func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
     //    optional public func peripheral(peripheral: CBPeripheral, didDiscoverIncludedServicesForService service: CBService, error: NSError?)
-    //    optional public func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?)
-    //    optional public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
     //    optional public func peripheral(peripheral: CBPeripheral, didWriteValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
     //    optional public func peripheral(peripheral: CBPeripheral, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic, error: NSError?)
     //    optional public func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?)

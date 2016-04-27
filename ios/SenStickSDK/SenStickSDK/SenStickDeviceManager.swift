@@ -11,10 +11,11 @@ import CoreBluetooth
 
 public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
 {
-    let queue: dispatch_queue_t   = dispatch_queue_create("senstick.ble-queue", DISPATCH_QUEUE_SERIAL)
-    
     var manager: CBCentralManager?
-    var scanStopTime: NSDate = NSDate.init()
+    
+    let queue: dispatch_queue_t
+    var scanTimer: dispatch_source_t?
+    var scanCallback:((remaining: NSTimeInterval) -> Void)?
     
     // Properties, KVO
     public var devices:[SenStickDevice] = []
@@ -25,38 +26,69 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     public static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
     
     private override init() {
+        queue = dispatch_queue_create("senstick.ble-queue", DISPATCH_QUEUE_SERIAL)
+        
         super.init()
 
         manager = CBCentralManager.init(delegate: self, queue: queue)
     }
     
     // MARK: Public methods
-    public func scan(duration:NSTimeInterval = 15.0)
+    
+    // 1秒毎にコールバックします。0になれば終了です。
+    public func scan(duration:NSTimeInterval = 5.0, callback:((remaining: NSTimeInterval) -> Void)?)
     {
+        // スキャン中、もしくはBTの電源がオフであれば、直ちに終了。
+        if manager!.isScanning || manager!.state != CBCentralManagerState.PoweredOn {
+            callback?(remaining: 0)
+            return
+        }
+        
         // スキャン時間は1秒以上、30秒以下に制約
         let scanDuration = max(1, min(30, duration))
+        scanCallback = callback
         
         // 接続済のペリフェラルを取得する
-        if manager!.state == CBCentralManagerState.PoweredOn {
-            for peripheral in (manager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
-                addPeripheral(peripheral)
-            }
+        for peripheral in (manager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
+            addPeripheral(peripheral)
         }
         
-        // 電源がONでかつスキャンしていなければ、スキャンを開始する
-        if manager!.state == CBCentralManagerState.PoweredOn && !manager!.isScanning {
-            manager!.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)
-            isScanning = true
-        }
-        
-        // スキャン停止タイマーをセット, スキャンメソッドは何度も呼び出される可能性があるので、ストップが何度も呼び出されても不意なスキャン停止が起きないように、スキャン停止は絶対時間で判定する
-        scanStopTime = NSDate(timeIntervalSinceNow: scanDuration - 0.5)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(scanDuration * Double(NSEC_PER_SEC))), queue, {
-            if self.scanStopTime.timeIntervalSinceNow < 0 {
-                self.manager!.stopScan()
-                self.isScanning = false
+        // スキャンを開始する。
+        manager!.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)
+        isScanning = true
+
+        var remaining = scanDuration
+        scanTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
+        dispatch_source_set_timer(scanTimer!, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
+        dispatch_source_set_event_handler(scanTimer!) {
+            debugPrint("\(#function)")
+            // 時間を-1秒。
+            remaining = max(0, remaining - 1)
+            if remaining <= 0 {
+                self.cancelScan()
             }
-        })
+            // 継続ならばシグナリング
+            self.scanCallback?(remaining: remaining)
+        }
+        dispatch_resume(scanTimer!)
+    }
+    
+    public func scan(duration:NSTimeInterval = 5.0)
+    {
+        scan(duration, callback: nil)
+    }
+    
+    public func cancelScan()
+    {
+        guard manager!.isScanning else { return }
+
+        dispatch_source_cancel(scanTimer!)
+
+        self.scanCallback?(remaining: 0)
+        self.scanCallback = nil
+        
+        self.manager!.stopScan()
+        self.isScanning = false
     }
     
     // MARK: Private methods
@@ -78,13 +110,13 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
             self.state = central.state
         })
         
-        switch central.state {
+/*        switch central.state {
         case CBCentralManagerState.PoweredOn:
             // 電源ONで5秒ほどスキャンする
-            scan(5.0)
+//            scan(5.0)
         default:
             break
-        }
+        }*/
     }
     
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)

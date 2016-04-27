@@ -131,16 +131,16 @@ extension UInt32 : PackableType {
         
         switch byteOrder {
         case .LittleEndian:
-            buf[0] = UInt8(UInt32(0x000000ff) & (self >> 0))
-            buf[1] = UInt8(UInt32(0x0000ff00) & (self >> 8))
-            buf[2] = UInt8(UInt32(0x00ff0000) & (self >> 16))
-            buf[3] = UInt8(UInt32(0xff000000) & (self >> 24))
+            buf[0] = UInt8(UInt32(0x00ff) & (self >> 0))
+            buf[1] = UInt8(UInt32(0x00ff) & (self >> 8))
+            buf[2] = UInt8(UInt32(0x00ff) & (self >> 16))
+            buf[3] = UInt8(UInt32(0x00ff) & (self >> 24))
             
         case .BigEndian:
-            buf[3] = UInt8(UInt32(0x000000ff) & (self >> 0))
-            buf[2] = UInt8(UInt32(0x0000ff00) & (self >> 8))
-            buf[1] = UInt8(UInt32(0x00ff0000) & (self >> 16))
-            buf[0] = UInt8(UInt32(0xff000000) & (self >> 24))
+            buf[3] = UInt8(UInt32(0x00ff) & (self >> 0))
+            buf[2] = UInt8(UInt32(0x00ff) & (self >> 8))
+            buf[1] = UInt8(UInt32(0x00ff) & (self >> 16))
+            buf[0] = UInt8(UInt32(0x00ff) & (self >> 24))
         }
         
         return buf

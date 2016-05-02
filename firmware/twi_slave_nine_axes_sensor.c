@@ -1,12 +1,17 @@
 #include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include <nrf_delay.h>
 #include <nrf_assert.h>
 #include <app_error.h>
+#include <sdk_errors.h>
 
-#include "twi_slave_utility.h"
+#include "value_types.h"
+#include "twi_manager.h"
 #include "twi_slave_nine_axes_sensor.h"
 
+#include "senstick_sensor_base_data.h"
 #include "senstick_io_definitions.h"
 
 // レジスタ仕様書
@@ -50,89 +55,34 @@ typedef enum {
 
 // MPU9250に書き込みます。
 // TWI_MPU9250_ADDRESS は senstick_io_definitions.h で定義されているI2Cバスのアドレスです。
-static void writeToMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Register_t target_register, const uint8_t *data, uint8_t data_length)
+static bool writeToMPU9250(MPU9250Register_t target_register, const uint8_t *data, uint8_t data_length)
 {
-    writeToTwiSlave(p_context->p_twi, TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
+    return writeToTwiSlave(TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 // MPU9250から読み込みます。
-static void readFromMPU9250(nine_axes_sensor_context_t *p_context, MPU9250Register_t target_register, uint8_t *data, uint8_t data_length)
+static void readFromMPU9250(MPU9250Register_t target_register, uint8_t *data, uint8_t data_length)
 {
-    readFromTwiSlave(p_context->p_twi, TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
+    readFromTwiSlave(TWI_MPU9250_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
-static void writeToAK8963(nine_axes_sensor_context_t *p_context, AK8963Register_t target_register, const uint8_t *data, uint8_t data_length)
+static void writeToAK8963(AK8963Register_t target_register, const uint8_t *data, uint8_t data_length)
 {
-    writeToTwiSlave(p_context->p_twi, TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
+    writeToTwiSlave(TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 // MPU9250から読み込みます。
-static void readFromAK8963(nine_axes_sensor_context_t *p_context, AK8963Register_t target_register, uint8_t *data, uint8_t data_length)
+static void readFromAK8963(AK8963Register_t target_register, uint8_t *data, uint8_t data_length)
 {
-    readFromTwiSlave(p_context->p_twi, TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
-}
-
-static void getAccelerationData(nine_axes_sensor_context_t *p_context, AccelerationData_t *p_acceleration)
-{
-    uint8_t buffer[6];
-    // 加速度のデータは一連の連続するアドレスから読み出す。
-    // ACCEL_XOUT_H 0x3b
-    // ACCEL_XOUT_L
-    // ACCEL_YOUT_H
-    // ACCEL_YOUT_L
-    // ACCEL_ZOUT_H
-    // ACCEL_ZOUT_L
-    readFromMPU9250(p_context, ACCEL_XOUT_H, buffer, sizeof(buffer));
-    p_acceleration->x = readInt16AsBigEndian(&(buffer[0]));
-    p_acceleration->y = readInt16AsBigEndian(&(buffer[2]));
-    p_acceleration->z = readInt16AsBigEndian(&(buffer[4]));
-}
-
-static void getRotationRateData(nine_axes_sensor_context_t *p_context, RotationRateData_t *p_rotationRate)
-{
-    uint8_t buffer[6];
-    // ジャイロのデータは一連の連続するアドレスから読み出す。
-    // GYRO_XOUT_H 0x43
-    // GYRO_XOUT_L
-    // GYRO_YOUT_H
-    // GYRO_YOUT_L
-    // GYRO_ZOUT_H
-    // GYRO_ZOUT_L
-    readFromMPU9250(p_context, GYRO_XOUT_H, buffer, sizeof(buffer));
-    
-    p_rotationRate->x = readInt16AsBigEndian(&(buffer[0]));
-    p_rotationRate->y = readInt16AsBigEndian(&(buffer[2]));
-    p_rotationRate->z = readInt16AsBigEndian(&(buffer[4]));
-}
-
-static void getMagneticFieldData(nine_axes_sensor_context_t *p_context, MagneticFieldData_t *p_magneticField)
-{
-    uint8_t buffer[7];
-    // 地磁気のデータは一連の連続するアドレスから読み出す。
-    // HXL 0x03
-    // HXH
-    // HYL
-    // HYH
-    // HZL
-    // HZH
-    //
-    // 内部データはHZHの次のアドレスにあるST2を読みだすことで、読み出しロックが解除されて、次のデータに更新される。そのため7バイトを読みだす。
-    readFromAK8963(p_context, HXL, buffer, sizeof(buffer));
-    
-    p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
-    p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
-    p_magneticField->z = readInt16AsLittleEndian(&(buffer[4]));
+    readFromTwiSlave(TWI_AK8963_ADDRESS, (uint8_t)target_register, data, data_length);
 }
 
 /**
  * public methods
  */
 
-void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_twi)
+bool initNineAxesSensor(void)
 {
-    // コンテクストの初期設定
-    memset(p_context, 0,sizeof(nine_axes_sensor_context_t));
-    p_context->p_twi = p_twi;
     
     // PWR_MGMT_1
     // D7: H_RESET          1   1- 内部レジスタをリセットしてデフォルト値にする。
@@ -144,7 +94,10 @@ void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_
     // D1: =
     // D0: =
     const uint8_t data[] = {0x80};
-    writeToMPU9250(p_context, PWR_MGMT_1, data, sizeof(data));
+    bool result = writeToMPU9250( PWR_MGMT_1, data, sizeof(data));
+    if(! result ) {
+        return false;
+    }
 
     // INT Pin / Bypass Enable Configuration
     // 7: ACTL
@@ -169,8 +122,7 @@ void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_
     //
     // enable I2C BYPASS_EN
     const uint8_t data2[] = {0x02};
-    writeToMPU9250(p_context, INT_PIN_CFG, data2, sizeof(data2));
-
+    writeToMPU9250( INT_PIN_CFG, data2, sizeof(data2));
     
     // CNTL1
     // D4: BIT              0   0: 14-bit output, 1: 16-bit output
@@ -182,11 +134,12 @@ void initNineAxesSensor(nine_axes_sensor_context_t *p_context, nrf_drv_twi_t *p_
     // D1: =
     // D0: =
     const uint8_t data3[] = {0x16};
-    writeToAK8963(p_context, CNTL1, data3, sizeof(data3));
+    writeToAK8963( CNTL1, data3, sizeof(data3));
     
+    return true;
 }
 
-void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
+void sleepNineAxesSensor(void)
 {
     // PWR_MGMT_2
     // D7: -
@@ -198,7 +151,7 @@ void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1: DIS_YG   1
     // D0: DIS_ZG   1
     const uint8_t data[] = {0x3f};
-    writeToMPU9250(p_context, PWR_MGMT_2, data, sizeof(data));
+    writeToMPU9250( PWR_MGMT_2, data, sizeof(data));
     
     // PWR_MGMT_1
     // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
@@ -210,7 +163,7 @@ void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1:                  0
     // D0:                  0
     const uint8_t data2[] = {0x40};
-    writeToMPU9250(p_context, PWR_MGMT_1, data2, sizeof(data2));
+    writeToMPU9250( PWR_MGMT_1, data2, sizeof(data2));
     
     // CNTL1
     // D4: BIT              0   0: 14-bit output, 1: 16-bit output
@@ -222,10 +175,10 @@ void sleepNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1: =
     // D0: =
     const uint8_t data3[] = {0x00};
-    writeToAK8963(p_context, CNTL1, data3, sizeof(data3));
+    writeToAK8963( CNTL1, data3, sizeof(data3));
 }
 
-void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
+void awakeNineAxesSensor(void)
 {
     // PWR_MGMT_1
     // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
@@ -237,7 +190,7 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1:                  0
     // D0:                  0
     const uint8_t data2[] = {0x00};
-    writeToMPU9250(p_context, PWR_MGMT_1, data2, sizeof(data2));
+    writeToMPU9250( PWR_MGMT_1, data2, sizeof(data2));
     
     // PWR_MGMT_2
     // D7
@@ -249,7 +202,7 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1: DIS_YG   0
     // D0: DIS_ZG   0
     const uint8_t data[] = {0x00};
-    writeToMPU9250(p_context, PWR_MGMT_2, data, sizeof(data));
+    writeToMPU9250( PWR_MGMT_2, data, sizeof(data));
     
     // CNTL1
     // D4: BIT              0   0: 14-bit output, 1: 16-bit output
@@ -261,29 +214,10 @@ void awakeNineAxesSensor(nine_axes_sensor_context_t *p_context)
     // D1: =
     // D0: =
     const uint8_t data1[] = {0x16};
-    writeToAK8963(p_context, CNTL1, data1, sizeof(data1));
+    writeToAK8963( CNTL1, data1, sizeof(data1));
 }
 
-void getNineAxesData(nine_axes_sensor_context_t *p_context, SensorDeviceType_t type, SensorData_t *p_data)
-{
-    p_data->type = type;
-    switch (type) {
-        case AccelerationSensor:
-            getAccelerationData(p_context,  &(p_data->data.acceleration));
-            break;
-        case GyroSensor:
-            getRotationRateData(p_context,  &(p_data->data.rotationRate));
-            break;
-        case MagneticFieldSensor:
-            getMagneticFieldData(p_context, &(p_data->data.magneticField));
-            break;
-        default:
-            ASSERT(NRF_ERROR_INVALID_PARAM);
-            break;
-    }
-}
-
-void setNineAxesSensorAccelerationRange(nine_axes_sensor_context_t *p_context, AccelerationRange_t range)
+void setNineAxesSensorAccelerationRange(AccelerationRange_t range)
 {
     //    Register 28 – Accelerometer Configuration
     //    ACCEL_CONFIG    = 0x1c,
@@ -307,10 +241,10 @@ void setNineAxesSensorAccelerationRange(nine_axes_sensor_context_t *p_context, A
     }
     
     uint8_t data[] = {value};
-    writeToMPU9250(p_context, ACCEL_CONFIG, data, sizeof(data));
+    writeToMPU9250( ACCEL_CONFIG, data, sizeof(data));
 }
 
-void setNineAxesSensorRotationRange(nine_axes_sensor_context_t *p_context, RotationRange_t range)
+void setNineAxesSensorRotationRange(RotationRange_t range)
 {
 //    Register 27 – Gyroscope Configuration
 //    GYRO_CONFIG     = 0x1b,
@@ -336,6 +270,63 @@ void setNineAxesSensorRotationRange(nine_axes_sensor_context_t *p_context, Rotat
     }
     
     uint8_t data[] = {value};
-    writeToMPU9250(p_context, GYRO_CONFIG, data, sizeof(data));
+    writeToMPU9250(GYRO_CONFIG, data, sizeof(data));
 }
 
+void getAccelerationData(uint8_t *p_data)
+{
+    AccelerationData_t *p_acceleration = (AccelerationData_t *)p_data;
+    
+    uint8_t buffer[6];
+    // 加速度のデータは一連の連続するアドレスから読み出す。
+    // ACCEL_XOUT_H 0x3b
+    // ACCEL_XOUT_L
+    // ACCEL_YOUT_H
+    // ACCEL_YOUT_L
+    // ACCEL_ZOUT_H
+    // ACCEL_ZOUT_L
+    readFromMPU9250( ACCEL_XOUT_H, buffer, sizeof(buffer));
+    p_acceleration->x = readInt16AsBigEndian(&(buffer[0]));
+    p_acceleration->y = readInt16AsBigEndian(&(buffer[2]));
+    p_acceleration->z = readInt16AsBigEndian(&(buffer[4]));
+}
+
+void getRotationRateData(uint8_t *p_data)
+{
+    RotationRateData_t *p_rotationRate = (RotationRateData_t *)p_data;
+    
+    uint8_t buffer[6];
+    // ジャイロのデータは一連の連続するアドレスから読み出す。
+    // GYRO_XOUT_H 0x43
+    // GYRO_XOUT_L
+    // GYRO_YOUT_H
+    // GYRO_YOUT_L
+    // GYRO_ZOUT_H
+    // GYRO_ZOUT_L
+    readFromMPU9250( GYRO_XOUT_H, buffer, sizeof(buffer));
+    
+    p_rotationRate->x = readInt16AsBigEndian(&(buffer[0]));
+    p_rotationRate->y = readInt16AsBigEndian(&(buffer[2]));
+    p_rotationRate->z = readInt16AsBigEndian(&(buffer[4]));
+}
+
+void getMagneticFieldData(uint8_t *p_data)
+{
+    MagneticFieldData_t *p_magneticField = (MagneticFieldData_t *)p_data;
+    
+    uint8_t buffer[7];
+    // 地磁気のデータは一連の連続するアドレスから読み出す。
+    // HXL 0x03
+    // HXH
+    // HYL
+    // HYH
+    // HZL
+    // HZH
+    //
+    // 内部データはHZHの次のアドレスにあるST2を読みだすことで、読み出しロックが解除されて、次のデータに更新される。そのため7バイトを読みだす。
+    readFromAK8963( HXL, buffer, sizeof(buffer));
+    
+    p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
+    p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
+    p_magneticField->z = readInt16AsLittleEndian(&(buffer[4]));
+}

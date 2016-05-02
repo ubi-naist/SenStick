@@ -40,7 +40,7 @@ static void setCharacteristicsValue(const ble_sensortag_service_t *p_context, ui
     gatts_value.offset  = 0;
 
     // update database
-    err_code = sd_ble_gatts_value_set(p_context->connection_handle, value_handle, &gatts_value);
+    err_code = sd_ble_gatts_value_set(connection_handle, value_handle, &gatts_value);
     APP_ERROR_CHECK(err_code);
 }
 

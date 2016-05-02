@@ -1,7 +1,7 @@
 #ifndef ble_parameters_config_h
 #define ble_parameters_config_h
 
-#include "ble_gap.h"
+#include <ble_gap.h>
 
 // コネクションパラメータモジュールの設定値
 // アドバタイジング:

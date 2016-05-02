@@ -36,7 +36,7 @@ static void writeHeader(flash_stream_context_t *p_stream, sensor_data_storage_he
     writeStream(p_stream, address, (uint8_t *)p_header, sizeof(sensor_data_storage_header_t));
 }
 
-static int sizeOfSensorData(SensorDeviceType_t type)
+static int sizeOfSensorData(sensor_device_t_t type)
 {
     switch (type) {
         case AccelerationSensor:            return sizeof(AccelerationData_t);
@@ -134,7 +134,7 @@ int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorD
     return size;
 }
 
-int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, SensorData_t *p_sensorData)
+int storageRead(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType, SensorData_t *p_sensorData)
 {
     ASSERT(sensorType < SensorDeviceNone);
     
@@ -195,7 +195,7 @@ void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_nu
     *p_num_of_unit = NUMBER_OF_DATA_UNIT - unit -1;
     for(int i=0; i < NUMBER_OF_SENSOR_DEVICE; i++) {
         int remaining_byte_capacity = (SENSOR_DATA_STARTING_POSITION[i +1] - header.end_position[i]);
-        int remaining_count = remaining_byte_capacity / sizeOfSensorData((SensorDeviceType_t)i);
+        int remaining_count = remaining_byte_capacity / sizeOfSensorData((sensor_device_t_t)i);
         int remaining_capacity_percent = (100 * remaining_count) / MAX_SAMPLING_COUNT;
         remaining_capacity_percent = MIN(100, remaining_capacity_percent);
         p_data[i] = (uint8_t) remaining_capacity_percent;
@@ -222,7 +222,7 @@ void storageGetAbstract(sensor_data_storage_t *p_storage, char *p_str)
     strncpy(p_str, p_storage->header.abstract, 20);
 }
 
-int storageGetSampleCount(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType)
+int storageGetSampleCount(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType)
 {
     int size = sizeOfSensorData(sensorType);
     int start_address = p_storage->header.starting_position[sensorType];
@@ -231,7 +231,7 @@ int storageGetSampleCount(sensor_data_storage_t *p_storage, SensorDeviceType_t s
     return (end_address - start_address) / size;
 }
 
-int storageGetSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType)
+int storageGetSamplePosition(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType)
 {
     int size = sizeOfSensorData(sensorType);
     int start_address = p_storage->header.starting_position[sensorType];
@@ -240,7 +240,7 @@ int storageGetSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_
     return (end_address - start_address) / size;
 }
 
-int storageSeekSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, int sample_count)
+int storageSeekSamplePosition(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType, int sample_count)
 {
     int size = sizeOfSensorData(sensorType);
     int start_address = p_storage->header.starting_position[sensorType];

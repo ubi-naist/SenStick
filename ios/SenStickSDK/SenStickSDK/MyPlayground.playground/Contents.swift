@@ -189,9 +189,11 @@ print(String(format:"0x%02x", b), b_buf.toHexString())
 let bb = Int16.unpack(b_buf, byteOrder: .LittleEndian)
 print(b == bb)
 
+// アレイとスライスの動作確認。arrは5つの要素の配列、そこから[3,4]の部分を切り出す。
+// スライスを0..<1で範囲参照すると、このスライスに対してではなく、元の配列に対しての範囲参照となってエラー。
 /*
 let arr = [1, 2, 3, 4, 5]
 let sliced = arr[2..<4]
 // [3, 4]
-sliced[0..<1] // fatal error: Negative ArraySlice index is out of range
- */
+print(sliced[0..<1]) // fatal error: Negative ArraySlice index is out of range
+*/

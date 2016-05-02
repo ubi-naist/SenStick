@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 #include <sdk_common.h>
+#include <nrf.h>
+#include <app_util.h>
 #include <ble_date_time.h>
 
 #include "flash_stream.h"
@@ -42,16 +44,16 @@ bool storageOpen(sensor_data_storage_t *p_storage, uint8_t data_id, flash_stream
 void storageClose(sensor_data_storage_t *p_storage);
 
 int storageWrite(sensor_data_storage_t *p_storage, const SensorData_t *p_sensorData);
-int storageRead(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, SensorData_t *p_sensorData);
+int storageRead(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType, SensorData_t *p_sensorData);
 
 // データが記録されているデータユニット数を取得します。
 int storageGetUnitCount(flash_stream_context_t *p_stream);
 // データユニット数と残容量を0-100%で返します。加速度、角速度、磁場、照度、UV、気圧、湿度温度、の順番。
 void storageGetRemainingCapacity(flash_stream_context_t *p_stream, uint8_t *p_num_of_unit, uint8_t *p_data);
 
-int storageGetSampleCount(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType);
-int storageGetSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType);
-int storageSeekSamplePosition(sensor_data_storage_t *p_storage, SensorDeviceType_t sensorType, int sample_count);
+int storageGetSampleCount(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType);
+int storageGetSamplePosition(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType);
+int storageSeekSamplePosition(sensor_data_storage_t *p_storage, sensor_device_t_t sensorType, int sample_count);
 
 uint8_t storageGetID(sensor_data_storage_t *p_storage);
 void storageGetSensorSetting(sensor_data_storage_t *p_storage, sensorSetting_t *p_sensor_setting);

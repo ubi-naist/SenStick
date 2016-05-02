@@ -7,77 +7,92 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		F809DE851C69E0AC000062E1 /* test_storage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_storage.c; sourceTree = "<group>"; };
-		F809DE861C69E0AC000062E1 /* test_storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_storage.h; sourceTree = "<group>"; };
-		F837ECD01C8DA295004BE653 /* service_utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = service_utility.c; sourceTree = "<group>"; };
-		F837ECD11C8DA295004BE653 /* service_utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service_utility.h; sourceTree = "<group>"; };
+		F850DFAC1CE713AF00B8F9B9 /* twi_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_manager.c; sourceTree = "<group>"; };
+		F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_manager.h; sourceTree = "<group>"; };
+		F850DFAE1CE7652200B8F9B9 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
+		F86873571CE2FBA90083A635 /* senstick_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_types.h; sourceTree = "<group>"; };
+		F86873581CE350490083A635 /* metadata_log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = metadata_log_controller.c; sourceTree = "<group>"; };
+		F86873591CE350490083A635 /* metadata_log_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metadata_log_controller.h; sourceTree = "<group>"; };
+		F868735A1CE36A000083A635 /* senstick_sensor_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_sensor_controller.c; sourceTree = "<group>"; };
+		F868735B1CE36A000083A635 /* senstick_sensor_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_sensor_controller.h; sourceTree = "<group>"; };
+		F868735F1CE40E020083A635 /* senstick_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_sensor_base.h; sourceTree = "<group>"; };
+		F86C469F1CD4F7C200076F3E /* service_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = service_util.c; sourceTree = "<group>"; };
+		F86C46A01CD4F7C200076F3E /* service_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service_util.h; sourceTree = "<group>"; };
+		F86C46A61CD7764D00076F3E /* log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = log_controller.c; sourceTree = "<group>"; };
+		F86C46A71CD7764D00076F3E /* log_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = log_controller.h; sourceTree = "<group>"; };
+		F86C46A91CD82E6100076F3E /* senstick_flash_address_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_flash_address_definitions.h; sourceTree = "<group>"; };
+		F88927471CE16603001DCC44 /* senstick_data_model.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_model.c; sourceTree = "<group>"; };
+		F88927481CE16603001DCC44 /* senstick_data_model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_data_model.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		F8AC9D371C22377600366AEF /* senstick_io_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definitions.h; sourceTree = "<group>"; };
-		F8AC9D381C2237DC00366AEF /* senstick_data_models.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_models.c; sourceTree = "<group>"; };
-		F8AC9D391C2237DC00366AEF /* senstick_data_models.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_data_models.h; sourceTree = "<group>"; };
-		F8AC9D3A1C2238A500366AEF /* twi_sensor_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = twi_sensor_manager.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		F8AC9D3B1C2238A500366AEF /* twi_sensor_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_sensor_manager.h; sourceTree = "<group>"; };
-		F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_rtc.c; sourceTree = "<group>"; };
-		F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_rtc.h; sourceTree = "<group>"; };
 		F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_nine_axes_sensor.c; sourceTree = "<group>"; };
 		F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_nine_axes_sensor.h; sourceTree = "<group>"; };
-		F8AC9D451C223AB200366AEF /* gpio_battery_monitor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_battery_monitor.c; sourceTree = "<group>"; };
-		F8AC9D461C223AB200366AEF /* gpio_battery_monitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_battery_monitor.h; sourceTree = "<group>"; };
-		F8AC9D471C223AE300366AEF /* gpio_button_monitoring.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_button_monitoring.c; sourceTree = "<group>"; };
-		F8AC9D481C223AE300366AEF /* gpio_button_monitoring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_button_monitoring.h; sourceTree = "<group>"; };
-		F8AC9D491C223B0900366AEF /* gpio_led_driver.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_led_driver.c; sourceTree = "<group>"; };
-		F8AC9D4A1C223B0900366AEF /* gpio_led_driver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_led_driver.h; sourceTree = "<group>"; };
-		F8AC9D4B1C223B3D00366AEF /* twi_slave_uv_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_uv_sensor.c; sourceTree = "<group>"; };
-		F8AC9D4C1C223B3D00366AEF /* twi_slave_uv_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_uv_sensor.h; sourceTree = "<group>"; };
-		F8AC9D4D1C223BC600366AEF /* twi_slave_pressure_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_pressure_sensor.c; sourceTree = "<group>"; };
-		F8AC9D4E1C223BC600366AEF /* twi_slave_pressure_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_pressure_sensor.h; sourceTree = "<group>"; };
-		F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_humidity_sensor.c; sourceTree = "<group>"; };
-		F8AC9D501C223BE600366AEF /* twi_slave_humidity_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_humidity_sensor.h; sourceTree = "<group>"; };
-		F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_brightness_sensor.c; sourceTree = "<group>"; };
-		F8AC9D521C223BFA00366AEF /* twi_slave_brightness_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_brightness_sensor.h; sourceTree = "<group>"; };
-		F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spi_slave_mx25_flash_memory.c; sourceTree = "<group>"; };
-		F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spi_slave_mx25_flash_memory.h; sourceTree = "<group>"; };
-		F8AC9D571C223F4900366AEF /* gpio_uart.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_uart.c; sourceTree = "<group>"; };
-		F8AC9D581C223F4900366AEF /* gpio_uart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_uart.h; sourceTree = "<group>"; };
 		F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameters_config.h; sourceTree = "<group>"; };
-		F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_definitions.h; sourceTree = "<group>"; };
+		F8AC9D5D1C22408E00366AEF /* senstick_ble_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_ble_definitions.h; sourceTree = "<group>"; };
 		F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_definitions.h; sourceTree = "<group>"; };
 		F8AC9D661C263F6100366AEF /* components */ = {isa = PBXFileReference; lastKnownFileType = folder; name = components; path = ../tmp/nRF51_SDK_10/components; sourceTree = "<group>"; };
 		F8AC9D671C266F2700366AEF /* nrf_drv_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nrf_drv_config.h; sourceTree = "<group>"; };
 		F8AC9D681C26927100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = project/RTE; sourceTree = "<group>"; };
 		F8AC9D691C28472000366AEF /* pstorage_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pstorage_platform.h; sourceTree = "<group>"; };
 		F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = segger_rtt; sourceTree = "<group>"; };
-		F8E760C41C3022C400EE9FD3 /* twi_slave_utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_utility.c; sourceTree = "<group>"; };
-		F8E760C51C3022C400EE9FD3 /* twi_slave_utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_utility.h; sourceTree = "<group>"; };
 		F8EB5E681C4BB32900D82482 /* device_manager_cnfg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_manager_cnfg.h; sourceTree = "<group>"; };
 		F8EB5E691C50D0BF00D82482 /* SEGGER_RTT_Conf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEGGER_RTT_Conf.h; sourceTree = "<group>"; };
-		F8EB5E6A1C5348A200D82482 /* ble_ti_sensortag_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_ti_sensortag_service.c; sourceTree = "<group>"; };
-		F8EB5E6B1C5348A200D82482 /* ble_ti_sensortag_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_ti_sensortag_service.h; sourceTree = "<group>"; };
-		F8EB5E6C1C5A3D3200D82482 /* ble_logger_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_logger_service.c; sourceTree = "<group>"; };
-		F8EB5E6D1C5A3D3200D82482 /* ble_logger_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_logger_service.h; sourceTree = "<group>"; };
-		F8EB5E6F1C5B051C00D82482 /* gpio_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_manager.c; sourceTree = "<group>"; };
-		F8EB5E701C5B051C00D82482 /* gpio_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_manager.h; sourceTree = "<group>"; };
-		F8EB5E741C5B775E00D82482 /* senstick_tests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_tests.c; sourceTree = "<group>"; };
-		F8EB5E751C5B775E00D82482 /* senstick_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_tests.h; sourceTree = "<group>"; };
-		F8EB5E7D1C62E6A500D82482 /* sensor_data_storage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_data_storage.c; sourceTree = "<group>"; };
-		F8EB5E7E1C62E6A500D82482 /* sensor_data_storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_data_storage.h; sourceTree = "<group>"; };
-		F8F47E9D1C76B753005668FA /* flash_stream.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = flash_stream.c; sourceTree = "<group>"; };
-		F8F47E9E1C76B753005668FA /* flash_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = flash_stream.h; sourceTree = "<group>"; };
+		F8FCC93E1CD10E16003BCC5A /* battery_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = battery_service.c; sourceTree = "<group>"; };
+		F8FCC93F1CD10E16003BCC5A /* battery_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = battery_service.h; sourceTree = "<group>"; };
+		F8FCC9451CD181A5003BCC5A /* senstick_device_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_device_manager.c; sourceTree = "<group>"; };
+		F8FCC9461CD181A5003BCC5A /* senstick_device_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_manager.h; sourceTree = "<group>"; };
+		F8FCC9471CD18209003BCC5A /* device_information_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = device_information_service.c; sourceTree = "<group>"; };
+		F8FCC9481CD18209003BCC5A /* device_information_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_information_service.h; sourceTree = "<group>"; };
+		F8FCC9491CD182BB003BCC5A /* ble_stack.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_stack.c; sourceTree = "<group>"; };
+		F8FCC94A1CD182BB003BCC5A /* ble_stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_stack.h; sourceTree = "<group>"; };
+		F8FCC94B1CD18407003BCC5A /* advertising_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = advertising_manager.c; sourceTree = "<group>"; };
+		F8FCC94C1CD18407003BCC5A /* advertising_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = advertising_manager.h; sourceTree = "<group>"; };
+		F8FCC94E1CD256E4003BCC5A /* app_gap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = app_gap.c; sourceTree = "<group>"; };
+		F8FCC94F1CD256E4003BCC5A /* app_gap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_gap.h; sourceTree = "<group>"; };
+		F8FCC9501CD2577D003BCC5A /* senstick_control_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_control_service.c; sourceTree = "<group>"; };
+		F8FCC9511CD2577D003BCC5A /* senstick_control_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_control_service.h; sourceTree = "<group>"; };
+		F8FCC9521CD2578D003BCC5A /* senstick_meta_data_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_meta_data_service.c; sourceTree = "<group>"; };
+		F8FCC9531CD2578D003BCC5A /* senstick_meta_data_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_meta_data_service.h; sourceTree = "<group>"; };
+		F8FCC9541CD257A6003BCC5A /* sensor_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sensor_service.c; sourceTree = "<group>"; };
+		F8FCC9551CD257A6003BCC5A /* sensor_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sensor_service.h; sourceTree = "<group>"; };
+		F8FCC9591CD2F8AE003BCC5A /* value_types.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = value_types.c; sourceTree = "<group>"; };
+		F8FCC95A1CD2F8AE003BCC5A /* value_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = value_types.h; sourceTree = "<group>"; };
+		F8FCC95E1CD2FAE4003BCC5A /* senstick_sensor_base_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_sensor_base_data.c; sourceTree = "<group>"; };
+		F8FCC95F1CD2FAE4003BCC5A /* senstick_sensor_base_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_sensor_base_data.h; sourceTree = "<group>"; };
+		F8FCC9621CD44AC9003BCC5A /* acceleration_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = acceleration_sensor_base.c; sourceTree = "<group>"; };
+		F8FCC9631CD44AC9003BCC5A /* acceleration_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = acceleration_sensor_base.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		F88927491CE1682C001DCC44 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				F86873591CE350490083A635 /* metadata_log_controller.h */,
+				F86873581CE350490083A635 /* metadata_log_controller.c */,
+				F86C46A71CD7764D00076F3E /* log_controller.h */,
+				F86C46A61CD7764D00076F3E /* log_controller.c */,
+			);
+			name = controller;
+			sourceTree = "<group>";
+		};
 		F8AC9D2F1C2236D600366AEF = {
 			isa = PBXGroup;
 			children = (
 				F8AC9D361C22375900366AEF /* main.c */,
-				F8EB5E6E1C5A3D7000D82482 /* configrations */,
-				F8EB5E721C5B054500D82482 /* definitions */,
-				F8EB5E711C5B053C00D82482 /* model */,
-				F8AC9D3F1C22396400366AEF /* services */,
-				F8AC9D441C223A9500366AEF /* gpio */,
-				F8AC9D531C223C0900366AEF /* spi */,
+				F86873571CE2FBA90083A635 /* senstick_types.h */,
+				F88927481CE16603001DCC44 /* senstick_data_model.h */,
+				F88927471CE16603001DCC44 /* senstick_data_model.c */,
+				F88927491CE1682C001DCC44 /* controller */,
+				F8EB5E6E1C5A3D7000D82482 /* nrf5_configrations */,
+				F8EB5E721C5B054500D82482 /* senstick_definitions */,
+				F8FCC9561CD2657D003BCC5A /* utils */,
+				F8FCC9441CD18186003BCC5A /* module */,
+				F8FCC93D1CD10DF3003BCC5A /* services */,
+				F8FCC94D1CD1858C003BCC5A /* senstick_service */,
+				F8FCC95D1CD2FA9F003BCC5A /* sensor_controllers */,
+				F8FCC9641CD450C7003BCC5A /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
-				F8EB5E731C5B774D00D82482 /* tests */,
+				F850DFAE1CE7652200B8F9B9 /* misc */,
 				F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */,
 				F8AC9D681C26927100366AEF /* RTE */,
 				F8AC9D661C263F6100366AEF /* components */,
@@ -87,70 +102,15 @@
 		F8AC9D3E1C22393B00366AEF /* twi */ = {
 			isa = PBXGroup;
 			children = (
-				F8AC9D3B1C2238A500366AEF /* twi_sensor_manager.h */,
-				F8AC9D3A1C2238A500366AEF /* twi_sensor_manager.c */,
-				F8E760C51C3022C400EE9FD3 /* twi_slave_utility.h */,
-				F8E760C41C3022C400EE9FD3 /* twi_slave_utility.c */,
+				F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */,
+				F850DFAC1CE713AF00B8F9B9 /* twi_manager.c */,
 				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
-				F8AC9D411C2239CB00366AEF /* twi_slave_rtc.h */,
-				F8AC9D401C2239CB00366AEF /* twi_slave_rtc.c */,
-				F8AC9D4E1C223BC600366AEF /* twi_slave_pressure_sensor.h */,
-				F8AC9D4D1C223BC600366AEF /* twi_slave_pressure_sensor.c */,
-				F8AC9D501C223BE600366AEF /* twi_slave_humidity_sensor.h */,
-				F8AC9D4F1C223BE600366AEF /* twi_slave_humidity_sensor.c */,
-				F8AC9D4C1C223B3D00366AEF /* twi_slave_uv_sensor.h */,
-				F8AC9D4B1C223B3D00366AEF /* twi_slave_uv_sensor.c */,
-				F8AC9D521C223BFA00366AEF /* twi_slave_brightness_sensor.h */,
-				F8AC9D511C223BFA00366AEF /* twi_slave_brightness_sensor.c */,
 			);
 			name = twi;
 			sourceTree = "<group>";
 		};
-		F8AC9D3F1C22396400366AEF /* services */ = {
-			isa = PBXGroup;
-			children = (
-				F837ECD11C8DA295004BE653 /* service_utility.h */,
-				F837ECD01C8DA295004BE653 /* service_utility.c */,
-				F8EB5E6B1C5348A200D82482 /* ble_ti_sensortag_service.h */,
-				F8EB5E6A1C5348A200D82482 /* ble_ti_sensortag_service.c */,
-				F8EB5E6D1C5A3D3200D82482 /* ble_logger_service.h */,
-				F8EB5E6C1C5A3D3200D82482 /* ble_logger_service.c */,
-			);
-			name = services;
-			sourceTree = "<group>";
-		};
-		F8AC9D441C223A9500366AEF /* gpio */ = {
-			isa = PBXGroup;
-			children = (
-				F8EB5E701C5B051C00D82482 /* gpio_manager.h */,
-				F8EB5E6F1C5B051C00D82482 /* gpio_manager.c */,
-				F8AC9D461C223AB200366AEF /* gpio_battery_monitor.h */,
-				F8AC9D451C223AB200366AEF /* gpio_battery_monitor.c */,
-				F8AC9D481C223AE300366AEF /* gpio_button_monitoring.h */,
-				F8AC9D471C223AE300366AEF /* gpio_button_monitoring.c */,
-				F8AC9D4A1C223B0900366AEF /* gpio_led_driver.h */,
-				F8AC9D491C223B0900366AEF /* gpio_led_driver.c */,
-				F8AC9D571C223F4900366AEF /* gpio_uart.c */,
-				F8AC9D581C223F4900366AEF /* gpio_uart.h */,
-			);
-			name = gpio;
-			sourceTree = "<group>";
-		};
-		F8AC9D531C223C0900366AEF /* spi */ = {
-			isa = PBXGroup;
-			children = (
-				F8EB5E7E1C62E6A500D82482 /* sensor_data_storage.h */,
-				F8EB5E7D1C62E6A500D82482 /* sensor_data_storage.c */,
-				F8F47E9E1C76B753005668FA /* flash_stream.h */,
-				F8F47E9D1C76B753005668FA /* flash_stream.c */,
-				F8AC9D551C223C1E00366AEF /* spi_slave_mx25_flash_memory.h */,
-				F8AC9D541C223C1E00366AEF /* spi_slave_mx25_flash_memory.c */,
-			);
-			name = spi;
-			sourceTree = "<group>";
-		};
-		F8EB5E6E1C5A3D7000D82482 /* configrations */ = {
+		F8EB5E6E1C5A3D7000D82482 /* nrf5_configrations */ = {
 			isa = PBXGroup;
 			children = (
 				F8AC9D671C266F2700366AEF /* nrf_drv_config.h */,
@@ -158,38 +118,90 @@
 				F8EB5E681C4BB32900D82482 /* device_manager_cnfg.h */,
 				F8AC9D691C28472000366AEF /* pstorage_platform.h */,
 			);
-			name = configrations;
+			name = nrf5_configrations;
 			sourceTree = "<group>";
 		};
-		F8EB5E711C5B053C00D82482 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				F8AC9D391C2237DC00366AEF /* senstick_data_models.h */,
-				F8AC9D381C2237DC00366AEF /* senstick_data_models.c */,
-			);
-			name = model;
-			sourceTree = "<group>";
-		};
-		F8EB5E721C5B054500D82482 /* definitions */ = {
+		F8EB5E721C5B054500D82482 /* senstick_definitions */ = {
 			isa = PBXGroup;
 			children = (
 				F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */,
 				F8AC9D5E1C2240CC00366AEF /* senstick_device_definitions.h */,
-				F8AC9D5D1C22408E00366AEF /* senstick_definitions.h */,
+				F8AC9D5D1C22408E00366AEF /* senstick_ble_definitions.h */,
 				F8AC9D371C22377600366AEF /* senstick_io_definitions.h */,
+				F86C46A91CD82E6100076F3E /* senstick_flash_address_definitions.h */,
 			);
-			name = definitions;
+			name = senstick_definitions;
 			sourceTree = "<group>";
 		};
-		F8EB5E731C5B774D00D82482 /* tests */ = {
+		F8FCC93D1CD10DF3003BCC5A /* services */ = {
 			isa = PBXGroup;
 			children = (
-				F809DE861C69E0AC000062E1 /* test_storage.h */,
-				F809DE851C69E0AC000062E1 /* test_storage.c */,
-				F8EB5E751C5B775E00D82482 /* senstick_tests.h */,
-				F8EB5E741C5B775E00D82482 /* senstick_tests.c */,
+				F8FCC9481CD18209003BCC5A /* device_information_service.h */,
+				F8FCC9471CD18209003BCC5A /* device_information_service.c */,
+				F8FCC93F1CD10E16003BCC5A /* battery_service.h */,
+				F8FCC93E1CD10E16003BCC5A /* battery_service.c */,
 			);
-			name = tests;
+			name = services;
+			sourceTree = "<group>";
+		};
+		F8FCC9441CD18186003BCC5A /* module */ = {
+			isa = PBXGroup;
+			children = (
+				F8FCC94F1CD256E4003BCC5A /* app_gap.h */,
+				F8FCC94E1CD256E4003BCC5A /* app_gap.c */,
+				F8FCC9461CD181A5003BCC5A /* senstick_device_manager.h */,
+				F8FCC9451CD181A5003BCC5A /* senstick_device_manager.c */,
+				F8FCC94C1CD18407003BCC5A /* advertising_manager.h */,
+				F8FCC94B1CD18407003BCC5A /* advertising_manager.c */,
+				F8FCC94A1CD182BB003BCC5A /* ble_stack.h */,
+				F8FCC9491CD182BB003BCC5A /* ble_stack.c */,
+			);
+			name = module;
+			sourceTree = "<group>";
+		};
+		F8FCC94D1CD1858C003BCC5A /* senstick_service */ = {
+			isa = PBXGroup;
+			children = (
+				F86C46A01CD4F7C200076F3E /* service_util.h */,
+				F86C469F1CD4F7C200076F3E /* service_util.c */,
+				F8FCC9511CD2577D003BCC5A /* senstick_control_service.h */,
+				F8FCC9501CD2577D003BCC5A /* senstick_control_service.c */,
+				F8FCC9531CD2578D003BCC5A /* senstick_meta_data_service.h */,
+				F8FCC9521CD2578D003BCC5A /* senstick_meta_data_service.c */,
+			);
+			name = senstick_service;
+			sourceTree = "<group>";
+		};
+		F8FCC9561CD2657D003BCC5A /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				F8FCC95A1CD2F8AE003BCC5A /* value_types.h */,
+				F8FCC9591CD2F8AE003BCC5A /* value_types.c */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		F8FCC95D1CD2FA9F003BCC5A /* sensor_controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F868735B1CE36A000083A635 /* senstick_sensor_controller.h */,
+				F868735A1CE36A000083A635 /* senstick_sensor_controller.c */,
+				F868735F1CE40E020083A635 /* senstick_sensor_base.h */,
+				F8FCC95F1CD2FAE4003BCC5A /* senstick_sensor_base_data.h */,
+				F8FCC95E1CD2FAE4003BCC5A /* senstick_sensor_base_data.c */,
+				F8FCC9551CD257A6003BCC5A /* sensor_service.h */,
+				F8FCC9541CD257A6003BCC5A /* sensor_service.c */,
+				F8FCC9631CD44AC9003BCC5A /* acceleration_sensor_base.h */,
+				F8FCC9621CD44AC9003BCC5A /* acceleration_sensor_base.c */,
+			);
+			name = sensor_controllers;
+			sourceTree = "<group>";
+		};
+		F8FCC9641CD450C7003BCC5A /* spi */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = spi;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

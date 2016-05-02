@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 #include <sdk_common.h>
+#include <nrf.h>
+#include <app_util.h>
 #include <ble_date_time.h>
 
 #include "nrf_drv_twi.h"

@@ -422,109 +422,9 @@
               <FilePath>..\main.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_data_models.c</FileName>
+              <FileName>senstick_data_model.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_data_models.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_logger_service.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_logger_service.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_ti_sensortag_service.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_ti_sensortag_service.c</FilePath>
-            </File>
-            <File>
-              <FileName>senstick_tests.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\senstick_tests.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>twi</GroupName>
-          <Files>
-            <File>
-              <FileName>twi_sensor_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_sensor_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_utility.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_pressure_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_pressure_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_humidity_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_humidity_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_brightness_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_brightness_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_nine_axes_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_uv_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_uv_sensor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>spi</GroupName>
-          <Files>
-            <File>
-              <FileName>spi_slave_mx25_flash_memory.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>gpio</GroupName>
-          <Files>
-            <File>
-              <FileName>gpio_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_led_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_led_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_button_monitoring.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_button_monitoring.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_battery_monitor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_battery_monitor.c</FilePath>
+              <FilePath>..\senstick_data_model.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -549,22 +449,127 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>logger</GroupName>
+          <GroupName>controller</GroupName>
           <Files>
             <File>
-              <FileName>test_storage.c</FileName>
+              <FileName>log_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\test_storage.c</FilePath>
+              <FilePath>..\log_controller.c</FilePath>
             </File>
             <File>
-              <FileName>sensor_data_storage.c</FileName>
+              <FileName>metadata_log_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sensor_data_storage.c</FilePath>
+              <FilePath>..\metadata_log_controller.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utils</GroupName>
+          <Files>
+            <File>
+              <FileName>value_types.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\value_types.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>module</GroupName>
+          <Files>
+            <File>
+              <FileName>advertising_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\advertising_manager.c</FilePath>
             </File>
             <File>
-              <FileName>flash_stream.c</FileName>
+              <FileName>ble_stack.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\flash_stream.c</FilePath>
+              <FilePath>..\ble_stack.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_gap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app_gap.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_device_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_device_manager.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>services</GroupName>
+          <Files>
+            <File>
+              <FileName>battery_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\battery_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>device_information_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\device_information_service.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>senstick_service</GroupName>
+          <Files>
+            <File>
+              <FileName>senstick_meta_data_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_meta_data_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_control_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_control_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>service_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\service_util.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>sensor_controllers</GroupName>
+          <Files>
+            <File>
+              <FileName>senstick_sensor_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensor_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sensor_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>acceleration_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\acceleration_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_sensor_base_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_base_data.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>twi</GroupName>
+          <Files>
+            <File>
+              <FileName>twi_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_nine_axes_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1003,109 +1008,9 @@
               <FilePath>..\main.c</FilePath>
             </File>
             <File>
-              <FileName>senstick_data_models.c</FileName>
+              <FileName>senstick_data_model.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\senstick_data_models.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_logger_service.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_logger_service.c</FilePath>
-            </File>
-            <File>
-              <FileName>ble_ti_sensortag_service.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ble_ti_sensortag_service.c</FilePath>
-            </File>
-            <File>
-              <FileName>senstick_tests.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\senstick_tests.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>twi</GroupName>
-          <Files>
-            <File>
-              <FileName>twi_sensor_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_sensor_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_utility.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_pressure_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_pressure_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_humidity_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_humidity_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_brightness_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_brightness_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_nine_axes_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>twi_slave_uv_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\twi_slave_uv_sensor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>spi</GroupName>
-          <Files>
-            <File>
-              <FileName>spi_slave_mx25_flash_memory.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>gpio</GroupName>
-          <Files>
-            <File>
-              <FileName>gpio_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_manager.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_led_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_led_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_button_monitoring.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_button_monitoring.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio_battery_monitor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\gpio_battery_monitor.c</FilePath>
+              <FilePath>..\senstick_data_model.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1130,22 +1035,127 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>logger</GroupName>
+          <GroupName>controller</GroupName>
           <Files>
             <File>
-              <FileName>test_storage.c</FileName>
+              <FileName>log_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\test_storage.c</FilePath>
+              <FilePath>..\log_controller.c</FilePath>
             </File>
             <File>
-              <FileName>sensor_data_storage.c</FileName>
+              <FileName>metadata_log_controller.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sensor_data_storage.c</FilePath>
+              <FilePath>..\metadata_log_controller.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utils</GroupName>
+          <Files>
+            <File>
+              <FileName>value_types.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\value_types.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>module</GroupName>
+          <Files>
+            <File>
+              <FileName>advertising_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\advertising_manager.c</FilePath>
             </File>
             <File>
-              <FileName>flash_stream.c</FileName>
+              <FileName>ble_stack.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\flash_stream.c</FilePath>
+              <FilePath>..\ble_stack.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_gap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app_gap.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_device_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_device_manager.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>services</GroupName>
+          <Files>
+            <File>
+              <FileName>battery_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\battery_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>device_information_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\device_information_service.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>senstick_service</GroupName>
+          <Files>
+            <File>
+              <FileName>senstick_meta_data_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_meta_data_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_control_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_control_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>service_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\service_util.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>sensor_controllers</GroupName>
+          <Files>
+            <File>
+              <FileName>senstick_sensor_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>sensor_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sensor_service.c</FilePath>
+            </File>
+            <File>
+              <FileName>acceleration_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\acceleration_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_sensor_base_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_sensor_base_data.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>twi</GroupName>
+          <Files>
+            <File>
+              <FileName>twi_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_nine_axes_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1607,13 +1617,6 @@
         </targetInfos>
       </component>
       <component Cclass="nRF_Libraries" Cgroup="app_timer" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_default">
-        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
-          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
-        </targetInfos>
-      </component>
-      <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler">
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
           <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
@@ -2134,22 +2137,16 @@
         </targetInfos>
       </file>
       <file attr="config" category="source" name="timer\app_timer_appsh.c" version="3.1.0">
-        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.c</instance>
+        <instance index="0" removed="1">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.c</instance>
         <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler"/>
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
-          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="header" name="timer\app_timer_appsh.h" version="3.1.0">
-        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.h</instance>
+        <instance index="0" removed="1">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.h</instance>
         <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler"/>
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
-          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" name="trace\app_trace.c" version="3.1.0">
         <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_trace.c</instance>

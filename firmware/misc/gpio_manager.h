@@ -5,7 +5,7 @@
 #include "gpio_led_driver.h"
 
 //コールバック
-//typedef void (*sampling_callback_handler_t) (SensorDeviceType_t sensorType, const SensorData_t *p_sensorData);
+//typedef void (*sampling_callback_handler_t) (sensor_device_t_t sensorType, const SensorData_t *p_sensorData);
 
 // コンテキストの構造体宣言
 typedef struct gpio_manager_s {

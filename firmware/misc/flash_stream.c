@@ -84,7 +84,7 @@ static bool readAllocationFlag(flash_stream_context_t *p_context, uint32_t addre
 static void allocateSector(flash_stream_context_t *p_context, uint32_t address)
 {
     uint32_t sector_address = (address / MX25L25635F_SECTOR_SIZE) * MX25L25635F_SECTOR_SIZE;
-    eraseSector(&(p_context->flash_context), sector_address);
+    erase4kSector(&(p_context->flash_context), sector_address);
     
     setAllocationFlag(p_context, address);
 }
@@ -144,7 +144,7 @@ void formatStream(flash_stream_context_t *p_context)
 {
     // 先頭3セクターを消去する。
     for(int i=0; i < STREAM_HEADER_SECTORS; i++) {
-        eraseSector(&(p_context->flash_context), i * MX25L25635F_SECTOR_SIZE);
+        erase4kSector(&(p_context->flash_context), i * MX25L25635F_SECTOR_SIZE);
     }
     // シグネチャを書き込む。
     uint32_t signature = STREAM_SIGNATURE;

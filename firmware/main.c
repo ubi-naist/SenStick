@@ -13,7 +13,7 @@
 #include <pstorage.h>
 
 #include <app_scheduler.h>
-#include <app_timer.h>
+#include <app_timer_appsh.h>
 #include <app_error.h>
 
 #include "app_gap.h"
@@ -26,11 +26,17 @@
 
 #include "senstick_ble_definitions.h"
 
+#include "senstick_data_model.h"
 #include "senstick_control_service.h"
 #include "senstick_meta_data_service.h"
 #include "senstick_sensor_controller.h"
 
 #include "twi_manager.h"
+#include "twi_slave_rtc.h"
+#include "gpio_led_driver.h"
+
+#include "spi_slave_mx25_flash_memory.h"
+#include "metadata_log_controller.h"
 
 // 関数宣言
 static void printBLEEvent(ble_evt_t * p_ble_evt);
@@ -73,7 +79,8 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     senstickMetaDataService_handleBLEEvent(p_ble_evt);
 
     senstickSensorController_handleBLEEvent(p_ble_evt);
-    
+
+    ledDriver_handleBLEEvent(p_ble_evt);
 //    dm_ble_evt_handler(p_ble_evt);
 //    printBLEEvent(p_ble_evt);
 }
@@ -182,10 +189,18 @@ int main(void)
     
     // タイマーモジュール、スケジューラ設定。
     APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
-    APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
+    APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
     
     // IO
     initTWIManager();
+    initRTC();
+    initLEDDriver();
+    initFlashMemory();
+
+    initSenstickDataModel();
+    initMetaDataLogController();
+    
+//    do_storage_test();
     
     // pstorageを初期化。device managerを呼び出す前に、この処理を行わなくてはならない。
     err_code = pstorage_init();
@@ -217,19 +232,28 @@ int main(void)
 
     initSenstickSensorController(uuid_type);
     
+    // 不揮発メモリのフォーマット処理
+//    if( ! isMetaLogFormatted() ) {
+        metaLogFormatStorage();
+        senstickSensorControllerFormatStorage();
+//    }
+
+    // 初期値設定
+    uint8_t count = metaDataLogGetLogCount();
+    senstick_setCurrentLogCount(count);
+    
     // アドバタイジングを開始する。
     startAdvertising();
 
     NRF_LOG_PRINTF_DEBUG("Start....\n");
     for (;;) {
-        // BLEのイベント待ち
+        // アプリケーション割り込みイベント待ち (sleep状態)
         err_code = sd_app_evt_wait();
         APP_ERROR_CHECK(err_code);
         
         // スケジューラのタスク実行
         app_sched_execute();
-    }
-    
+    }    
 /*
     // GPIOの初期化
     initGPIOManager(&gpio_manager_context, button_callback_handler);

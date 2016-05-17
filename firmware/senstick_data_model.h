@@ -27,7 +27,7 @@ void senstick_getCurrentDateTime(ble_date_time_t *p_datetime);
 void senstick_setCurrentDateTime(ble_date_time_t *p_datetime);
 
 // 現在のログテキスト概要
-uint8_t senstick_getCurrentLogAbstractText(uint8_t *str, uint8_t length);
-void senstick_setCurrentLogAbstractText(uint8_t *str, uint8_t length);
+uint8_t senstick_getCurrentLogAbstractText(char *str, uint8_t length);
+void senstick_setCurrentLogAbstractText(char *str, uint8_t length);
 
 #endif /* senstick_data_model_h */

@@ -58,7 +58,7 @@ static uint8_t onRWAuthReq_datetime_char(uint8_t *p_buffer, uint16_t length)
 
 static uint8_t onRWAuthReq_abstract_char(uint8_t *p_buffer, uint8_t length)
 {
-    return metaDataLogReadAbstractText(context.target_log_id, p_buffer, length);
+    return metaDataLogReadAbstractText(context.target_log_id, (char *)p_buffer, length);
 }
 
 static void onRWAuthReq(ble_evt_t *p_ble_evt)
@@ -77,23 +77,26 @@ static void onRWAuthReq(ble_evt_t *p_ble_evt)
             length = onRWAuthReq_datetime_char(buffer, GATT_MAX_DATA_LENGTH);
         } else if( p_auth_req->request.read.handle == context.target_abstract_char_handle.value_handle){
             length = onRWAuthReq_abstract_char(buffer, GATT_MAX_DATA_LENGTH);
+        } else {
+            // ハンドラの一致なし、ここで終了
+            return;
         }
+        
+        // リプライを用意
+        ble_gatts_rw_authorize_reply_params_t reply_params;
+        memset(&reply_params, 0, sizeof(reply_params));
+        
+        reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
+        reply_params.params.read.gatt_status   = BLE_GATT_STATUS_SUCCESS;
+        reply_params.params.read.update        = (length != 0);
+        reply_params.params.read.offset        = 0;
+        reply_params.params.read.len           = length;
+        reply_params.params.read.p_data        = buffer;
+        
+        // リプライ
+        err_code = sd_ble_gatts_rw_authorize_reply(context.connection_handle, &reply_params);
+        APP_ERROR_CHECK(err_code);
     }
-    
-    // リプライを用意
-    ble_gatts_rw_authorize_reply_params_t reply_params;
-    memset(&reply_params, 0, sizeof(reply_params));
-    
-    reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
-    reply_params.params.read.gatt_status   = BLE_GATT_STATUS_SUCCESS;
-    reply_params.params.read.update        = (length != 0);
-    reply_params.params.read.offset        = 0;
-    reply_params.params.read.len           = length;
-    reply_params.params.read.p_data        = buffer;
-    
-    // リプライ
-    err_code = sd_ble_gatts_rw_authorize_reply(context.connection_handle, &reply_params);
-    APP_ERROR_CHECK(err_code);
 }
 
 static void addService(uint8_t uuid_type)

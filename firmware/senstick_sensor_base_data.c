@@ -38,21 +38,23 @@ void deserializeSensorServiceLogID(sensor_service_logID_t *p_dst, uint8_t *p_src
 
 uint8_t serializeSensorMetaData(uint8_t *p_dst, sensor_metadata_t *p_src)
 {
-    uint16ToByteArrayLittleEndian(&p_dst[0], p_src->samplingDuration);
-    uint16ToByteArrayLittleEndian(&p_dst[2], p_src->measurementRange);
-    uint32ToByteArrayLittleEndian(&p_dst[4], p_src->sampleCount);
-    uint32ToByteArrayLittleEndian(&p_dst[8], p_src->position);
-    p_dst[12] = p_src->remainingStorage;
+    p_dst[0] = p_src->logID;
+    uint16ToByteArrayLittleEndian(&p_dst[1], p_src->samplingDuration);
+    uint16ToByteArrayLittleEndian(&p_dst[3], p_src->measurementRange);
+    uint32ToByteArrayLittleEndian(&p_dst[5], p_src->sampleCount);
+    uint32ToByteArrayLittleEndian(&p_dst[9], p_src->position);
+    uint32ToByteArrayLittleEndian(&p_dst[13],p_src->remainingStorage);
     
-    return 13;
+    return 17;
 }
 
 void deserializeSensorMetaData(sensor_metadata_t *p_dst, uint8_t *p_src)
 {
-    p_dst->samplingDuration = readUInt16AsLittleEndian(&p_src[0]);
-    p_dst->measurementRange = readUInt16AsLittleEndian(&p_src[2]);
-    p_dst->sampleCount      = readUInt32AsLittleEndian(&p_src[4]);
-    p_dst->position         = readUInt32AsLittleEndian(&p_src[8]);
-    p_dst->remainingStorage = p_src[12];
+    p_dst->logID            = p_src[0];
+    p_dst->samplingDuration = readUInt16AsLittleEndian(&p_src[1]);
+    p_dst->measurementRange = readUInt16AsLittleEndian(&p_src[3]);
+    p_dst->sampleCount      = readUInt32AsLittleEndian(&p_src[5]);
+    p_dst->position         = readUInt32AsLittleEndian(&p_src[9]);
+    p_dst->remainingStorage = readUInt32AsLittleEndian(&p_src[13]);
 }
 

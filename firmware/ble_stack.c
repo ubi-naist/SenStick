@@ -1,7 +1,9 @@
 #include <string.h>
 
+#include <ble.h>
 #include <app_error.h>
 #include <sdk_errors.h>
+#include <softdevice_handler_appsh.h>
 
 #include "ble_stack.h"
 
@@ -18,8 +20,8 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
     NRF_CLOCK->XTALFREQ = (uint32_t)((CLOCK_XTALFREQ_XTALFREQ_32MHz << CLOCK_XTALFREQ_XTALFREQ_Pos) & CLOCK_XTALFREQ_XTALFREQ_Msk);
     // 外部32kHzクロック供給。
     NRF_CLOCK->LFCLKSRC = (uint32_t)((CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos) & CLOCK_LFCLKSRC_SRC_Msk);
-    // BLEのスタックの処理は、スケジューラを使わず割り込みから直接処理に移行する。IO処理などでのブロックを排除するため。
-    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_250_PPM, NULL);
+    // BLEのスタックの処理は、スケジューラを使う。
+    SOFTDEVICE_HANDLER_APPSH_INIT(NRF_CLOCK_LFCLKSRC_XTAL_250_PPM, NULL);
     
     // Enable BLE stack.
     ble_enable_params_t ble_enable_params;

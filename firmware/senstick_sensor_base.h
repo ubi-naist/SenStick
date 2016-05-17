@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "senstick_types.h"
 #include "senstick_sensor_base_data.h"
 
 #define MAX_SENSOR_RAW_DATA_SIZE 6
@@ -22,6 +23,8 @@ typedef uint8_t (* getBLEDataHandlerType)(uint8_t *p_dst, uint8_t *p_src);
 typedef struct {
     uint8_t rawSensorDataSize;           // sizeof(センサデータの構造体)
     uint8_t bleSerializedSensorDataSize; // BLEでやり取りするシリアライズされたデータのサイズ
+    
+    flash_address_info_t address_info;   // フラッシュの割当領域情報
     
     initSensorHandlerType       initSensorHandler;
     setSensorWakeupHandlerType  setSensorWakeupHandler;

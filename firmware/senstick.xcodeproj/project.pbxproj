@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		F820A1A61CEECB8F00E549D0 /* test_storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_storage.h; sourceTree = "<group>"; };
+		F820A1A71CEECB9C00E549D0 /* test_storage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_storage.c; sourceTree = "<group>"; };
+		F84B633C1CEDBC8B0097C1EC /* twi_slave_rtc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_rtc.c; sourceTree = "<group>"; };
+		F84B633D1CEDBC9C0097C1EC /* twi_slave_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_rtc.h; sourceTree = "<group>"; };
+		F84B633F1CEDD04B0097C1EC /* gpio_led_driver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_led_driver.h; sourceTree = "<group>"; };
+		F84B63401CEDD0550097C1EC /* gpio_led_driver.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_led_driver.c; sourceTree = "<group>"; };
 		F850DFAC1CE713AF00B8F9B9 /* twi_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_manager.c; sourceTree = "<group>"; };
 		F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_manager.h; sourceTree = "<group>"; };
 		F850DFAE1CE7652200B8F9B9 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
+		F850DFB01CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spi_slave_mx25_flash_memory.c; sourceTree = "<group>"; };
+		F850DFB11CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spi_slave_mx25_flash_memory.h; sourceTree = "<group>"; };
 		F86873571CE2FBA90083A635 /* senstick_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_types.h; sourceTree = "<group>"; };
 		F86873581CE350490083A635 /* metadata_log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = metadata_log_controller.c; sourceTree = "<group>"; };
 		F86873591CE350490083A635 /* metadata_log_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metadata_log_controller.h; sourceTree = "<group>"; };
@@ -64,13 +72,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		F820A1A51CEECB6900E549D0 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				F820A1A61CEECB8F00E549D0 /* test_storage.h */,
+				F820A1A71CEECB9C00E549D0 /* test_storage.c */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
+		F84B633E1CEDD0270097C1EC /* gpio */ = {
+			isa = PBXGroup;
+			children = (
+				F84B633F1CEDD04B0097C1EC /* gpio_led_driver.h */,
+				F84B63401CEDD0550097C1EC /* gpio_led_driver.c */,
+			);
+			name = gpio;
+			sourceTree = "<group>";
+		};
 		F88927491CE1682C001DCC44 /* controller */ = {
 			isa = PBXGroup;
 			children = (
 				F86873591CE350490083A635 /* metadata_log_controller.h */,
 				F86873581CE350490083A635 /* metadata_log_controller.c */,
-				F86C46A71CD7764D00076F3E /* log_controller.h */,
-				F86C46A61CD7764D00076F3E /* log_controller.c */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -92,6 +116,8 @@
 				F8FCC95D1CD2FA9F003BCC5A /* sensor_controllers */,
 				F8FCC9641CD450C7003BCC5A /* spi */,
 				F8AC9D3E1C22393B00366AEF /* twi */,
+				F84B633E1CEDD0270097C1EC /* gpio */,
+				F820A1A51CEECB6900E549D0 /* test */,
 				F850DFAE1CE7652200B8F9B9 /* misc */,
 				F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */,
 				F8AC9D681C26927100366AEF /* RTE */,
@@ -104,6 +130,8 @@
 			children = (
 				F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */,
 				F850DFAC1CE713AF00B8F9B9 /* twi_manager.c */,
+				F84B633D1CEDBC9C0097C1EC /* twi_slave_rtc.h */,
+				F84B633C1CEDBC8B0097C1EC /* twi_slave_rtc.c */,
 				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
 			);
@@ -184,6 +212,8 @@
 		F8FCC95D1CD2FA9F003BCC5A /* sensor_controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F86C46A71CD7764D00076F3E /* log_controller.h */,
+				F86C46A61CD7764D00076F3E /* log_controller.c */,
 				F868735B1CE36A000083A635 /* senstick_sensor_controller.h */,
 				F868735A1CE36A000083A635 /* senstick_sensor_controller.c */,
 				F868735F1CE40E020083A635 /* senstick_sensor_base.h */,
@@ -200,6 +230,8 @@
 		F8FCC9641CD450C7003BCC5A /* spi */ = {
 			isa = PBXGroup;
 			children = (
+				F850DFB11CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.h */,
+				F850DFB01CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.c */,
 			);
 			name = spi;
 			sourceTree = "<group>";

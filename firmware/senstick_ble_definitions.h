@@ -2,6 +2,7 @@
 #define senstick_definitions_h
 
 #include <app_util.h>
+#include <app_timer_appsh.h>
 
 // Senstickの動作振る舞いを決めるグローバルな定数を定義します。
 
@@ -14,8 +15,9 @@
 //                                            MAX(BLE_STACK_HANDLER_SCHED_EVT_SIZE)) \
 
 #define SCHED_MAX_EVENT_DATA_SIZE   (CEIL_DIV( \
-                                        MAX(sizeof(uint32_t), \
-                                            BLE_STACK_HANDLER_SCHED_EVT_SIZE) \
+                                        MAX( \
+                                            MAX(sizeof(uint32_t), BLE_STACK_HANDLER_SCHED_EVT_SIZE) \
+                                            ,APP_TIMER_SCHED_EVT_SIZE) \
                                         , sizeof(uint32_t)) \
                                       * sizeof(uint32_t))
 

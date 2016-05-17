@@ -452,11 +452,6 @@
           <GroupName>controller</GroupName>
           <Files>
             <File>
-              <FileName>log_controller.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\log_controller.c</FilePath>
-            </File>
-            <File>
               <FileName>metadata_log_controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\metadata_log_controller.c</FilePath>
@@ -537,6 +532,11 @@
           <GroupName>sensor_controllers</GroupName>
           <Files>
             <File>
+              <FileName>log_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\log_controller.c</FilePath>
+            </File>
+            <File>
               <FileName>senstick_sensor_controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_sensor_controller.c</FilePath>
@@ -567,9 +567,34 @@
               <FilePath>..\twi_manager.c</FilePath>
             </File>
             <File>
+              <FileName>twi_slave_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_rtc.c</FilePath>
+            </File>
+            <File>
               <FileName>twi_slave_nine_axes_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>spi</GroupName>
+          <Files>
+            <File>
+              <FileName>spi_slave_mx25_flash_memory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>gpio</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio_led_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_led_driver.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1038,11 +1063,6 @@
           <GroupName>controller</GroupName>
           <Files>
             <File>
-              <FileName>log_controller.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\log_controller.c</FilePath>
-            </File>
-            <File>
               <FileName>metadata_log_controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\metadata_log_controller.c</FilePath>
@@ -1123,6 +1143,11 @@
           <GroupName>sensor_controllers</GroupName>
           <Files>
             <File>
+              <FileName>log_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\log_controller.c</FilePath>
+            </File>
+            <File>
               <FileName>senstick_sensor_controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\senstick_sensor_controller.c</FilePath>
@@ -1153,9 +1178,34 @@
               <FilePath>..\twi_manager.c</FilePath>
             </File>
             <File>
+              <FileName>twi_slave_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_rtc.c</FilePath>
+            </File>
+            <File>
               <FileName>twi_slave_nine_axes_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>spi</GroupName>
+          <Files>
+            <File>
+              <FileName>spi_slave_mx25_flash_memory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\spi_slave_mx25_flash_memory.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>gpio</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio_led_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_led_driver.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1617,6 +1667,13 @@
         </targetInfos>
       </component>
       <component Cclass="nRF_Libraries" Cgroup="app_timer" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_default">
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler">
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
           <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
@@ -2137,16 +2194,22 @@
         </targetInfos>
       </file>
       <file attr="config" category="source" name="timer\app_timer_appsh.c" version="3.1.0">
-        <instance index="0" removed="1">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.c</instance>
+        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.c</instance>
         <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler"/>
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
       </file>
       <file attr="config" category="header" name="timer\app_timer_appsh.h" version="3.1.0">
-        <instance index="0" removed="1">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.h</instance>
+        <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_timer_appsh.h</instance>
         <component Cclass="nRF_Libraries" Cgroup="app_timer_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_timer_with_app_scheduler"/>
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
-        <targetInfos/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
       </file>
       <file attr="config" category="source" name="trace\app_trace.c" version="3.1.0">
         <instance index="0">RTE\nRF_Libraries\nRF51822_xxAA\app_trace.c</instance>

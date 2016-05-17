@@ -40,6 +40,7 @@ typedef struct {
 
 // logメタデータ
 typedef struct {
+    uint8_t              logID;
     samplingDurationType samplingDuration;
     uint16_t             measurementRange;
     uint32_t             sampleCount;       // 有効なサンプル数。
@@ -52,7 +53,7 @@ uint8_t serializesensor_service_setting(uint8_t *p_dst, sensor_service_setting_t
 void deserializesensor_service_setting(sensor_service_setting_t *p_dst, uint8_t *p_src);
 // 7バイト以上
 uint8_t serializeSensorServiceLogID(uint8_t *p_dst, sensor_service_logID_t *p_src);
-void deserialize_sensorServiceLogID(sensor_service_logID_t *p_dst, uint8_t *p_src);
+void deserializeSensorServiceLogID(sensor_service_logID_t *p_dst, uint8_t *p_src);
 // 13バイト以上
 uint8_t serializeSensorMetaData(uint8_t *p_dst, sensor_metadata_t *p_src);
 void deserializeSensorMetaData(sensor_metadata_t *p_dst, uint8_t *p_src);

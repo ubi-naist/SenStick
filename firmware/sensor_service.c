@@ -28,13 +28,11 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
     if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_READ) {
         if( p_auth_req->request.read.handle == p_context->sensor_setting_char_handle.value_handle){
             length = senstickSensorControllerReadSetting(p_context->device_type, buffer, GATT_MAX_DATA_LENGTH);
-        } else if( p_auth_req->request.read.handle == p_context->sensor_logid_char_handle.value_handle){
-            length = senstickSensorControllerReadLogID(p_context->device_type, buffer, GATT_MAX_DATA_LENGTH);
         } else if( p_auth_req->request.read.handle == p_context->sensor_log_metadata_char_handle.value_handle){
             length = senstickSensorControllerReadMetaData(p_context->device_type, buffer, GATT_MAX_DATA_LENGTH);
         } else {
-            // 期待しないハンドラへの読み出し要求
-            ASSERT(false);
+            // 一致しないハンドラ
+            return;
         }
         // リプライ
         reply_params.type                = BLE_GATTS_AUTHORIZE_TYPE_READ;
@@ -50,8 +48,8 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
         } else if( p_auth_req->request.read.handle == p_context->sensor_logid_char_handle.value_handle) {
             senstickSensorControllerWriteLogID(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
         } else {
-            // 期待しないハンドラへの書き込み要求
-            ASSERT(false);
+            // 一致しないハンドラ
+            return;
         }
         // リプライ
         reply_params.type                      = BLE_GATTS_AUTHORIZE_TYPE_WRITE;
@@ -76,6 +74,7 @@ static void onWrite(sensor_service_t *p_context, ble_evt_t * p_ble_evt)
             return;
         }
     }
+    
 }
 
 static void addService(sensor_service_t *p_context, uint8_t uuid_type)
@@ -128,13 +127,13 @@ static void addService(sensor_service_t *p_context, uint8_t uuid_type)
     // LOGID
     params.uuid              = SENSOR_LOGID_CHAR_UUID + (uint16_t)p_context->device_type;
     params.max_len           = 7;
-    params.char_props.read   = true;
+    params.char_props.read   = false;
     params.char_props.write  = true;
     params.char_props.notify = false;
     params.is_var_len        = false;
-    params.is_defered_read   = true;
+    params.is_defered_read   = false;
     params.is_defered_write  = true;
-    params.read_access       = SEC_OPEN;
+    params.read_access       = SEC_NO_ACCESS;
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(p_context->service_handle, &params, &(p_context->sensor_logid_char_handle));
@@ -157,7 +156,7 @@ static void addService(sensor_service_t *p_context, uint8_t uuid_type)
     
     // メタデータ
     params.uuid              = SENSOR_METADATA_CHAR_UUID + (uint16_t)p_context->device_type;
-    params.max_len           = 16;
+    params.max_len           = 17;
     params.char_props.read   = true;
     params.char_props.write  = false;
     params.char_props.notify = false;
@@ -213,8 +212,44 @@ void sensorService_handleBLEEvent(sensor_service_t *p_context, ble_evt_t * p_ble
     }
 }
 
-void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint8_t length)
+void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length)
 {
-    // TBD 実装
+    if( ! p_context->is_sensor_realtime_data_notifying) {
+        return;
+    }
+
+    ble_gatts_hvx_params_t hvx_params;
+    
+    memset(&hvx_params, 0, sizeof(hvx_params));
+
+    hvx_params.handle = p_context->sensor_realtime_data_char_handle.value_handle;
+    hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
+    hvx_params.offset = 0;
+    hvx_params.p_len  = &length;
+    hvx_params.p_data = p_data;
+    
+//    ret_code_t err_code =
+    sd_ble_gatts_hvx(p_context->connection_handle, &hvx_params);
 }
 
+// ログデータをNotifyします。失敗したらfalseを返します。
+bool sensorServiceNotifyLogData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length)
+{
+    if( ! p_context->is_sensor_log_data_notifying) {
+        return false;
+    }
+    
+    ble_gatts_hvx_params_t hvx_params;
+    
+    memset(&hvx_params, 0, sizeof(hvx_params));
+    
+    hvx_params.handle = p_context->sensor_log_data_char_handle.value_handle;
+    hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
+    hvx_params.offset = 0;
+    hvx_params.p_len  = &length;
+    hvx_params.p_data = p_data;
+    
+    ret_code_t err_code = sd_ble_gatts_hvx(p_context->connection_handle, &hvx_params);
+    
+    return (err_code == NRF_SUCCESS);
+}

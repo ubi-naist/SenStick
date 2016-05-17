@@ -6,6 +6,7 @@
 #include "acceleration_sensor_base.h"
 
 #include "senstick_sensor_base_data.h"
+#include "senstick_flash_address_definitions.h"
 
 // センサーの初期化。
 static bool initSensorHandler(void)
@@ -48,6 +49,10 @@ const senstick_sensor_base_t accelerationSensorBase =
 {
     sizeof(AccelerationData_t), // sizeof(センサデータの構造体)
     (2 * 3),                    // BLEでやり取りするシリアライズされたデータのサイズ
+    {
+        ACCELERATION_SENSOR_STORAGE_START_ADDRESS, // スタートアドレス
+        ACCELERATION_SENSOR_STORAGE_SIZE           // サイズ
+    },
     initSensorHandler,
     setSensorWakeupHandler,
     getSensorDataHandler,

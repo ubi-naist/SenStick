@@ -58,11 +58,15 @@ static void onWrite(ble_evt_t * p_ble_evt)
     
     // キャラクタリスティクスごとの処理に振り分ける
     if(p_evt_write->handle == context.control_point_char_handle.value_handle) {
-        senstick_setControlCommand((senstick_control_command_t)gatts_value.p_value[0]);
+        
+        senstick_control_command_t currentValue = senstick_getControlCommand();
+        if(currentValue != (senstick_control_command_t)gatts_value.p_value[0]) {
+            senstick_setControlCommand((senstick_control_command_t)gatts_value.p_value[0]);
+        }
     } else if(p_evt_write->handle == context.rtc_char_handle.value_handle) {
         onWriteRTC(&gatts_value);
     } else if(p_evt_write->handle == context.abstract_text_char_handle.value_handle) {
-        senstick_setCurrentLogAbstractText(gatts_value.p_value, gatts_value.len);
+        senstick_setCurrentLogAbstractText((char *)gatts_value.p_value, gatts_value.len);
     }
 }
 
@@ -77,7 +81,7 @@ static uint8_t onRWAuthReq_rtc_char(uint8_t *p_buffer, uint16_t length)
 
 static uint8_t onRWAuthReq_abstract_txt(uint8_t *p_buffer, uint8_t length)
 {
-    return senstick_getCurrentLogAbstractText(p_buffer, length);
+    return senstick_getCurrentLogAbstractText((char *)p_buffer, length);
 }
 
 static void onRWAuthReq(ble_evt_t *p_ble_evt)
@@ -89,30 +93,32 @@ static void onRWAuthReq(ble_evt_t *p_ble_evt)
     uint8_t buffer[GATT_MAX_DATA_LENGTH];
     uint8_t length = 0;
     memset(buffer, 0, sizeof(buffer));
-
-    // 実際の読み出し処理
+    
+    // 実際の読み出し処理, ハンドラが一致しない場合は、終了。
     if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_READ) {
         if( p_auth_req->request.read.handle == context.rtc_char_handle.value_handle){
             length = onRWAuthReq_rtc_char(buffer, GATT_MAX_DATA_LENGTH);
         } else if( p_auth_req->request.read.handle == context.abstract_text_char_handle.value_handle){
             length = onRWAuthReq_abstract_txt(buffer, GATT_MAX_DATA_LENGTH);
+        } else {
+            return; // ハンドラが一致しない、ここで終了。
         }
+        
+        // リプライを用意
+        ble_gatts_rw_authorize_reply_params_t reply_params;
+        memset(&reply_params, 0, sizeof(reply_params));
+        
+        reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
+        reply_params.params.read.gatt_status   = BLE_GATT_STATUS_SUCCESS;
+        reply_params.params.read.update        = (length != 0);
+        reply_params.params.read.offset        = 0;
+        reply_params.params.read.len           = length;
+        reply_params.params.read.p_data        = buffer;
+        
+        // リプライ
+        err_code = sd_ble_gatts_rw_authorize_reply(context.connection_handle, &reply_params);
+        APP_ERROR_CHECK(err_code);
     }
-
-    // リプライを用意
-    ble_gatts_rw_authorize_reply_params_t reply_params;
-    memset(&reply_params, 0, sizeof(reply_params));
-    
-    reply_params.type = BLE_GATTS_AUTHORIZE_TYPE_READ;
-    reply_params.params.read.gatt_status   = BLE_GATT_STATUS_SUCCESS;
-    reply_params.params.read.update        = (length != 0);
-    reply_params.params.read.offset        = 0;
-    reply_params.params.read.len           = length;
-    reply_params.params.read.p_data        = buffer;
-
-    // リプライ
-    err_code = sd_ble_gatts_rw_authorize_reply(context.connection_handle, &reply_params);
-    APP_ERROR_CHECK(err_code);
 }
 
 static void addService(uint8_t uuid_type)

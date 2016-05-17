@@ -41,6 +41,9 @@ ret_code_t initSensorService(sensor_service_t *p_context, uint8_t uuid_type, sen
 void sensorService_handleBLEEvent(sensor_service_t *p_context, ble_evt_t * p_ble_evt);
 
 // リアルタイムセンサーデータをNotifyします。
-void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint8_t length);
+void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length);
+
+// ログデータをNotifyします。失敗したらfalseを返します。
+bool sensorServiceNotifyLogData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length);
 
 #endif /* sensor_service_h */

@@ -17,4 +17,10 @@ typedef enum {
     enterDFUmode      = 0x40
 } senstick_control_command_t;
 
+// フラッシュのアドレス/領域情報
+typedef struct {
+    uint32_t startAddress;
+    uint32_t size;
+} flash_address_info_t;
+
 #endif /* senstick_types_h */

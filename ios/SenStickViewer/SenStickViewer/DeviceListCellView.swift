@@ -1,5 +1,5 @@
 //
-//  DeviceCellView.swift
+//  DeviceListCellView.swift
 //  SenStickViewer
 //
 //  Created by AkihiroUehara on 2016/04/26.
@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class DeviceCellView: UITableViewCell
+class DeviceListCellView: UITableViewCell
 {
     @IBOutlet var deviceNameLabel:UILabel!
     @IBOutlet var deviceUUIDLabel:UILabel!

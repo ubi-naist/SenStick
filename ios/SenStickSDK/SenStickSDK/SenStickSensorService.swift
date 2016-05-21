@@ -9,22 +9,30 @@
 import Foundation
 import CoreBluetooth
 
-// センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable where S.RawValue == UInt16, T.RangeType == S> : NSObject
+public protocol SenStickSensorServiceDelegate : class
+{
+    func didUpdateSetting(sender:AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
+}
+
+// センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
+public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable where S.RawValue == UInt16, T.RangeType == S> 
 {
     // Variables
     unowned let device: SenStickDevice
+    weak var delegate: SenStickSensorServiceDelegate?
     
     var sensorSettingChar:       CBCharacteristic
     var sensorRealTimeDataChar:  CBCharacteristic
     var sensorLogIDChar:         CBCharacteristic
     var sensorLogMetaDataChar:   CBCharacteristic
-    var sensorLogSensorDataChar: CBCharacteristic
+    var sensorLogDataChar:       CBCharacteristic
     
-    // Properties, KVO-compatible
+    // Properties
     public private(set) var settingData:  SensorSettingData<S>?
     public private(set) var realtimeData: [T]?
-    
     public private(set) var logID:       SensorLogID?
     public private(set) var logMetaData: SensorLogMetaData<S>?
     public private(set) var logData:     [T]?
@@ -40,7 +48,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         let sensorRealTimeDataCharUUID   = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorRealTimeDataCharBaseUUID  | UInt16(sensorType.rawValue))
         let sensorLogIDCharUUID          = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogIDCharBaseUUID         | UInt16(sensorType.rawValue))
         let sensorLogMetaDataCharUUID    = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogMetaDataCharBaseUUID   | UInt16(sensorType.rawValue))
-        let sensorLogSensorDataCharUUID  = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogSensorDataCharBaseUUID | UInt16(sensorType.rawValue))
+        let sensorLogDataCharUUID        = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogDataCharBaseUUID | UInt16(sensorType.rawValue))
 
         // サービス
         guard let service = device.findService(serviceUUID) else { return nil }
@@ -49,15 +57,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         guard let _sensorRealTimeDataChar  = device.findCharacteristic(service, uuid: sensorRealTimeDataCharUUID) else { return nil }
         guard let _sensorLogIDChar         = device.findCharacteristic(service, uuid: sensorLogIDCharUUID) else { return nil }
         guard let _sensorLogMetaDataChar   = device.findCharacteristic(service, uuid: sensorLogMetaDataCharUUID) else { return nil }
-        guard let _sensorLogSensorDataChar = device.findCharacteristic(service, uuid: sensorLogSensorDataCharUUID) else { return nil }
+        guard let _sensorLogDataChar = device.findCharacteristic(service, uuid: sensorLogDataCharUUID) else { return nil }
         
         self.sensorSettingChar       = _sensorSettingChar
         self.sensorRealTimeDataChar  = _sensorRealTimeDataChar
         self.sensorLogIDChar         = _sensorLogIDChar
         self.sensorLogMetaDataChar   = _sensorLogMetaDataChar
-        self.sensorLogSensorDataChar = _sensorLogSensorDataChar
-
-        super.init()
+        self.sensorLogDataChar = _sensorLogDataChar
         
         //初期値読み出し。
         device.readValue(self.sensorSettingChar)
@@ -66,7 +72,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         
         // Notifyを有効に
         device.setNotify(self.sensorRealTimeDataChar, enabled: true)
-        device.setNotify(self.sensorLogSensorDataChar, enabled: true)
+        device.setNotify(self.sensorLogDataChar, enabled: true)
     }
     
     // internal methods
@@ -82,6 +88,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             self.settingData = settingData
+            delegate?.didUpdateSetting(self)
             
         case sensorRealTimeDataChar.UUID:
             guard let setting = settingData else {
@@ -93,6 +100,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             self.realtimeData = newdata
+            delegate?.didUpdateRealTimeData(self)
             
         case sensorLogIDChar.UUID:
             guard let logID = SensorLogID.unpack(data) else {
@@ -107,8 +115,9 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             self.logMetaData = metadata
+            delegate?.didUpdateMetaData(self)
             
-        case sensorLogSensorDataChar.UUID:
+        case sensorLogDataChar.UUID:
             guard let metadata = self.logMetaData else {
                 assert(false, #function)
                 break
@@ -118,6 +127,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             self.logData = logData
+            delegate?.didUpdateLogData(self)
             
         default:
             assert(false, "\(#function), unexpected cahatacter: \(characteristic)")

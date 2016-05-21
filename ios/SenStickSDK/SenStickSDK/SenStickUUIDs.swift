@@ -49,10 +49,9 @@ public struct SenStickUUIDs
     // control service
     public static let ControlServiceUUID:CBUUID        = {return SenStickUUIDs.createSenstickUUID(0x2000)}()
     public static let StatusCharUUID:CBUUID            = {return SenStickUUIDs.createSenstickUUID(0x7000)}()
-    public static let ControlPointCharUUID:CBUUID      = {return SenStickUUIDs.createSenstickUUID(0x7001)}()
-    public static let AvailableLogCountCharUUID:CBUUID = {return SenStickUUIDs.createSenstickUUID(0x7002)}()
-    public static let DateTimeCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7003)}()
-    public static let AbstractCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7004)}()
+    public static let AvailableLogCountCharUUID:CBUUID = {return SenStickUUIDs.createSenstickUUID(0x7001)}()
+    public static let DateTimeCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7002)}()
+    public static let AbstractCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7003)}()
     
     // メタデータ読み出しサービス
     public static let MetaDataServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickUUID(0x2001)}()
@@ -66,7 +65,7 @@ public struct SenStickUUIDs
     public static let sensorRealTimeDataCharBaseUUID:UInt16  = 0x7200
     public static let sensorLogIDCharBaseUUID:UInt16         = 0x7300
     public static let sensorLogMetaDataCharBaseUUID:UInt16   = 0x7400
-    public static let sensorLogSensorDataCharBaseUUID:UInt16 = 0x7500
+    public static let sensorLogDataCharBaseUUID:UInt16       = 0x7500
     
     // センサのサービスのUUID生成
     public static func createSenstickSensorServiceUUID(sensorType:SenStickSensorType) -> CBUUID {
@@ -80,7 +79,7 @@ public struct SenStickUUIDs
             createSenstickUUID(sensorRealTimeDataCharBaseUUID | UInt16(sensorType.rawValue)),
             createSenstickUUID(sensorLogIDCharBaseUUID | UInt16(sensorType.rawValue)),
             createSenstickUUID(sensorLogMetaDataCharBaseUUID | UInt16(sensorType.rawValue)),
-            createSenstickUUID(sensorLogSensorDataCharBaseUUID | UInt16(sensorType.rawValue))
+            createSenstickUUID(sensorLogDataCharBaseUUID | UInt16(sensorType.rawValue))
         ]
     }
 
@@ -89,7 +88,7 @@ public struct SenStickUUIDs
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] =
-        [ ControlServiceUUID   : [StatusCharUUID, ControlPointCharUUID, AvailableLogCountCharUUID, DateTimeCharUUID, AbstractCharUUID],
+        [ ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, DateTimeCharUUID, AbstractCharUUID],
           MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
           {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AccelerationSensor.rawValue)) }() :
             { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }()

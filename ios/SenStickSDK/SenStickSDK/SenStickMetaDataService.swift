@@ -10,7 +10,7 @@ import Foundation
 
 import CoreBluetooth
 
-public class SenStickMetaDataService : NSObject, SenStickService
+public class SenStickMetaDataService : SenStickService
 {
     // Variables
     unowned let device: SenStickDevice
@@ -41,8 +41,6 @@ public class SenStickMetaDataService : NSObject, SenStickService
         self.logID = 0
         self.dateTime = NSDate.distantPast()
         self.abstract = ""
-        
-        super.init()
         
         // Notifyを有効に。初期値読み出し。
         requestMetaData(0)

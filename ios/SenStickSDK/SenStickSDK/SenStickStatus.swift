@@ -9,12 +9,12 @@
 import Foundation
 
 // 動作状態
-public enum SenStickStatus : UInt8, CustomStringConvertible
+public enum SenStickStatus : UInt8 , CustomStringConvertible
 {
     case Stopping          = 0x00
     case Sensing           = 0x01
     case SensingAndLogging = 0x03
-    
+
     public var description : String
     {
         switch self {

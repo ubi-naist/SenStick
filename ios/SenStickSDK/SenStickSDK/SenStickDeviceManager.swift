@@ -11,16 +11,16 @@ import CoreBluetooth
 
 public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
 {
+    let queue: dispatch_queue_t
     var manager: CBCentralManager?
     
-    let queue: dispatch_queue_t
     var scanTimer: dispatch_source_t?
     var scanCallback:((remaining: NSTimeInterval) -> Void)?
     
     // Properties, KVO
-    public var devices:[SenStickDevice] = []
-    public private(set) var state: CBCentralManagerState = .Unknown
-    public private(set) var isScanning: Bool = false
+    dynamic public private(set) var devices:[SenStickDevice] = []
+    dynamic public private(set) var state: CBCentralManagerState = .Unknown
+    dynamic public private(set) var isScanning: Bool = false
     
     // Initializer, Singleton design pattern.
     public static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
@@ -58,10 +58,9 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         isScanning = true
 
         var remaining = scanDuration
-        scanTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
+        scanTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue())
         dispatch_source_set_timer(scanTimer!, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
         dispatch_source_set_event_handler(scanTimer!) {
-            debugPrint("\(#function)")
             // 時間を-1秒。
             remaining = max(0, remaining - 1)
             if remaining <= 0 {
@@ -96,9 +95,11 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     {
         //すでに配列にあるかどうか探す, なければ追加。KVOを活かすため、配列それ自体を代入する
         if !devices.contains({ element -> Bool in element.peripheral == peripheral }) {
-            var devs = devices
-            devs.append(SenStickDevice(manager: manager!, peripheral: peripheral))
-            self.devices = devs
+            var devs = Array<SenStickDevice>(self.devices)
+            devs.append(SenStickDevice(manager: self.manager!, peripheral: peripheral))
+            dispatch_async(dispatch_get_main_queue(), {
+                self.devices = devs
+            })
         }
     }
     
@@ -121,6 +122,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
     {
+        debugPrint("\(#function)")
         dispatch_async(dispatch_get_main_queue(), {
             self.addPeripheral(peripheral)
         })
@@ -128,9 +130,15 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
     {
+        for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
+            device.onConnected()
+        }
     }
     
     public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
     {
+        for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
+            device.onDisConnected()
+        }
     }
 }

@@ -16,65 +16,49 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     let peripheral: CBPeripheral
     
     // MARK: Properties
+    // 接続してサービス検索が完了した時に、Trueになります。
+    dynamic public private(set) var isConnected: Bool
+    
     public private(set) var name: String
     public private(set) var identifier: NSUUID
     
-    public private(set) var state : CBPeripheralState
-    
-    public private(set) var controlService: SenStickControlService?
+    public private(set) var controlService:   SenStickControlService?
     public private(set) var metaDataService : SenStickMetaDataService?
     public private(set) var accelerationSensorService: AccelerationSensorService?
-    
+
     // MARK: initializer
     init(manager: CBCentralManager, peripheral:CBPeripheral)
     {
         self.manager    = manager
         self.peripheral = peripheral
-        self.state      = peripheral.state
-        self.name       = peripheral.name ?? ""
-        self.identifier = peripheral.identifier
+        self.isConnected = false
+        self.name        = peripheral.name ?? ""
+        self.identifier  = peripheral.identifier
         
         super.init()
 
         self.peripheral.delegate = self
-        addObserver(self.peripheral, forKeyPath: "state", options: [.New], context: nil)
-    }
-    
-    deinit
-    {
-        removeObserver(self.peripheral, forKeyPath: "state")
-    }
-    
-    // KVO
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let key = keyPath else { return }
-        switch key {
-        case "state":
-            state = peripheral.state
-            switch peripheral.state {
-            case .Disconnected:
-                onDisconnect()
-                break
-            case .Connected:
-                findSensticServices()
-                break
-            default:
-                break
-            }
-        default:
-            assert(false, "\(#function): unexpected KVO path, \(key).")
-            break
+        if self.peripheral.state == .Connected {
+            findSensticServices()
         }
     }
+   
+    // Internal , device managerが呼び出します
+    internal func onConnected()
+    {
+        findSensticServices()
+    }
     
-    // Private methods
-    func onDisconnect()
+    internal func onDisConnected()
     {
         self.controlService            = nil
         self.metaDataService           = nil
         self.accelerationSensorService = nil
+        
+        self.isConnected = false
     }
     
+    // Private methods
     func findSensticServices()
     {
         // サービスの発見
@@ -85,6 +69,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     // MARK: Public methods
     public func connect()
     {
+        if self.isConnected {
+            return
+        }
+        
         if peripheral.state == .Disconnected || peripheral.state == .Disconnecting {
             manager.connectPeripheral(peripheral, options:nil)
         }
@@ -155,7 +143,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     
     public func peripheralDidUpdateName(peripheral: CBPeripheral)
     {
-        self.name = peripheral.name ?? ""
+        self.name = peripheral.name ?? "(unknown)"
     }
     
     //    optional public func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService])

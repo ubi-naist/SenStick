@@ -1,5 +1,5 @@
 //
-//  DeviceTableView.swift
+//  DeviceListTableViewController.swift
 //  SenStickViewer
 //
 //  Created by AkihiroUehara on 2016/04/26.
@@ -9,11 +9,9 @@
 import UIKit
 import SenStickSDK
 
-class DeviceTableViewController: UITableViewController {
+class DeviceListTableViewController: UITableViewController {
     
     var detailViewController: DetailViewController? = nil
-    var objects = [AnyObject]()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +23,7 @@ class DeviceTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        SenStickDeviceManager.sharedInstance.addObserver(self, forKeyPath: "devices", options: .New, context: nil)
+        SenStickDeviceManager.sharedInstance.addObserver(self, forKeyPath: "devices", options: .New, context:nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -39,11 +37,10 @@ class DeviceTableViewController: UITableViewController {
     }
     
     // MARK
-    
     func onRefresh()
     {
         SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: NSTimeInterval)  in
-            debugPrint("#(function)")
+            debugPrint("\(#function)")
             if remaining <= 0 {
                 self.refreshControl?.endRefreshing()
             }
@@ -52,6 +49,10 @@ class DeviceTableViewController: UITableViewController {
     
     // MARK: - Segues    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let dataview = segue.destinationViewController as? SensorDataViewController {
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            dataview.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
+        }
         /*
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
@@ -63,12 +64,10 @@ class DeviceTableViewController: UITableViewController {
             }
         }*/
     }
-
-
     
     // MARK: - KVO
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if (context == nil) {
+        if (keyPath == "devices") {
             self.tableView.reloadData()
         } else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
@@ -76,7 +75,6 @@ class DeviceTableViewController: UITableViewController {
     }
     
     // MARK: - Table View
-    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -86,10 +84,13 @@ class DeviceTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deviceCell", forIndexPath: indexPath) as! DeviceCellView
+        let cell = tableView.dequeueReusableCellWithIdentifier("deviceCell", forIndexPath: indexPath) as! DeviceListCellView
 
         cell.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
         
         return cell
+    }
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 74
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -58,16 +58,16 @@
             </objects>
             <point key="canvasLocation" x="709" y="129"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Sensor Data View Controller-->
         <scene sceneID="3gS-oQ-Y6A">
             <objects>
-                <tableViewController id="8BX-uL-RNr" sceneMemberID="viewController">
+                <tableViewController id="8BX-uL-RNr" customClass="SensorDataViewController" customModule="SenStickViewer" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="W39-vY-vpc">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="itemListCell" rowHeight="148" id="0eC-IK-J49" userLabel="itemListCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="statusCell" rowHeight="148" id="0eC-IK-J49" userLabel="itemListCell" customClass="SensorStatusCellView" customModule="SenStickViewer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="148"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0eC-IK-J49" id="WtX-al-46l">
@@ -75,130 +75,131 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jSL-kk-rlR">
-                                            <rect key="frame" x="164" y="14" width="40" height="40"/>
+                                            <rect key="frame" x="14" y="40" width="32" height="32"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="6gY-RZ-yJy"/>
-                                                <constraint firstAttribute="height" constant="40" id="Wh9-dC-bbI"/>
+                                                <constraint firstAttribute="width" constant="32" id="6gY-RZ-yJy"/>
+                                                <constraint firstAttribute="height" constant="32" id="Wh9-dC-bbI"/>
                                             </constraints>
                                             <state key="normal" image="all"/>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-vl-ntv">
-                                            <rect key="frame" x="216" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNN-vl-ntv">
+                                            <rect key="frame" x="264" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="6g1-ou-nVq"/>
-                                                <constraint firstAttribute="height" constant="40" id="CMI-q4-MC3"/>
+                                                <constraint firstAttribute="width" constant="32" id="6g1-ou-nVq"/>
+                                                <constraint firstAttribute="height" constant="32" id="CMI-q4-MC3"/>
                                             </constraints>
-                                            <state key="normal" image="ic_sensor_gyro_g2"/>
+                                            <state key="normal" image="ic_sensor_gyro_b"/>
+                                            <state key="disabled" image="ic_sensor_gyro_g2"/>
+                                            <state key="selected" title="ic_sensor_gyro_b2" image="ic_sensor_gyro_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="67" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgT-pP-0Cs">
-                                            <rect key="frame" x="263" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgT-pP-0Cs">
+                                            <rect key="frame" x="305" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="5kK-jw-lmo"/>
-                                                <constraint firstAttribute="height" constant="40" id="70y-1w-1xD"/>
+                                                <constraint firstAttribute="width" constant="32" id="5kK-jw-lmo"/>
+                                                <constraint firstAttribute="height" constant="32" id="70y-1w-1xD"/>
                                             </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_mag_g2"/>
+                                            <state key="normal" title="Button" image="ic_sensor_mag_b"/>
+                                            <state key="disabled" title="ic_sensor_mag_g2"/>
+                                            <state key="selected" image="ic_sensor_mag_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="107" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wue-cH-XhL">
-                                            <rect key="frame" x="310" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JwF-bq-J0B">
+                                            <rect key="frame" x="387" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="LpD-p6-jQF"/>
-                                                <constraint firstAttribute="height" constant="40" id="uGq-ex-502"/>
-                                            </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_temp_g2"/>
-                                            <variation key="widthClass=regular" ambiguous="YES">
-                                                <rect key="frame" x="147" y="2" width="35" height="40"/>
-                                            </variation>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JwF-bq-J0B">
-                                            <rect key="frame" x="357" y="14" width="35" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="Nyc-61-wwq"/>
-                                                <constraint firstAttribute="height" constant="40" id="xVh-Qb-Heu"/>
+                                                <constraint firstAttribute="width" constant="32" id="Nyc-61-wwq"/>
+                                                <constraint firstAttribute="height" constant="32" id="xVh-Qb-Heu"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                            <state key="normal" image="ic_sensor_hum_g2"/>
+                                            <state key="normal" image="ic_sensor_hum_b"/>
+                                            <state key="disabled" title="ic_sensor_hum_g2" image="ic_sensor_hum_g2"/>
+                                            <state key="selected" image="ic_sensor_hum_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="187" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjU-Yv-Sns">
-                                            <rect key="frame" x="404" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjU-Yv-Sns">
+                                            <rect key="frame" x="428" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="1YE-HZ-LzG"/>
+                                                <constraint firstAttribute="height" constant="32" id="1YE-HZ-LzG"/>
                                                 <constraint firstAttribute="width" constant="35" id="1at-m8-ayD"/>
                                             </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_uv_g2"/>
+                                            <state key="normal" title="Button" image="ic_sensor_uv_b"/>
+                                            <state key="disabled" image="ic_sensor_uv_g2"/>
+                                            <state key="selected" image="ic_sensor_uv_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="227" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bb3-XD-ZTG">
-                                            <rect key="frame" x="451" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bb3-XD-ZTG">
+                                            <rect key="frame" x="469" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="7jM-dV-xXF"/>
-                                                <constraint firstAttribute="height" constant="40" id="jZZ-zs-73T"/>
+                                                <constraint firstAttribute="width" constant="32" id="7jM-dV-xXF"/>
+                                                <constraint firstAttribute="height" constant="32" id="jZZ-zs-73T"/>
                                             </constraints>
-                                            <state key="normal" image="ic_sensor_acc_g2"/>
+                                            <state key="normal" image="ic_sensor_acc_b"/>
+                                            <state key="disabled" image="ic_sensor_acc_g2"/>
+                                            <state key="selected" image="ic_sensor_acc_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="267" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gct-Ak-UTG">
-                                            <rect key="frame" x="498" y="14" width="35" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gct-Ak-UTG">
+                                            <rect key="frame" x="510" y="40" width="35" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="GWZ-ym-f9r"/>
+                                                <constraint firstAttribute="height" constant="32" id="GWZ-ym-f9r"/>
                                                 <constraint firstAttribute="width" constant="35" id="irK-rx-zC3"/>
                                             </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_press_g2"/>
+                                            <state key="normal" title="Button" image="ic_sensor_press_b"/>
+                                            <state key="disabled" image="ic_sensor_press_g2"/>
+                                            <state key="selected" image="ic_sensor_press_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES">
                                                 <rect key="frame" x="307" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nao-g4-UTu">
-                                            <rect key="frame" x="545" y="14" width="35" height="40"/>
+                                            <rect key="frame" x="554" y="40" width="32" height="32"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="35" id="Esi-wY-JRC"/>
-                                                <constraint firstAttribute="height" constant="40" id="WL9-hG-WuN"/>
+                                                <constraint firstAttribute="width" constant="32" id="Esi-wY-JRC"/>
+                                                <constraint firstAttribute="height" constant="32" id="WL9-hG-WuN"/>
                                             </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_light_g2"/>
+                                            <state key="normal" title="Button" image="ic_sensor_light_b"/>
+                                            <state key="disabled" image="ic_sensor_light_g2"/>
+                                            <state key="selected" image="ic_sensor_light_b2"/>
                                             <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                                 <rect key="frame" x="752" y="2" width="35" height="40"/>
                                             </variation>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGe-Po-O1I">
-                                            <rect key="frame" x="452" y="65" width="60" height="30"/>
+                                            <rect key="frame" x="456" y="94" width="60" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="jZ2-fZ-ugY"/>
                                                 <constraint firstAttribute="width" constant="60" id="sfK-e6-Gfk"/>
                                             </constraints>
-                                            <state key="normal" title="LOG"/>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PEk-8E-eKM">
-                                            <rect key="frame" x="324" y="69" width="120" height="22"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="120" id="04Z-87-kbr"/>
-                                                <constraint firstAttribute="height" constant="22" id="yKm-3B-mOx"/>
-                                            </constraints>
-                                            <state key="normal" title="SensingOnly"/>
+                                            <state key="normal" title="Start"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ar-iY-DQY">
-                                            <rect key="frame" x="136" y="88" width="120" height="22"/>
+                                            <rect key="frame" x="135" y="98" width="80" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="DNE-kW-oJC"/>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="Oxp-qK-Wur"/>
-                                                <constraint firstAttribute="width" constant="120" id="ZLW-uG-VTU"/>
+                                                <constraint firstAttribute="width" constant="80" id="ZLW-uG-VTU"/>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="iBl-KE-gUG"/>
                                             </constraints>
-                                            <state key="normal" title="ReadLogFiles"/>
+                                            <state key="normal" title="ReadLog"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Oxp-qK-Wur"/>
+                                                    <exclude reference="iBl-KE-gUG"/>
+                                                </mask>
+                                            </variation>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log#:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXK-Xk-TFV">
-                                            <rect key="frame" x="29" y="46" width="44" height="22"/>
+                                            <rect key="frame" x="160" y="12" width="44" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="1QN-FJ-eW2"/>
                                                 <constraint firstAttribute="height" constant="22" id="Omm-iX-CEC"/>
@@ -208,7 +209,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5l5-su-gQc">
-                                            <rect key="frame" x="77" y="46" width="42" height="22"/>
+                                            <rect key="frame" x="208" y="12" width="42" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="G4g-t5-EIe"/>
                                                 <constraint firstAttribute="width" constant="42" id="YLd-ei-HdQ"/>
@@ -228,7 +229,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8B-Rzx">
-                                            <rect key="frame" x="526" y="65" width="46" height="30"/>
+                                            <rect key="frame" x="534" y="94" width="46" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="46" id="VuW-eP-WhJ"/>
                                                 <constraint firstAttribute="height" constant="30" id="YeR-HI-iZ8"/>
@@ -236,7 +237,7 @@
                                             <state key="normal" title="Stop"/>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log#:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVI-dD-7XI">
-                                            <rect key="frame" x="29" y="88" width="44" height="22"/>
+                                            <rect key="frame" x="28" y="98" width="44" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="j7t-6H-zbO"/>
                                                 <constraint firstAttribute="height" constant="22" id="xGR-Tt-NAk"/>
@@ -246,7 +247,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="00" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bKe-3r-bJ8">
-                                            <rect key="frame" x="77" y="84" width="47" height="30"/>
+                                            <rect key="frame" x="76" y="94" width="47" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="47" id="Pdl-OV-apP"/>
                                                 <constraint firstAttribute="height" constant="30" id="nur-Ba-T0B"/>
@@ -254,49 +255,86 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wue-cH-XhL">
+                                            <rect key="frame" x="344" y="40" width="35" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="LpD-p6-jQF"/>
+                                                <constraint firstAttribute="height" constant="32" id="uGq-ex-502"/>
+                                            </constraints>
+                                            <state key="normal" title="Button" image="ic_sensor_temp_b"/>
+                                            <state key="disabled" title="ic_sensor_temp_g2" image="ic_sensor_temp_g2"/>
+                                            <state key="selected" image="ic_sensor_temp_b2"/>
+                                            <variation key="widthClass=regular" ambiguous="YES">
+                                                <rect key="frame" x="147" y="2" width="35" height="40"/>
+                                            </variation>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="CVI-dD-7XI" firstAttribute="top" secondItem="gXK-Xk-TFV" secondAttribute="bottom" constant="20" id="1do-Is-NuP"/>
-                                        <constraint firstItem="JwF-bq-J0B" firstAttribute="leading" secondItem="Wue-cH-XhL" secondAttribute="trailing" constant="12" id="46A-dP-sOw"/>
+                                        <constraint firstItem="gGe-Po-O1I" firstAttribute="top" secondItem="0ar-iY-DQY" secondAttribute="top" id="40q-uA-oIB"/>
+                                        <constraint firstItem="JwF-bq-J0B" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Wue-cH-XhL" secondAttribute="trailing" priority="750" constant="6" id="46A-dP-sOw"/>
+                                        <constraint firstItem="CVI-dD-7XI" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="90" id="856-lx-NDe"/>
                                         <constraint firstItem="bKe-3r-bJ8" firstAttribute="centerY" secondItem="CVI-dD-7XI" secondAttribute="centerY" id="8Qd-t2-3lv"/>
                                         <constraint firstItem="jSL-kk-rlR" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="8Vg-bW-M8y"/>
                                         <constraint firstItem="LQv-o6-W9K" firstAttribute="leading" secondItem="WtX-al-46l" secondAttribute="leadingMargin" constant="8" id="9Sp-te-F99"/>
                                         <constraint firstItem="Bb3-XD-ZTG" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="A01-78-dPB"/>
-                                        <constraint firstItem="sgT-pP-0Cs" firstAttribute="leading" secondItem="CNN-vl-ntv" secondAttribute="trailing" constant="12" id="Bvm-Oa-iGB"/>
-                                        <constraint firstItem="Bb3-XD-ZTG" firstAttribute="leading" secondItem="bjU-Yv-Sns" secondAttribute="trailing" constant="12" id="ESC-mo-qcy"/>
+                                        <constraint firstItem="CVI-dD-7XI" firstAttribute="leading" secondItem="WtX-al-46l" secondAttribute="leadingMargin" constant="20" id="AcR-uj-Q6X"/>
+                                        <constraint firstItem="sgT-pP-0Cs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CNN-vl-ntv" secondAttribute="trailing" priority="750" constant="6" id="Bvm-Oa-iGB"/>
+                                        <constraint firstItem="Bb3-XD-ZTG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bjU-Yv-Sns" secondAttribute="trailing" priority="750" constant="6" id="ESC-mo-qcy"/>
                                         <constraint firstItem="LQv-o6-W9K" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="4" id="FYa-g4-G2j"/>
+                                        <constraint firstItem="gXK-Xk-TFV" firstAttribute="top" secondItem="LQv-o6-W9K" secondAttribute="top" id="G9J-mw-uFW"/>
                                         <constraint firstItem="JwF-bq-J0B" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="ODh-2I-v2n"/>
                                         <constraint firstItem="gGe-Po-O1I" firstAttribute="centerY" secondItem="QiD-8B-Rzx" secondAttribute="centerY" id="OtV-fF-cMR"/>
                                         <constraint firstItem="5l5-su-gQc" firstAttribute="leading" secondItem="gXK-Xk-TFV" secondAttribute="trailing" constant="4" id="QVP-CK-jh8"/>
-                                        <constraint firstItem="CVI-dD-7XI" firstAttribute="leading" secondItem="gXK-Xk-TFV" secondAttribute="leading" id="R36-He-iBx"/>
                                         <constraint firstItem="sgT-pP-0Cs" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="Uv1-qE-mCE"/>
-                                        <constraint firstItem="QiD-8B-Rzx" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="57" id="WIy-ZA-0IZ"/>
+                                        <constraint firstItem="jSL-kk-rlR" firstAttribute="leading" secondItem="WtX-al-46l" secondAttribute="leadingMargin" constant="6" id="Vwp-tU-9aL"/>
+                                        <constraint firstItem="QiD-8B-Rzx" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="90" id="WIy-ZA-0IZ"/>
                                         <constraint firstItem="CNN-vl-ntv" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="Wmu-YW-XvZ"/>
-                                        <constraint firstItem="PEk-8E-eKM" firstAttribute="centerY" secondItem="QiD-8B-Rzx" secondAttribute="centerY" id="bd6-M5-60Y"/>
+                                        <constraint firstItem="gGe-Po-O1I" firstAttribute="centerY" secondItem="0ar-iY-DQY" secondAttribute="centerY" id="cAU-gz-coF"/>
                                         <constraint firstItem="5l5-su-gQc" firstAttribute="centerY" secondItem="gXK-Xk-TFV" secondAttribute="centerY" id="cwP-YF-hm0"/>
-                                        <constraint firstItem="Wue-cH-XhL" firstAttribute="leading" secondItem="sgT-pP-0Cs" secondAttribute="trailing" constant="12" id="f2R-Mb-w7R"/>
+                                        <constraint firstItem="Wue-cH-XhL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sgT-pP-0Cs" secondAttribute="trailing" priority="750" constant="6" id="f2R-Mb-w7R"/>
                                         <constraint firstItem="0ar-iY-DQY" firstAttribute="leading" secondItem="bKe-3r-bJ8" secondAttribute="trailing" constant="12" id="fHY-M0-E5D"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Nao-g4-UTu" secondAttribute="trailing" constant="12" id="fQF-9d-oSA"/>
-                                        <constraint firstItem="Nao-g4-UTu" firstAttribute="leading" secondItem="gct-Ak-UTG" secondAttribute="trailing" constant="12" id="fRu-mx-Qem"/>
-                                        <constraint firstItem="gXK-Xk-TFV" firstAttribute="leading" secondItem="WtX-al-46l" secondAttribute="leadingMargin" constant="21" id="fzu-Ll-E5s"/>
-                                        <constraint firstItem="gXK-Xk-TFV" firstAttribute="top" secondItem="LQv-o6-W9K" secondAttribute="bottom" constant="12" id="gLP-ra-XmS"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="QiD-8B-Rzx" secondAttribute="trailing" constant="20" id="gMI-zA-s3R"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Nao-g4-UTu" secondAttribute="trailing" constant="6" id="fQF-9d-oSA"/>
+                                        <constraint firstItem="Nao-g4-UTu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gct-Ak-UTG" secondAttribute="trailing" priority="750" constant="6" id="fRu-mx-Qem"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="QiD-8B-Rzx" secondAttribute="trailing" constant="12" id="gMI-zA-s3R"/>
                                         <constraint firstItem="gct-Ak-UTG" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="jzl-CZ-Hhh"/>
-                                        <constraint firstItem="CNN-vl-ntv" firstAttribute="leading" secondItem="jSL-kk-rlR" secondAttribute="trailing" constant="12" id="krn-Dg-Fow"/>
-                                        <constraint firstItem="bjU-Yv-Sns" firstAttribute="leading" secondItem="JwF-bq-J0B" secondAttribute="trailing" constant="12" id="pOR-2G-FaI"/>
+                                        <constraint firstItem="CNN-vl-ntv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jSL-kk-rlR" secondAttribute="trailing" priority="750" constant="6" id="krn-Dg-Fow"/>
+                                        <constraint firstItem="bjU-Yv-Sns" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JwF-bq-J0B" secondAttribute="trailing" priority="750" constant="6" id="pOR-2G-FaI"/>
                                         <constraint firstItem="bKe-3r-bJ8" firstAttribute="leading" secondItem="CVI-dD-7XI" secondAttribute="trailing" constant="4" id="psz-Q2-Xrm"/>
-                                        <constraint firstItem="gct-Ak-UTG" firstAttribute="leading" secondItem="Bb3-XD-ZTG" secondAttribute="trailing" constant="12" id="qsI-kU-4da"/>
-                                        <constraint firstItem="Nao-g4-UTu" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="6" id="rjR-48-PXC"/>
+                                        <constraint firstItem="gct-Ak-UTG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bb3-XD-ZTG" secondAttribute="trailing" priority="750" constant="6" id="qsI-kU-4da"/>
+                                        <constraint firstItem="Nao-g4-UTu" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="32" id="rjR-48-PXC"/>
                                         <constraint firstItem="bjU-Yv-Sns" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="sbS-1p-urs"/>
                                         <constraint firstItem="Wue-cH-XhL" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="twD-Vi-Ho9"/>
                                         <constraint firstItem="0ar-iY-DQY" firstAttribute="centerY" secondItem="bKe-3r-bJ8" secondAttribute="centerY" id="u2H-Bu-cob"/>
-                                        <constraint firstItem="gGe-Po-O1I" firstAttribute="leading" secondItem="PEk-8E-eKM" secondAttribute="trailing" constant="8" id="uGo-KP-Rpl"/>
-                                        <constraint firstItem="QiD-8B-Rzx" firstAttribute="leading" secondItem="gGe-Po-O1I" secondAttribute="trailing" constant="14" id="wkt-tK-ali"/>
+                                        <constraint firstItem="QiD-8B-Rzx" firstAttribute="leading" secondItem="gGe-Po-O1I" secondAttribute="trailing" constant="18" id="wkt-tK-ali"/>
+                                        <constraint firstItem="gXK-Xk-TFV" firstAttribute="leading" secondItem="LQv-o6-W9K" secondAttribute="trailing" constant="14" id="yng-jY-4qR"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="40q-uA-oIB"/>
+                                            <exclude reference="WIy-ZA-0IZ"/>
+                                        </mask>
+                                    </variation>
                                     <variation key="widthClass=regular" ambiguous="YES">
                                         <rect key="frame" x="0.0" y="0.0" width="800" height="43"/>
                                     </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="UVButton" destination="bjU-Yv-Sns" id="IYM-1G-96r"/>
+                                    <outlet property="accelerationButton" destination="Bb3-XD-ZTG" id="1t5-gJ-oij"/>
+                                    <outlet property="barometerButton" destination="gct-Ak-UTG" id="6pF-xq-lx8"/>
+                                    <outlet property="countOfLogTextLabel" destination="5l5-su-gQc" id="UUN-uS-Ovd"/>
+                                    <outlet property="deviceNameTextLabel" destination="LQv-o6-W9K" id="9KM-cv-Adr"/>
+                                    <outlet property="gyroButton" destination="CNN-vl-ntv" id="4Re-uE-U64"/>
+                                    <outlet property="humidtyButton" destination="JwF-bq-J0B" id="IaS-mv-7na"/>
+                                    <outlet property="luxButton" destination="Nao-g4-UTu" id="oHC-gI-OJA"/>
+                                    <outlet property="magnetronButton" destination="sgT-pP-0Cs" id="x8U-og-ab0"/>
+                                    <outlet property="readLogButton" destination="0ar-iY-DQY" id="naE-SG-nfB"/>
+                                    <outlet property="selectAllButton" destination="jSL-kk-rlR" id="fa0-0I-jOR"/>
+                                    <outlet property="startButton" destination="gGe-Po-O1I" id="4M5-oH-Uf5"/>
+                                    <outlet property="stopButton" destination="QiD-8B-Rzx" id="9oM-KE-4ln"/>
+                                    <outlet property="targetLogTextInput" destination="bKe-3r-bJ8" id="cO9-Qb-Fba"/>
+                                    <outlet property="temperatureButton" destination="Wue-cH-XhL" id="VQG-hE-OeN"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="Uf1-3b-Rzb" userLabel="dataCell">
                                 <rect key="frame" x="0.0" y="240" width="600" height="140"/>
@@ -387,21 +425,21 @@
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="DeviceTableViewController" customModule="SenStickViewer" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="DeviceListTableViewController" customModule="SenStickViewer" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deviceCell" rowHeight="62" id="WCw-Qf-5nD" customClass="DeviceCellView" customModule="SenStickViewer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="600" height="62"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deviceCell" rowHeight="74" id="WCw-Qf-5nD" customClass="DeviceListCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="86" width="600" height="74"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
-                                    <rect key="frame" x="0.0" y="0.0" width="553" height="61"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="553" height="73"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_ble_4_2" translatesAutoresizingMaskIntoConstraints="NO" id="hm6-3m-n1G">
-                                            <rect key="frame" x="28" y="11" width="40" height="40"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_ble_4_2" translatesAutoresizingMaskIntoConstraints="NO" id="hm6-3m-n1G">
+                                            <rect key="frame" x="28" y="12" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="40" id="8Bh-yO-xYp"/>
                                                 <constraint firstAttribute="height" constant="40" id="wQz-AD-Hes"/>
@@ -475,13 +513,28 @@
     <resources>
         <image name="all" width="212" height="203"/>
         <image name="ic_ble_4_2" width="199" height="192"/>
+        <image name="ic_sensor_acc_b" width="400" height="400"/>
+        <image name="ic_sensor_acc_b2" width="201" height="236"/>
         <image name="ic_sensor_acc_g2" width="201" height="236"/>
+        <image name="ic_sensor_gyro_b" width="400" height="400"/>
+        <image name="ic_sensor_gyro_b2" width="201" height="236"/>
         <image name="ic_sensor_gyro_g2" width="201" height="236"/>
+        <image name="ic_sensor_hum_b" width="400" height="400"/>
+        <image name="ic_sensor_hum_b2" width="201" height="236"/>
         <image name="ic_sensor_hum_g2" width="201" height="236"/>
+        <image name="ic_sensor_light_b" width="400" height="400"/>
+        <image name="ic_sensor_light_b2" width="201" height="236"/>
         <image name="ic_sensor_light_g2" width="201" height="236"/>
-        <image name="ic_sensor_mag_g2" width="201" height="236"/>
+        <image name="ic_sensor_mag_b" width="400" height="400"/>
+        <image name="ic_sensor_mag_b2" width="201" height="236"/>
+        <image name="ic_sensor_press_b" width="128" height="128"/>
+        <image name="ic_sensor_press_b2" width="202" height="237"/>
         <image name="ic_sensor_press_g2" width="202" height="237"/>
+        <image name="ic_sensor_temp_b" width="128" height="128"/>
+        <image name="ic_sensor_temp_b2" width="202" height="237"/>
         <image name="ic_sensor_temp_g2" width="202" height="237"/>
+        <image name="ic_sensor_uv_b" width="128" height="128"/>
+        <image name="ic_sensor_uv_b2" width="202" height="237"/>
         <image name="ic_sensor_uv_g2" width="202" height="237"/>
     </resources>
 </document>

@@ -36,7 +36,7 @@ public struct SensorSettingData<T: RawRepresentable where T.RawValue == UInt16> 
     {
         let bytes = Array(data)
         
-        guard bytes.count != 5 else {
+        guard bytes.count == 5 else {
             assert(false, #function)
             return nil
         }

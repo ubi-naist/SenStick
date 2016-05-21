@@ -23,4 +23,6 @@ typedef struct {
     uint32_t size;
 } flash_address_info_t;
 
+bool isValidSenstickControlCommand(uint8_t value);
+
 #endif /* senstick_types_h */

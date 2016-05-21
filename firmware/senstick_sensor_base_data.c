@@ -5,6 +5,11 @@
 
 #include "value_types.h"
 
+bool isValidSensorServiceCommand(uint8_t value)
+{
+    return (value == 0x00 || value == 0x01 || value == 0x03);
+}
+
 uint8_t serializesensor_service_setting(uint8_t *p_dst, sensor_service_setting_t *p_src)
 {
     p_dst[0] = p_src->command;

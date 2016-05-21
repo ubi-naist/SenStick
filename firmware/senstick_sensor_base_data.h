@@ -48,6 +48,9 @@ typedef struct {
     uint32_t             remainingStorage; // ストレージの空き領域(サンプル数)
 } sensor_metadata_t;
 
+// 有効なコマンド値か?
+bool isValidSensorServiceCommand(uint8_t value);
+
 // バイナリ配列に変換します。バッファは長さ6バイト以上。
 uint8_t serializesensor_service_setting(uint8_t *p_dst, sensor_service_setting_t *p_src);
 void deserializesensor_service_setting(sensor_service_setting_t *p_dst, uint8_t *p_src);

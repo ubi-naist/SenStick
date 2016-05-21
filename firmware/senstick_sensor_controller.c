@@ -84,7 +84,7 @@ static uint8_t fillBLESensorData(uint8_t *p_data, uint8_t length, sensor_device_
     log_context_t *p_log = context.p_readingLogContext[device_type];
     uint8_t buff[20]; // TBD マジックワード。センサーの生データ最大値を指定すべき。
 
-    ASSERT(p_base->rawSensorDataSize > sizeof(buff));
+    ASSERT(p_base->rawSensorDataSize < sizeof(buff));
     
     p_data[0] = 0;
     // データを読み込み設定していく
@@ -110,6 +110,8 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
     
     bool didNotified = false;
     
+//    NRF_LOG_PRINTF_DEBUG("notifyLogDataOfDevice(), device_type:%d.\n", device_type);
+    
     // ログデータの通知がONになっていないなら、スキップ
     sensor_service_t *p_service = &context.services[device_type];
     if( ! p_service->is_sensor_log_data_notifying) {
@@ -120,7 +122,11 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
     if(p_log == NULL) {
         return false;
     }
+    if(p_log->readPosition >= p_log->header.size) {
+        return false;
+    }
 
+    int count = 0;
     // データ読み出し
     for(;;) {
         uint32_t read_position = p_log->readPosition;
@@ -138,24 +144,18 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
             break;
         } else {
             didNotified = true;
+            count++;
         }
         // もしも最後のパケット通知なら、読み出しを終了する。
         if(length == 1) {
-            context.p_readingLogContext[device_type] = NULL;
+//            context.p_readingLogContext[device_type] = NULL;
             break;
         }
     }
-    return didNotified;
-}
 
-static void notifyLogData(void)
-{
-    for(int i =0; i < NUM_OF_SENSORS; i++) {
-        bool didNotified = notifyLogDataOfDevice((sensor_device_t) i);
-        if(didNotified) {
-            break;
-        }
-    }
+//    NRF_LOG_PRINTF_DEBUG("  didNotify: %d, count: %d.\n", didNotified, count);
+    
+    return didNotified;
 }
 
 static void sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_data, uint8_t data_length)
@@ -191,6 +191,8 @@ static void sensor_timer_handler(void *p_arg)
                 // ログ保存
                 if((command & 0x02) != 0) {
                     writeLog(&(context.writingLogContext[i]), buffer, length);
+                    // TBD 頻度高すぎないか?
+                    senstickSensorControllerNotifyLogData();
                 }
             }
         }
@@ -280,7 +282,7 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
         bool result = (m_p_sensor_bases[i]->initSensorHandler)();
         context.isSensorAvailable[i] = result;
         if( ! result) {
-            NRF_LOG_PRINTF_DEBUG("\nFaled to init sensor %d.", i);
+            NRF_LOG_PRINTF_DEBUG("Faled to init sensor %d.\n", i);
         }
     }
     
@@ -361,8 +363,16 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
         return false;
     }
     
-    // 設定更新
-    deserializesensor_service_setting(&(context.sensorSetting[device_type]), p_data);
+    // デシリアライズ
+    sensor_service_setting_t setting;
+    deserializesensor_service_setting(&setting, p_data);
+    // 値の正当性確認
+    if( ! isValidSensorServiceCommand((uint8_t)setting.command)) {
+        return false;
+    }
+    // TBD サンプリング周期、レンジ設定の正当性確認(センサーごとの)
+    // 代入
+    context.sensorSetting[device_type] = setting;
     return true;
 }
 
@@ -375,6 +385,11 @@ void senstickSensorControllerWriteLogID(sensor_device_t device_type, uint8_t *p_
     sensor_service_logID_t log_id;
     deserializeSensorServiceLogID(&log_id, p_data);
     
+    // ログの範囲が外れているなら、ここで終了
+    if(log_id.logID >= senstick_getCurrentLogCount()) {
+        return;
+    }
+
     // 読み出しログポインタを開く
     if(context.isSensorWorking && context.writingLogContext[device_type].header.logID == log_id.logID) {
         // もしも書き込み中の読み出しならば、それを参照
@@ -384,12 +399,23 @@ void senstickSensorControllerWriteLogID(sensor_device_t device_type, uint8_t *p_
         context.p_readingLogContext[device_type] = &context.readingLogContext[device_type];
         openLog(context.p_readingLogContext[device_type], log_id.logID, &(m_p_sensor_bases[device_type]->address_info));
     }
-    
+    NRF_LOG_PRINTF_DEBUG("reading log, id:%d.\n", log_id.logID);
     // TBD 縮退数の保存
     
     // 読み出し位置を設定
     seekLog(context.p_readingLogContext[device_type], log_id.position * m_p_sensor_bases[device_type]->rawSensorDataSize);
 }
+
+void senstickSensorControllerNotifyLogData(void)
+{
+    for(int i =0; i < NUM_OF_SENSORS; i++) {
+        bool didNotified = notifyLogDataOfDevice((sensor_device_t) i);
+        if(didNotified) {
+            break;
+        }
+    }
+}
+
 
 /**
  *  observer
@@ -429,7 +455,8 @@ void senstickSensorController_handleBLEEvent(ble_evt_t * p_ble_evt)
     }
     // ログの通知。スタックのバッファが埋まるまで。
     if(p_ble_evt->header.evt_id == BLE_EVT_TX_COMPLETE) {
-        notifyLogData();
+//        NRF_LOG_PRINTF_DEBUG("BLE_EVT_TX_COMPLETE, notifyLogData().\n");
+        senstickSensorControllerNotifyLogData();
     }
 }
 

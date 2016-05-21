@@ -351,7 +351,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -465,6 +465,11 @@
               <FileName>value_types.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\value_types.c</FilePath>
+            </File>
+            <File>
+              <FileName>senstick_types.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_types.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -595,6 +600,16 @@
               <FileName>gpio_led_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_led_driver.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>test</GroupName>
+          <Files>
+            <File>
+              <FileName>test_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\test_storage.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1077,6 +1092,11 @@
               <FileType>1</FileType>
               <FilePath>..\value_types.c</FilePath>
             </File>
+            <File>
+              <FileName>senstick_types.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\senstick_types.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1206,6 +1226,16 @@
               <FileName>gpio_led_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_led_driver.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>test</GroupName>
+          <Files>
+            <File>
+              <FileName>test_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\test_storage.c</FilePath>
             </File>
           </Files>
         </Group>

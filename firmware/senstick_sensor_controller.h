@@ -12,6 +12,7 @@ uint8_t senstickSensorControllerReadSetting(sensor_device_t device_type, uint8_t
 uint8_t senstickSensorControllerReadMetaData(sensor_device_t device_type, uint8_t *p_buffer, uint8_t length);
 bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *p_data, uint8_t length);
 void senstickSensorControllerWriteLogID(sensor_device_t device_type, uint8_t *p_data, uint8_t length);
+void senstickSensorControllerNotifyLogData(void);
 
 // observer
 void senstickSensorController_observeControlCommand(senstick_control_command_t command, uint8_t new_log_id);

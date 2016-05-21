@@ -56,6 +56,8 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
         reply_params.params.read.gatt_status   = result ? BLE_GATT_STATUS_SUCCESS : BLE_GATT_STATUS_ATTERR_WRITE_NOT_PERMITTED;
         err_code = sd_ble_gatts_rw_authorize_reply(p_context->connection_handle, &reply_params);
         APP_ERROR_CHECK(err_code);
+        
+        senstickSensorControllerNotifyLogData();
     }
 }
 
@@ -71,6 +73,7 @@ static void onWrite(sensor_service_t *p_context, ble_evt_t * p_ble_evt)
             return;
         } else if(p_evt_write->handle == p_context->sensor_log_data_char_handle.cccd_handle) {
             p_context->is_sensor_log_data_notifying = ble_srv_is_notification_enabled(p_evt_write->data);
+            senstickSensorControllerNotifyLogData(); // ログ通知開始
             return;
         }
     }

@@ -43,7 +43,7 @@ struct AccelerationRawData
     }
     
     // 物理センサーの1GあたりのLBSの値
-    func getLSBperG(range: AccelerationRange) -> Int16
+    static func getLSBperG(range: AccelerationRange) -> Int16
     {
         switch range {
         case .ACCELERATION_RANGE_2G: return 16384
@@ -61,34 +61,24 @@ struct AccelerationRawData
 
         return AccelerationRawData(xRawValue: x!, yRawValue: y!, zRawValue: z!)
     }
-
-    func getCMAcceleration(range: AccelerationRange) -> CMAcceleration
-    {
-        let lsbPerG = getLSBperG(range)
-        // FIXME 右手系/左手系などの座標変換など確認すること。
-        return CMAcceleration(x: Double(xRawValue) / Double(lsbPerG), y: Double(yRawValue) / Double(lsbPerG), z: Double(zRawValue) / Double(lsbPerG))
-    }
 }
 
 extension CMAcceleration : SensorDataPackableType
 {
-    typealias SettingType = AccelerationRange
-    public static func unpack(range:AccelerationRange, value: Array<Byte>) -> [CMAcceleration]?
+    public typealias RangeType = AccelerationRange
+
+    public static func unpack(range:AccelerationRange, value: [UInt8]) -> CMAcceleration?
     {
-        // バイト配列の長さチェック。先頭バイトはデータ数を表す。バイト数が計算されるデータ長と等しいか?
-        guard value.count == (1 + value.count * 6) else {
+        guard value.count >= 6 else {
             return nil
         }
+        
+        let rawData  = AccelerationRawData.unpack(value)
+        let lsbPerG  = AccelerationRawData.getLSBperG(range)
 
-        var array = Array<CMAcceleration>()
-        for i in 0..<value.count {
-            // センサデータ1つ分を切り出す
-            let startIndex = 1 + 6 * i
-            let rawBytes = value[startIndex..<(startIndex+6)]
-            let rawData  = AccelerationRawData.unpack(Array(rawBytes))
-            array.append( rawData.getCMAcceleration(range) )
-        }
-        return array
+        // FIXME 右手系/左手系などの座標変換など確認すること。
+        
+        return CMAcceleration(x: Double(rawData.xRawValue) / Double(lsbPerG), y: Double(rawData.yRawValue) / Double(lsbPerG), z: Double(rawData.zRawValue) / Double(lsbPerG))
     }
 }
 

@@ -8,23 +8,35 @@
 
 import UIKit
 import SenStickSDK
+import CoreMotion
 
 class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
-    weak var device: SenStickDevice?
+    var device: SenStickDevice?
+    
+    var statusCell: SensorStatusCellView?
+    var accelerationSensorDataController: SensorDataController<CMAcceleration, AccelerationRange>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
+        
+        self.accelerationSensorDataController = SensorDataController<CMAcceleration, AccelerationRange>()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        device?.delegate = self
         device?.connect()
+        
+        self.statusCell?.updateView()
+        self.accelerationSensorDataController?.service = device?.accelerationSensorService
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+
+        device?.delegate = nil
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -32,7 +44,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     
     // MARK: - SenStickDeviceDelegate
     func didIsConnectedChanged(sender: SenStickDevice, isConnected: Bool) {
-        self.tableView.reloadData()
+        self.statusCell?.updateView()
+        self.accelerationSensorDataController?.service = device?.accelerationSensorService
     }
     
     // MARK: - Table View
@@ -49,13 +62,14 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCellWithIdentifier("statusCell", forIndexPath: indexPath)
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath)            
         }
-        
-        if let statusCell = cell as? SensorStatusCellView {
-            statusCell.device = self.device
+
+        if let s = cell as? SensorStatusCellView {
+            s.device        = self.device
+            self.statusCell = s
         }
-        debugPrint("\(#function) \(cell)")
+//        debugPrint("\(#function) \(cell)")
         return cell
     }
     

@@ -39,7 +39,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     }
     
     // Private methods
-    func updateView() {
+    internal func updateView() {
         deviceNameTextLabel.text = device?.name
         
         gyroButton.enabled         = false
@@ -48,11 +48,13 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
         humidtyButton.enabled      = false
         UVButton.enabled           = false
 
+        debugPrint("\(#function) \(device?.accelerationSensorService) command:\(device?.controlService?.command)")
         if let s = device?.accelerationSensorService {
             accelerationButton.enabled  = true
             accelerationButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            accelerationButton.enabled = false
+            accelerationButton.enabled  = false
+            accelerationButton.selected = false
         }
         
         barometerButton.enabled    = false
@@ -94,10 +96,12 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     }
     
     @IBAction func  stopButtonToutchUpInside(sender: UIButton) {
-            device?.controlService?.writeCommand(.Stopping)
+        device?.controlService?.writeCommand(.Stopping)
     }
     
     @IBAction func  readLogButtonToutchUpInside(sender: UIButton) {
+        let logID = SensorLogID(logID:UInt8(targetLogTextInput.text!)!, skipCount: 0, position: 0)
+        device?.accelerationSensorService?.writeLogID(logID)
     }
     
     @IBAction func  gyroButtonToutchUpInside(sender: UIButton) {

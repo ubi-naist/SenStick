@@ -130,7 +130,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             break
         }
         
-        self.isConnected = self.controlService != nil && self.metaDataService != nil && self.accelerationSensorService != nil
+        let newValue :Bool = self.controlService != nil && self.metaDataService != nil && self.accelerationSensorService != nil
+        if newValue != self.isConnected {
+        self.isConnected = newValue
+        }
     }
     
     public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
@@ -205,8 +208,8 @@ extension SenStickDevice {
     internal func writeValue(characteristic: CBCharacteristic, value: [UInt8])
     {
         let data = NSData(bytes: value, length: value.count)
-        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithoutResponse)
-//        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithResponse)
-
+//        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithoutResponse)
+        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithResponse)
+        debugPrint("writeValue: \(characteristic.UUID) \(value)")
     }
 }

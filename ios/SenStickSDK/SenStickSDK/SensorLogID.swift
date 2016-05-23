@@ -11,9 +11,16 @@ import Foundation
 // 
 public struct SensorLogID : PackableType
 {
-    let logID:     UInt8
-    let skipCount: UInt16
-    let position:  UInt32
+    public let logID:     UInt8
+    public let skipCount: UInt16
+    public let position:  UInt32
+    
+    public init(logID: UInt8, skipCount: UInt16, position:  UInt32)
+    {
+        self.logID     = logID
+        self.skipCount = skipCount
+        self.position  = position
+    }
     
     public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
     {

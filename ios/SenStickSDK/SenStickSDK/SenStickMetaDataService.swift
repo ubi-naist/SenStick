@@ -19,7 +19,7 @@ public class SenStickMetaDataService : SenStickService
     let targetDateTimeChar: CBCharacteristic
     let targetAbstractChar: CBCharacteristic
     
-    // Properties, KVO-compatible
+    // Properties
     public private(set) var logID:    UInt8
     public private(set) var dateTime: NSDate
     public private(set) var abstract: String

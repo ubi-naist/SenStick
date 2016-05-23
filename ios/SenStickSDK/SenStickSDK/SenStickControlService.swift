@@ -30,47 +30,35 @@ public class SenStickControlService : SenStickService
     public weak var delegate: SenStickControlServiceDelegate?
     
     // Properties, KVO-compatible
-    var _command: SenStickControlCommand
     public private(set) var command: SenStickControlCommand {
-        get {
-            return _command
-        }
-        set(newValue) {
-            _command = newValue
-            delegate?.didCommandChanged(self, command: _command)
+        didSet{
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didCommandChanged(self, command: self.command)
+            })
         }
     }
     
-    var _availableLogCount: UInt8
     public private(set) var availableLogCount: UInt8 {
-        get {
-            return _availableLogCount
-        }
-        set(newValue) {
-            _availableLogCount = newValue
-            delegate?.didAvailableLogCountChanged(self, logCount: _availableLogCount)
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didAvailableLogCountChanged(self, logCount: self.availableLogCount)
+            })
         }
     }
     
-    var _dateTime: NSDate
     public private(set) var dateTime: NSDate {
-        get {
-            return _dateTime
-        }
-        set(newValue) {
-            _dateTime = newValue
-            delegate?.didDateTimeUpdate(self, dateTime: _dateTime)
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didDateTimeUpdate(self, dateTime: self.dateTime)
+            })
         }
     }
 
-    var _abstractText: String
     public private(set) var abstractText: String {
-        get {
-            return _abstractText
-        }
-        set(newValue) {
-            _abstractText = newValue
-            delegate?.didAbstractUpdate(self, abstractText: _abstractText)
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didAbstractUpdate(self, abstractText: self.abstractText)
+            })
         }
     }
     
@@ -90,18 +78,19 @@ public class SenStickControlService : SenStickService
         availableLogCountChar = _availableLogCountChar
         dateTimeChar          = _dateTimeChar
         abstractChar          = _abstractChar
-        
-        _command              = .Stopping
-        _availableLogCount    = 0
-        _dateTime             = NSDate.distantPast()
-        _abstractText         = ""
-        
+
         self.delegate          = nil
         
+        self.command              = .Stopping
+        self.availableLogCount    = 0
+        self.dateTime             = NSDate.distantPast()
+        self.abstractText         = ""
+      
         // Notifyを有効に。初期値読み出し。
         device.setNotify(statusChar, enabled: true)
-        device.readValue(statusChar)
         device.setNotify(availableLogCountChar, enabled: true)
+        
+        device.readValue(statusChar)
         device.readValue(availableLogCountChar)
         device.readValue(dateTimeChar)
         device.readValue(abstractChar)

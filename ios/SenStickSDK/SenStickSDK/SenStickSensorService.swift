@@ -20,9 +20,10 @@ public protocol SenStickSensorServiceDelegate : class
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
 public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable where S.RawValue == UInt16, T.RangeType == S> 
 {
+    public weak var delegate: SenStickSensorServiceDelegate?
+    
     // Variables
     unowned let device: SenStickDevice
-    weak var delegate: SenStickSensorServiceDelegate?
     
     var sensorSettingChar:       CBCharacteristic
     var sensorRealTimeDataChar:  CBCharacteristic
@@ -31,11 +32,38 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var sensorLogDataChar:       CBCharacteristic
     
     // Properties
-    public private(set) var settingData:  SensorSettingData<S>?
-    public private(set) var realtimeData: [T]?
-    public private(set) var logID:       SensorLogID?
-    public private(set) var logMetaData: SensorLogMetaData<S>?
-    public private(set) var logData:     [T]?
+    public private(set) var settingData:  SensorSettingData<S>? {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didUpdateSetting(self)
+            })
+        }
+    }
+    public private(set) var realtimeData: T? {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didUpdateRealTimeData(self)
+            })
+        }
+    }
+
+    public private(set) var logID: SensorLogID?
+
+    public private(set) var logMetaData: SensorLogMetaData<S>? {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didUpdateMetaData(self)
+            })
+        }
+    }
+
+    public private(set) var logData: [T]? {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didUpdateLogData(self)
+            })
+        }
+    }
     
     // イニシャライザ
     init?(device:SenStickDevice, sensorType:SenStickSensorType)
@@ -74,7 +102,43 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     }
     
     // internal methods
-    
+    func unpackDataArray(range:S, value: [UInt8]) -> [T]?
+    {
+        // 空配列
+        if value.count == 1 && value[0] == 0 {
+            return []
+        }
+        
+        // 不正なデータチェック
+        if value.count == 0 {
+            return nil
+        }
+
+        let count = Int(value[0])
+        
+        // 0のデータ配列のチェック
+        if value.count == 1 && count != 0 {
+            return nil
+        }
+
+        // データ配列のバイト数
+        if (value.count - 1) % count != 0 {
+            return nil
+        }
+
+        let size  = (value.count - 1) / count
+        var array = Array<T>()
+        for i in 0..<count {
+            // センサデータ1つ分を切り出す
+            let startIndex = 1 + size * i
+            let endIndex   = startIndex + size
+            let unit       = Array(value[startIndex..<endIndex])
+            let logunit = T.unpack(settingData!.range, value: unit)!
+            array.append( logunit )
+        }
+        return array
+    }
+
     // 値更新通知
     func didUpdateValue(characteristic: CBCharacteristic, data: [UInt8])
     {
@@ -86,19 +150,9 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             self.settingData = settingData
-            delegate?.didUpdateSetting(self)
             
         case sensorRealTimeDataChar.UUID:
-            guard let setting = settingData else {
-                assert(false, #function)
-                break
-            }
-            guard let newdata = T.unpack(setting.range, value: data) else {
-                assert(false, #function)
-                break
-            }
-            self.realtimeData = newdata
-            delegate?.didUpdateRealTimeData(self)
+            self.realtimeData = T.unpack(self.settingData!.range, value: data)
 debugPrint("\(self.realtimeData)")
             
         case sensorLogIDChar.UUID:
@@ -114,19 +168,13 @@ debugPrint("\(self.realtimeData)")
                 break
             }
             self.logMetaData = metadata
-            delegate?.didUpdateMetaData(self)
             
         case sensorLogDataChar.UUID:
             guard let metadata = self.logMetaData else {
                 assert(false, #function)
                 break
             }
-            guard let logData = T.unpack(metadata.range, value: data) else {
-                assert(false, #function)
-                break
-            }
-            self.logData = logData
-            delegate?.didUpdateLogData(self)
+            self.logData = unpackDataArray(metadata.range, value: data)
             
         default:
             assert(false, "\(#function), unexpected cahatacter: \(characteristic)")
@@ -141,14 +189,20 @@ debugPrint("\(self.realtimeData)")
     {
         let data = setting.pack()
         device.writeValue(sensorSettingChar, value: data)
+        device.readValue(sensorSettingChar)
     }
 
     // ログIDを書き込みます。自動的にメタデータが更新されます。
     public func writeLogID(logID: SensorLogID)
     {
+        device.setNotify(self.sensorLogDataChar, enabled: false)
+
+        self.logID = logID
         let data = logID.pack()
         device.writeValue(sensorLogIDChar, value: data)
         updateLogMetaData()
+        
+        device.setNotify(self.sensorLogDataChar, enabled: true)
     }
     
     // メタデータの更新

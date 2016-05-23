@@ -19,12 +19,32 @@
 		F850DFAE1CE7652200B8F9B9 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
 		F850DFB01CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spi_slave_mx25_flash_memory.c; sourceTree = "<group>"; };
 		F850DFB11CEAB21200B8F9B9 /* spi_slave_mx25_flash_memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spi_slave_mx25_flash_memory.h; sourceTree = "<group>"; };
+		F85115381CF30331006BC931 /* humidity_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = humidity_sensor_base.c; sourceTree = "<group>"; };
+		F85115391CF30331006BC931 /* humidity_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = humidity_sensor_base.h; sourceTree = "<group>"; };
+		F851153A1CF31768006BC931 /* twi_slave_pressure_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_pressure_sensor.c; sourceTree = "<group>"; };
+		F851153B1CF31768006BC931 /* twi_slave_pressure_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_pressure_sensor.h; sourceTree = "<group>"; };
+		F851153C1CF31920006BC931 /* pressure_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pressure_sensor_base.c; sourceTree = "<group>"; };
+		F851153D1CF31920006BC931 /* pressure_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pressure_sensor_base.h; sourceTree = "<group>"; };
 		F86873571CE2FBA90083A635 /* senstick_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_types.h; sourceTree = "<group>"; };
 		F86873581CE350490083A635 /* metadata_log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = metadata_log_controller.c; sourceTree = "<group>"; };
 		F86873591CE350490083A635 /* metadata_log_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metadata_log_controller.h; sourceTree = "<group>"; };
 		F868735A1CE36A000083A635 /* senstick_sensor_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_sensor_controller.c; sourceTree = "<group>"; };
 		F868735B1CE36A000083A635 /* senstick_sensor_controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_sensor_controller.h; sourceTree = "<group>"; };
 		F868735F1CE40E020083A635 /* senstick_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_sensor_base.h; sourceTree = "<group>"; };
+		F86B0CCB1CF2DDEE00AA8D66 /* gyro_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gyro_sensor_base.c; sourceTree = "<group>"; };
+		F86B0CCC1CF2DDEE00AA8D66 /* gyro_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gyro_sensor_base.h; sourceTree = "<group>"; };
+		F86B0CCD1CF2E07500AA8D66 /* magnetic_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = magnetic_sensor_base.c; sourceTree = "<group>"; };
+		F86B0CCE1CF2E07500AA8D66 /* magnetic_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = magnetic_sensor_base.h; sourceTree = "<group>"; };
+		F86B0CCF1CF2E76F00AA8D66 /* brightness_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = brightness_sensor_base.c; sourceTree = "<group>"; };
+		F86B0CD01CF2E76F00AA8D66 /* brightness_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = brightness_sensor_base.h; sourceTree = "<group>"; };
+		F86B0CD11CF2E7F400AA8D66 /* twi_slave_brightness_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_brightness_sensor.c; sourceTree = "<group>"; };
+		F86B0CD21CF2E7F400AA8D66 /* twi_slave_brightness_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_brightness_sensor.h; sourceTree = "<group>"; };
+		F86B0CD31CF2FD2500AA8D66 /* twi_slave_uv_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_uv_sensor.c; sourceTree = "<group>"; };
+		F86B0CD41CF2FD2500AA8D66 /* twi_slave_uv_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_uv_sensor.h; sourceTree = "<group>"; };
+		F86B0CD51CF2FFCF00AA8D66 /* uv_sensor_base.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = uv_sensor_base.c; sourceTree = "<group>"; };
+		F86B0CD61CF2FFCF00AA8D66 /* uv_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uv_sensor_base.h; sourceTree = "<group>"; };
+		F86B0CD71CF301FD00AA8D66 /* twi_slave_humidity_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_humidity_sensor.c; sourceTree = "<group>"; };
+		F86B0CD81CF301FD00AA8D66 /* twi_slave_humidity_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_humidity_sensor.h; sourceTree = "<group>"; };
 		F86C469F1CD4F7C200076F3E /* service_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = service_util.c; sourceTree = "<group>"; };
 		F86C46A01CD4F7C200076F3E /* service_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service_util.h; sourceTree = "<group>"; };
 		F86C46A61CD7764D00076F3E /* log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = log_controller.c; sourceTree = "<group>"; };
@@ -136,6 +156,14 @@
 				F84B633C1CEDBC8B0097C1EC /* twi_slave_rtc.c */,
 				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
+				F86B0CD21CF2E7F400AA8D66 /* twi_slave_brightness_sensor.h */,
+				F86B0CD11CF2E7F400AA8D66 /* twi_slave_brightness_sensor.c */,
+				F86B0CD41CF2FD2500AA8D66 /* twi_slave_uv_sensor.h */,
+				F86B0CD31CF2FD2500AA8D66 /* twi_slave_uv_sensor.c */,
+				F86B0CD81CF301FD00AA8D66 /* twi_slave_humidity_sensor.h */,
+				F86B0CD71CF301FD00AA8D66 /* twi_slave_humidity_sensor.c */,
+				F851153B1CF31768006BC931 /* twi_slave_pressure_sensor.h */,
+				F851153A1CF31768006BC931 /* twi_slave_pressure_sensor.c */,
 			);
 			name = twi;
 			sourceTree = "<group>";
@@ -225,6 +253,18 @@
 				F8FCC9541CD257A6003BCC5A /* sensor_service.c */,
 				F8FCC9631CD44AC9003BCC5A /* acceleration_sensor_base.h */,
 				F8FCC9621CD44AC9003BCC5A /* acceleration_sensor_base.c */,
+				F86B0CCC1CF2DDEE00AA8D66 /* gyro_sensor_base.h */,
+				F86B0CCB1CF2DDEE00AA8D66 /* gyro_sensor_base.c */,
+				F86B0CCE1CF2E07500AA8D66 /* magnetic_sensor_base.h */,
+				F86B0CCD1CF2E07500AA8D66 /* magnetic_sensor_base.c */,
+				F86B0CD01CF2E76F00AA8D66 /* brightness_sensor_base.h */,
+				F86B0CCF1CF2E76F00AA8D66 /* brightness_sensor_base.c */,
+				F86B0CD61CF2FFCF00AA8D66 /* uv_sensor_base.h */,
+				F86B0CD51CF2FFCF00AA8D66 /* uv_sensor_base.c */,
+				F85115391CF30331006BC931 /* humidity_sensor_base.h */,
+				F85115381CF30331006BC931 /* humidity_sensor_base.c */,
+				F851153D1CF31920006BC931 /* pressure_sensor_base.h */,
+				F851153C1CF31920006BC931 /* pressure_sensor_base.c */,
 			);
 			name = sensor_controllers;
 			sourceTree = "<group>";

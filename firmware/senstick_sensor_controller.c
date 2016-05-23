@@ -11,14 +11,29 @@
 #include "sensor_service.h"
 
 #include "senstick_flash_address_definitions.h"
-#include "acceleration_sensor_base.h"
 #include "spi_slave_mx25_flash_memory.h"
 
-//#define NUM_OF_SENSORS  7
-#define NUM_OF_SENSORS  1
+#include "acceleration_sensor_base.h"
+#include "gyro_sensor_base.h"
+#include "magnetic_sensor_base.h"
+#include "brightness_sensor_base.h"
+#include "uv_sensor_base.h"
+#include "humidity_sensor_base.h"
+#include "pressure_sensor_base.h"
+
+#define NUM_OF_SENSORS  7
 #define TIMER_PERIOD_MS 100
 
-static const senstick_sensor_base_t *m_p_sensor_bases[] = {&accelerationSensorBase};
+static const senstick_sensor_base_t *m_p_sensor_bases[] = {
+    &accelerationSensorBase,
+    &gyroSensorBase,
+    &magneticSensorBase,
+    &brightnessSensorBase,
+    &uvSensorBase,
+    &humiditySensorBase,
+    &pressureSensorBase
+};
+
 APP_TIMER_DEF(m_timer_id);
 
 typedef struct {

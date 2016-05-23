@@ -11,9 +11,7 @@
 // 変換時間約150ミリ秒
 typedef uint16_t BrightnessData_t;
 
-// UVデータ
-// サンプリング周期275ミリ秒、単位換算 2.14 uW/cm2/step
-typedef uint16_t UltraVioletData_t;
+
 
 // 気圧データ
 // 24-bit, 4096 LSB/ hPa

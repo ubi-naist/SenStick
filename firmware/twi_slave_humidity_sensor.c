@@ -1,12 +1,19 @@
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include <nrf_delay.h>
+#include <nrf_log.h>
+#include <nrf_assert.h>
+#include <app_error.h>
+#include <sdk_errors.h>
+
+#include "value_types.h"
+#include "twi_manager.h"
+
 #include "twi_slave_humidity_sensor.h"
 
-#include <string.h>
-
-#include "nrf_delay.h"
-#include "nrf_drv_twi.h"
-#include "app_error.h"
-
-#include "twi_slave_utility.h"
+#include "senstick_sensor_base_data.h"
 #include "senstick_io_definitions.h"
 
 // 仕様書
@@ -28,25 +35,22 @@ typedef enum {
  * Private methods
  */
 
-static void writeToSHT20(humidity_sensor_context_t *p_context, const SHT20Command_t command, const uint8_t *data, const uint8_t data_length)
+static bool writeToSHT20(const SHT20Command_t command, const uint8_t *p_data, const uint8_t data_length)
 {
-    writeToTwiSlave(p_context->p_twi, TWI_SHT20_ADDRESS, (uint8_t)command, data, data_length);
+    return writeToTwiSlave(TWI_SHT20_ADDRESS, (uint8_t)command, p_data, data_length);
 }
-static void readFromSHT20(humidity_sensor_context_t *p_context, const SHT20Command_t command, uint8_t *data, const uint8_t data_length)
+static bool readFromSHT20(const SHT20Command_t command, uint8_t *data, const uint8_t data_length)
 {
-    readFromTwiSlave(p_context->p_twi, TWI_SHT20_ADDRESS, (uint8_t)command, data, data_length);
+    return readFromTwiSlave(TWI_SHT20_ADDRESS, (uint8_t)command, data, data_length);
 }
 
 /**
 * public methods
 */
-void initHumiditySensor(humidity_sensor_context_t *p_context, nrf_drv_twi_t *p_twi)
+bool initHumiditySensor(void)
 {
-    memset(p_context, 0, sizeof(humidity_sensor_context_t));
-    p_context->p_twi = p_twi;
-    
     // ソフトウェア・リセット
-    writeToSHT20(p_context, SoftReset, NULL, 0);
+    writeToSHT20(SoftReset, NULL, 0);
     nrf_delay_ms(15); // リセット処理待ち
     
     // ユーザレジスタを設定する。[5:3]は、リセット後からのデフォルト値のまま保持しなければならない。
@@ -67,7 +71,7 @@ void initHumiditySensor(humidity_sensor_context_t *p_context, nrf_drv_twi_t *p_t
     uint8_t user_reg[2];
     
     // レジスタ読み出し, レジスタ値+チェックサム
-    readFromSHT20(p_context, ReadUserRegister, user_reg, 2);
+    readFromSHT20( ReadUserRegister, user_reg, 2);
     
     // レジスタを設定
     // RH 12-bit T 14-bit, Disable on-chip heater, Disable OTP Reload
@@ -78,20 +82,21 @@ void initHumiditySensor(humidity_sensor_context_t *p_context, nrf_drv_twi_t *p_t
     user_reg[0] |= 0x02;  // Diable OTP Reload 1
     
     // レジスタの値を書き込み
-    writeToSHT20(p_context, WriteUserRegister, &(user_reg[0]), 1);
+    bool result = writeToSHT20( WriteUserRegister, &(user_reg[0]), 1);
+    
+    return result;
 }
 
 // 計測時間中はI2Cバスを離さない。
 // 相対湿度計測 12-bit精度 typ 22ミリ秒 max 30ミリ秒
 // 温度計測 14-bit精度 typ 66ミリ秒 max 85ミリ秒
-void getHumidityData(humidity_sensor_context_t *p_context, HumidityData_t *p_data)
+void getHumidityData(HumidityData_t *p_data)
 {
     uint8_t buffer[3];
-    readFromSHT20(p_context, TriggerRHMeasurementHoldMaster, buffer, 3);
+    readFromSHT20(TriggerRHMeasurementHoldMaster, buffer, 3);
     
     // データをデコードする
     *p_data = ((uint16_t)buffer[0] << 8) | ((uint16_t)buffer[0] & 0xfc);
-
 
     /*
     ret_code_t err_code;
@@ -110,10 +115,10 @@ void getHumidityData(humidity_sensor_context_t *p_context, HumidityData_t *p_dat
      */
 }
 
-void getTemperatureData(humidity_sensor_context_t *p_context, TemperatureData_t *p_data)
+void getTemperatureData(TemperatureData_t *p_data)
 {
     uint8_t buffer[3];
-    readFromSHT20(p_context, TriggerTempMeasurementHoldMaster, buffer, 3);
+    readFromSHT20( TriggerTempMeasurementHoldMaster, buffer, 3);
     
     // データをデコードする
     *p_data = ((uint16_t)buffer[0] << 8) | ((uint16_t)buffer[0] & 0xfc);

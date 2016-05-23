@@ -338,8 +338,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20002300</StartAddress>
-                <Size>0x1d00</Size>
+                <StartAddress>0x20002600</StartAddress>
+                <Size>0x1a00</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -561,6 +561,36 @@
               <FileType>1</FileType>
               <FilePath>..\senstick_sensor_base_data.c</FilePath>
             </File>
+            <File>
+              <FileName>gyro_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gyro_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>magnetic_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetic_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>brightness_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\brightness_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>uv_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\uv_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>humidity_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\humidity_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>pressure_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\pressure_sensor_base.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -580,6 +610,26 @@
               <FileName>twi_slave_nine_axes_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_brightness_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_brightness_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_uv_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_uv_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_humidity_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_humidity_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_pressure_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_pressure_sensor.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1187,6 +1237,36 @@
               <FileType>1</FileType>
               <FilePath>..\senstick_sensor_base_data.c</FilePath>
             </File>
+            <File>
+              <FileName>gyro_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gyro_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>magnetic_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\magnetic_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>brightness_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\brightness_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>uv_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\uv_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>humidity_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\humidity_sensor_base.c</FilePath>
+            </File>
+            <File>
+              <FileName>pressure_sensor_base.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\pressure_sensor_base.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1206,6 +1286,26 @@
               <FileName>twi_slave_nine_axes_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\twi_slave_nine_axes_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_brightness_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_brightness_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_uv_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_uv_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_humidity_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_humidity_sensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_slave_pressure_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_slave_pressure_sensor.c</FilePath>
             </File>
           </Files>
         </Group>

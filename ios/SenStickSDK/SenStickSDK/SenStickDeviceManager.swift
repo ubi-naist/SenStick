@@ -130,6 +130,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
     {
+        debugPrint("\(#function)")
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
             device.onConnected()
         }
@@ -137,6 +138,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
     {
+        debugPrint("\(#function)")        
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
             device.onDisConnected()
         }

@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class SensorDataViewController : UITableViewController {
+class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     weak var device: SenStickDevice?
     
     override func viewDidLoad() {
@@ -30,7 +30,10 @@ class SensorDataViewController : UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     }
     
-    // MARK: - KVO
+    // MARK: - SenStickDeviceDelegate
+    func didIsConnectedChanged(sender: SenStickDevice, isConnected: Bool) {
+        self.tableView.reloadData()
+    }
     
     // MARK: - Table View
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -42,20 +45,21 @@ class SensorDataViewController : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell : UITableViewCell
         if indexPath.row == 0 {
-            return tableView.dequeueReusableCellWithIdentifier("statusCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("statusCell", forIndexPath: indexPath)
         } else {
-            return tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath)
         }
+        
+        if let statusCell = cell as? SensorStatusCellView {
+            statusCell.device = self.device
+        }
+        debugPrint("\(#function) \(cell)")
+        return cell
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 148
-    }
-
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let statusCell = cell as? SensorStatusCellView {
-            statusCell.device = self.device
-        }
     }
 }

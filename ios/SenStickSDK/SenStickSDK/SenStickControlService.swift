@@ -11,7 +11,7 @@ import CoreBluetooth
 
 public protocol SenStickControlServiceDelegate : class
 {
-    func didStatusChanged(sender:SenStickControlService, status:SenStickStatus)
+    func didCommandChanged(sender:SenStickControlService, command:SenStickControlCommand)
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
@@ -30,14 +30,14 @@ public class SenStickControlService : SenStickService
     public weak var delegate: SenStickControlServiceDelegate?
     
     // Properties, KVO-compatible
-    var _status: SenStickStatus
-    public private(set) var status: SenStickStatus {
+    var _command: SenStickControlCommand
+    public private(set) var command: SenStickControlCommand {
         get {
-            return _status
+            return _command
         }
         set(newValue) {
-            _status = newValue
-            delegate?.didStatusChanged(self, status: _status)
+            _command = newValue
+            delegate?.didCommandChanged(self, command: _command)
         }
     }
     
@@ -91,7 +91,7 @@ public class SenStickControlService : SenStickService
         dateTimeChar          = _dateTimeChar
         abstractChar          = _abstractChar
         
-        _status               = .Stopping
+        _command              = .Stopping
         _availableLogCount    = 0
         _dateTime             = NSDate.distantPast()
         _abstractText         = ""
@@ -100,7 +100,9 @@ public class SenStickControlService : SenStickService
         
         // Notifyを有効に。初期値読み出し。
         device.setNotify(statusChar, enabled: true)
+        device.readValue(statusChar)
         device.setNotify(availableLogCountChar, enabled: true)
+        device.readValue(availableLogCountChar)
         device.readValue(dateTimeChar)
         device.readValue(abstractChar)
     }
@@ -112,8 +114,8 @@ public class SenStickControlService : SenStickService
         
         switch characteristic.UUID {
         case SenStickUUIDs.StatusCharUUID:
-            if let s = SenStickStatus(rawValue: data[0]) {
-                self.status = s
+            if let s = SenStickControlCommand(rawValue: data[0]) {
+                self.command = s
             }
             
         case SenStickUUIDs.AvailableLogCountCharUUID:
@@ -138,6 +140,12 @@ public class SenStickControlService : SenStickService
     }
     
     // Public methods
+    public func writeCommand(command:SenStickControlCommand)
+    {
+        device.writeValue(statusChar, value: command.rawValue.pack())
+        device.readValue(statusChar)
+    }
+    
     public func readDateTime()
     {
         device.readValue(dateTimeChar)

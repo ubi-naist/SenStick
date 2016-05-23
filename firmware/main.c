@@ -233,10 +233,10 @@ int main(void)
     initSenstickSensorController(uuid_type);
     
     // 不揮発メモリのフォーマット処理
-    if( ! isMetaLogFormatted() ) {
+//    if( ! isMetaLogFormatted() ) {
         metaLogFormatStorage();
         senstickSensorControllerFormatStorage();
-    }
+//    }
 
     // 初期値設定
     uint8_t count = metaDataLogGetLogCount();

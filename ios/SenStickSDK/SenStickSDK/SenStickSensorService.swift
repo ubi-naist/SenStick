@@ -67,8 +67,6 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         
         //初期値読み出し。
         device.readValue(self.sensorSettingChar)
-        device.readValue(self.sensorLogIDChar)
-        device.readValue(self.sensorLogMetaDataChar)
         
         // Notifyを有効に
         device.setNotify(self.sensorRealTimeDataChar, enabled: true)
@@ -101,6 +99,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             }
             self.realtimeData = newdata
             delegate?.didUpdateRealTimeData(self)
+debugPrint("\(self.realtimeData)")
             
         case sensorLogIDChar.UUID:
             guard let logID = SensorLogID.unpack(data) else {

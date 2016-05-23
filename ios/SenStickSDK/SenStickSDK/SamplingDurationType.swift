@@ -13,7 +13,7 @@ public struct SamplingDurationType : CustomStringConvertible
 {
     let duration : NSTimeInterval
     
-    init(milliSeconds value: UInt16)
+    public init(milliSeconds value: UInt16)
     {
         duration = 1e-3 * Double(value)
     }

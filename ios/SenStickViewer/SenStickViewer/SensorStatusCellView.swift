@@ -37,29 +37,42 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
             updateView()
         }
     }
-
+    
     // Private methods
     func updateView() {
         deviceNameTextLabel.text = device?.name
-        countOfLogTextLabel.text = "\(device?.controlService?.availableLogCount)"
         
         gyroButton.enabled         = false
         magnetronButton.enabled    = false
         temperatureButton.enabled  = false
         humidtyButton.enabled      = false
         UVButton.enabled           = false
-        accelerationButton.enabled = (device?.accelerationSensorService != nil)
+
+        if let s = device?.accelerationSensorService {
+            accelerationButton.enabled  = true
+            accelerationButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            accelerationButton.enabled = false
+        }
+        
         barometerButton.enabled    = false
         luxButton.enabled          = false
         
-        readLogButton.enabled = (device?.controlService != nil)
-        startButton.enabled   = (device?.controlService != nil)
-        stopButton.enabled    = (device?.controlService != nil)
+        if let control = device?.controlService {
+            countOfLogTextLabel.text = "\(control.availableLogCount)"
+            readLogButton.enabled = (control.availableLogCount > 0)
+            startButton.enabled   = (control.command == .Stopping)
+            stopButton.enabled    = (control.command != .Stopping)
+        } else {
+            countOfLogTextLabel.text = "0"
+            readLogButton.enabled = false
+            startButton.enabled   = false
+            stopButton.enabled    = false
+        }
     }
     
     // MARK: - SenStickControlServiceDelegate
-    func didStatusChanged(sender:SenStickControlService, status:SenStickStatus)
-    {
+    func didCommandChanged(sender: SenStickControlService, command: SenStickControlCommand) {
         updateView()
     }
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
@@ -73,5 +86,43 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
     {
         updateView()
+    }
+    
+    // MARK: - Eventhandler
+    @IBAction func  startButtonToutchUpInside(sender: UIButton) {
+        device?.controlService?.writeCommand(.Starting)
+    }
+    
+    @IBAction func  stopButtonToutchUpInside(sender: UIButton) {
+            device?.controlService?.writeCommand(.Stopping)
+    }
+    
+    @IBAction func  readLogButtonToutchUpInside(sender: UIButton) {
+    }
+    
+    @IBAction func  gyroButtonToutchUpInside(sender: UIButton) {
+        
+    }
+    @IBAction func magnetronButtonToutchUpInside(sender: UIButton) {
+        
+    }
+    @IBAction func temperatureButtonToutchUpInside(sender: UIButton) {
+        
+    }
+    @IBAction func UVButtonButtonToutchUpInside(sender: UIButton) {
+        
+    }
+    
+    @IBAction func accelerationButtonToutchUpInside(sender: UIButton) {
+        accelerationButton.selected = !accelerationButton.selected
+        let status :SenStickStatus = accelerationButton.selected ? .SensingAndLogging : .Stopping
+        device?.accelerationSensorService!.writeSetting( SensorSettingData<AccelerationRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .ACCELERATION_RANGE_2G) )
+    }
+    
+    @IBAction func barometerButtonToutchUpInside(sender: UIButton) {
+        
+    }
+    @IBAction func luxButtonToutchUpInside(sender: UIButton) {
+        
     }
 }

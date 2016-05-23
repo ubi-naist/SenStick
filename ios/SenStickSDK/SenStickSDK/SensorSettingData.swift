@@ -10,9 +10,16 @@ import Foundation
 
 public struct SensorSettingData<T: RawRepresentable where T.RawValue == UInt16> : CustomStringConvertible, PackableType
 {
-    let status:           SenStickStatus
-    let samplingDuration: SamplingDurationType
-    let range:            T
+    public let status:           SenStickStatus
+    public let samplingDuration: SamplingDurationType
+    public let range:            T
+    
+    public init(status:  SenStickStatus, samplingDuration:SamplingDurationType, range: T)
+    {
+        self.status = status
+        self.samplingDuration = samplingDuration
+        self.range = range
+    }
     
     public var description : String
     {

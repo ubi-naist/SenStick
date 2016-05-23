@@ -9,15 +9,29 @@
 import Foundation
 import CoreBluetooth
 
+public protocol SenStickDeviceDelegate : class {
+    func didIsConnectedChanged(sender: SenStickDevice, isConnected: Bool)
+}
+
 public class SenStickDevice : NSObject, CBPeripheralDelegate
 {
     // MARK: variables
     unowned let manager: CBCentralManager
     let peripheral: CBPeripheral
+
+    public weak var delegate: SenStickDeviceDelegate?
     
     // MARK: Properties
     // 接続してサービス検索が完了した時に、Trueになります。
-    dynamic public private(set) var isConnected: Bool
+    public private(set) var isConnected: Bool
+    {
+        didSet {
+            self.delegate?.didIsConnectedChanged(self, isConnected: self.isConnected)
+            debugPrint("\(#function): \(self.isConnected)")
+            debugPrint("    \(self.controlService)")
+            debugPrint("    \(self.accelerationSensorService)")
+        }
+    }
     
     public private(set) var name: String
     public private(set) var identifier: NSUUID
@@ -69,10 +83,6 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     // MARK: Public methods
     public func connect()
     {
-        if self.isConnected {
-            return
-        }
-        
         if peripheral.state == .Disconnected || peripheral.state == .Disconnecting {
             manager.connectPeripheral(peripheral, options:nil)
         }
@@ -106,7 +116,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         }
         
         // FIXME キャラクタリスティクスが発見できないサービスがあった場合、コールバックに通知が来ない。タイムアウトなどで処理する?
-        
+//   debugPrint("\(#function), \(service.UUID).")
         // すべてのサービスのキャラクタリスティクスが発見できれば、インスタンスを生成
         switch service.UUID {
         case SenStickUUIDs.ControlServiceUUID:
@@ -119,16 +129,23 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             debugPrint("\(#function):unexpected service is found, \(service)" )
             break
         }
+        
+        self.isConnected = self.controlService != nil && self.metaDataService != nil && self.accelerationSensorService != nil
     }
     
     public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
     {
+        if error != nil {
+            debugPrint("didUpdate: \(characteristic.UUID) \(error)")
+            return
+        }
+        
         // キャラクタリスティクスから[UInt8]を取り出す。なければreturn。
         guard let characteristics_nsdata = characteristic.value else { return }
         
         var data = [UInt8](count: characteristics_nsdata.length, repeatedValue: 0)
         characteristics_nsdata.getBytes(&data, length: data.count)
-        
+
         switch characteristic.service.UUID {
         case SenStickUUIDs.ControlServiceUUID:
             self.controlService?.didUpdateValue(characteristic, data: data)
@@ -139,6 +156,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         default:
             break
         }
+        
+        debugPrint("didUpdate: \(characteristic.UUID) \(data)")
     }
     
     public func peripheralDidUpdateName(peripheral: CBPeripheral)
@@ -176,9 +195,6 @@ extension SenStickDevice {
     internal func setNotify(characteristic: CBCharacteristic, enabled: Bool)
     {
         peripheral.setNotifyValue(enabled, forCharacteristic: characteristic)
-        if enabled {
-            peripheral.readValueForCharacteristic(characteristic)
-        }
     }
     // 値読み出しを要求します
     internal func readValue(characteristic: CBCharacteristic)
@@ -188,6 +204,9 @@ extension SenStickDevice {
     // 値の書き込み
     internal func writeValue(characteristic: CBCharacteristic, value: [UInt8])
     {
-        peripheral.writeValue( NSData(bytes: value, length: value.count), forCharacteristic: characteristic, type: .WithoutResponse)
+        let data = NSData(bytes: value, length: value.count)
+        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithoutResponse)
+//        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithResponse)
+
     }
 }

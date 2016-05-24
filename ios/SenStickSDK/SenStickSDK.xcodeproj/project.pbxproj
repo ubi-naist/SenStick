@@ -15,6 +15,8 @@
 		F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */; };
 		F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */; };
 		F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */; };
+		F86E76921CF3CAB8001D9DD5 /* GyroSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */; };
+		F86E76941CF3D02C001D9DD5 /* MagneticFieldSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */; };
 		F87A07D11C9BAE1F0029231D /* SenStickDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */; };
 		F8C17DEB1CC5C09A00030B99 /* SenStickSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17DEA1CC5C09A00030B99 /* SenStickSensorService.swift */; };
 		F8C17DED1CC6658D00030B99 /* PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17DEC1CC6658D00030B99 /* PackableType.swift */; };
@@ -40,6 +42,8 @@
 		F86322C51C97B7B3001B53A0 /* SenStickDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDeviceManager.swift; sourceTree = "<group>"; };
 		F86322C71C97B7BF001B53A0 /* SenStickDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDevice.swift; sourceTree = "<group>"; };
 		F86322CF1C98E44B001B53A0 /* SenStickUUIDs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickUUIDs.swift; sourceTree = "<group>"; };
+		F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroSensorService.swift; sourceTree = "<group>"; };
+		F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagneticFieldSensorService.swift; sourceTree = "<group>"; };
 		F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDataModels.swift; sourceTree = "<group>"; };
 		F8A0BA261CA4DE260099B235 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		F8C17DEA1CC5C09A00030B99 /* SenStickSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickSensorService.swift; sourceTree = "<group>"; };
@@ -131,6 +135,8 @@
 				F8C17DFC1CC70EE700030B99 /* SensorDataPackable.swift */,
 				F8C17DEA1CC5C09A00030B99 /* SenStickSensorService.swift */,
 				F8C17E051CCB071D00030B99 /* AccelerationSensorService.swift */,
+				F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */,
+				F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */,
 			);
 			name = SensorServices;
 			sourceTree = "<group>";
@@ -220,9 +226,11 @@
 				F8C17DF51CC7031300030B99 /* SenStickControlCommand.swift in Sources */,
 				F80AD0B01CAA667E00291197 /* SenStickService.swift in Sources */,
 				F8C17E021CC9AF9700030B99 /* SensorLogMetaData.swift in Sources */,
+				F86E76941CF3D02C001D9DD5 /* MagneticFieldSensorService.swift in Sources */,
 				F8C17DFF1CC7161F00030B99 /* SensorLogID.swift in Sources */,
 				F80AD0AE1CAA662C00291197 /* SenStickControlService.swift in Sources */,
 				F86322C81C97B7BF001B53A0 /* SenStickDevice.swift in Sources */,
+				F86E76921CF3CAB8001D9DD5 /* GyroSensorService.swift in Sources */,
 				F8C17DEB1CC5C09A00030B99 /* SenStickSensorService.swift in Sources */,
 				F8C17DFB1CC70CED00030B99 /* SamplingDurationType.swift in Sources */,
 				F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */,

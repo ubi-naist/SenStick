@@ -43,7 +43,7 @@ struct AccelerationRawData
     }
     
     // 物理センサーの1GあたりのLBSの値
-    static func getLSBperG(range: AccelerationRange) -> Int16
+    static func getLSBperG(range: AccelerationRange) -> Double
     {
         switch range {
         case .ACCELERATION_RANGE_2G: return 16384

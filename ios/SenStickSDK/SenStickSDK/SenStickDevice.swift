@@ -26,19 +26,24 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public private(set) var isConnected: Bool
     {
         didSet {
-            self.delegate?.didIsConnectedChanged(self, isConnected: self.isConnected)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didIsConnectedChanged(self, isConnected: self.isConnected)
+            })
             debugPrint("\(#function): \(self.isConnected)")
             debugPrint("    \(self.controlService)")
             debugPrint("    \(self.accelerationSensorService)")
+            debugPrint("    \(self.gyroSensorService)")
         }
     }
     
     public private(set) var name: String
     public private(set) var identifier: NSUUID
     
-    public private(set) var controlService:   SenStickControlService?
-    public private(set) var metaDataService : SenStickMetaDataService?
-    public private(set) var accelerationSensorService: AccelerationSensorService?
+    public private(set) var controlService:             SenStickControlService?
+    public private(set) var metaDataService:            SenStickMetaDataService?
+    public private(set) var accelerationSensorService:  AccelerationSensorService?
+    public private(set) var gyroSensorService:          GyroSensorService?
+    public private(set) var magneticFieldSensorService: MagneticFieldSensorService?
 
     // MARK: initializer
     init(manager: CBCentralManager, peripheral:CBPeripheral)
@@ -125,14 +130,24 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.metaDataService = SenStickMetaDataService(device: self)
         case SenStickUUIDs.accelerationSensorServiceUUID:
             self.accelerationSensorService = AccelerationSensorService(device: self)
+        case SenStickUUIDs.gyroSensorServiceUUID:
+            self.gyroSensorService = GyroSensorService(device: self)
+        case SenStickUUIDs.magneticFieldSensorServiceUUID:
+            self.magneticFieldSensorService = MagneticFieldSensorService(device: self)
+
         default:
             debugPrint("\(#function):unexpected service is found, \(service)" )
             break
         }
         
-        let newValue :Bool = self.controlService != nil && self.metaDataService != nil && self.accelerationSensorService != nil
+        let newValue :Bool =
+            self.controlService != nil && self.metaDataService != nil
+                && self.accelerationSensorService  != nil
+                && self.gyroSensorService          != nil
+                && self.magneticFieldSensorService != nil
+        
         if newValue != self.isConnected {
-        self.isConnected = newValue
+            self.isConnected = newValue
         }
     }
     
@@ -156,6 +171,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.metaDataService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.accelerationSensorServiceUUID:
             self.accelerationSensorService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.gyroSensorServiceUUID:
+            self.gyroSensorService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.magneticFieldSensorServiceUUID:
+            self.magneticFieldSensorService?.didUpdateValue(characteristic, data: data)
         default:
             break
         }

@@ -84,13 +84,23 @@ public struct SenStickUUIDs
     }
 
     // センサごとのサービスのUUID
-    public static let accelerationSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AccelerationSensor) }()
+    public static let accelerationSensorServiceUUID:CBUUID  = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AccelerationSensor) }()
+    public static let gyroSensorServiceUUID:CBUUID          = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.GyroSensor) }()
+    public static let magneticFieldSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.MagneticFieldSensor) }()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] =
         [ ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, DateTimeCharUUID, AbstractCharUUID],
           MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
+
           {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AccelerationSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }()
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }(),
+
+          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.GyroSensor.rawValue)) }() :
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.GyroSensor ) }(),
+          
+          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.MagneticFieldSensor.rawValue)) }() :
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.MagneticFieldSensor ) }()
+            
     ]
 }

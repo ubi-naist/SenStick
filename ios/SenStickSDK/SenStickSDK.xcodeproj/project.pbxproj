@@ -18,6 +18,8 @@
 		F86E76921CF3CAB8001D9DD5 /* GyroSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */; };
 		F86E76941CF3D02C001D9DD5 /* MagneticFieldSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */; };
 		F86E76961CF3DDEC001D9DD5 /* BrightnessSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76951CF3DDEC001D9DD5 /* BrightnessSensorService.swift */; };
+		F86E76981CF3E8C0001D9DD5 /* UVSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76971CF3E8C0001D9DD5 /* UVSensorService.swift */; };
+		F86E769A1CF414A6001D9DD5 /* HumiditySensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E76991CF414A6001D9DD5 /* HumiditySensorService.swift */; };
 		F87A07D11C9BAE1F0029231D /* SenStickDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */; };
 		F8C17DEB1CC5C09A00030B99 /* SenStickSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17DEA1CC5C09A00030B99 /* SenStickSensorService.swift */; };
 		F8C17DED1CC6658D00030B99 /* PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17DEC1CC6658D00030B99 /* PackableType.swift */; };
@@ -46,6 +48,8 @@
 		F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroSensorService.swift; sourceTree = "<group>"; };
 		F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagneticFieldSensorService.swift; sourceTree = "<group>"; };
 		F86E76951CF3DDEC001D9DD5 /* BrightnessSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrightnessSensorService.swift; sourceTree = "<group>"; };
+		F86E76971CF3E8C0001D9DD5 /* UVSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UVSensorService.swift; sourceTree = "<group>"; };
+		F86E76991CF414A6001D9DD5 /* HumiditySensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumiditySensorService.swift; sourceTree = "<group>"; };
 		F87A07D01C9BAE1F0029231D /* SenStickDataModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickDataModels.swift; sourceTree = "<group>"; };
 		F8A0BA261CA4DE260099B235 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		F8C17DEA1CC5C09A00030B99 /* SenStickSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickSensorService.swift; sourceTree = "<group>"; };
@@ -140,6 +144,8 @@
 				F86E76911CF3CAB8001D9DD5 /* GyroSensorService.swift */,
 				F86E76931CF3D02C001D9DD5 /* MagneticFieldSensorService.swift */,
 				F86E76951CF3DDEC001D9DD5 /* BrightnessSensorService.swift */,
+				F86E76971CF3E8C0001D9DD5 /* UVSensorService.swift */,
+				F86E76991CF414A6001D9DD5 /* HumiditySensorService.swift */,
 			);
 			name = SensorServices;
 			sourceTree = "<group>";
@@ -228,6 +234,7 @@
 				F8C17DFD1CC70EE700030B99 /* SensorDataPackable.swift in Sources */,
 				F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */,
 				F8C17DF51CC7031300030B99 /* SenStickControlCommand.swift in Sources */,
+				F86E769A1CF414A6001D9DD5 /* HumiditySensorService.swift in Sources */,
 				F80AD0B01CAA667E00291197 /* SenStickService.swift in Sources */,
 				F8C17E021CC9AF9700030B99 /* SensorLogMetaData.swift in Sources */,
 				F86E76941CF3D02C001D9DD5 /* MagneticFieldSensorService.swift in Sources */,
@@ -240,6 +247,7 @@
 				F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */,
 				F8C17DF71CC704CB00030B99 /* SenStickStatus.swift in Sources */,
 				F8C17DF91CC704EF00030B99 /* SenStickSensorType.swift in Sources */,
+				F86E76981CF3E8C0001D9DD5 /* UVSensorService.swift in Sources */,
 				F8C17DED1CC6658D00030B99 /* PackableType.swift in Sources */,
 				F856CA881CC1162A00C30744 /* NSDate+PackableType.swift in Sources */,
 				F87A07D11C9BAE1F0029231D /* SenStickDataModels.swift in Sources */,

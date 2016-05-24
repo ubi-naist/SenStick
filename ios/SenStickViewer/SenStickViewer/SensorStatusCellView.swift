@@ -42,12 +42,10 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     internal func updateView() {
         deviceNameTextLabel.text = device?.name
         
-        gyroButton.enabled         = false
-        magnetronButton.enabled    = false
         temperatureButton.enabled  = false
         humidtyButton.enabled      = false
-        UVButton.enabled           = false
-
+        barometerButton.enabled    = false
+        
         debugPrint("\(#function) \(device?.accelerationSensorService) command:\(device?.controlService?.command)")
         if let s = device?.accelerationSensorService {
             accelerationButton.enabled  = true
@@ -57,8 +55,38 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
             accelerationButton.selected = false
         }
         
-        barometerButton.enabled    = false
-        luxButton.enabled          = false
+        if let s = device?.gyroSensorService {
+            gyroButton.enabled  = true
+            gyroButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            gyroButton.enabled  = false
+            gyroButton.selected = false
+        }
+        
+        if let s = device?.magneticFieldSensorService {
+            magnetronButton.enabled  = true
+            magnetronButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            magnetronButton.enabled  = false
+            magnetronButton.selected = false
+        }
+
+        if let s = device?.brightnessSensorService {
+            luxButton.enabled  = true
+            luxButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            luxButton.enabled  = false
+            luxButton.selected = false
+        }
+        
+        if let s = device?.uvSensorService {
+            UVButton.enabled  = true
+            UVButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            UVButton.enabled  = false
+            UVButton.selected = false
+        }
+        
         
         if let control = device?.controlService {
             countOfLogTextLabel.text = "\(control.availableLogCount)"

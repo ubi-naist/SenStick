@@ -19,8 +19,6 @@ public enum BrightnessRange : UInt16, CustomStringConvertible
     }
 }
 
-// 磁界のデータ構造体
-// 16-bit 符号付き数字 フルスケール f ±4800 μT
 struct BrightnessRawData
 {
     var rawValue : UInt16

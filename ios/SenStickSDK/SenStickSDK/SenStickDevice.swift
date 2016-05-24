@@ -45,7 +45,9 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public private(set) var gyroSensorService:          GyroSensorService?
     public private(set) var magneticFieldSensorService: MagneticFieldSensorService?
     public private(set) var brightnessSensorService:    BrightnessSensorService?
-
+    public private(set) var uvSensorService:            UVSensorService?
+    public private(set) var humiditySensorService:      HumiditySensorService?
+    
     // MARK: initializer
     init(manager: CBCentralManager, peripheral:CBPeripheral)
     {
@@ -71,12 +73,14 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     
     internal func onDisConnected()
     {
-        self.controlService            = nil
-        self.metaDataService           = nil
-        self.accelerationSensorService = nil
+        self.controlService             = nil
+        self.metaDataService            = nil
+        self.accelerationSensorService  = nil
         self.magneticFieldSensorService = nil
-        self.gyroSensorService         = nil
-        self.brightnessSensorService   = nil
+        self.gyroSensorService          = nil
+        self.brightnessSensorService    = nil
+        self.uvSensorService            = nil
+        self.humiditySensorService      = nil
         
         self.isConnected = false
     }
@@ -140,6 +144,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.magneticFieldSensorService = MagneticFieldSensorService(device: self)
         case SenStickUUIDs.brightnessSensorServiceUUID:
             self.brightnessSensorService = BrightnessSensorService(device: self)
+        case SenStickUUIDs.uvSensorServiceUUID:
+            self.uvSensorService = UVSensorService(device: self)
+        case SenStickUUIDs.humiditySensorServiceUUID:
+            self.humiditySensorService = HumiditySensorService(device: self)
 
         default:
             debugPrint("\(#function):unexpected service is found, \(service)" )
@@ -152,6 +160,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
                 && self.gyroSensorService          != nil
                 && self.magneticFieldSensorService != nil
                 && self.brightnessSensorService    != nil
+                && self.uvSensorService            != nil
+                && self.humiditySensorService      != nil
         
         if newValue != self.isConnected {
             self.isConnected = newValue
@@ -184,6 +194,11 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.magneticFieldSensorService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.brightnessSensorServiceUUID:
             self.brightnessSensorService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.uvSensorServiceUUID:
+            self.uvSensorService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.humiditySensorServiceUUID:
+            self.humiditySensorService?.didUpdateValue(characteristic, data: data)
+            
         default:
             break
         }

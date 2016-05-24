@@ -88,6 +88,8 @@ public struct SenStickUUIDs
     public static let gyroSensorServiceUUID:CBUUID          = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.GyroSensor) }()
     public static let magneticFieldSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.MagneticFieldSensor) }()
     public static let brightnessSensorServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.BrightnessSensor) }()
+    public static let uvSensorServiceUUID:CBUUID            = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
+    public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] =
@@ -104,7 +106,14 @@ public struct SenStickUUIDs
             { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.MagneticFieldSensor ) }(),
           
           {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.BrightnessSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.BrightnessSensor ) }()
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.BrightnessSensor ) }(),
+          
+          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.UltraVioletSensor.rawValue)) }() :
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.UltraVioletSensor ) }(),
+          
+          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.HumidityAndTemperatureSensor.rawValue)) }() :
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }()
+          
             
     ]
 }

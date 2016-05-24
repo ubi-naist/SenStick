@@ -90,6 +90,7 @@ public struct SenStickUUIDs
     public static let brightnessSensorServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.BrightnessSensor) }()
     public static let uvSensorServiceUUID:CBUUID            = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
     public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
+    public static let pressureSensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AirPressureSensor)}()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] =
@@ -112,8 +113,9 @@ public struct SenStickUUIDs
             { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.UltraVioletSensor ) }(),
           
           {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.HumidityAndTemperatureSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }()
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }(),
           
-            
+          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AirPressureSensor.rawValue)) }() :
+            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AirPressureSensor ) }()
     ]
 }

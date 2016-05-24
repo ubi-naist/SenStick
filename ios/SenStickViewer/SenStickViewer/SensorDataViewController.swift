@@ -28,9 +28,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
 
         device?.delegate = self
         device?.connect()
-        
-        self.statusCell?.updateView()
-        self.accelerationSensorDataController?.service = device?.accelerationSensorService
+
+        updateViews()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -38,14 +37,16 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
 
         device?.delegate = nil
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+    func updateViews()
+    {
+        self.statusCell?.updateView()
+        self.accelerationSensorDataController?.service = device?.accelerationSensorService
     }
     
     // MARK: - SenStickDeviceDelegate
-    func didIsConnectedChanged(sender: SenStickDevice, isConnected: Bool) {
-        self.statusCell?.updateView()
-        self.accelerationSensorDataController?.service = device?.accelerationSensorService
+    func didServiceFound(sender: SenStickDevice) {
+        updateViews()
     }
     
     // MARK: - Table View

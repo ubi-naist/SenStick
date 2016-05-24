@@ -282,26 +282,9 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wue-cH-XhL">
-                                            <rect key="frame" x="344" y="40" width="35" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="32" id="LpD-p6-jQF"/>
-                                                <constraint firstAttribute="height" constant="32" id="uGq-ex-502"/>
-                                            </constraints>
-                                            <state key="normal" title="Button" image="ic_sensor_temp_b"/>
-                                            <state key="disabled" title="ic_sensor_temp_g2" image="ic_sensor_temp_g2"/>
-                                            <state key="selected" image="ic_sensor_temp_b2"/>
-                                            <variation key="widthClass=regular" ambiguous="YES">
-                                                <rect key="frame" x="147" y="2" width="35" height="40"/>
-                                            </variation>
-                                            <connections>
-                                                <action selector="temperatureButtonToutchUpInside:" destination="0eC-IK-J49" eventType="touchUpInside" id="AIY-po-y0u"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="gGe-Po-O1I" firstAttribute="top" secondItem="0ar-iY-DQY" secondAttribute="top" id="40q-uA-oIB"/>
-                                        <constraint firstItem="JwF-bq-J0B" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Wue-cH-XhL" secondAttribute="trailing" priority="750" constant="6" id="46A-dP-sOw"/>
                                         <constraint firstItem="CVI-dD-7XI" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="90" id="856-lx-NDe"/>
                                         <constraint firstItem="bKe-3r-bJ8" firstAttribute="centerY" secondItem="CVI-dD-7XI" secondAttribute="centerY" id="8Qd-t2-3lv"/>
                                         <constraint firstItem="jSL-kk-rlR" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="8Vg-bW-M8y"/>
@@ -312,6 +295,7 @@
                                         <constraint firstItem="Bb3-XD-ZTG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bjU-Yv-Sns" secondAttribute="trailing" priority="750" constant="6" id="ESC-mo-qcy"/>
                                         <constraint firstItem="LQv-o6-W9K" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="4" id="FYa-g4-G2j"/>
                                         <constraint firstItem="gXK-Xk-TFV" firstAttribute="top" secondItem="LQv-o6-W9K" secondAttribute="top" id="G9J-mw-uFW"/>
+                                        <constraint firstItem="JwF-bq-J0B" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sgT-pP-0Cs" secondAttribute="trailing" priority="750" constant="6" id="MJN-vf-Pxz"/>
                                         <constraint firstItem="JwF-bq-J0B" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="ODh-2I-v2n"/>
                                         <constraint firstItem="gGe-Po-O1I" firstAttribute="centerY" secondItem="QiD-8B-Rzx" secondAttribute="centerY" id="OtV-fF-cMR"/>
                                         <constraint firstItem="5l5-su-gQc" firstAttribute="leading" secondItem="gXK-Xk-TFV" secondAttribute="trailing" constant="4" id="QVP-CK-jh8"/>
@@ -321,7 +305,6 @@
                                         <constraint firstItem="CNN-vl-ntv" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="Wmu-YW-XvZ"/>
                                         <constraint firstItem="gGe-Po-O1I" firstAttribute="centerY" secondItem="0ar-iY-DQY" secondAttribute="centerY" id="cAU-gz-coF"/>
                                         <constraint firstItem="5l5-su-gQc" firstAttribute="centerY" secondItem="gXK-Xk-TFV" secondAttribute="centerY" id="cwP-YF-hm0"/>
-                                        <constraint firstItem="Wue-cH-XhL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sgT-pP-0Cs" secondAttribute="trailing" priority="750" constant="6" id="f2R-Mb-w7R"/>
                                         <constraint firstItem="0ar-iY-DQY" firstAttribute="leading" secondItem="bKe-3r-bJ8" secondAttribute="trailing" constant="12" id="fHY-M0-E5D"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Nao-g4-UTu" secondAttribute="trailing" constant="6" id="fQF-9d-oSA"/>
                                         <constraint firstItem="Nao-g4-UTu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gct-Ak-UTG" secondAttribute="trailing" priority="750" constant="6" id="fRu-mx-Qem"/>
@@ -333,7 +316,6 @@
                                         <constraint firstItem="gct-Ak-UTG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bb3-XD-ZTG" secondAttribute="trailing" priority="750" constant="6" id="qsI-kU-4da"/>
                                         <constraint firstItem="Nao-g4-UTu" firstAttribute="top" secondItem="WtX-al-46l" secondAttribute="topMargin" constant="32" id="rjR-48-PXC"/>
                                         <constraint firstItem="bjU-Yv-Sns" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="sbS-1p-urs"/>
-                                        <constraint firstItem="Wue-cH-XhL" firstAttribute="top" secondItem="Nao-g4-UTu" secondAttribute="top" id="twD-Vi-Ho9"/>
                                         <constraint firstItem="0ar-iY-DQY" firstAttribute="centerY" secondItem="bKe-3r-bJ8" secondAttribute="centerY" id="u2H-Bu-cob"/>
                                         <constraint firstItem="QiD-8B-Rzx" firstAttribute="leading" secondItem="gGe-Po-O1I" secondAttribute="trailing" constant="18" id="wkt-tK-ali"/>
                                         <constraint firstItem="gXK-Xk-TFV" firstAttribute="leading" secondItem="LQv-o6-W9K" secondAttribute="trailing" constant="14" id="yng-jY-4qR"/>
@@ -363,7 +345,6 @@
                                     <outlet property="startButton" destination="gGe-Po-O1I" id="4M5-oH-Uf5"/>
                                     <outlet property="stopButton" destination="QiD-8B-Rzx" id="9oM-KE-4ln"/>
                                     <outlet property="targetLogTextInput" destination="bKe-3r-bJ8" id="cO9-Qb-Fba"/>
-                                    <outlet property="temperatureButton" destination="Wue-cH-XhL" id="VQG-hE-OeN"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="Uf1-3b-Rzb" userLabel="dataCell">
@@ -560,9 +541,6 @@
         <image name="ic_sensor_press_b" width="128" height="128"/>
         <image name="ic_sensor_press_b2" width="202" height="237"/>
         <image name="ic_sensor_press_g2" width="202" height="237"/>
-        <image name="ic_sensor_temp_b" width="128" height="128"/>
-        <image name="ic_sensor_temp_b2" width="202" height="237"/>
-        <image name="ic_sensor_temp_g2" width="202" height="237"/>
         <image name="ic_sensor_uv_b" width="128" height="128"/>
         <image name="ic_sensor_uv_b2" width="202" height="237"/>
         <image name="ic_sensor_uv_g2" width="202" height="237"/>

@@ -10,7 +10,7 @@ import Foundation
 import CoreBluetooth
 
 public protocol SenStickDeviceDelegate : class {
-    func didIsConnectedChanged(sender: SenStickDevice, isConnected: Bool)
+    func didServiceFound(sender:SenStickDevice)
 }
 
 public class SenStickDevice : NSObject, CBPeripheralDelegate
@@ -22,7 +22,9 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public weak var delegate: SenStickDeviceDelegate?
     
     // MARK: Properties
+    public private(set) var isConnected: Bool
     // 接続してサービス検索が完了した時に、Trueになります。
+    /*
     public private(set) var isConnected: Bool
     {
         didSet {
@@ -34,7 +36,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
                 debugPrint("    \(self.gyroSensorService)")
             })
         }
-    }
+    }*/
     
     public private(set) var name: String
     public private(set) var identifier: NSUUID
@@ -47,6 +49,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public private(set) var brightnessSensorService:    BrightnessSensorService?
     public private(set) var uvSensorService:            UVSensorService?
     public private(set) var humiditySensorService:      HumiditySensorService?
+    public private(set) var pressureSensorService:      PressureSensorService?
     
     // MARK: initializer
     init(manager: CBCentralManager, peripheral:CBPeripheral)
@@ -61,6 +64,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
 
         self.peripheral.delegate = self
         if self.peripheral.state == .Connected {
+            self.isConnected = true
             findSensticServices()
         }
     }
@@ -68,11 +72,14 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     // Internal , device managerが呼び出します
     internal func onConnected()
     {
+        self.isConnected = true
         findSensticServices()
     }
     
     internal func onDisConnected()
     {
+        self.isConnected = false
+        
         self.controlService             = nil
         self.metaDataService            = nil
         self.accelerationSensorService  = nil
@@ -81,8 +88,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         self.brightnessSensorService    = nil
         self.uvSensorService            = nil
         self.humiditySensorService      = nil
-        
-        self.isConnected = false
+        self.pressureSensorService      = nil
     }
     
     // Private methods
@@ -148,24 +154,17 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.uvSensorService = UVSensorService(device: self)
         case SenStickUUIDs.humiditySensorServiceUUID:
             self.humiditySensorService = HumiditySensorService(device: self)
+        case SenStickUUIDs.pressureSensorServiceUUID:
+            self.pressureSensorService = PressureSensorService(device: self)
 
         default:
             debugPrint("\(#function):unexpected service is found, \(service)" )
             break
         }
         
-        let newValue :Bool =
-            self.controlService != nil && self.metaDataService != nil
-                && self.accelerationSensorService  != nil
-                && self.gyroSensorService          != nil
-                && self.magneticFieldSensorService != nil
-                && self.brightnessSensorService    != nil
-                && self.uvSensorService            != nil
-                && self.humiditySensorService      != nil
-        
-        if newValue != self.isConnected {
-            self.isConnected = newValue
-        }
+        dispatch_async(dispatch_get_main_queue(), {
+            self.delegate?.didServiceFound(self)
+        })        
     }
     
     public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
@@ -198,6 +197,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             self.uvSensorService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.humiditySensorServiceUUID:
             self.humiditySensorService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.pressureSensorServiceUUID:
+            self.pressureSensorService?.didUpdateValue(characteristic, data: data)
             
         default:
             break

@@ -17,7 +17,6 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     @IBOutlet var selectAllButton: UIButton!
     @IBOutlet var gyroButton: UIButton!
     @IBOutlet var magnetronButton: UIButton!
-    @IBOutlet var temperatureButton: UIButton!
     @IBOutlet var humidtyButton: UIButton!
     @IBOutlet var UVButton: UIButton!
     @IBOutlet var accelerationButton: UIButton!
@@ -42,51 +41,62 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     internal func updateView() {
         deviceNameTextLabel.text = device?.name
         
-        temperatureButton.enabled  = false
-        humidtyButton.enabled      = false
-        barometerButton.enabled    = false
-        
         debugPrint("\(#function) \(device?.accelerationSensorService) command:\(device?.controlService?.command)")
         if let s = device?.accelerationSensorService {
+            accelerationButton.hidden = false
             accelerationButton.enabled  = true
             accelerationButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            accelerationButton.enabled  = false
-            accelerationButton.selected = false
+            accelerationButton.hidden = true
         }
         
         if let s = device?.gyroSensorService {
+            gyroButton.hidden = false
             gyroButton.enabled  = true
             gyroButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            gyroButton.enabled  = false
-            gyroButton.selected = false
+            gyroButton.hidden = true
         }
         
         if let s = device?.magneticFieldSensorService {
+            magnetronButton.hidden = false
             magnetronButton.enabled  = true
             magnetronButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            magnetronButton.enabled  = false
-            magnetronButton.selected = false
+            magnetronButton.hidden = true
         }
 
         if let s = device?.brightnessSensorService {
+            luxButton.hidden = false
             luxButton.enabled  = true
             luxButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            luxButton.enabled  = false
-            luxButton.selected = false
+            luxButton.hidden = true
         }
         
         if let s = device?.uvSensorService {
+            UVButton.hidden = false
             UVButton.enabled  = true
             UVButton.selected = (s.settingData?.status != .Stopping)
         } else {
-            UVButton.enabled  = false
-            UVButton.selected = false
+            UVButton.hidden = true
         }
         
+        if let s = device?.humiditySensorService {
+            humidtyButton.hidden = false
+            humidtyButton.enabled  = true
+            humidtyButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            humidtyButton.hidden = true
+        }
+        
+        if let s = device?.pressureSensorService {
+            barometerButton.hidden = false
+            barometerButton.enabled  = true
+            barometerButton.selected = (s.settingData?.status != .Stopping)
+        } else {
+            barometerButton.hidden = true
+        }
         
         if let control = device?.controlService {
             countOfLogTextLabel.text = "\(control.availableLogCount)"
@@ -133,16 +143,20 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     }
     
     @IBAction func  gyroButtonToutchUpInside(sender: UIButton) {
-        
+        gyroButton.selected = !gyroButton.selected
+        let status :SenStickStatus = gyroButton.selected ? .SensingAndLogging : .Stopping
+        device?.gyroSensorService!.writeSetting( SensorSettingData<RotationRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .ROTATION_RANGE_250DPS) )
     }
     @IBAction func magnetronButtonToutchUpInside(sender: UIButton) {
-        
+        magnetronButton.selected = !magnetronButton.selected
+        let status :SenStickStatus = magnetronButton.selected ? .SensingAndLogging : .Stopping
+        device?.magneticFieldSensorService!.writeSetting(SensorSettingData<MagneticFieldRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .MAGNETIC_RANGE_DEFAULT))
     }
-    @IBAction func temperatureButtonToutchUpInside(sender: UIButton) {
-        
-    }
+
     @IBAction func UVButtonButtonToutchUpInside(sender: UIButton) {
-        
+        UVButton.selected = !UVButton.selected
+        let status :SenStickStatus = UVButton.selected ? .SensingAndLogging : .Stopping
+        device?.uvSensorService!.writeSetting( SensorSettingData<UVSensorRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .UV_RANGE_DEFAULT) )
     }
     
     @IBAction func accelerationButtonToutchUpInside(sender: UIButton) {
@@ -152,9 +166,14 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     }
     
     @IBAction func barometerButtonToutchUpInside(sender: UIButton) {
-        
+        barometerButton.selected = !barometerButton.selected
+        let status :SenStickStatus = barometerButton.selected ? .SensingAndLogging : .Stopping
+        device?.pressureSensorService!.writeSetting( SensorSettingData<PressureRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .PRESSURE_RANGE_DEFAULT))
     }
+    
     @IBAction func luxButtonToutchUpInside(sender: UIButton) {
-        
+        luxButton.selected = !luxButton.selected
+        let status :SenStickStatus = luxButton.selected ? .SensingAndLogging : .Stopping
+        device?.brightnessSensorService!.writeSetting( SensorSettingData<BrightnessRange>(status: status, samplingDuration: SamplingDurationType(milliSeconds: 300), range: .BRIGHTNESS_RANGE_DEFAULT))
     }
 }

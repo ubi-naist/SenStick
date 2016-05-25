@@ -153,7 +153,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             
         case sensorRealTimeDataChar.UUID:
             self.realtimeData = T.unpack(self.settingData!.range, value: data)
-debugPrint("\(self.realtimeData)")
+//debugPrint("\(self.realtimeData)")
             
         case sensorLogIDChar.UUID:
             guard let logID = SensorLogID.unpack(data) else {

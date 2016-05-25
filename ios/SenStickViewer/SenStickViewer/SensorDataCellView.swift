@@ -18,6 +18,7 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     @IBOutlet var graphView:      DataGraphView?
     
     var logData: [[Double]]?
+    var logid: UInt8 = 0
     
     // MARK: - Properties
     var maxValue: Double {
@@ -38,13 +39,6 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         minValue = 0
         
         super.init(coder:aDecoder)
-        
-        self.iconButton?.enabled = false
-        self.maxTextLabel?.text  = ""
-        self.minTextLabel?.text  = ""
-        self.progressBar?.hidden = true
-        
-        debugPrint("\(#function), \(self.superview)")
     }
     
     func drawRealTimeData(data: [Double])
@@ -59,6 +53,7 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     
     func startToReadLog(logid: UInt8)
     {
+        self.logid = logid
         logData = [[], [], []]
         self.progressBar?.hidden = false
     }
@@ -78,14 +73,51 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
 //        debugPrint("\(#function), \(progress),  \(logData)")
     }
     
-    func stopReadingLog(fileName: String)
+    func stopReadingLog(fileName: String, duration: SamplingDurationType?)
     {
-        // ファイルに保存
-        // 終了
+        if logData != nil && duration != nil {
+            // ファイルに保存
+            let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
+            let filePath   = folderPath.stringByAppendingPathComponent("\(fileName)_\(self.logid).csv")
+        
+            saveToFile(filePath, data: logData!, duration: duration!)
+        }
+        
         logData = nil
         self.progressBar?.hidden = true
     }
     
+    func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
+    {
+        var content = ""
+        let colomn  = data.count
+        let row     = data[0].count
+
+        var time :Double = 0
+        for r in 0..<row {
+            content += "\(time) , "
+            for c in 0..<colomn {
+                if data[c].count > r {
+                    content += "\((data[c])[r])"
+                } else {
+                    content += " , "
+                    break
+                }
+                if c != (colomn - 1) {
+                    content += " , "
+                }
+            }
+            content += "\n"
+            time    += duration.duration
+        }
+
+        do {
+            try content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch {
+            debugPrint("\(#function) fatal error in file save.")
+        }
+    }
+
     // MARK: - SenStickSensorServiceDelegate
      func didUpdateSetting(sender:AnyObject)
     {}
@@ -101,4 +133,3 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
 
     // MARK: - Event handler
 }
-

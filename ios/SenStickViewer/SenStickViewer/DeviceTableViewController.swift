@@ -40,7 +40,7 @@ class DeviceListTableViewController: UITableViewController {
     func onRefresh()
     {
         SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: NSTimeInterval)  in
-            debugPrint("\(#function)")
+//            debugPrint("\(#function)")
             if remaining <= 0 {
                 self.refreshControl?.endRefreshing()
             }

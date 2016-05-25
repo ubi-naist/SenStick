@@ -61,13 +61,13 @@ class PressureCellView : SensorDataCellView
         // サンプル無し
         let sampleCount = service!.logMetaData!.availableSampleCount
         if sampleCount == 0 {
-            stopReadingLog("")
+            stopReadingLog("pressure", duration: self.service?.logMetaData?.samplingDuration)
             return
         }
         
         // 終了
         if service?.logData?.count == 0 {
-            stopReadingLog("")
+            stopReadingLog("pressure", duration: self.service?.logMetaData?.samplingDuration)
             return
         }
         

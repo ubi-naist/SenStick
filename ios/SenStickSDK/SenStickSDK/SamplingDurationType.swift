@@ -11,7 +11,7 @@ import Foundation
 // サンプリング・レート
 public struct SamplingDurationType : CustomStringConvertible
 {
-    let duration : NSTimeInterval
+    public let duration : NSTimeInterval
     
     public init(milliSeconds value: UInt16)
     {

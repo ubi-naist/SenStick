@@ -81,16 +81,17 @@ class AccelerationCellView : SensorDataCellView
     
     override func didUpdateLogData(sender: AnyObject)
     {
+        debugPrint("\(#function)")
         // サンプル無し
         let sampleCount = service!.logMetaData!.availableSampleCount
         if sampleCount == 0 {
-            stopReadingLog("")
+            stopReadingLog("acceleration", duration: self.service?.logMetaData?.samplingDuration)
             return
         }
         
         // 終了
         if service?.logData?.count == 0 {
-            stopReadingLog("")
+            stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
             return
         }
 

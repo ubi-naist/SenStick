@@ -22,20 +22,28 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         device?.delegate = self
         device?.connect()
     }
+
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
         device?.delegate = nil
     }
     
+    func startToReadLog(logid: UInt8) {
+        accelerationSensorCell?.startToReadLog(logid)
+    }
+    
     // MARK: - SenStickDeviceDelegate
     func didServiceFound(sender: SenStickDevice) {
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,0], length: 2)) as? SensorStatusCellView {
+            statusCell = cell
+            cell.controller = self
             cell.name = device?.name
             cell.service = device?.controlService
         }
         
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,1], length: 2)) as? AccelerationCellView {
+            accelerationSensorCell = cell
             cell.service = device?.accelerationSensorService
         }
     }

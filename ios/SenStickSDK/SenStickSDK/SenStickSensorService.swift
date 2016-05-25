@@ -174,7 +174,8 @@ debugPrint("\(self.realtimeData)")
                 assert(false, #function)
                 break
             }
-            self.logData = unpackDataArray(metadata.range, value: data)
+            let d = unpackDataArray(metadata.range, value: data)
+            self.logData = d
             
         default:
             assert(false, "\(#function), unexpected cahatacter: \(characteristic)")

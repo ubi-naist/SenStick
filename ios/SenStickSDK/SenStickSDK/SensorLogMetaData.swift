@@ -10,23 +10,25 @@ import Foundation
 
 public struct SensorLogMetaData<T: RawRepresentable where T.RawValue == UInt16> : PackableType
 {
-    let samplingDuration: SamplingDurationType
-    let range: T
-    let availableSampleCount: UInt32
-    let position: UInt32
-    let remainingCapacity: UInt8
+    public let logID: UInt8
+    public let samplingDuration: SamplingDurationType
+    public let range: T
+    public let availableSampleCount: UInt32
+    public let position: UInt32
+    public let remainingCapacity: UInt32
     
     public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
     {
         var b = [UInt8]()
-        
+
+        b += self.logID.pack()
         b += self.samplingDuration.pack()
         b += self.range.rawValue.pack()
         b += self.availableSampleCount.pack()
         b += self.position.pack()
         b += self.remainingCapacity.pack()
         
-        assert(b.count == 13)
+        assert(b.count == 17)
         
         return b
     }
@@ -35,28 +37,24 @@ public struct SensorLogMetaData<T: RawRepresentable where T.RawValue == UInt16> 
     {
         let bytes = Array(data)
         
-        guard bytes.count != 13 else {
+        guard bytes.count == 17 else {
             assert(false, #function)
             return nil
         }
-        guard let duration = UInt16.unpack(bytes[0...1]) else {
-            return nil
-        }
-        guard let rangeRawValue = UInt16.unpack(bytes[2...3]) else {
-            return nil
-        }
+        
+        let logID = bytes[0]
+        let duration = UInt16.unpack(bytes[1..<3])!
+        let rangeRawValue = UInt16.unpack(bytes[3..<5])!
         guard let range = T(rawValue: rangeRawValue) else {
             return nil
         }
-        guard let availableSampleCount = UInt32.unpack(bytes[4...7]) else {
-            return nil
-        }
-        guard let position = UInt32.unpack(bytes[8...11]) else {
-            return nil
-        }
-        let remainingCapacity = bytes[12]
+        let availableSampleCount = UInt32.unpack(bytes[5..<9])!
+        let position = UInt32.unpack(bytes[9..<13])!
+//        let a = bytes[13...17]
+//        debugPrint("\(a)")
+        let remainingCapacity = UInt32.unpack(bytes[13..<17])!
         
-        return SensorLogMetaData<T>(samplingDuration: SamplingDurationType(milliSeconds: duration),
+        return SensorLogMetaData<T>(logID: logID, samplingDuration: SamplingDurationType(milliSeconds: duration),
                                     range:range, availableSampleCount: availableSampleCount, position: position, remainingCapacity: remainingCapacity)
     }
     

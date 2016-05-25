@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-public class AccelerationCellView : SensorDataCellView
+class AccelerationCellView : SensorDataCellView
 {
     weak var service: AccelerationSensorService? {
         didSet {
@@ -24,7 +24,16 @@ public class AccelerationCellView : SensorDataCellView
         }
     }
     
-    override public func didUpdateSetting(sender:AnyObject)
+    override func startToReadLog(logid: UInt8)
+    {
+        super.startToReadLog(logid)
+        
+        let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
+        service?.writeLogID(logID)
+    }
+    
+    // MARK: - SenStickSensorServiceDelegate
+    override  func didUpdateSetting(sender:AnyObject)
     {
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
@@ -34,22 +43,66 @@ public class AccelerationCellView : SensorDataCellView
             case .ACCELERATION_RANGE_2G:
                 self.maxValue = 2.0
                 self.minValue = -2.0
+                self.graphView?.maxValue = 2.0
+                self.graphView?.minValue = -2.0
                 
             case .ACCELERATION_RANGE_4G:
                 self.maxValue = 4.0
                 self.minValue = -4.0
+                self.graphView?.maxValue = 4.0
+                self.graphView?.minValue = -4.0
 
             case .ACCELERATION_RANGE_8G:
                 self.maxValue = 8.0
                 self.minValue = -8.0
+                self.graphView?.maxValue = 8.0
+                self.graphView?.minValue = -8.0
 
             case .ACCELERATION_RANGE_16G:
                 self.maxValue = 16.0
                 self.minValue = -16.0
+                self.graphView?.maxValue = 16.0
+                self.graphView?.minValue = -16.0
             }
         }
     }
     
+    override func didUpdateRealTimeData(sender: AnyObject)
+    {
+        if let data = service?.realtimeData {
+            drawRealTimeData([data.x, data.y, data.z])
+        }
+    }
+    
+    override func didUpdateMetaData(sender: AnyObject)
+    {
+        debugPrint("\(#function), \(service!.logMetaData!.availableSampleCount)")
+    }
+    
+    override func didUpdateLogData(sender: AnyObject)
+    {
+        // サンプル無し
+        let sampleCount = service!.logMetaData!.availableSampleCount
+        if sampleCount == 0 {
+            stopReadingLog("")
+            return
+        }
+        
+        // 終了
+        if service?.logData?.count == 0 {
+            stopReadingLog("")
+            return
+        }
+
+        // 継続
+        let progress = Double(super.logData![0].count) / Double(sampleCount)
+        for data in (service?.logData)! {
+          addReadLog([data.x, data.y, data.z], progress: progress)
+        }
+ //        debugPrint("\(#function), progress: \(progress), super.logData!.count\(super.logData![0].count) sampleCount:\(sampleCount)")
+    }
+    
+    // MARK: - Event handler
     @IBAction func  iconButtonToutchUpInside(sender: UIButton) {        
         let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
         

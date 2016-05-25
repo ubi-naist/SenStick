@@ -76,13 +76,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGe-Po-O1I">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGe-Po-O1I">
                                                     <rect key="frame" x="456" y="26" width="60" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="jZ2-fZ-ugY"/>
                                                         <constraint firstAttribute="width" constant="60" id="sfK-e6-Gfk"/>
                                                     </constraints>
                                                     <state key="normal" title="Start"/>
+                                                    <connections>
+                                                        <action selector="startButtonToutchUpInside:" destination="0eC-IK-J49" eventType="touchUpInside" id="Nox-q4-uzw"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log#:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXK-Xk-TFV">
                                                     <rect key="frame" x="160" y="12" width="44" height="22"/>
@@ -114,15 +117,18 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8B-Rzx">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8B-Rzx">
                                                     <rect key="frame" x="534" y="26" width="46" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="46" id="VuW-eP-WhJ"/>
                                                         <constraint firstAttribute="height" constant="30" id="YeR-HI-iZ8"/>
                                                     </constraints>
                                                     <state key="normal" title="Stop"/>
+                                                    <connections>
+                                                        <action selector="stopButtonToutchUpInside:" destination="0eC-IK-J49" eventType="touchUpInside" id="1Xc-hJ-gWB"/>
+                                                    </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ar-iY-DQY">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ar-iY-DQY">
                                                     <rect key="frame" x="135" y="48" width="80" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="DNE-kW-oJC"/>
@@ -137,6 +143,9 @@
                                                             <exclude reference="iBl-KE-gUG"/>
                                                         </mask>
                                                     </variation>
+                                                    <connections>
+                                                        <action selector="readLogButtonToutchUpInside:" destination="0eC-IK-J49" eventType="touchUpInside" id="MeX-So-Cal"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log#:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVI-dD-7XI">
                                                     <rect key="frame" x="28" y="48" width="44" height="22"/>
@@ -239,7 +248,7 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="37m-EU-uLD">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51J-Qv-jXr">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51J-Qv-jXr">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="DPt-EP-gWX"/>

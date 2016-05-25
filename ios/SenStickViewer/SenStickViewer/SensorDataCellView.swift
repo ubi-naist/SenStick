@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-public class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
+class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     @IBOutlet var titleTextLabel: UILabel?
     @IBOutlet var iconButton:     UIButton?
     @IBOutlet var maxTextLabel:   UILabel?
@@ -17,10 +17,9 @@ public class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate
     @IBOutlet var progressBar:    UIProgressView?
     @IBOutlet var graphView:      DataGraphView?
     
-    var isLogging: Bool = false
+    var logData: [[Double]]?
     
     // MARK: - Properties
-    
     var maxValue: Double {
         didSet {
             maxTextLabel?.text = String(maxValue)
@@ -28,12 +27,12 @@ public class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate
     }
     var minValue: Double {
         didSet {
-            minTextLabel?.text = String(maxValue)
+            minTextLabel?.text = String(minValue)
         }
     }
 
     // MARK: - Initializer
-    public required init?(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         maxValue = 1.0
         minValue = 0
@@ -43,23 +42,59 @@ public class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate
         self.iconButton?.enabled = false
         self.maxTextLabel?.text  = ""
         self.minTextLabel?.text  = ""
+        self.progressBar?.hidden = true        
+    }
+    
+    func drawRealTimeData(data: [Double])
+    {
+        // ログ読み出し中は無効化
+        if logData != nil {
+            return
+        }
+        
+        self.graphView?.plotDataArray(data)
+    }
+    
+    func startToReadLog(logid: UInt8)
+    {
+        logData = [[], [], []]
+        self.progressBar?.hidden = false
+    }
+    
+    func addReadLog(data:[Double], progress: Double) {
+        if logData == nil {
+            return
+        }
+
+        for (index, d) in data.enumerate() {
+            logData![index].append(d)
+        }
+        
+        self.graphView?.plotLogData(logData!, percent: progress)
+        self.progressBar?.progress = Float(progress)
+        
+//        debugPrint("\(#function), \(progress),  \(logData)")
+    }
+    
+    func stopReadingLog(fileName: String)
+    {
+        // ファイルに保存
+        // 終了
+        logData = nil
         self.progressBar?.hidden = true
     }
     
-    func updateView() {
-    }
-    
     // MARK: - SenStickSensorServiceDelegate
-    public func didUpdateSetting(sender:AnyObject)
+     func didUpdateSetting(sender:AnyObject)
     {}
     
-    public func didUpdateRealTimeData(sender: AnyObject)
+     func didUpdateRealTimeData(sender: AnyObject)
     {}
     
-    public func didUpdateMetaData(sender: AnyObject)
+     func didUpdateMetaData(sender: AnyObject)
     {}
     
-    public func didUpdateLogData(sender: AnyObject)
+     func didUpdateLogData(sender: AnyObject)
     {}
 
     // MARK: - Event handler

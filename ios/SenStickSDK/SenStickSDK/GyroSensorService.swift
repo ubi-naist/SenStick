@@ -78,8 +78,9 @@ extension CMRotationRate : SensorDataPackableType
         let lsbPerDeg = RotationRawData.getLSBperDegS(range)
         
         // FIXME 右手系/左手系などの座標変換など確認すること。
-        
-        return CMRotationRate(x: Double(rawData.xRawValue) / Double(lsbPerDeg), y: Double(rawData.yRawValue) / Double(lsbPerDeg), z: Double(rawData.zRawValue) / Double(lsbPerDeg))
+        // deg/s なので rad/sに変換
+        let k = M_PI / Double(180)
+        return CMRotationRate(x: k * Double(rawData.xRawValue) / Double(lsbPerDeg), y: k * Double(rawData.yRawValue) / Double(lsbPerDeg), z: k * Double(rawData.zRawValue) / Double(lsbPerDeg))
     }
 }
 

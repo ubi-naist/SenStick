@@ -1,8 +1,8 @@
 //
-//  AccelerationController.swift
+//  GyroCellView.swift
 //  SenStickViewer
 //
-//  Created by AkihiroUehara on 2016/05/24.
+//  Created by AkihiroUehara on 2016/05/25.
 //  Copyright © 2016年 AkihiroUehara. All rights reserved.
 //
 
@@ -10,9 +10,9 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class AccelerationCellView : SensorDataCellView
+class GyroCellView : SensorDataCellView
 {
-    weak var service: AccelerationSensorService? {
+    weak var service: GyroSensorService? {
         didSet {
             self.service?.delegate = self
             
@@ -38,31 +38,33 @@ class AccelerationCellView : SensorDataCellView
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
+        //        let k = M_PI / Double(180), 1/60
         if let setting = service?.settingData {
             switch(setting.range) {
-            case .ACCELERATION_RANGE_2G:
-                self.maxValue = 2.5
-                self.minValue = -2.5
-                self.graphView?.maxValue = 2.5
-                self.graphView?.minValue = -2.5
                 
-            case .ACCELERATION_RANGE_4G:
-                self.maxValue = 4.5
-                self.minValue = -4.5
-                self.graphView?.maxValue = 4.5
-                self.graphView?.minValue = -4.5
-
-            case .ACCELERATION_RANGE_8G:
-                self.maxValue = 8.0
-                self.minValue = -8.0
-                self.graphView?.maxValue = 8.0
-                self.graphView?.minValue = -8.0
-
-            case .ACCELERATION_RANGE_16G:
-                self.maxValue = 16.0
-                self.minValue = -16.0
-                self.graphView?.maxValue = 16.0
-                self.graphView?.minValue = -16.0
+            case .ROTATION_RANGE_250DPS:
+                self.maxValue = 5
+                self.minValue = -5
+                self.graphView?.maxValue = 5
+                self.graphView?.minValue = -5
+                
+            case .ROTATION_RANGE_500DPS:
+                self.maxValue = 10
+                self.minValue = -10
+                self.graphView?.maxValue = 10
+                self.graphView?.minValue = -10
+                
+            case .ROTATION_RANGE_1000DPS:
+                self.maxValue = 20
+                self.minValue = -20
+                self.graphView?.maxValue = 20
+                self.graphView?.minValue = -20
+                
+            case .ROTATION_RANGE_2000DPS:
+                self.maxValue = 40
+                self.minValue = -40
+                self.graphView?.maxValue = 40
+                self.graphView?.minValue = -40
             }
         }
     }
@@ -93,21 +95,21 @@ class AccelerationCellView : SensorDataCellView
             stopReadingLog("")
             return
         }
-
+        
         // 継続
         let progress = Double(super.logData![0].count) / Double(sampleCount)
         for data in (service?.logData)! {
-          addReadLog([data.x, data.y, data.z], progress: progress)
+            addReadLog([data.x, data.y, data.z], progress: progress)
         }
- //        debugPrint("\(#function), progress: \(progress), super.logData!.count\(super.logData![0].count) sampleCount:\(sampleCount)")
+        //        debugPrint("\(#function), progress: \(progress), super.logData!.count\(super.logData![0].count) sampleCount:\(sampleCount)")
     }
     
     // MARK: - Event handler
-    @IBAction func  iconButtonToutchUpInside(sender: UIButton) {        
+    @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
         
         let current_setting = self.service!.settingData!
-        let setting = SensorSettingData<AccelerationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
+        let setting = SensorSettingData<RotationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
         service?.writeSetting(setting)
     }
 }

@@ -69,11 +69,11 @@
                         <sections>
                             <tableViewSection id="GdH-ZA-ALg">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="statusCell" rowHeight="120" id="0eC-IK-J49" userLabel="itemListCell" customClass="SensorStatusCellView" customModule="SenStickViewer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="600" height="120"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="statusCell" rowHeight="90" id="0eC-IK-J49" userLabel="itemListCell" customClass="SensorStatusCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="64" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0eC-IK-J49" id="WtX-al-46l">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGe-Po-O1I">
@@ -209,7 +209,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="Uf1-3b-Rzb" userLabel="dataCell" customClass="AccelerationCellView" customModule="SenStickViewer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="184" width="600" height="140"/>
+                                        <rect key="frame" x="0.0" y="154" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uf1-3b-Rzb" id="rzP-ID-gAt">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -255,6 +255,7 @@
                                                         <constraint firstAttribute="height" constant="50" id="nIa-pA-r22"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_acc_b"/>
+                                                    <state key="disabled" image="ic_sensor_acc_g2"/>
                                                     <state key="selected" image="ic_sensor_acc_b2"/>
                                                     <connections>
                                                         <action selector="iconButtonToutchUpInside:" destination="Uf1-3b-Rzb" eventType="touchUpInside" id="46J-D3-CLs"/>
@@ -298,8 +299,8 @@
                                             <outlet property="titleTextLabel" destination="jBK-a5-SeZ" id="yWH-zr-cOr"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="aGK-Jx-GUR" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="324" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="aGK-Jx-GUR" userLabel="dataCell" customClass="GyroCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aGK-Jx-GUR" id="XsK-J9-un4">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -338,14 +339,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vb6-i9-3Lx">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8rs-QL-dhY">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8rs-QL-dhY">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="LB3-pS-QYq"/>
                                                         <constraint firstAttribute="height" constant="50" id="cdu-DZ-7PB"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_gyro_b"/>
+                                                    <state key="disabled" image="ic_sensor_gyro_g2"/>
                                                     <state key="selected" image="ic_sensor_gyro_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="aGK-Jx-GUR" eventType="touchUpInside" id="QHZ-BK-uSi"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -376,9 +381,17 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="qQd-eh-yaK" id="Fh8-tI-qab"/>
+                                            <outlet property="iconButton" destination="8rs-QL-dhY" id="Fhp-bK-UWa"/>
+                                            <outlet property="maxTextLabel" destination="Rh3-WW-Mbg" id="H1K-bu-yfz"/>
+                                            <outlet property="minTextLabel" destination="661-Gr-cPg" id="1HC-g6-U83"/>
+                                            <outlet property="progressBar" destination="vb6-i9-3Lx" id="3Hf-Hs-QFa"/>
+                                            <outlet property="titleTextLabel" destination="GJt-va-0Zx" id="ki5-7b-Cbh"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="v1T-Mt-5MU" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="464" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="v1T-Mt-5MU" userLabel="dataCell" customClass="MagneticFieldCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="434" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v1T-Mt-5MU" id="45s-sb-tEI">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -417,14 +430,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jSp-ib-Hqh">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vpP-rz-eXx">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vpP-rz-eXx">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="AiD-G7-6VM"/>
                                                         <constraint firstAttribute="height" constant="50" id="d4j-4N-RJr"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_mag_b"/>
+                                                    <state key="disabled" image="ic_sensor_mag_g2"/>
                                                     <state key="selected" image="ic_sensor_mag_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="v1T-Mt-5MU" eventType="touchUpInside" id="LfO-Sr-pt6"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -455,9 +472,17 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="Ay4-pD-xza" id="2hh-51-wmI"/>
+                                            <outlet property="iconButton" destination="vpP-rz-eXx" id="bz8-Ha-wZb"/>
+                                            <outlet property="maxTextLabel" destination="grF-h0-0cV" id="RC6-KQ-hqu"/>
+                                            <outlet property="minTextLabel" destination="akI-Mt-fjW" id="aN1-eK-31V"/>
+                                            <outlet property="progressBar" destination="jSp-ib-Hqh" id="dss-5H-CDT"/>
+                                            <outlet property="titleTextLabel" destination="WUy-o5-tBO" id="qsK-Cf-Cco"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="cG7-TE-jpW" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="604" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="cG7-TE-jpW" userLabel="dataCell" customClass="BrightnessCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="574" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cG7-TE-jpW" id="Vs5-yK-io9">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -496,14 +521,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="l7r-0d-J2G">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEd-N7-cHb">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEd-N7-cHb">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="icp-jN-KBO"/>
                                                         <constraint firstAttribute="width" constant="50" id="lok-X1-yVU"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_light_b"/>
+                                                    <state key="disabled" image="ic_sensor_light_g2"/>
                                                     <state key="selected" image="ic_sensor_light_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="cG7-TE-jpW" eventType="touchUpInside" id="bga-4a-SuX"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -534,9 +563,17 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="WNq-Zg-iyT" id="DbM-Rg-f23"/>
+                                            <outlet property="iconButton" destination="QEd-N7-cHb" id="65t-ey-EOl"/>
+                                            <outlet property="maxTextLabel" destination="LO3-Ae-KYZ" id="azY-63-VEF"/>
+                                            <outlet property="minTextLabel" destination="04g-WV-2IZ" id="hbT-Bk-rOa"/>
+                                            <outlet property="progressBar" destination="l7r-0d-J2G" id="yFw-y4-11h"/>
+                                            <outlet property="titleTextLabel" destination="aFZ-8Z-dP0" id="g1a-Vj-Zgx"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="6Sx-QF-mcz" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="744" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="6Sx-QF-mcz" userLabel="dataCell" customClass="UVCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="714" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Sx-QF-mcz" id="Ai8-jK-gVH">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -575,14 +612,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Wds-kX-rBE">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nJ0-y9-gze">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nJ0-y9-gze">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="m2J-RE-fi7"/>
                                                         <constraint firstAttribute="height" constant="50" id="qmr-3m-QXl"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_uv_b"/>
+                                                    <state key="disabled" image="ic_sensor_uv_g2"/>
                                                     <state key="selected" image="ic_sensor_uv_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="6Sx-QF-mcz" eventType="touchUpInside" id="8uM-LE-AV4"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -613,9 +654,17 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="cRk-Pr-9Nl" id="7p8-B2-tY6"/>
+                                            <outlet property="iconButton" destination="nJ0-y9-gze" id="wSo-7F-Azt"/>
+                                            <outlet property="maxTextLabel" destination="K3k-9U-YfL" id="oOG-wy-WG8"/>
+                                            <outlet property="minTextLabel" destination="6X9-aG-CdL" id="FC1-nR-1I7"/>
+                                            <outlet property="progressBar" destination="Wds-kX-rBE" id="5tE-V8-Mnv"/>
+                                            <outlet property="titleTextLabel" destination="qxc-md-zSP" id="qLy-Mh-4hd"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="j4A-KA-Bcb" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="884" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="j4A-KA-Bcb" userLabel="dataCell" customClass="HumidityCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="854" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j4A-KA-Bcb" id="oWJ-44-Suq">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -654,14 +703,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="H0J-qj-Cwl">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ghr-Ab-T0s">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ghr-Ab-T0s">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="01F-A0-pai"/>
                                                         <constraint firstAttribute="height" constant="50" id="9ZW-tG-tpf"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_hum_b"/>
+                                                    <state key="disabled" image="ic_sensor_hum_g2"/>
                                                     <state key="selected" image="ic_sensor_hum_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="j4A-KA-Bcb" eventType="touchUpInside" id="P6Z-LN-FUL"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -692,9 +745,17 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="lrx-QS-LQc" id="PzR-XQ-nVP"/>
+                                            <outlet property="iconButton" destination="Ghr-Ab-T0s" id="zbC-EU-Usv"/>
+                                            <outlet property="maxTextLabel" destination="e1B-1L-YeK" id="mra-pa-YiR"/>
+                                            <outlet property="minTextLabel" destination="KOJ-Au-hrL" id="na0-4Q-fqX"/>
+                                            <outlet property="progressBar" destination="H0J-qj-Cwl" id="Sr0-DQ-Eev"/>
+                                            <outlet property="titleTextLabel" destination="PW9-AD-Txh" id="QFP-XR-W28"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="Eve-Ka-1wd" userLabel="dataCell">
-                                        <rect key="frame" x="0.0" y="1024" width="600" height="140"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="dataCell" rowHeight="140" id="Eve-Ka-1wd" userLabel="dataCell" customClass="PressureCellView" customModule="SenStickViewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="994" width="600" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eve-Ka-1wd" id="u8T-X9-E12">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="139"/>
@@ -733,14 +794,18 @@
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oWg-TT-yBa">
                                                     <rect key="frame" x="12" y="119" width="50" height="2"/>
                                                 </progressView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLL-yl-ank">
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLL-yl-ank">
                                                     <rect key="frame" x="12" y="45" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="4VZ-qr-Y7j"/>
                                                         <constraint firstAttribute="height" constant="50" id="TAD-rW-7N6"/>
                                                     </constraints>
                                                     <state key="normal" image="ic_sensor_press_b"/>
+                                                    <state key="disabled" image="ic_sensor_press_g2"/>
                                                     <state key="selected" image="ic_sensor_press_b2"/>
+                                                    <connections>
+                                                        <action selector="iconButtonToutchUpInside:" destination="Eve-Ka-1wd" eventType="touchUpInside" id="anw-F6-fAR"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -771,6 +836,14 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="graphView" destination="Ojf-Y4-oVE" id="qwv-Ts-6Ng"/>
+                                            <outlet property="iconButton" destination="VLL-yl-ank" id="tnQ-A0-SOH"/>
+                                            <outlet property="maxTextLabel" destination="3od-R3-6XC" id="DKm-NP-6dA"/>
+                                            <outlet property="minTextLabel" destination="fvO-FL-x5X" id="OB0-Dw-xUI"/>
+                                            <outlet property="progressBar" destination="oWg-TT-yBa" id="gOE-eu-ZUj"/>
+                                            <outlet property="titleTextLabel" destination="xQ5-qE-qqu" id="es8-66-rYU"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -890,17 +963,24 @@
         <image name="ic_ble_4_2" width="199" height="192"/>
         <image name="ic_sensor_acc_b" width="400" height="400"/>
         <image name="ic_sensor_acc_b2" width="201" height="236"/>
+        <image name="ic_sensor_acc_g2" width="201" height="236"/>
         <image name="ic_sensor_gyro_b" width="400" height="400"/>
         <image name="ic_sensor_gyro_b2" width="201" height="236"/>
+        <image name="ic_sensor_gyro_g2" width="201" height="236"/>
         <image name="ic_sensor_hum_b" width="400" height="400"/>
         <image name="ic_sensor_hum_b2" width="201" height="236"/>
+        <image name="ic_sensor_hum_g2" width="201" height="236"/>
         <image name="ic_sensor_light_b" width="400" height="400"/>
         <image name="ic_sensor_light_b2" width="201" height="236"/>
+        <image name="ic_sensor_light_g2" width="201" height="236"/>
         <image name="ic_sensor_mag_b" width="400" height="400"/>
         <image name="ic_sensor_mag_b2" width="201" height="236"/>
+        <image name="ic_sensor_mag_g2" width="201" height="236"/>
         <image name="ic_sensor_press_b" width="128" height="128"/>
         <image name="ic_sensor_press_b2" width="202" height="237"/>
+        <image name="ic_sensor_press_g2" width="202" height="237"/>
         <image name="ic_sensor_uv_b" width="128" height="128"/>
         <image name="ic_sensor_uv_b2" width="202" height="237"/>
+        <image name="ic_sensor_uv_g2" width="202" height="237"/>
     </resources>
 </document>

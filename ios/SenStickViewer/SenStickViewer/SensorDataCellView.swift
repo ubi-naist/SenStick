@@ -42,7 +42,9 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         self.iconButton?.enabled = false
         self.maxTextLabel?.text  = ""
         self.minTextLabel?.text  = ""
-        self.progressBar?.hidden = true        
+        self.progressBar?.hidden = true
+        
+        debugPrint("\(#function), \(self.superview)")
     }
     
     func drawRealTimeData(data: [Double])

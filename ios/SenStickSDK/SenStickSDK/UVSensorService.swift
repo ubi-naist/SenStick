@@ -71,6 +71,6 @@ public class UVSensorService: SenStickSensorService<UVSensorData, UVSensorRange>
 {
     required public init?(device:SenStickDevice)
     {
-        super.init(device: device, sensorType: SenStickSensorType.BrightnessSensor)
+        super.init(device: device, sensorType: SenStickSensorType.UltraVioletSensor)
     }
 }

@@ -24,12 +24,18 @@ static void update_battery_service_battery_value(void)
     
     ret_code_t err_code;
     err_code = ble_bas_battery_level_update(&batter_service_context, battery_level);
-    APP_ERROR_CHECK(err_code);
+    if(err_code != NRF_SUCCESS &&
+       err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
+       err_code != NRF_ERROR_INVALID_STATE) {
+        APP_ERROR_CHECK(err_code);
+    }
 }
 
 static void battery_timer_handler(void *p_arg)
 {
-    update_battery_service_battery_value();
+    if(batter_service_context.conn_handle != BLE_CONN_HANDLE_INVALID) {
+        update_battery_service_battery_value();
+    }
 }
 
 void init_battery_service()
@@ -53,7 +59,11 @@ void init_battery_service()
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&bas_init.battery_level_report_read_perm);
     
     bas_init.evt_handler          = NULL;
-    bas_init.support_notification = true;
+    // notificationを有効にすると、値更新時に0x3401のエラーが発生。
+    // CCCDの初期値不定により生じるエラーだけど、デバイスマネージャは設定しているから、初期値設定されているはず。とりあえず無効化
+    // https://devzone.nordicsemi.com/question/14544/error-code-0x3401/
+//    bas_init.support_notification = true;
+    bas_init.support_notification = false;
     bas_init.p_report_ref         = NULL;
     bas_init.initial_batt_level   = getBatteryLevel();
     

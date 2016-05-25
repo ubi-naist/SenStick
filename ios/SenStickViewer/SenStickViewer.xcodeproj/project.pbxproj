@@ -15,7 +15,9 @@
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
 		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
 		F87BED681CF1D40900832E08 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87BED671CF1D40900832E08 /* DetailViewController.swift */; };
-		F87BED6F1CF29B9E00832E08 /* SensorDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87BED6E1CF29B9E00832E08 /* SensorDataController.swift */; };
+		F8BD11721CF4435500BA8F3B /* SensorDataCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */; };
+		F8BD11751CF47AA300BA8F3B /* AccelerationCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */; };
+		F8BD11771CF4820200BA8F3B /* DataGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11761CF4820200BA8F3B /* DataGraphView.swift */; };
 		F8C17E1C1CCF271A00030B99 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; };
 		F8C17E1D1CCF271A00030B99 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F8FCC92E1CCF6195003BCC5A /* DeviceListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */; };
@@ -64,7 +66,9 @@
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F87BED671CF1D40900832E08 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		F87BED6E1CF29B9E00832E08 /* SensorDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataController.swift; sourceTree = "<group>"; };
+		F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataCellView.swift; sourceTree = "<group>"; };
+		F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationCellView.swift; sourceTree = "<group>"; };
+		F8BD11761CF4820200BA8F3B /* DataGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataGraphView.swift; sourceTree = "<group>"; };
 		F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
 		F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceListCellView.swift; sourceTree = "<group>"; };
 		F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewController.swift; sourceTree = "<group>"; };
@@ -109,13 +113,23 @@
 				F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */,
 				F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */,
 				F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */,
-				F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */,
-				F87BED6E1CF29B9E00832E08 /* SensorDataController.swift */,
+				F8BD11731CF47A8200BA8F3B /* New Group */,
 				F86322991C979B03001B53A0 /* Assets.xcassets */,
 				F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */,
 				F863229E1C979B03001B53A0 /* Info.plist */,
 			);
 			path = SenStickViewer;
+			sourceTree = "<group>";
+		};
+		F8BD11731CF47A8200BA8F3B /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */,
+				F8BD11761CF4820200BA8F3B /* DataGraphView.swift */,
+				F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */,
+				F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */,
+			);
+			name = "New Group";
 			sourceTree = "<group>";
 		};
 		F8C17E0E1CCF25D500030B99 /* Products */ = {
@@ -218,11 +232,13 @@
 			files = (
 				F83941B01CF11DE6008F2A52 /* SensorStatusCellView.swift in Sources */,
 				F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */,
+				F8BD11721CF4435500BA8F3B /* SensorDataCellView.swift in Sources */,
 				F8FCC92E1CCF6195003BCC5A /* DeviceListCellView.swift in Sources */,
 				F87BED681CF1D40900832E08 /* DetailViewController.swift in Sources */,
 				F8FCC9301CCF61CD003BCC5A /* DeviceTableViewController.swift in Sources */,
-				F87BED6F1CF29B9E00832E08 /* SensorDataController.swift in Sources */,
 				F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */,
+				F8BD11751CF47AA300BA8F3B /* AccelerationCellView.swift in Sources */,
+				F8BD11771CF4820200BA8F3B /* DataGraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,67 +14,29 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     var device: SenStickDevice?
     
     var statusCell: SensorStatusCellView?
-    var accelerationSensorDataController: SensorDataController<CMAcceleration, AccelerationRange>?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.tableView.delegate = self
-        
-        self.accelerationSensorDataController = SensorDataController<CMAcceleration, AccelerationRange>()
-    }
+    var accelerationSensorCell: AccelerationCellView?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         device?.delegate = self
         device?.connect()
-
-        updateViews()
     }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
         device?.delegate = nil
     }
-
-    func updateViews()
-    {
-        self.statusCell?.updateView()
-        self.accelerationSensorDataController?.service = device?.accelerationSensorService
-    }
     
     // MARK: - SenStickDeviceDelegate
     func didServiceFound(sender: SenStickDevice) {
-        updateViews()
-    }
-    
-    // MARK: - Table View
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell : UITableViewCell
-        if indexPath.row == 0 {
-            cell = tableView.dequeueReusableCellWithIdentifier("statusCell", forIndexPath: indexPath)
-        } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath)            
+        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,0], length: 2)) as? SensorStatusCellView {
+            cell.name = device?.name
+            cell.service = device?.controlService
         }
-
-        if let s = cell as? SensorStatusCellView {
-            s.device        = self.device
-            self.statusCell = s
+        
+        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,1], length: 2)) as? AccelerationCellView {
+            cell.service = device?.accelerationSensorService
         }
-//        debugPrint("\(#function) \(cell)")
-        return cell
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 148
     }
 }

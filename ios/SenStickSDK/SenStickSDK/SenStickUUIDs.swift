@@ -89,7 +89,7 @@ public struct SenStickUUIDs
     public static let magneticFieldSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.MagneticFieldSensor) }()
     public static let brightnessSensorServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.BrightnessSensor) }()
     public static let uvSensorServiceUUID:CBUUID            = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
-    public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
+    public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.HumidityAndTemperatureSensor)} ()
     public static let pressureSensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AirPressureSensor)}()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。

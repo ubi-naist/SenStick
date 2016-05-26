@@ -171,9 +171,15 @@ void senstick_setButtonStatus(ButtonStatus_t status)
     
     // ボタンが押された時の、コントローラ。mainに書くべきだが、mainに書くのもここに書くのも違いなさそうなので。
     switch(status) {
-        case BUTTON_RELEASED:break;
-        case BUTTON_PUSH: break;
-        case BUTTON_PUSH_RELEASED: break;
+        case BUTTON_RELEASED:
+            break;
+        case BUTTON_PUSH:
+            break;
+        case BUTTON_PUSH_RELEASED:
+            // 次のログ記録開始
+            senstick_setControlCommand(sensorShouldSleep);
+            senstick_setControlCommand(sensorShouldWork);
+            break;
         case BUTTON_LONG_PUSH: break;
         case BUTTON_LONG_PUSH_RELEASED:
             // 長押しでDeepSleep

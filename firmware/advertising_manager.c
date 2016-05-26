@@ -7,13 +7,14 @@
 
 static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
 {
-    //    ret_code_t err_code;
+    uint32_t err_code;
     
     switch (ble_adv_evt)
     {
         case BLE_ADV_EVT_IDLE:
             // 再度 slow でアドバタイジングを再開する。
-            startAdvertising(BLE_SLOW_ADV);
+            err_code = ble_advertising_start(BLE_ADV_MODE_SLOW);
+            APP_ERROR_CHECK(err_code);
             break;
             
         case BLE_ADV_EVT_DIRECTED:

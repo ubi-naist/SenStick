@@ -51,11 +51,19 @@ void getUVSensorData(UltraVioletData_t *p_data)
 
     uint8_t data0;
     err_code = TwiSlave_RX(TWI_VEML6070_RD_ADDRESS, &data0, 1, false);
-    APP_ERROR_CHECK(err_code);
+//    APP_ERROR_CHECK(err_code);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("getUVSensorData, error: %d.\n", err_code);
+        return;
+    }
 
     uint8_t data1;
     err_code = TwiSlave_RX(TWI_VEML6070_ADDRESS, &data1, 1, false);
-    APP_ERROR_CHECK(err_code);
+//    APP_ERROR_CHECK(err_code);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("getUVSensorData, error: %d.\n", err_code);
+        return;
+    }
     
     *p_data = ((uint16_t)data0 << 8) | (uint16_t)data1 ;
 }

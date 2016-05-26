@@ -247,8 +247,10 @@ int main(void)
 NRF_LOG_PRINTF_DEBUG("meta, count:%d is_full:%d", count, is_header_full);
     senstick_setCurrentLogCount(count);
     senstick_setDiskFull(is_header_full);
-    
+
+    // 電源が入れば、ログ取り開始
     senstick_setControlCommand(sensorShouldSleep);
+    senstick_setControlCommand(sensorShouldWork);
     
     // アドバタイジングを開始する。
     startAdvertising();

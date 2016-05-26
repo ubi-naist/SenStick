@@ -164,7 +164,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="nur-Ba-T0B"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>

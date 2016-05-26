@@ -136,6 +136,14 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         }
     }
     
+    func didConnected(sender:SenStickDevice)
+    {}
+    
+    func didDisconnected(sender:SenStickDevice)
+    {
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         setServices(cell)
     }

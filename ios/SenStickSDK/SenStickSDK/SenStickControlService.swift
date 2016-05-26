@@ -35,6 +35,8 @@ public class SenStickControlService : SenStickService
             dispatch_async(dispatch_get_main_queue(), {
                 self.delegate?.didCommandChanged(self, command: self.command)
             })
+            // FIXME ログカウント値が通知されないので、能動的にここで読み出す
+            readAvailableLogCount()
         }
     }
     
@@ -108,9 +110,6 @@ public class SenStickControlService : SenStickService
             }
             
         case SenStickUUIDs.AvailableLogCountCharUUID:
-            if availableLogCount != data[0] {
-                self.dateTime = NSDate.distantPast()
-            }
             availableLogCount = data[0]
             
         case SenStickUUIDs.DateTimeCharUUID:
@@ -133,6 +132,11 @@ public class SenStickControlService : SenStickService
     {
         device.writeValue(statusChar, value: command.rawValue.pack())
         device.readValue(statusChar)
+    }
+    
+    public func readAvailableLogCount()
+    {
+        device.readValue(availableLogCountChar)
     }
     
     public func readDateTime()

@@ -11,6 +11,8 @@ import CoreBluetooth
 
 public protocol SenStickDeviceDelegate : class {
     func didServiceFound(sender:SenStickDevice)
+    func didConnected(sender:SenStickDevice)
+    func didDisconnected(sender:SenStickDevice)
 }
 
 public class SenStickDevice : NSObject, CBPeripheralDelegate
@@ -22,7 +24,19 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public weak var delegate: SenStickDeviceDelegate?
     
     // MARK: Properties
-    public private(set) var isConnected: Bool
+    public private(set) var isConnected: Bool {
+        didSet {
+            if isConnected {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.delegate?.didConnected(self)
+                })
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.delegate?.didDisconnected(self)
+                })
+            }
+        }
+    }
     // 接続してサービス検索が完了した時に、Trueになります。
     /*
     public private(set) var isConnected: Bool
@@ -204,7 +218,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             break
         }
         
-        debugPrint("didUpdate: \(characteristic.UUID) \(data)")
+//        debugPrint("didUpdate: \(characteristic.UUID) \(data)")
     }
     
     public func peripheralDidUpdateName(peripheral: CBPeripheral)

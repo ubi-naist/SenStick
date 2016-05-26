@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
+class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UITextFieldDelegate {
     @IBOutlet var deviceNameTextLabel: UILabel!
     @IBOutlet var countOfLogTextLabel: UILabel!
     @IBOutlet var targetLogTextInput: UITextField!
@@ -45,6 +45,13 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
             startButton.enabled   = false
             stopButton.enabled    = false
         }
+        targetLogTextInput.delegate = self
+    }
+    
+    // UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        targetLogTextInput.resignFirstResponder()
+        return true
     }
     
     // MARK: - SenStickControlServiceDelegate
@@ -55,7 +62,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
     }
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
     {
-        debugPrint("\(#function)")
+        debugPrint("\(#function), \(service?.availableLogCount)")
         updateView()
     }
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
@@ -83,4 +90,5 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate {
         controller?.startToReadLog(logid)
     }
 
+    
 }

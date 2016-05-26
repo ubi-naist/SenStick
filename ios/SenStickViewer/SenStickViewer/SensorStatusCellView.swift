@@ -19,10 +19,19 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     
     weak var controller: SensorDataViewController?
     
+    var shouldSetDateTime: Bool = true
+    
     weak var service: SenStickControlService? {
         didSet {
             service?.delegate = self
             updateView()
+        
+            if service == nil {
+                shouldSetDateTime = true
+            } else if shouldSetDateTime {
+                service?.writeDateTime(NSDate())
+                shouldSetDateTime = false
+            }
         }
     }
     var name: String? {
@@ -67,7 +76,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     }
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
     {
-        debugPrint("\(#function)")
+        debugPrint("\(#function), \(service?.dateTime)")
         updateView()
     }
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)

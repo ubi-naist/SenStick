@@ -37,10 +37,10 @@ class BrightnessCellView : SensorDataCellView
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
-        self.maxValue = 3000
-        self.minValue = -3000
-        self.graphView?.maxValue = 3000
-        self.graphView?.minValue = -3000
+        self.maxValue = 10000
+        self.minValue = 0
+        self.graphView?.maxValue = 10000
+        self.graphView?.minValue = 0
         
     }
     

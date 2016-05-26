@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include <sdk_errors.h>
+#include <nrf_drv_twi.h>
 
 void initTWIManager(void);
 
@@ -16,5 +17,6 @@ bool readFromTwiSlave(uint8_t twi_address, uint8_t target_register, uint8_t *dat
 
 // TWIバスの電源On/Off
 //void IOManagerSetTWIPower(bool awake);
+extern nrf_drv_twi_t twi;
 
 #endif /* twi_manager_h */

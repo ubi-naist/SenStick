@@ -4,6 +4,7 @@
 
 #include <nrf_delay.h>
 #include <nrf_log.h>
+#include <nrf_drv_twi.h>
 #include <nrf_assert.h>
 #include <app_error.h>
 #include <sdk_errors.h>
@@ -27,7 +28,7 @@ typedef enum {
  * Private methods
  */
 
-static bool writeToBH1780GLI(const BH1780GLI_RegisterType target_reg, uint8_t data)
+static bool writeToBH1780GLI(uint8_t target_reg, uint8_t data)
 {
     return writeToTwiSlave(TWI_BH1780GLI_ADDRESS, target_reg, &data, 1);
 }
@@ -45,7 +46,7 @@ bool initBrightnessSensor(void)
     //      "11" : Power up
 
     // Power up
-    bool result = writeToBH1780GLI(Control, 0x03);
+    bool result = writeToBH1780GLI((uint8_t)Control | (uint8_t)0x80, 0x03);
     
     return result;
 }
@@ -54,7 +55,67 @@ void getBrightnessData(BrightnessData_t *p_data)
 {
     uint8_t buff[2];
     
-    readFromTwiSlave(TWI_BH1780GLI_ADDRESS, DataLow, buff, 2);
+    readFromTwiSlave(TWI_BH1780GLI_ADDRESS, (uint8_t)DataLow | 0x80, buff, 2);
     
     *p_data = (uint16_t)buff[1] << 8 | (uint16_t)buff[0];
 }
+
+/*
+#include "twi_slave_brightness_sensor.h"
+
+#include <string.h>
+
+#include "nrf_delay.h"
+#include "nrf_drv_twi.h"
+#include "app_error.h"
+
+#include "senstick_io_definitions.h"
+*/
+
+/*
+static bool writeToBH1780GLI(const BH1780GLI_RegisterType target_reg, const uint8_t data)
+{
+    uint8_t buffer[2];
+    
+    // コマンドレジスタ
+    buffer[0] = 0x80 | (uint8_t)target_reg;
+    buffer[1] = data;
+    
+    // I2C書き込み
+    ret_code_t err_code;
+    err_code = nrf_drv_twi_tx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2, false);
+    return (err_code == NRF_SUCCESS);
+}
+
+// 初期化関数。センサ使用前に必ずこの関数を呼出ます。
+bool initBrightnessSensor(void)
+{
+    // レジスタの初期設定
+    // CONTROLレジスタ
+    // 7:2  0
+    // 1:0
+    //      "00" : Power down
+    //      "01" : Resv
+    //      "10" : Resv
+    //      "11" : Power up
+    
+    // Power up
+    return writeToBH1780GLI(Control, 0x03);
+}
+
+void getBrightnessData(BrightnessData_t *p_data)
+{
+    // 読み出しレジスタのアドレスを設定
+    ret_code_t err_code;
+    uint8_t data = 0x80 | (uint8_t)DataLow; // 1000_1100
+    err_code = nrf_drv_twi_tx(&twi, TWI_BH1780GLI_ADDRESS, &data, 1, false);
+    APP_ERROR_CHECK(err_code);
+    
+    // データを読み出し
+    uint8_t buffer[2];
+    err_code = nrf_drv_twi_rx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2, false);
+    APP_ERROR_CHECK(err_code);
+    
+    *p_data = (uint16_t)buffer[1] << 8 | (uint16_t)buffer[0];
+}
+*/

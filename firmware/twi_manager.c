@@ -8,7 +8,7 @@
 
 #include "senstick_io_definitions.h"
 
-static nrf_drv_twi_t twi;
+nrf_drv_twi_t twi;
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {

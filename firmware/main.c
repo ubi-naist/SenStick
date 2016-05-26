@@ -184,8 +184,6 @@ const ble_uuid128_t senstick_base_uuid = {
 int main(void)
 {
     ret_code_t err_code;
-
-    nrf_delay_ms(100);
     
     // RTTログを有効に
     NRF_LOG_INIT();
@@ -246,7 +244,10 @@ int main(void)
     uint8_t count = 0;    
     bool is_header_full = false;
     metaDataLogGetLogCount(&count, &is_header_full);
+NRF_LOG_PRINTF_DEBUG("meta, count:%d is_full:%d", count, is_header_full);
     senstick_setCurrentLogCount(count);
+    senstick_setDiskFull(is_header_full);
+    
     senstick_setControlCommand(sensorShouldSleep);
     
     // アドバタイジングを開始する。

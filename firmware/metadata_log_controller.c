@@ -21,6 +21,7 @@
 #define MAGIC_WORD (0xab5a ^ FIRMWARE_REVISION)
 
 typedef struct {
+    bool is_closed_flag;
     uint8_t log_id;
     ble_date_time_t date;
     char text[21]; // マジックワード GATTの最大長+1バイト。
@@ -51,28 +52,31 @@ static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content
     writeFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
 }
 
-static void metaDataLogWrite(/*bool is_closed_flag, */uint8_t logid, ble_date_time_t *p_date, char *text)
+static void metaDataLogWrite(bool is_closed_flag, uint8_t logid, ble_date_time_t *p_date, char *text)
 {
     meta_log_content_t content;
     
     memset(&content, 0, sizeof(meta_log_content_t));
-//    content.is_closed_flag = is_closed_flag;
+    content.is_closed_flag = is_closed_flag;
     content.log_id         = logid;
     content.date           = *p_date;
     strncpy(content.text, text, sizeof(content.text));
     
     metaDataLogWriteContext(logid, &content);
 }
-/*
+
 static void closeLog(uint8_t logid)
 {
     // 読み込み
     meta_log_content_t content;
     metaDataLogRead(logid, &content);
+
     content.is_closed_flag = 0x00;
-    
-    metaDataLogWriteContext(logid, &content);
-}*/
+
+    // フラグだけ変えて上書き
+    const uint32_t target_address = getTargetAddress(logid);
+    writeFlash(target_address, (uint8_t *)&content, sizeof(meta_log_content_t));
+}
 
 /**
  * Public methods
@@ -111,11 +115,10 @@ void metaDataLogGetLogCount(uint8_t *p_count, bool *p_is_header_full)
             break;
         }
         // フラグが閉じていないならば、
-        /*
         if(content.is_closed_flag != 0x00) {
             is_header_full = true;
             break;
-        }*/
+        }
         count++;
     }
     
@@ -162,15 +165,14 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
     switch(new_command) {
         case sensorShouldSleep:
             // ログ終了時にclosedフラグを落とす
-            /*
             if(old_command == sensorShouldWork) {
                 closeLog(new_log_id -1); // log id は+1されているので、閉じる対象ログIDは -1 したもの。
-            }*/
+            }
             break;
         case sensorShouldWork:
             senstick_getCurrentDateTime(&datetime);
             senstick_getCurrentLogAbstractText(txt, sizeof(txt));
-            metaDataLogWrite(/*0xff,*/ new_log_id, &datetime, txt);
+            metaDataLogWrite(0xff, new_log_id, &datetime, txt);
             break;
         case formattingStorage:
             metaLogFormatStorage();

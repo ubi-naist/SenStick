@@ -342,7 +342,7 @@ void writeFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
     // 末尾がフラッシュの領域を超える場合は、書き込み失敗
     ASSERT((address + size) < FLASH_BYTE_SIZE);
 
-    NRF_LOG_PRINTF_DEBUG("writeFlash:0x%04x, %d\n", address, size);
+//    NRF_LOG_PRINTF_DEBUG("writeFlash:0x%04x, %d\n", address, size);
     
     waitFlashReady();
     
@@ -371,7 +371,7 @@ void readFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
     // 末尾がフラッシュの領域を超える場合は、読み出し失敗
     ASSERT((address + size) < FLASH_BYTE_SIZE);
     
-    NRF_LOG_PRINTF_DEBUG("readFlash:0x%04x, %d\n", address, size);
+//    NRF_LOG_PRINTF_DEBUG("readFlash:0x%04x, %d\n", address, size);
     
     // サイズが0なら終了
     if(size == 0) {
@@ -405,7 +405,7 @@ void erase4kSector(uint32_t address)
     // アドレスチェック
     ASSERT(address < MX25L25635F_FLASH_SIZE);
     
-    NRF_LOG_PRINTF_DEBUG("erase4kSector:0x%04x\n",address);
+//    NRF_LOG_PRINTF_DEBUG("erase4kSector:0x%04x\n",address);
     
     ASSERT( ! IsFlashBusy() );
     

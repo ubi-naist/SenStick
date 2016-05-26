@@ -48,7 +48,7 @@ static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content
     ASSERT(content.log_id == 0xff);
     
     // 書き込み
-    writeFlash(target_address, (uint8_t *)&content, sizeof(meta_log_content_t));
+    writeFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
 }
 
 static void metaDataLogWrite(/*bool is_closed_flag, */uint8_t logid, ble_date_time_t *p_date, char *text)

@@ -168,6 +168,10 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
             if(old_command == sensorShouldWork) {
                 closeLog(new_log_id -1); // log id は+1されているので、閉じる対象ログIDは -1 したもの。
             }
+            // 記録終了時にログヘッダの最大値を確認する, disk full
+            if( new_log_id >= MAX_NUM_OF_LOG ) {
+                senstick_setDiskFull(true);
+            }
             break;
         case sensorShouldWork:
             senstick_getCurrentDateTime(&datetime);

@@ -100,7 +100,7 @@ void initGPIOManager(gpio_manager_t *p_context, button_callback_handler_t button
     init_adc();
     
     LEDDriverInit(&(p_context->led_driver_context));
-    buttonMonitoringInit(button_handler);
+    initButtonMonitoring(button_handler);
 }
 
 void setTWIPowerSupply(gpio_manager_t *p_context, bool available)

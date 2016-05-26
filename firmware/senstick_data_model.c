@@ -1,5 +1,6 @@
 #include <nordic_common.h>
 #include <app_util_platform.h>
+#include <nrf_log.h>
 
 #include "senstick_data_model.h"
 
@@ -17,6 +18,7 @@ typedef struct {
     uint8_t logCount;
     char text[ABSTRACT_TEXT_LENGTH +1];
     uint8_t text_length;
+    ButtonStatus_t button_status;
 } senstick_core_data_t;
 static senstick_core_data_t context;
 
@@ -111,3 +113,16 @@ void senstick_setCurrentLogAbstractText(char *str, uint8_t length)
     context.text_length = MIN(length, ABSTRACT_TEXT_LENGTH);
     strncpy(context.text, str, context.text_length);
 }
+
+// ボタン状態
+ButtonStatus_t senstick_getButtonStatus(void)
+{
+    return context.button_status;
+}
+void senstick_setButtonStatus(ButtonStatus_t status)
+{
+//    NRF_LOG_PRINTF_DEBUG("senstick_setButtonStatus: %d\n",  status);
+    context.button_status = status;
+}
+
+

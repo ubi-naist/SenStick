@@ -34,6 +34,7 @@
 #include "twi_manager.h"
 #include "twi_slave_rtc.h"
 #include "gpio_led_driver.h"
+#include "gpio_button_monitoring.h"
 
 #include "spi_slave_mx25_flash_memory.h"
 #include "metadata_log_controller.h"
@@ -195,6 +196,7 @@ int main(void)
     initTWIManager();
     initRTC();
     initLEDDriver();
+    initButtonMonitoring();
     initFlashMemory();
 
     initSenstickDataModel();

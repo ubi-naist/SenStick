@@ -10,6 +10,7 @@
 #include <ble_date_time.h>
 
 #include "senstick_types.h"
+#include "gpio_button_monitoring.h"
 
 // 初期化
 void initSenstickDataModel(void);
@@ -29,5 +30,9 @@ void senstick_setCurrentDateTime(ble_date_time_t *p_datetime);
 // 現在のログテキスト概要
 uint8_t senstick_getCurrentLogAbstractText(char *str, uint8_t length);
 void senstick_setCurrentLogAbstractText(char *str, uint8_t length);
+
+// ボタンの状態
+ButtonStatus_t senstick_getButtonStatus(void);
+void senstick_setButtonStatus(ButtonStatus_t status);
 
 #endif /* senstick_data_model_h */

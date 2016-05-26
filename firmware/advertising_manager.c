@@ -12,7 +12,8 @@ static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
     switch (ble_adv_evt)
     {
         case BLE_ADV_EVT_IDLE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_IDLE.");
+            // 再度 slow でアドバタイジングを再開する。
+            startAdvertising(BLE_SLOW_ADV);
             break;
             
         case BLE_ADV_EVT_DIRECTED:

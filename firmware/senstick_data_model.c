@@ -10,6 +10,8 @@
 
 #include "twi_slave_rtc.h"
 #include "gpio_led_driver.h"
+#include "twi_manager.h"
+#include "gpio_button_monitoring.h"
 
 #define ABSTRACT_TEXT_LENGTH 20
 
@@ -69,10 +71,10 @@ void senstick_setControlCommand(senstick_control_command_t command)
     // 新しく作るログのID
     const uint8_t new_log_id = context.logCount;
     
-    senstickControlService_observeControlCommand(command);
-    senstickSensorController_observeControlCommand(command, new_log_id);
+    senstickControlService_observeControlCommand(new_command);
+    senstickSensorController_observeControlCommand(new_command, new_log_id);
     metaDatalog_observeControlCommand(old_command, new_command, new_log_id);
-    ledDriver_observeControlCommand(command);
+    ledDriver_observeControlCommand(new_command);
 
     // 本当はモデルに書くべきではないけど、コントローラの機能をここに直書き。
     switch(command) {
@@ -91,6 +93,11 @@ void senstick_setControlCommand(senstick_control_command_t command)
             senstick_setControlCommand(sensorShouldSleep);
             break;
         case enterDeepSleep:
+            // ボタンで起動するように設定。
+            enableAwakeByButton();
+            // パワーを落とします。
+            twiPowerDown();            
+            sd_power_system_off();
             break;
         case enterDFUmode:
             break;
@@ -159,20 +166,26 @@ void senstick_setButtonStatus(ButtonStatus_t status)
 //    NRF_LOG_PRINTF_DEBUG("senstick_setButtonStatus: %d\n",  status);
     context.button_status = status;
     
+    // observer
+    ledDriver_observeButtonStatus(status);
+    
     // ボタンが押された時の、コントローラ。mainに書くべきだが、mainに書くのもここに書くのも違いなさそうなので。
     switch(status) {
         case BUTTON_RELEASED:break;
         case BUTTON_PUSH: break;
         case BUTTON_PUSH_RELEASED: break;
         case BUTTON_LONG_PUSH: break;
-        case BUTTON_LONG_PUSH_RELEASED: break;
+        case BUTTON_LONG_PUSH_RELEASED:
+            // 長押しでDeepSleep
+            senstick_setControlCommand(enterDeepSleep);
+            break;            
         case BUTTON_VERY_LONG_PUSH: break;
         case BUTTON_VERY_LONG_PUSH_RELEASED:
             // 長時間押したらフォーマットに落とします。
             senstick_setControlCommand(formattingStorage);
             break;
-        default: break;
-
+        default:
+            break;
     }
 }
 

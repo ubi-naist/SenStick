@@ -10,6 +10,7 @@
 #include "senstick_io_definition.h"
 
 #include "gpio_led_driver.h"
+#include "senstick_data_model.h"
 
 // 3秒または6秒ごとに次の点灯をする
 //      動作         100ミリ秒 1回光る
@@ -19,12 +20,14 @@
 
 APP_TIMER_DEF(m_led_timer_id);
 
-static int m_period; // 点灯周期, 3秒または6秒
+static int m_period; // 点灯周期, 2秒または5秒
 static int m_pattern_index;
 static uint8_t *m_p_pattern;
 static uint8_t m_single_blink_pattern[] = {100, 0}; // 100ミリ秒点灯、消灯
 static uint8_t m_double_blink_pattern[] = {100, 100, 100, 0}; // 100ミリ秒2回点灯、消灯
 static uint8_t m_triple_blink_pattern[] = {100, 100, 100, 100, 100, 0}; // 100ミリ秒3回点灯、消灯
+static int m_pres_period;
+static uint8_t *m_prev_pattern;
 
 static void setLED(bool blink)
 {
@@ -102,9 +105,12 @@ void initLEDDriver(void)
     APP_ERROR_CHECK(err_code);
     
     // 変数の初期化
-    m_period        = 6000;
+    m_period        = 5000;
     m_pattern_index = 0;
     m_p_pattern     = NULL;
+
+    m_pres_period  = 5000;
+    m_prev_pattern = NULL;
     
     // タイマーの初期化
     err_code = app_timer_create(&(m_led_timer_id), APP_TIMER_MODE_SINGLE_SHOT, led_timer_handler);
@@ -141,10 +147,65 @@ void ledDriver_handleBLEEvent(ble_evt_t * p_ble_evt)
 {
     switch (p_ble_evt->header.evt_id) {
         case BLE_GAP_EVT_CONNECTED:
-            m_period = 3000;
+            m_period = 2000;
             break;
         case BLE_GAP_EVT_DISCONNECTED:
-            m_period = 6000;
+            m_period = 5000;
+            break;
+        default:
+            break;
+    }
+}
+
+static void pushCurrent(void)
+{
+    m_pres_period  = m_period;
+    m_prev_pattern = m_p_pattern;
+}
+
+static void recoverPrev(void)
+{
+    m_period    = m_pres_period;
+    m_p_pattern = m_prev_pattern;
+}
+
+void ledDriver_observeButtonStatus(ButtonStatus_t status)
+{
+    switch(status) {
+        case BUTTON_RELEASED:
+            recoverPrev();
+            startBlinking();
+            break;
+        case BUTTON_PUSH:
+            pushCurrent();
+            m_pattern_index = 0;
+            m_period    = 10000;
+            m_p_pattern = m_single_blink_pattern;
+            startBlinking();
+            break;
+        case BUTTON_PUSH_RELEASED:
+            recoverPrev();
+            startBlinking();
+            break;
+        case BUTTON_LONG_PUSH:
+            m_pattern_index = 0;
+            m_p_pattern = m_double_blink_pattern;
+            startBlinking();
+            break;
+        case BUTTON_LONG_PUSH_RELEASED:
+            recoverPrev();
+            startBlinking();
+            break;
+        case BUTTON_VERY_LONG_PUSH:
+            m_pattern_index = 0;
+            m_p_pattern = m_triple_blink_pattern;
+            startBlinking();
+            break;
+        case BUTTON_VERY_LONG_PUSH_RELEASED:
+            recoverPrev();
+            startBlinking();
+            // 長時間押したらフォーマットに落とします。
+            senstick_setControlCommand(formattingStorage);
             break;
         default:
             break;

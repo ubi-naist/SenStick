@@ -7,6 +7,7 @@
 #include <app_error.h>
 
 #include "senstick_io_definition.h"
+#include "twi_manager.h"
 
 nrf_drv_twi_t twi;
 
@@ -93,3 +94,9 @@ void initTWIManager(void)
     nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
     nrf_delay_ms(300);
 }
+
+void twiPowerDown(void)
+{
+    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+}
+

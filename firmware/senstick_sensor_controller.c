@@ -454,8 +454,6 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
             saveSensorSetting();
             break;
         default:
-            // 意図しないケース
-            ASSERT(false);
             break;
     }
 }

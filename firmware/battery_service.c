@@ -8,6 +8,7 @@
 #include <app_error.h>
 #include <sdk_errors.h>
 
+#include "senstick_data_model.h"
 #include "senstick_ble_definition.h"
 #include "senstick_io_definition.h"
 #include "battery_service.h"
@@ -18,10 +19,8 @@ static ble_bas_t batter_service_context;
 
 APP_TIMER_DEF(m_battery_timer_id);
 
-static void update_battery_service_battery_value(void)
+static void update_battery_service_battery_value(uint8_t battery_level )
 {
-    uint8_t battery_level = getBatteryLevel();
-    
     ret_code_t err_code;
     err_code = ble_bas_battery_level_update(&batter_service_context, battery_level);
     if(err_code != NRF_SUCCESS &&
@@ -33,8 +32,14 @@ static void update_battery_service_battery_value(void)
 
 static void battery_timer_handler(void *p_arg)
 {
+    uint8_t battery_level = getBatteryLevel();
+    
     if(batter_service_context.conn_handle != BLE_CONN_HANDLE_INVALID) {
-        update_battery_service_battery_value();
+        update_battery_service_battery_value(battery_level);
+    }
+    
+    if( battery_level == 0 ) {
+        senstick_setControlCommand(enterDeepSleep);
     }
 }
 

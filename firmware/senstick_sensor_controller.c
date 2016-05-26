@@ -6,11 +6,11 @@
 
 #include "senstick_sensor_controller.h"
 
-#include "senstick_ble_definitions.h"
+#include "senstick_ble_definition.h"
 #include "senstick_sensor_base.h"
 #include "sensor_service.h"
 
-#include "senstick_flash_address_definitions.h"
+#include "senstick_flash_address_definition.h"
 #include "spi_slave_mx25_flash_memory.h"
 
 #include "acceleration_sensor_base.h"

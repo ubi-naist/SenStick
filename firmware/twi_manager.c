@@ -6,7 +6,7 @@
 #include <sdk_errors.h>
 #include <app_error.h>
 
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 nrf_drv_twi_t twi;
 
@@ -74,7 +74,7 @@ void initTWIManager(void)
     // TWIの電源のIOピン設定
     // out_config = GPIOTE_CONFIG_OUT_SIMPLE(true);
     nrf_drv_gpiote_out_config_t out_config;
-    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_HIGH;
+    out_config.init_state = NRF_GPIOTE_INITIAL_VALUE_LOW;
     out_config.task_pin   = false;
     err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_TWI_POWER, &out_config);
     APP_ERROR_CHECK(err_code);
@@ -85,8 +85,11 @@ void initTWIManager(void)
                  NRF_GPIO_PIN_NOPULL,
                  NRF_GPIO_PIN_H0H1,   // 0にハイドライブ、1にハイドライブ
                  NRF_GPIO_PIN_NOSENSE);
-    nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
 
-    // センサーの電源があがる200ミリ秒を待つ。
-    nrf_delay_ms(200);
+    // センサーの電源を下げて300ミリ秒待つ。
+    nrf_delay_ms(300);
+
+    // センサーの電源をあげて300ミリ秒を待つ。
+    nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
+    nrf_delay_ms(300);
 }

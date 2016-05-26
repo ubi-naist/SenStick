@@ -17,7 +17,7 @@ void metaLogFormatStorage(void);
 bool isMetaLogFormatted(void);
 
 // 有効なログの数を取得します。0はログがないことを示します。
-uint8_t metaDataLogGetLogCount(void);
+void metaDataLogGetLogCount(uint8_t *p_count, bool *p_is_header_full);
 
 // ターゲットIDの時刻を返します。もしもターゲットIDが存在しなければ、なにもしません。
 void metaDataLogReadDateTime(uint8_t logid, ble_date_time_t *p_date);
@@ -26,5 +26,5 @@ void metaDataLogReadDateTime(uint8_t logid, ble_date_time_t *p_date);
 // 有効なバイト数を返します。文字列がなくとも終端文字列があるため1バイトです。
 uint8_t metaDataLogReadAbstractText(uint8_t logid, char *text, uint8_t length);
 
-void metaDatalog_observeControlCommand(senstick_control_command_t command, uint8_t new_log_id);
+void metaDatalog_observeControlCommand(senstick_control_command_t old_command, senstick_control_command_t new_command, uint8_t new_log_id);
 #endif /* metadata_log_controller_h */

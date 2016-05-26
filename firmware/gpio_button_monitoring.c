@@ -5,8 +5,8 @@
 #include <sdk_errors.h>
 #include <app_error.h>
 
-#include "senstick_ble_definitions.h"
-#include "senstick_io_definitions.h"
+#include "senstick_ble_definition.h"
+#include "senstick_io_definition.h"
 #include "senstick_data_model.h"
 
 #include "gpio_button_monitoring.h"

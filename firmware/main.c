@@ -24,7 +24,7 @@
 #include "device_information_service.h"
 #include "battery_service.h"
 
-#include "senstick_ble_definitions.h"
+#include "senstick_ble_definition.h"
 
 #include "senstick_data_model.h"
 #include "senstick_control_service.h"
@@ -103,68 +103,68 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
             break;
             
         case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_PARAMS_REQUEST.\n  invoked by SMP Paring request, replying parameters.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_PARAMS_REQUEST.\n  invoked by SMP Paring request, replying parameters.");
             break;
             
         case BLE_GAP_EVT_CONN_SEC_UPDATE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_SEC_UPDATE.\n  Encrypted with STK.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_SEC_UPDATE.\n  Encrypted with STK.");
             break;
             
         case BLE_GAP_EVT_AUTH_STATUS:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_AUTH_STATUS.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_AUTH_STATUS.");
             break;
             
         case BLE_GAP_EVT_SEC_INFO_REQUEST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_INFO_REQUEST");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_SEC_INFO_REQUEST");
             break;
             
         case BLE_EVT_TX_COMPLETE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_EVT_TX_COMPLETE");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_EVT_TX_COMPLETE");
             break;
             
         case BLE_GAP_EVT_CONN_PARAM_UPDATE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_PARAM_UPDATE.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONN_PARAM_UPDATE.");
             break;
             
         case BLE_GATTS_EVT_SYS_ATTR_MISSING:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_SYS_ATTR_MISSING.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_SYS_ATTR_MISSING.");
             break;
             
         case BLE_GAP_EVT_TIMEOUT:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_TIMEOUT.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_TIMEOUT.");
             break;
             
         case BLE_GATTC_EVT_PRIM_SRVC_DISC_RSP:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_PRIM_SRVC_DISC_RSP");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_PRIM_SRVC_DISC_RSP");
             break;
         case BLE_GATTC_EVT_CHAR_DISC_RSP:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_CHAR_DISC_RSP");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_CHAR_DISC_RSP");
             break;
         case BLE_GATTC_EVT_DESC_DISC_RSP:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_DESC_DISC_RSP");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_DESC_DISC_RSP");
             break;
         case BLE_GATTC_EVT_WRITE_RSP:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_WRITE_RSP");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_WRITE_RSP");
             break;
         case BLE_GATTC_EVT_HVX:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_HVX");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_HVX");
             break;
             
         case BLE_GATTC_EVT_TIMEOUT:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_TIMEOUT. disconnecting.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTC_EVT_TIMEOUT. disconnecting.");
             break;
             
         case BLE_GATTS_EVT_WRITE:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_WRITE");
+  //          NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_WRITE");
             break;
             
         case BLE_GATTS_EVT_TIMEOUT:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
+//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
             break;
             
         default:
             //No implementation needed
-            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
+//            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
             break;
     }
 }
@@ -185,6 +185,8 @@ int main(void)
 {
     ret_code_t err_code;
 
+    nrf_delay_ms(100);
+    
     // RTTログを有効に
     NRF_LOG_INIT();
     
@@ -235,13 +237,15 @@ int main(void)
     initSenstickSensorController(uuid_type);
     
     // 不揮発メモリのフォーマット処理
-//    if( ! isMetaLogFormatted() ) {
+    if( ! isMetaLogFormatted() ) {
         metaLogFormatStorage();
         senstickSensorControllerFormatStorage();
-//    }
+    }
 
     // 初期値設定
-    uint8_t count = metaDataLogGetLogCount();
+    uint8_t count = 0;    
+    bool is_header_full = false;
+    metaDataLogGetLogCount(&count, &is_header_full);
     senstick_setCurrentLogCount(count);
     senstick_setControlCommand(sensorShouldSleep);
     

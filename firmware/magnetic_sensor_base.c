@@ -6,7 +6,7 @@
 #include "magnetic_sensor_base.h"
 
 #include "senstick_sensor_base_data.h"
-#include "senstick_flash_address_definitions.h"
+#include "senstick_flash_address_definition.h"
 
 // センサーの初期化。
 static bool initSensorHandler(void)

@@ -1,5 +1,5 @@
-#ifndef senstick_flash_address_definitions_h
-#define senstick_flash_address_definitions_h
+#ifndef senstick_flash_address_definition_h
+#define senstick_flash_address_definition_h
 
 // フラッシュのアドレス割当定義
 //#define  MX25L25635F_FLASH_SIZE  0x2000000  // 32 MB
@@ -55,8 +55,9 @@
 // 空きセクタ    1
 #define SECTOR_SIZE       0x1000
 
+#define SENSOR_SETTING_STORAGE_START_ADDRESS 0x04000
 // メタデータの領域
-#define SENSOR_SETTING_STORAGE_START_ADDRESS 0
+//#define SENSOR_SETTING_STORAGE_START_ADDRESS 0
 #define SENSOR_SETTING_STORAGE_SIZE          (1 * SECTOR_SIZE)
 #define SENSOR_SETTING_STORAGE_END_ADDRESS   (SENSOR_SETTING_STORAGE_START_ADDRESS + SENSOR_SETTING_STORAGE_SIZE)
 
@@ -96,4 +97,4 @@
 #define PRESSURE_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 2) * SECTOR_SIZE)
 #define PRESSURE_SENSOR_STORAGE_END_ADDRESS   (PRESSURE_SENSOR_STORAGE_START_ADDRESS + PRESSURE_SENSOR_STORAGE_SIZE)
 
-#endif /* senstick_flash_address_definitions_h */
+#endif /* senstick_flash_address_definition_h */

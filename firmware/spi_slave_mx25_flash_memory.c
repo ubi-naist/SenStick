@@ -2,13 +2,14 @@
 #include <stdlib.h>
 
 #include <nrf_delay.h>
+#include <nrf_log.h>
 #include <nrf_assert.h>
 #include <nrf_drv_gpiote.h>
 #include <nrf_drv_spi.h>
 #include <app_util_platform.h>
 #include <app_error.h>
 
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 #include "spi_slave_mx25_flash_memory.h"
 
 static nrf_drv_spi_t spi;
@@ -46,12 +47,12 @@ typedef enum {
     //Program comands
     FLASH_CMD_WREN =     0x06,    //WREN (Write Enable)
     FLASH_CMD_WRDI =     0x04,    //WRDI (Write Disable)
-    FLASH_CMD_PP   =     0x02,    //PP (page program)
+//    FLASH_CMD_PP   =     0x02,    //PP (page program)
     FLASH_CMD_PP4B =     0x12,    //PP4B (page program with 4 byte address)
     
     //Erase comands
-    FLASH_CMD_BE4B =     0xDC,    //BE4B (Block Erase with 4 byte address)
-    FLASH_CMD_CE   =     0x60,    //CE (Chip Erase) hex code: 60 or C7
+//    FLASH_CMD_BE4B =     0xDC,    //BE4B (Block Erase with 4 byte address)
+//    FLASH_CMD_CE   =     0x60,    //CE (Chip Erase) hex code: 60 or C7
     FLASH_CMD_SE4B =     0x21,    //SE (Sector Erase with 4 byte addr)
     
     //Mode setting comands
@@ -277,7 +278,7 @@ static void rawWriteFlash(uint32_t address,  uint8_t *data, uint8_t data_length)
     writeCommandWriteEnable();
     
     // 書き込み。32-bitアドレスモード。
-    writeToSPISlaveWithAddress(FLASH_CMD_PP, address, data, data_length);
+    writeToSPISlaveWithAddress(FLASH_CMD_PP4B, address, data, data_length);
     
     waitFlashReady();
 }
@@ -341,6 +342,8 @@ void writeFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
     // 末尾がフラッシュの領域を超える場合は、書き込み失敗
     ASSERT((address + size) < FLASH_BYTE_SIZE);
 
+    NRF_LOG_PRINTF_DEBUG("writeFlash:0x%04x, %d\n", address, size);
+    
     waitFlashReady();
     
     uint32_t index = 0;
@@ -367,6 +370,8 @@ void readFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
 {
     // 末尾がフラッシュの領域を超える場合は、読み出し失敗
     ASSERT((address + size) < FLASH_BYTE_SIZE);
+    
+    NRF_LOG_PRINTF_DEBUG("readFlash:0x%04x, %d\n", address, size);
     
     // サイズが0なら終了
     if(size == 0) {
@@ -399,6 +404,9 @@ void erase4kSector(uint32_t address)
 {
     // アドレスチェック
     ASSERT(address < MX25L25635F_FLASH_SIZE);
+    
+    NRF_LOG_PRINTF_DEBUG("erase4kSector:0x%04x\n",address);
+    
     ASSERT( ! IsFlashBusy() );
     
     // weビットを立てる。

@@ -14,7 +14,9 @@ typedef enum {
     sensorShouldWork  = 0x01,
     formattingStorage = 0x10,
     enterDeepSleep    = 0x20,
-    enterDFUmode      = 0x40
+    enterDFUmode      = 0x40,
+    
+    shouldReset       = 0xff
 } senstick_control_command_t;
 
 // フラッシュのアドレス/領域情報

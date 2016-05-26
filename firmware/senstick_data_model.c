@@ -19,6 +19,7 @@ typedef struct {
     char text[ABSTRACT_TEXT_LENGTH +1];
     uint8_t text_length;
     ButtonStatus_t button_status;
+    bool is_disk_full;
 } senstick_core_data_t;
 static senstick_core_data_t context;
 
@@ -26,6 +27,7 @@ static senstick_core_data_t context;
 void initSenstickDataModel(void)
 {
     memset(&context, 0, sizeof(senstick_core_data_t));
+    context.command = shouldReset;
 }
 
 
@@ -37,10 +39,30 @@ senstick_control_command_t senstick_getControlCommand(void)
 
 void senstick_setControlCommand(senstick_control_command_t command)
 {
-    // 2重スタートを禁止します。mainでの初期化のために、センサースリープコマンドだけは重複受付を許します。
-    if(command != sensorShouldSleep && context.command == command) {
+    // 不定値を弾きます。
+    if(   command != sensorShouldSleep
+       && command != sensorShouldWork
+       && command != formattingStorage
+       && command != enterDeepSleep
+       && command != enterDFUmode) {
+        NRF_LOG_PRINTF_DEBUG("_setControlCommand, unexpected command: %d.\n", command);
         return;
     }
+    
+    // 同じステートの再呼び出しを禁止します。
+    if(context.command == command) {
+        return;
+    }
+
+    // コマンド実行のアボート。disk fullのときには sensorShouldWork 状態には遷移させません。
+    if( command == sensorShouldWork && senstick_isDiskFull() ) {
+        return;
+    }
+    
+    // コマンドの実行
+    // 新旧コマンドを保存
+    senstick_control_command_t old_command = context.command;
+    senstick_control_command_t new_command = command;
 
     context.command = command;
 
@@ -49,9 +71,10 @@ void senstick_setControlCommand(senstick_control_command_t command)
     
     senstickControlService_observeControlCommand(command);
     senstickSensorController_observeControlCommand(command, new_log_id);
-    metaDatalog_observeControlCommand(command, new_log_id);
+    metaDatalog_observeControlCommand(old_command, new_command, new_log_id);
     ledDriver_observeControlCommand(command);
 
+    // 本当はモデルに書くべきではないけど、コントローラの機能をここに直書き。
     switch(command) {
         case sensorShouldSleep:
             break;
@@ -60,6 +83,9 @@ void senstick_setControlCommand(senstick_control_command_t command)
             senstick_setCurrentLogCount( context.logCount + 1);
             break;
         case formattingStorage:
+            // フォーマットの実行, 実際のフォーマット処理は、上記のオブザーバで処理されているはず
+            // このモデルのis_header_fullなどの更新をここでする。
+            senstick_setDiskFull(false);
             senstick_setCurrentLogCount( 0 );
             // フォーマット状態からの自動復帰
             senstick_setControlCommand(sensorShouldSleep);
@@ -83,6 +109,15 @@ void senstick_setCurrentLogCount(uint8_t count)
     context.logCount = count;
     
     senstickControlService_observeCurrentLogCount(count);
+}
+
+uint8_t senstick_isDiskFull(void)
+{
+    return context.is_disk_full;
+}
+void senstick_setDiskFull(bool flag)
+{
+    context.is_disk_full = flag;
 }
 
 // 現在の時刻
@@ -123,6 +158,22 @@ void senstick_setButtonStatus(ButtonStatus_t status)
 {
 //    NRF_LOG_PRINTF_DEBUG("senstick_setButtonStatus: %d\n",  status);
     context.button_status = status;
+    
+    // ボタンが押された時の、コントローラ。mainに書くべきだが、mainに書くのもここに書くのも違いなさそうなので。
+    switch(status) {
+        case BUTTON_RELEASED:break;
+        case BUTTON_PUSH: break;
+        case BUTTON_PUSH_RELEASED: break;
+        case BUTTON_LONG_PUSH: break;
+        case BUTTON_LONG_PUSH_RELEASED: break;
+        case BUTTON_VERY_LONG_PUSH: break;
+        case BUTTON_VERY_LONG_PUSH_RELEASED:
+            // 長時間押したらフォーマットに落とします。
+            senstick_setControlCommand(formattingStorage);
+            break;
+        default: break;
+
+    }
 }
 
 

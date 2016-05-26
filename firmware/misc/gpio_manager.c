@@ -10,8 +10,8 @@
 #include <nrf_adc.h>
 #include <app_error.h>
 
-#include "senstick_definitions.h"
-#include "senstick_io_definitions.h"
+#include "senstick_definition.h"
+#include "senstick_io_definition.h"
 #include "senstick_data_models.h"
 
 #include "gpio_manager.h"

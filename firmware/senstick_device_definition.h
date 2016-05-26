@@ -1,5 +1,5 @@
-#ifndef senstick_device_definitions_h
-#define senstick_device_definitions_h
+#ifndef senstick_device_definition_h
+#define senstick_device_definition_h
 
 // Bluetooth 製品登録情報
 // Member Company	matilde inc
@@ -21,4 +21,4 @@
 #define FIRMWARE_REVISION_STRING    "rev 1.0"  /* ファームウェアのリビジョンを表す文字列。Device Information Serviceで使います */
 
 
-#endif /* senstick_device_definitions_h */
+#endif /* senstick_device_definition_h */

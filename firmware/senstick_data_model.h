@@ -23,6 +23,10 @@ void senstick_setControlCommand(senstick_control_command_t command);
 uint8_t senstick_getCurrentLogCount(void);
 void senstick_setCurrentLogCount(uint8_t count);
 
+// ディスクフルフラグ
+uint8_t senstick_isDiskFull(void);
+void senstick_setDiskFull(bool flag);
+
 // 現在の時刻
 void senstick_getCurrentDateTime(ble_date_time_t *p_datetime);
 void senstick_setCurrentDateTime(ble_date_time_t *p_datetime);

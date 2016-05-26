@@ -15,7 +15,7 @@
 #include "twi_slave_brightness_sensor.h"
 
 #include "senstick_sensor_base_data.h"
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 typedef enum {
     Control         = 0x0,
@@ -69,7 +69,7 @@ void getBrightnessData(BrightnessData_t *p_data)
 #include "nrf_drv_twi.h"
 #include "app_error.h"
 
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 */
 
 /*

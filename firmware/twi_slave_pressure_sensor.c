@@ -14,7 +14,7 @@
 #include "twi_slave_pressure_sensor.h"
 
 #include "senstick_sensor_base_data.h"
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 // 仕様書
 // LPS25HB

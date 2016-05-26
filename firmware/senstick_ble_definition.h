@@ -1,5 +1,5 @@
-#ifndef senstick_definitions_h
-#define senstick_definitions_h
+#ifndef senstick_definition_h
+#define senstick_definition_h
 
 #include <app_util.h>
 #include <app_timer_appsh.h>
@@ -23,4 +23,4 @@
 
 #define SCHED_QUEUE_SIZE                20
 
-#endif /* senstick_definitions_h */
+#endif /* senstick_definition_h */

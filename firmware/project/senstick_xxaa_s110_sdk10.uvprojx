@@ -651,6 +651,11 @@
               <FileType>1</FileType>
               <FilePath>..\gpio_led_driver.c</FilePath>
             </File>
+            <File>
+              <FileName>gpio_button_monitoring.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_button_monitoring.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1326,6 +1331,11 @@
               <FileName>gpio_led_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\gpio_led_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>gpio_button_monitoring.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\gpio_button_monitoring.c</FilePath>
             </File>
           </Files>
         </Group>

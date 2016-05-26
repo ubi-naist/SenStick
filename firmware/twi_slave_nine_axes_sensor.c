@@ -12,7 +12,7 @@
 #include "twi_slave_nine_axes_sensor.h"
 
 #include "senstick_sensor_base_data.h"
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 // レジスタ仕様書
 // MPU-9250

@@ -10,7 +10,7 @@
 #include "app_gap.h"
 
 #include "ble_parameters_config.h"
-#include "senstick_device_definitions.h"
+#include "senstick_device_definition.h"
 
 static uint16_t m_conn_handle;
 

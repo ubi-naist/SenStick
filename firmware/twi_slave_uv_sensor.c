@@ -14,7 +14,7 @@
 #include "twi_slave_uv_sensor.h"
 
 #include "senstick_sensor_base_data.h"
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 // 初期化関数。センサ使用前に必ずこの関数を呼出ます。
 bool initUVSensor(void)

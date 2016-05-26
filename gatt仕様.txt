@@ -58,7 +58,9 @@ UUID: 0x2000
 				0x40 DFUモードに入る
 0x7001, 有効ログの数, read, notify
 	1バイト		記録中を含む有効なデータがあるログの数を示します。最初は0。
-0x7002, メタ属性時間, read, write
+0x7002, ストレージステート, read, notify
+	1バイト		ログなどのエラー状態。0x00なら正常、0x01ならディスクフル。記録不可能。フォーマットすべし。
+0x7003, メタ属性時間, read, write
 	ロギングをスタートした時に書き込まれる、時刻。RTCで内部で勝手に管理される。
 	https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.date_time.xml
 	1. 7バイト	日時
@@ -71,7 +73,7 @@ UUID: 0x2000
 			5. 時間, 0 - 23, 
 			6. 分 0 - 59
 			7. 秒 0 - 59
-0x7003, メタ属性:概要、read, write
+0x7004, メタ属性:概要、read, write
 	ロギングをスタートした時に書き込まれる、ログの概要テキスト
 	1. 20バイト	テキスト, 0ターミナルは不要。もしもテキストがない場合は0x0
 

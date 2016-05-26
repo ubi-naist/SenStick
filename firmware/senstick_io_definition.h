@@ -1,5 +1,5 @@
-#ifndef senstick_io_definitions_h
-#define senstick_io_definitions_h
+#ifndef senstick_io_definition_h
+#define senstick_io_definition_h
 
 // 配線(役割)
 // IO     In/Out      概要
@@ -54,4 +54,4 @@
 #define TWI_VEML6070_RD_ADDRESS 0x39 // UVセンサー。上位バイト読み出しアドレス。
 #define TWI_BH1780GLI_ADDRESS   0x29 // 照度センサー。0010_1001 0x29
 #define TWI_AK8963_ADDRESS      0x0c // 
-#endif /* senstick_io_definitions_h */
+#endif /* senstick_io_definition_h */

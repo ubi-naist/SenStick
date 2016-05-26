@@ -8,8 +8,8 @@
 #include <app_error.h>
 #include <sdk_errors.h>
 
-#include "senstick_ble_definitions.h"
-#include "senstick_io_definitions.h"
+#include "senstick_ble_definition.h"
+#include "senstick_io_definition.h"
 #include "battery_service.h"
 
 static ble_bas_t batter_service_context;

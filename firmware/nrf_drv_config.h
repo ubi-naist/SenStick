@@ -10,7 +10,7 @@
  *
  */
 
-#include "senstick_io_definitions.h"
+#include "senstick_io_definition.h"
 
 #ifndef NRF_DRV_CONFIG_H
 #define NRF_DRV_CONFIG_H

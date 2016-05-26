@@ -5,7 +5,7 @@
 #include <sdk_errors.h>
 
 #include "device_information_service.h"
-#include "senstick_device_definitions.h"
+#include "senstick_device_definition.h"
 
 // デバイスインフォアメーションサービスを初期化
 void init_device_information_service(void)

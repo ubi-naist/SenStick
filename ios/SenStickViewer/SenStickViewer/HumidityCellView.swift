@@ -19,6 +19,7 @@ class HumidityCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)                
             }
         }
     }
@@ -41,6 +42,10 @@ class HumidityCellView : SensorDataCellView
         self.minValue = 0
         self.graphView?.maxValue = 100
         self.graphView?.minValue = 0
+        
+        if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
+        }
     }
     
     override func didUpdateRealTimeData(sender: AnyObject)

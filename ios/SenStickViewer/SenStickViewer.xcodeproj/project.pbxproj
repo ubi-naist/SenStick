@@ -15,6 +15,7 @@
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
 		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
 		F87BED681CF1D40900832E08 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87BED671CF1D40900832E08 /* DetailViewController.swift */; };
+		F8B9F0B51CF86C6700F16969 /* SamplingDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */; };
 		F8BD11721CF4435500BA8F3B /* SensorDataCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */; };
 		F8BD11751CF47AA300BA8F3B /* AccelerationCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */; };
 		F8BD11771CF4820200BA8F3B /* DataGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11761CF4820200BA8F3B /* DataGraphView.swift */; };
@@ -72,6 +73,7 @@
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F87BED671CF1D40900832E08 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SamplingDurationViewController.swift; sourceTree = "<group>"; };
 		F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataCellView.swift; sourceTree = "<group>"; };
 		F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationCellView.swift; sourceTree = "<group>"; };
 		F8BD11761CF4820200BA8F3B /* DataGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataGraphView.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */,
 				F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */,
 				F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */,
+				F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */,
 				F8BD11731CF47A8200BA8F3B /* New Group */,
 				F86322991C979B03001B53A0 /* Assets.xcassets */,
 				F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */,
@@ -253,6 +256,7 @@
 				F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */,
 				F8BD11721CF4435500BA8F3B /* SensorDataCellView.swift in Sources */,
 				F8C3F7481CF5C02A00B807B5 /* HumidityCellView.swift in Sources */,
+				F8B9F0B51CF86C6700F16969 /* SamplingDurationViewController.swift in Sources */,
 				F8BD117D1CF59EB900BA8F3B /* BrightnessCellView.swift in Sources */,
 				F8BD11791CF5996800BA8F3B /* GyroCellView.swift in Sources */,
 				F8FCC92E1CCF6195003BCC5A /* DeviceListCellView.swift in Sources */,

@@ -19,6 +19,7 @@ class BrightnessCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)                
             }
         }
     }
@@ -42,6 +43,9 @@ class BrightnessCellView : SensorDataCellView
         self.graphView?.maxValue = 10000
         self.graphView?.minValue = 0
         
+        if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
+        }
     }
     
     override func didUpdateRealTimeData(sender: AnyObject)

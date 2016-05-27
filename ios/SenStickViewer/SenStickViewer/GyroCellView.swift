@@ -20,6 +20,7 @@ class GyroCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)                
             }
         }
     }
@@ -40,8 +41,8 @@ class GyroCellView : SensorDataCellView
         // レンジの更新
         //        let k = M_PI / Double(180), 1/60
         if let setting = service?.settingData {
-            switch(setting.range) {
-                
+            self.duration = setting.samplingDuration
+            switch(setting.range) {                
             case .ROTATION_RANGE_250DPS:
                 self.maxValue = 5
                 self.minValue = -5

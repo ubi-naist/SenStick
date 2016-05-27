@@ -19,6 +19,7 @@ class PressureCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self) // FIXME なんかむっちゃ邪道だけど、とりあえず
             }
         }
     }
@@ -42,6 +43,9 @@ class PressureCellView : SensorDataCellView
         self.graphView?.maxValue = 1300
         self.graphView?.minValue = -800
         
+        if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
+        }        
     }
     
     override func didUpdateRealTimeData(sender: AnyObject)

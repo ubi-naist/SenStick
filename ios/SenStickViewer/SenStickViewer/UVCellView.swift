@@ -19,6 +19,7 @@ class UVCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)
             }
         }
     }
@@ -42,6 +43,9 @@ class UVCellView : SensorDataCellView
         self.graphView?.maxValue = 500
         self.graphView?.minValue = -500
         
+        if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
+        }
     }
     
     override func didUpdateRealTimeData(sender: AnyObject)

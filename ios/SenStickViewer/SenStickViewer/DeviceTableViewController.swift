@@ -54,6 +54,14 @@ class DeviceListTableViewController: UITableViewController {
             dataview.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
         }
         /*
+         // 遷移時にステートを設定
+         if([segue.destinationViewController isKindOfClass:[StateDetailTableViewController class]]) {
+         StateDetailTableViewController *target = (StateDetailTableViewController *)segue.destinationViewController;
+         NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+         target.soundState = [[SoundStateManager sharedInstance] getState:(int)indexPath.section buttonIndex:(int)indexPath.row];
+         }
+         */
+        /*
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let object = objects[indexPath.row] as! NSDate

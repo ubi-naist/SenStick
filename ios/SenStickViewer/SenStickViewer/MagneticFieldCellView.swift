@@ -20,6 +20,7 @@ class MagneticFieldCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)
             }
         }
     }
@@ -42,6 +43,10 @@ class MagneticFieldCellView : SensorDataCellView
         self.minValue = -1000
         self.graphView?.maxValue = 1000
         self.graphView?.minValue = -1000
+        
+        if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
+        }
     }
     
     override func didUpdateRealTimeData(sender: AnyObject)

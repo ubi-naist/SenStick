@@ -20,6 +20,7 @@ class AccelerationCellView : SensorDataCellView
                 self.iconButton?.enabled = false
             } else {
                 self.iconButton?.enabled = true
+                didUpdateSetting(self)                
             }
         }
     }
@@ -39,13 +40,14 @@ class AccelerationCellView : SensorDataCellView
         
         // レンジの更新
         if let setting = service?.settingData {
+            self.duration = setting.samplingDuration
             switch(setting.range) {
             case .ACCELERATION_RANGE_2G:
                 self.maxValue = 2.5
                 self.minValue = -2.5
                 self.graphView?.maxValue = 2.5
                 self.graphView?.minValue = -2.5
-                
+
             case .ACCELERATION_RANGE_4G:
                 self.maxValue = 4.5
                 self.minValue = -4.5

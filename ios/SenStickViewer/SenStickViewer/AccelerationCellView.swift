@@ -92,7 +92,7 @@ class AccelerationCellView : SensorDataCellView
     }
     override func didFinishedLogData(sender: AnyObject)
     {
-        debugPrint("\(#function) count:\(super.logData![0].count)")
+        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData![0].count)")
         stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     

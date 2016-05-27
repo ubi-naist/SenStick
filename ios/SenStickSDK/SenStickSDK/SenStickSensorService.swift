@@ -36,6 +36,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var sensorLogDataChar:       CBCharacteristic
 
     var logData: [T] = []
+    var prevousLogDataDateTime: NSDate = NSDate()
     
     // Properties
     public private(set) var settingData:  SensorSettingData<S>? {
@@ -62,15 +63,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             })
         }
     }
-/*
-    public private(set) var logData: [T] {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.delegate?.didUpdateLogData(self)
-            })
-        }
-    }
-*/
+
     // イニシャライザ
     init?(device:SenStickDevice, sensorType:SenStickSensorType)
     {
@@ -182,6 +175,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             }
             if let d = unpackDataArray(metadata.range, value: data) {
                 if d.count == 0 {
+                    // 通知を間引いいているため、ログデータがまだ残っている場合は、ログデータ通知する
+                    if logData.count > 0 {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.delegate?.didUpdateLogData(self)
+                        })
+                    }
+                    // 終了通知
                     dispatch_async(dispatch_get_main_queue(), {
                         self.delegate?.didFinishedLogData(self)
                     })
@@ -190,9 +190,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                     self.logData.appendContentsOf(d)
                     objc_sync_exit(self)
                 
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.delegate?.didUpdateLogData(self)
-                    })
+                    // 通知を間引く。描画周りの処理が重くなるので、100ミリ秒に1回に抑える。
+                    if abs(prevousLogDataDateTime.timeIntervalSinceNow) >= 0.3 {
+                        prevousLogDataDateTime = NSDate()
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.delegate?.didUpdateLogData(self)
+                        })
+                    }
                 }
             }
 

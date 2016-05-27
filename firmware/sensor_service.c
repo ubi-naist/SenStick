@@ -45,7 +45,7 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
         bool result = true;
         if( p_auth_req->request.write.handle == p_context->sensor_setting_char_handle.value_handle){
             result = senstickSensorControllerWriteSetting(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
-        } else if( p_auth_req->request.read.handle == p_context->sensor_logid_char_handle.value_handle) {
+        } else if( p_auth_req->request.write.handle == p_context->sensor_logid_char_handle.value_handle) {
             senstickSensorControllerWriteLogID(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
         } else {
             // 一致しないハンドラ
@@ -53,7 +53,9 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
         }
         // リプライ
         reply_params.type                      = BLE_GATTS_AUTHORIZE_TYPE_WRITE;
-        reply_params.params.read.gatt_status   = result ? BLE_GATT_STATUS_SUCCESS : BLE_GATT_STATUS_ATTERR_WRITE_NOT_PERMITTED;
+        // iOSアプリ側でBLEのアクセスでAUTH_ERRORがあると、一連の処理が破棄されるのか?、みたいな振る舞い。読み出せるべき値が読み出せないとか。なので、ここはスルー。
+        reply_params.params.write.gatt_status = BLE_GATT_STATUS_SUCCESS;
+//        reply_params.params.read.gatt_status   = result ? BLE_GATT_STATUS_SUCCESS : BLE_GATT_STATUS_ATTERR_WRITE_NOT_PERMITTED;
         err_code = sd_ble_gatts_rw_authorize_reply(p_context->connection_handle, &reply_params);
         APP_ERROR_CHECK(err_code);
         

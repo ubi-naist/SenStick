@@ -306,13 +306,13 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
         }
     }
     
-    // サービスを初期化
+    // サービスを初期化, 初期化に失敗したセンサーでもBLEのサービスは構築する
     for(int i=0; i < NUM_OF_SENSORS; i++) {
         // 初期化に失敗したセンサーのサービスは構築しない
-        if( context.isSensorAvailable[i] ) {
+//        if( context.isSensorAvailable[i] ) {
             ret_code_t err_code = initSensorService(&(context.services[i]), uuid_type, (sensor_device_t)i);
             APP_ERROR_CHECK(err_code);
-        }
+//        }
     }
     return NRF_SUCCESS;
 }
@@ -380,6 +380,11 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
 {
     // センシング動作中はfalseを返す
     if(context.isSensorWorking) {
+        return false;
+    }
+    
+    // センサーが使用不可能なときはfalseを返す
+    if(!context.isSensorAvailable[device_type]) {
         return false;
     }
     

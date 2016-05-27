@@ -177,7 +177,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             
         case sensorLogDataChar.UUID:
             guard let metadata = self.logMetaData else {
-                assert(false, #function)
+//                assert(false, #function)
                 break
             }
             if let d = unpackDataArray(metadata.range, value: data) {

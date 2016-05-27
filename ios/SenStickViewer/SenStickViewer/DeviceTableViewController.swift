@@ -67,6 +67,7 @@ class DeviceListTableViewController: UITableViewController {
     
     // MARK: - KVO
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        debugPrint("\(#function)")
         if (keyPath == "devices") {
             self.tableView.reloadData()
         } else {
@@ -80,6 +81,7 @@ class DeviceListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        debugPrint("\(#function) count: \( SenStickDeviceManager.sharedInstance.devices.count)")
         return SenStickDeviceManager.sharedInstance.devices.count
     }
     

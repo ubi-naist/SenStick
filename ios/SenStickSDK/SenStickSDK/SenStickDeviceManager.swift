@@ -29,7 +29,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         queue = dispatch_queue_create("senstick.ble-queue", DISPATCH_QUEUE_SERIAL)
         
         super.init()
-
+        
         manager = CBCentralManager.init(delegate: self, queue: queue)
     }
     
@@ -56,7 +56,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         // スキャンを開始する。
         manager!.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)
         isScanning = true
-
+        
         var remaining = scanDuration
         scanTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue())
         dispatch_source_set_timer(scanTimer!, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
@@ -80,9 +80,9 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     public func cancelScan()
     {
         guard manager!.isScanning else { return }
-
+        
         dispatch_source_cancel(scanTimer!)
-
+        
         self.scanCallback?(remaining: 0)
         self.scanCallback = nil
         
@@ -111,18 +111,32 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
             self.state = central.state
         })
         
-/*        switch central.state {
-        case CBCentralManagerState.PoweredOn:
-            // 電源ONで5秒ほどスキャンする
-//            scan(5.0)
-        default:
+        switch central.state {
+        case .PoweredOn: break
+        case .PoweredOff:
+            dispatch_async(dispatch_get_main_queue(), {
+                self.devices = []
+            })
+        case .Unauthorized:
+            dispatch_async(dispatch_get_main_queue(), {
+                self.devices = []
+            })
+        case .Unknown:
+            dispatch_async(dispatch_get_main_queue(), {
+                self.devices = []
+            })
+        case .Unsupported:
+            dispatch_async(dispatch_get_main_queue(), {
+                self.devices = []
+            })
             break
-        }*/
+        default: break
+        }
     }
     
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
     {
-//        debugPrint("\(#function)")
+        //        debugPrint("\(#function)")
         dispatch_async(dispatch_get_main_queue(), {
             self.addPeripheral(peripheral)
         })
@@ -130,7 +144,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
     {
-//        debugPrint("\(#function)")
+        //        debugPrint("\(#function)")
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
             device.onConnected()
         }
@@ -138,7 +152,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
     {
-//        debugPrint("\(#function)")
+        //        debugPrint("\(#function)")
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
             device.onDisConnected()
         }

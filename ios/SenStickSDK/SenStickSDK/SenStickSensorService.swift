@@ -15,11 +15,15 @@ public protocol SenStickSensorServiceDelegate : class
     func didUpdateRealTimeData(sender: AnyObject)
     func didUpdateMetaData(sender: AnyObject)
     func didUpdateLogData(sender: AnyObject)
+    func didFinishedLogData(sender: AnyObject)
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
 public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable where S.RawValue == UInt16, T.RangeType == S> 
 {
+    let lockQueue = dispatch_queue_create("com.SenStickSensorService.LockQueue", nil)
+
+    // code
     public weak var delegate: SenStickSensorServiceDelegate?
     
     // Variables
@@ -30,6 +34,8 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var sensorLogIDChar:         CBCharacteristic
     var sensorLogMetaDataChar:   CBCharacteristic
     var sensorLogDataChar:       CBCharacteristic
+
+    var logData: [T] = []
     
     // Properties
     public private(set) var settingData:  SensorSettingData<S>? {
@@ -56,15 +62,15 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             })
         }
     }
-
-    public private(set) var logData: [T]? {
+/*
+    public private(set) var logData: [T] {
         didSet {
             dispatch_async(dispatch_get_main_queue(), {
                 self.delegate?.didUpdateLogData(self)
             })
         }
     }
-    
+*/
     // イニシャライザ
     init?(device:SenStickDevice, sensorType:SenStickSensorType)
     {
@@ -174,8 +180,23 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 assert(false, #function)
                 break
             }
-            let d = unpackDataArray(metadata.range, value: data)
-            self.logData = d
+            if let d = unpackDataArray(metadata.range, value: data) {
+                if d.count == 0 {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.delegate?.didFinishedLogData(self)
+                    })
+                } else {
+                    objc_sync_enter(self)
+                    self.logData.appendContentsOf(d)
+                    objc_sync_exit(self)
+                
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.delegate?.didUpdateLogData(self)
+                    })
+                }
+            }
+
+//            debugPrint("unpacked : \(d)")
             
         default:
             assert(false, "\(#function), unexpected cahatacter: \(characteristic)")
@@ -210,5 +231,18 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     public func updateLogMetaData()
     {
         device.readValue(sensorLogMetaDataChar)
+    }
+    
+    // センサデータを読みだし
+    public func readLogData() -> [T]
+    {
+        var ret: [T]
+        
+        objc_sync_enter(self)
+        ret = self.logData
+        self.logData = []
+        objc_sync_exit(self)
+        
+        return ret
     }
 }

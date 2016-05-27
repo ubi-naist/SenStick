@@ -73,7 +73,6 @@ void loadSensorSetting(void)
         return;
     }
     // センサ情報を読み込み
-    // センサ情報を書き込み
     for(int i=0; i < NUM_OF_SENSORS; i++) {
         readFlash(SENSOR_SETTING_STORAGE_START_ADDRESS + sizeof(uint32_t) + i * sizeof(sensor_service_setting_t), (uint8_t *)&context.sensorSetting[i], sizeof(sensor_service_setting_t));
     }
@@ -91,6 +90,13 @@ void saveSensorSetting(void)
         writeFlash(SENSOR_SETTING_STORAGE_START_ADDRESS + sizeof(uint32_t) + i * sizeof(sensor_service_setting_t), (uint8_t *)&context.sensorSetting[i], sizeof(sensor_service_setting_t));
     }
 }
+
+void formatSensorSetting(void)
+{
+    // セクタを消去
+    formatFlash(SENSOR_SETTING_STORAGE_START_ADDRESS, SENSOR_SETTING_STORAGE_SIZE);
+}
+
 // BLEサービスにログデータを通知します。読み込んだバイト数を返します。
 // 先頭バイトは、有効なデータユニットの数、その後センサデータが並びます。
 static uint8_t fillBLESensorData(uint8_t *p_data, uint8_t length, sensor_device_t device_type)
@@ -193,20 +199,19 @@ static void sensor_timer_handler(void *p_arg)
         // しきい値を超えていたら
         if(context.sensorSampling[i] >= context.sensorSetting[i].samplingDuration) {
             context.sensorSampling[i] -= context.sensorSetting[i].samplingDuration;
+            sensor_service_command_t command = context.sensorSetting[i].command;
             //データ取得、そして通知とロギング
-            if( context.isSensorAvailable[i] ) {
+            if( context.isSensorAvailable[i] && (command & 0x03) != 0) {
+                // データ取得
                 const senstick_sensor_base_t *ptr = m_p_sensor_bases[i];
                 uint8_t length = (ptr->getSensorDataHandler)(buffer);
-                // 通知, ログ保存
-                sensor_service_command_t command = context.sensorSetting[i].command;
-                // 通知
+                // リアルタイム通知
                 if((command & 0x01) != 0) {
                     sensor_notify_raw_data((sensor_device_t)i, buffer, length);
                 }
-                // ログ保存
+                // ログ保存とBLE通知
                 if((command & 0x02) != 0) {
                     writeLog(&(context.writingLogContext[i]), buffer, length);
-                    // TBD 頻度高すぎないか?
                     senstickSensorControllerNotifyLogData();
                 }
             }
@@ -446,6 +451,7 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
             break;
         case formattingStorage:
             senstickSensorControllerFormatStorage();
+            formatSensorSetting();
             break;
         case enterDeepSleep:
         case enterDFUmode:

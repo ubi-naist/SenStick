@@ -76,31 +76,24 @@ class AccelerationCellView : SensorDataCellView
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        debugPrint("\(#function), \(service!.logMetaData!.availableSampleCount)")
+        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
     }
     
     override func didUpdateLogData(sender: AnyObject)
     {
-        debugPrint("\(#function)")
-        // サンプル無し
-        let sampleCount = service!.logMetaData!.availableSampleCount
-        if sampleCount == 0 {
-            stopReadingLog("acceleration", duration: self.service?.logMetaData?.samplingDuration)
-            return
+        if let array = service?.readLogData() {
+            let sampleCount = service!.logMetaData!.availableSampleCount
+            let progress = Double(super.logData![0].count + array.count) / Double(sampleCount)
+            
+            for data in array {
+                addReadLog([data.x, data.y, data.z], progress: progress)
+            }
         }
-        
-        // 終了
-        if service?.logData?.count == 0 {
-            stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
-            return
-        }
-
-        // 継続
-        let progress = Double(super.logData![0].count) / Double(sampleCount)
-        for data in (service?.logData)! {
-          addReadLog([data.x, data.y, data.z], progress: progress)
-        }
- //        debugPrint("\(#function), progress: \(progress), super.logData!.count\(super.logData![0].count) sampleCount:\(sampleCount)")
+    }
+    override func didFinishedLogData(sender: AnyObject)
+    {
+        debugPrint("\(#function) count:\(super.logData![0].count)")
+        stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

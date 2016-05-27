@@ -119,17 +119,19 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     }
 
     // MARK: - SenStickSensorServiceDelegate
-     func didUpdateSetting(sender:AnyObject)
+    func didUpdateSetting(sender:AnyObject)
     {}
     
-     func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
     {}
     
-     func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
     {}
     
-     func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
     {}
 
+    func didFinishedLogData(sender: AnyObject)
+    {}
     // MARK: - Event handler
 }

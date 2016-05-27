@@ -53,30 +53,21 @@ class PressureCellView : SensorDataCellView
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        debugPrint("\(#function), \(service!.logMetaData!.availableSampleCount)")
     }
     
     override func didUpdateLogData(sender: AnyObject)
+    {      
+        if let array = service?.readLogData() {
+            let sampleCount = service!.logMetaData!.availableSampleCount
+            let progress = Double(super.logData![0].count + array.count) / Double(sampleCount)
+            for data in array {
+                addReadLog([data.pressure], progress: progress)
+            }
+        }
+    }
+    override func didFinishedLogData(sender: AnyObject)
     {
-        // サンプル無し
-        let sampleCount = service!.logMetaData!.availableSampleCount
-        if sampleCount == 0 {
-            stopReadingLog("pressure", duration: self.service?.logMetaData?.samplingDuration)
-            return
-        }
-        
-        // 終了
-        if service?.logData?.count == 0 {
-            stopReadingLog("pressure", duration: self.service?.logMetaData?.samplingDuration)
-            return
-        }
-        
-        // 継続
-        let progress = Double(super.logData![0].count) / Double(sampleCount)
-        for data in (service?.logData)! {
-            addReadLog([data.pressure], progress: progress)
-        }
-        //        debugPrint("\(#function), progress: \(progress), super.logData!.count\(super.logData![0].count) sampleCount:\(sampleCount)")
+        stopReadingLog("pressure", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

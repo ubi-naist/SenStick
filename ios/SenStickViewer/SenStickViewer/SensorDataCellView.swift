@@ -83,7 +83,6 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
             saveToFile(filePath, data: logData!, duration: duration!)
         }
         
-        logData = nil
         self.progressBar?.hidden = true
     }
     

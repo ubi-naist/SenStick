@@ -20,6 +20,7 @@ typedef struct senstick_control_service_s {
     
     ble_gatts_char_handles_t control_point_char_handle;
     ble_gatts_char_handles_t available_log_count_char_handle;
+    ble_gatts_char_handles_t storage_status_char_handle;
     ble_gatts_char_handles_t rtc_char_handle;
     ble_gatts_char_handles_t abstract_text_char_handle;
     
@@ -155,6 +156,21 @@ static void addService(uint8_t uuid_type)
     err_code = characteristic_add(context.service_handle, &params, &context.control_point_char_handle);
     APP_ERROR_CHECK(err_code);
     
+    // ストレージステータス
+    params.uuid              = STORAGE_STATUS_CHAR_UUID;
+    params.max_len           = 1;
+    params.char_props.read   = true;
+    params.char_props.write  = false;
+    params.char_props.notify = true;
+    params.is_var_len        = false;
+    params.is_defered_read   = false;
+    params.is_defered_write  = false;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_NO_ACCESS;
+    params.cccd_write_access = SEC_OPEN;
+    err_code = characteristic_add(context.service_handle, &params, &context.storage_status_char_handle);
+    APP_ERROR_CHECK(err_code);
+    
     // 有効ログの数
     params.uuid              = AVAILABLE_LOG_COUNT_CHAR_UUID;
     params.max_len           = 1;
@@ -237,9 +253,39 @@ void senstickControlService_handleBLEEvent(ble_evt_t * p_ble_evt)
     }
 }
 
+
+static bool is_notification_enabled(uint16_t connection_handle, uint16_t cccd_handle)
+{
+     uint32_t err_code;
+    uint8_t  cccd_value_buf[BLE_CCCD_VALUE_LEN];
+    ble_gatts_value_t gatts_value;
+ 
+    bool result = false;
+ 
+    // Initialize value struct.
+    memset(&gatts_value, 0, sizeof(gatts_value));
+ 
+    gatts_value.len     = BLE_CCCD_VALUE_LEN;
+    gatts_value.offset  = 0;
+    gatts_value.p_value = cccd_value_buf;
+ 
+     err_code = sd_ble_gatts_value_get(connection_handle, cccd_handle, &gatts_value);
+     if (err_code == NRF_SUCCESS) {
+         result = ble_srv_is_notification_enabled(cccd_value_buf);
+     }
+    return result;
+ }
+ 
+static void setValueAndNotify(uint16_t connection_handle, uint16_t value_handle, uint16_t cccd_handle, uint8_t *p_data, uint16_t length)
+{
+     setCharacteristicsValue(connection_handle, value_handle, p_data, length);
+    if( is_notification_enabled(connection_handle, cccd_handle) ) {
+        notifyToClient(connection_handle, value_handle, p_data, length);
+    }
+}
 void senstickControlService_observeControlCommand(senstick_control_command_t command)
 {
-    setCharacteristicsValueAndNotify(context.connection_handle,
+    setValueAndNotify(context.connection_handle,
                                      context.control_point_char_handle.value_handle,
                                      context.control_point_char_handle.cccd_handle,
                                      &command, sizeof(uint8_t));
@@ -247,10 +293,17 @@ void senstickControlService_observeControlCommand(senstick_control_command_t com
 
 void senstickControlService_observeCurrentLogCount(uint8_t count)
 {
-    setCharacteristicsValueAndNotify(context.connection_handle,
+    setValueAndNotify(context.connection_handle,
                                      context.available_log_count_char_handle.value_handle,
                                      context.available_log_count_char_handle.cccd_handle,
                                      &count, sizeof(uint8_t));
 }
 
-
+void senstickControlService_observeDiskFull(bool flag)
+{
+    uint8_t val = (uint8_t)flag;
+    setValueAndNotify(context.connection_handle,
+                                     context.storage_status_char_handle.value_handle,
+                                     context.storage_status_char_handle.cccd_handle,
+                                     &val, sizeof(uint8_t));
+}

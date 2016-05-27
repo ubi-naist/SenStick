@@ -13,6 +13,7 @@ public protocol SenStickControlServiceDelegate : class
 {
     func didCommandChanged(sender:SenStickControlService, command:SenStickControlCommand)
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
+    func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
 }
@@ -23,6 +24,7 @@ public class SenStickControlService : SenStickService
     unowned let device: SenStickDevice
     
     let statusChar:            CBCharacteristic
+    let storageStatusChar:     CBCharacteristic
     let availableLogCountChar: CBCharacteristic
     let dateTimeChar:          CBCharacteristic
     let abstractChar:          CBCharacteristic
@@ -37,6 +39,14 @@ public class SenStickControlService : SenStickService
             })
             // FIXME ログカウント値が通知されないので、能動的にここで読み出す
             readAvailableLogCount()
+        }
+    }
+
+    public private(set) var storageStatus: Bool {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didStorageStatusChanged(self, storageStatus: self.storageStatus)
+            })
         }
     }
     
@@ -73,11 +83,13 @@ public class SenStickControlService : SenStickService
         guard let service = device.findService(SenStickUUIDs.ControlServiceUUID) else { return nil }
         guard let _statusChar            = device.findCharacteristic(service, uuid: SenStickUUIDs.StatusCharUUID) else { return nil }
         guard let _availableLogCountChar = device.findCharacteristic(service, uuid: SenStickUUIDs.AvailableLogCountCharUUID) else { return nil }
+        guard let _storageStatusChar     = device.findCharacteristic(service, uuid: SenStickUUIDs.StorageStatusCharUUID) else { return nil }
         guard let _dateTimeChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.DateTimeCharUUID) else { return nil }
         guard let _abstractChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.AbstractCharUUID) else { return nil }
         
         statusChar            = _statusChar
         availableLogCountChar = _availableLogCountChar
+        storageStatusChar     = _storageStatusChar
         dateTimeChar          = _dateTimeChar
         abstractChar          = _abstractChar
 
@@ -85,15 +97,18 @@ public class SenStickControlService : SenStickService
         
         self.command              = .Stopping
         self.availableLogCount    = 0
+        self.storageStatus        = false
         self.dateTime             = NSDate.distantPast()
         self.abstractText         = ""
       
         // Notifyを有効に。初期値読み出し。
         device.setNotify(statusChar, enabled: true)
         device.setNotify(availableLogCountChar, enabled: true)
+        device.setNotify(storageStatusChar, enabled: true)
         
         device.readValue(statusChar)
         device.readValue(availableLogCountChar)
+        device.readValue(storageStatusChar)
         device.readValue(dateTimeChar)
         device.readValue(abstractChar)
     }
@@ -111,6 +126,9 @@ public class SenStickControlService : SenStickService
             
         case SenStickUUIDs.AvailableLogCountCharUUID:
             availableLogCount = data[0]
+            
+        case SenStickUUIDs.StorageStatusCharUUID:
+            self.storageStatus = (data[0] != 0)
             
         case SenStickUUIDs.DateTimeCharUUID:
             if let datetime = NSDate.unpack(data) {
@@ -137,6 +155,11 @@ public class SenStickControlService : SenStickService
     public func readAvailableLogCount()
     {
         device.readValue(availableLogCountChar)
+    }
+
+    public func readStorageStatus()
+    {
+        device.readValue(storageStatusChar)
     }
     
     public func readDateTime()

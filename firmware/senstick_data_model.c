@@ -69,7 +69,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
     context.command = command;
 
     // 新しく作るログのID
-    const uint8_t new_log_id = context.logCount;
+    const uint8_t new_log_id = senstick_getCurrentLogCount();
     
     senstickControlService_observeControlCommand(new_command);
     senstickSensorController_observeControlCommand(new_command, new_log_id);
@@ -125,6 +125,8 @@ uint8_t senstick_isDiskFull(void)
 void senstick_setDiskFull(bool flag)
 {
     context.is_disk_full = flag;
+    
+    senstickControlService_observeDiskFull(flag);
 }
 
 // 現在の時刻

@@ -15,7 +15,8 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     @IBOutlet var targetLogTextInput: UITextField!
     @IBOutlet var readLogButton: UIButton!
     @IBOutlet var startButton: UIButton!
-    @IBOutlet var stopButton: UIButton!
+    @IBOutlet var stopButton: UIButton!    
+    @IBOutlet var storageStatusTextLabe: UILabel!
     
     weak var controller: SensorDataViewController?
     
@@ -48,11 +49,17 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
             readLogButton.enabled = (control.availableLogCount > 0)
             startButton.enabled   = (control.command == .Stopping)
             stopButton.enabled    = (control.command != .Stopping)
+            storageStatusTextLabe.hidden = !(self.service?.storageStatus)!
+            if (self.service?.storageStatus)! {
+                startButton.enabled = false
+                stopButton.enabled = false
+            }
         } else {
             countOfLogTextLabel.text = "0"
             readLogButton.enabled = false
             startButton.enabled   = false
             stopButton.enabled    = false
+            storageStatusTextLabe.hidden = true
         }
         targetLogTextInput.delegate = self
     }
@@ -72,6 +79,10 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
     {
         debugPrint("\(#function), \(service?.availableLogCount)")
+        updateView()
+    }
+    func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
+    {
         updateView()
     }
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
@@ -98,6 +109,4 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
         let logid = UInt8(targetLogTextInput.text!)!
         controller?.startToReadLog(logid)
     }
-
-    
 }

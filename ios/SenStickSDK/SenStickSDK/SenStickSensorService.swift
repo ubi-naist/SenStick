@@ -215,6 +215,10 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     {
         let data = setting.pack()
         device.writeValue(sensorSettingChar, value: data)
+    }
+    
+    public func readSetting()
+    {
         device.readValue(sensorSettingChar)
     }
 

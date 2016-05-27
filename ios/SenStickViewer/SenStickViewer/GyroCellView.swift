@@ -95,14 +95,16 @@ class GyroCellView : SensorDataCellView
     {
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
-
+    
     
     // MARK: - Event handler
     @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
         
-        let current_setting = self.service!.settingData!
-        let setting = SensorSettingData<RotationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
-        service?.writeSetting(setting)
+        if let current_setting = self.service?.settingData {
+            let setting = SensorSettingData<RotationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
+            service?.writeSetting(setting)
+        }
+        service?.readSetting()
     }
 }

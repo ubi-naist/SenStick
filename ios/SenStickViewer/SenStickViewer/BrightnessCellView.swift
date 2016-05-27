@@ -74,8 +74,11 @@ class BrightnessCellView : SensorDataCellView
     @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
         
-        let current_setting = self.service!.settingData!
+        if let current_setting = self.service?.settingData {
         let setting = SensorSettingData<BrightnessRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
-        service?.writeSetting(setting)
+            
+            service?.writeSetting(setting)
+        }
+        service?.readSetting()
     }
 }

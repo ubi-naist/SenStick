@@ -75,8 +75,11 @@ class MagneticFieldCellView : SensorDataCellView
     @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
         
-        let current_setting = self.service!.settingData!
-        let setting = SensorSettingData<MagneticFieldRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
-        service?.writeSetting(setting)
+        if let current_setting = self.service?.settingData {
+            let setting = SensorSettingData<MagneticFieldRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
+
+            service?.writeSetting(setting)
+        }
+        service?.readSetting()
     }
 }

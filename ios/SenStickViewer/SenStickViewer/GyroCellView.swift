@@ -27,6 +27,7 @@ class GyroCellView : SensorDataCellView
     
     override func startToReadLog(logid: UInt8)
     {
+        service?.readLogData()         
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -94,6 +95,7 @@ class GyroCellView : SensorDataCellView
     }
     override func didFinishedLogData(sender: AnyObject)
     {
+        didUpdateLogData(self)         
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
     

@@ -78,7 +78,7 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
             logData![index].append(d)
         }
         
-        self.graphView?.plotLogData(logData!, percent: progress)
+//        self.graphView?.plotLogData(logData!, percent: progress)
         self.progressBar?.progress = Float(progress)
         
 //        debugPrint("\(#function), \(progress),  \(logData)")
@@ -86,6 +86,8 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     
     func stopReadingLog(fileName: String, duration: SamplingDurationType?)
     {
+        self.graphView?.plotLogData(logData!, percent: Double((self.progressBar?.progress)!))
+        
         if logData != nil && duration != nil {
             // ファイルに保存
             let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString

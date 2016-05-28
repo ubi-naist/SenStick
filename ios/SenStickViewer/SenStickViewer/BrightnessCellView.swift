@@ -26,6 +26,7 @@ class BrightnessCellView : SensorDataCellView
     
     override func startToReadLog(logid: UInt8)
     {
+        service?.readLogData()         
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -71,6 +72,7 @@ class BrightnessCellView : SensorDataCellView
     }
     override func didFinishedLogData(sender: AnyObject)
     {
+        didUpdateLogData(self)         
         stopReadingLog("brightness", duration: service?.logMetaData?.samplingDuration)
     }
 

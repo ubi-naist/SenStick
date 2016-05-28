@@ -125,7 +125,7 @@ bool initNineAxesSensor(void)
     writeToMPU9250( INT_PIN_CFG, data2, sizeof(data2));
     
     // CNTL1
-    // D4: BIT              0   0: 14-bit output, 1: 16-bit output
+    // D4: BIT              1   0: 14-bit output, 1: 16-bit output
     // D3: Mode[3:0]        x   "0000": Power-down mode
     //                          "0001": Single measurement mode
     //                          "0010" Continuous measurement mode 1, 8 Hz sample rates.

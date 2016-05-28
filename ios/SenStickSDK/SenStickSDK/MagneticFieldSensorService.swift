@@ -39,7 +39,7 @@ struct MagneticFieldRawData
     static func getLSBperuT(range: MagneticFieldRange) -> Double
     {
         switch range {
-            case .MAGNETIC_RANGE_DEFAULT: return (Double(8190)/Double(4912))
+        case .MAGNETIC_RANGE_DEFAULT: return 1/0.15; // AK8963, 16-bit mode
         }
     }
     
@@ -67,7 +67,7 @@ extension CMMagneticField : SensorDataPackableType
         let LSBperuT = MagneticFieldRawData.getLSBperuT(range)
         
         // FIXME 右手系/左手系などの座標変換など確認すること。
-        
+//debugPrint("x:\(rawData.xRawValue), y:\(rawData.yRawValue), z: \(rawData.zRawValue), lsbPerDeg:\(LSBperuT)")
         return CMMagneticField(x: Double(rawData.xRawValue) / Double(LSBperuT), y: Double(rawData.yRawValue) / Double(LSBperuT), z: Double(rawData.zRawValue) / Double(LSBperuT))
     }
 }

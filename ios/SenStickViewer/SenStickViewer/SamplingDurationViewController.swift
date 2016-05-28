@@ -159,7 +159,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
             return 4
         }
         if target is GyroSensorService {
-            return 3
+            return 4
         }
         
         // else

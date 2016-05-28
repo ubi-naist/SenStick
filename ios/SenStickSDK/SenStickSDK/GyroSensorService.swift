@@ -47,10 +47,10 @@ struct RotationRawData
     static func getLSBperDegS(range: RotationRange) -> Double
     {
         switch range {
-        case .ROTATION_RANGE_250DPS:    return 131
-        case .ROTATION_RANGE_500DPS:    return 65.5
-        case .ROTATION_RANGE_1000DPS:   return 32.8
-        case .ROTATION_RANGE_2000DPS:   return 16.4
+        case .ROTATION_RANGE_250DPS:    return (32768.0 / 250.0)
+        case .ROTATION_RANGE_500DPS:    return (32768.0 / 500.0)
+        case .ROTATION_RANGE_1000DPS:   return (32768.0 / 1000.0)
+        case .ROTATION_RANGE_2000DPS:   return (32768.0 / 2000.0)
         }
     }
     
@@ -80,6 +80,7 @@ extension CMRotationRate : SensorDataPackableType
         // FIXME 右手系/左手系などの座標変換など確認すること。
         // deg/s なので rad/sに変換
         let k = M_PI / Double(180)
+//debugPrint("x:\(rawData.xRawValue), y:\(rawData.yRawValue), z: \(rawData.zRawValue), lsbPerDeg:\(lsbPerDeg)")
         return CMRotationRate(x: k * Double(rawData.xRawValue) / Double(lsbPerDeg), y: k * Double(rawData.yRawValue) / Double(lsbPerDeg), z: k * Double(rawData.zRawValue) / Double(lsbPerDeg))
     }
 }

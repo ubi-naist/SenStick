@@ -40,10 +40,10 @@ class MagneticFieldCellView : SensorDataCellView
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
-        self.maxValue = 1000
-        self.minValue = -1000
-        self.graphView?.maxValue = 1000
-        self.graphView?.minValue = -1000
+        self.maxValue = 100
+        self.minValue = -100
+        self.graphView?.maxValue = 100
+        self.graphView?.minValue = -100
         
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration

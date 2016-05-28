@@ -61,7 +61,7 @@ public struct BrightnessData : SensorDataPackableType
         
         let rawData    = BrightnessRawData.unpack(value)
         let LSBperLux  = BrightnessRawData.getLSBperLux(range)
-        
+debugPrint("\(rawData), lsbPerLux:\(LSBperLux)")
         return BrightnessData(brightness: (Double(rawData.rawValue) / LSBperLux));
     }
 }

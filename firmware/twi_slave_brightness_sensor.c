@@ -53,11 +53,27 @@ bool initBrightnessSensor(void)
 
 void getBrightnessData(BrightnessData_t *p_data)
 {
+    /*
     uint8_t buff[2];
     
     readFromTwiSlave(TWI_BH1780GLI_ADDRESS, (uint8_t)DataLow | 0x80, buff, 2);
     
     *p_data = (uint16_t)buff[1] << 8 | (uint16_t)buff[0];
+     */
+    // 読み出しレジスタのアドレスを設定
+    ret_code_t err_code;
+    uint8_t data = 0x80 | (uint8_t)DataLow; // 1000_1100
+    err_code = nrf_drv_twi_tx(&twi, TWI_BH1780GLI_ADDRESS, &data, 1, false);
+    APP_ERROR_CHECK(err_code);
+    
+    nrf_delay_ms(150); // 150ミリ秒待つ
+    
+    // データを読み出し
+    uint8_t buffer[2];
+    err_code = nrf_drv_twi_rx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2, false);
+    APP_ERROR_CHECK(err_code);
+    
+    *p_data = (uint16_t)buffer[1] << 8 | (uint16_t)buffer[0];
 }
 
 /*

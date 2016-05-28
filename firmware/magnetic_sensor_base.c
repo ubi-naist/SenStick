@@ -18,7 +18,6 @@ static bool initSensorHandler(void)
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
     awakeNineAxesSensor();
-    setNineAxesSensorRotationRange((RotationRange_t)p_setting->measurementRange);
 }
 
 // センサーの値を読み込みます。

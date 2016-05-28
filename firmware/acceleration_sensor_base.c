@@ -19,6 +19,9 @@ static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setti
 {
     awakeNineAxesSensor();
     setNineAxesSensorAccelerationRange((AccelerationRange_t)p_setting->measurementRange);
+    
+    uint8_t buf[sizeof(AccelerationData_t)];
+    getAccelerationData(buf);
 }
 
 // センサーの値を読み込みます。

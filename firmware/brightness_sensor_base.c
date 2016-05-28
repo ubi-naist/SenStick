@@ -17,6 +17,9 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
+    // データ読み捨て
+    BrightnessData_t data;
+    getBrightnessData(&data);
 }
 
 // センサーの値を読み込みます。

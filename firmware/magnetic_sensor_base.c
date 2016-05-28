@@ -18,6 +18,9 @@ static bool initSensorHandler(void)
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
     awakeNineAxesSensor();
+
+    uint8_t buf[sizeof(MagneticFieldData_t)];
+    getMagneticFieldData(buf);
 }
 
 // センサーの値を読み込みます。

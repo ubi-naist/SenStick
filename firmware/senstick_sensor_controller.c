@@ -396,6 +396,26 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
         return false;
     }
     // TBD サンプリング周期、レンジ設定の正当性確認(センサーごとの)
+    // FIXME ここにベタ書きするものではない。本来はセンサごとに処理を委譲すべき。
+    switch(device_type) {
+        case AccelerationSensor:
+        case GyroSensor:
+        case MagneticFieldSensor:
+            if( setting.samplingDuration < 100 ) {
+                return false;
+            }
+            break;
+        case BrightnessSensor:
+        case UltraVioletSensor:
+        case HumidityAndTemperatureSensor:
+        case AirPressureSensor:
+            if( setting.samplingDuration < 300 ) {
+                return false;
+            }
+            break;
+        default:
+            break;
+    }
     // 代入
     context.sensorSetting[device_type] = setting;
     return true;

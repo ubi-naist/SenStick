@@ -61,7 +61,7 @@ public struct UVSensorData : SensorDataPackableType
         
         let rawData    = UVRawData.unpack(value)
         let LSBperuWcm  = UVRawData.getLSBperuWcm2(range)
-        
+//debugPrint("\(rawData), LSBperuWcm:\(LSBperuWcm)")
         return UVSensorData(uv: (Double(rawData.rawValue) / LSBperuWcm));
     }
 }

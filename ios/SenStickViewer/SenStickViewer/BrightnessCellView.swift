@@ -39,9 +39,9 @@ class BrightnessCellView : SensorDataCellView
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
-        self.maxValue = 10000
+        self.maxValue = 2000
         self.minValue = 0
-        self.graphView?.maxValue = 10000
+        self.graphView?.maxValue = 2000
         self.graphView?.minValue = 0
         
         if let setting = service?.settingData {

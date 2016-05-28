@@ -74,6 +74,8 @@ void getBrightnessData(BrightnessData_t *p_data)
     APP_ERROR_CHECK(err_code);
     
     *p_data = (uint16_t)buffer[1] << 8 | (uint16_t)buffer[0];
+    
+//    NRF_LOG_PRINTF_DEBUG("getBrightnessData() 0x%02x\n", *p_data);
 }
 
 /*

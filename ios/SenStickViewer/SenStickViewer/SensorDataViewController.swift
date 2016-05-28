@@ -44,6 +44,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         magneticFieldCell?.startToReadLog(logid)
         brightnessCell?.startToReadLog(logid)
         uvCell?.startToReadLog(logid)
+        humidityCell?.startToReadLog(logid)
+        pressureCell?.startToReadLog(logid)
     }
     
     func setServices(target :AnyObject)

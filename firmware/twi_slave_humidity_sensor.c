@@ -97,7 +97,7 @@ void getHumidityData(HumidityData_t *p_data)
     
     // データをデコードする
     *p_data = ((uint16_t)buffer[0] << 8) | ((uint16_t)buffer[0] & 0xfc);
-
+//NRF_LOG_PRINTF_DEBUG("getHumidityData() 0x%04x\n", *p_data);
     /*
     ret_code_t err_code;
     
@@ -122,4 +122,5 @@ void getTemperatureData(TemperatureData_t *p_data)
     
     // データをデコードする
     *p_data = ((uint16_t)buffer[0] << 8) | ((uint16_t)buffer[0] & 0xfc);
+//NRF_LOG_PRINTF_DEBUG("getTemperatureData() 0x%04x\n", *p_data);
 }

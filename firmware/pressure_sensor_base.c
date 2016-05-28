@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
+#include <nrf_log.h>
 #include "value_types.h"
 #include "twi_slave_pressure_sensor.h"
 
@@ -35,8 +36,8 @@ static void getMaxMinValueHandler(bool isMax, uint8_t *p_src, uint8_t *p_dst)
 // センサ構造体データをBLEのシリアライズしたバイナリ配列に変換します。
 static uint8_t getBLEDataHandler(uint8_t *p_dst, uint8_t *p_src)
 {
-    uint32ToByteArrayLittleEndian(&(p_dst[0]), (AirPressureData_t)*p_src);
-    
+    uint32ToByteArrayLittleEndian(&(p_dst[0]), *((AirPressureData_t *)p_src));
+//NRF_LOG_PRINTF_DEBUG("pressure:getBLEDataHandler() 0x%04x\n", *((uint32_t *)p_src));
     return 4;
 }
 

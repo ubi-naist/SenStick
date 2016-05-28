@@ -102,8 +102,10 @@ void getPressureData(AirPressureData_t *p_data)
     readFromLPS25HB( PRESS_OUT_XL, buffer, 3);
     
     *p_data = readUInt32AsLittleEndian(buffer);
+
+//NRF_LOG_PRINTF_DEBUG("getPressureData() 0x%04x\n", *p_data);
     
- // 次の変換
+// 次の変換
 // CTRL_REG2
 // 7   BOOT      Reboot memory content. Default value: 0.
 //              (0: normal mode; 1: reboot memory content). The bit is self-cleared when the BOOT is completed.

@@ -36,7 +36,7 @@ public struct PressureData : SensorDataPackableType
         }
         
         let rawData    = UInt32.unpack(value[0..<4])
-        
+//debugPrint("Pressure: raw,\(rawData) value, \((Double(rawData!) / Double(4096)))")
         return PressureData(pressure: (Double(rawData!) / Double(4096)));
     }
 }

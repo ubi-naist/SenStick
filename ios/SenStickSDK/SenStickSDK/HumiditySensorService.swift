@@ -62,7 +62,7 @@ public struct HumiditySensorData : SensorDataPackableType
         
         let RH = -6.0   + 125.0  * Double(rawData.humidityRawValue)     / pow(2,16)
         let T  = -46.85 + 175.72 * Double(rawData.temperatureRawValue) / pow(2, 16)
-        
+//debugPrint("Humidity:\(rawData.humidityRawValue) , Temp:\(rawData.temperatureRawValue) RH:\(RH) T:\(T)")
         return HumiditySensorData(humidity: RH, temperature: T)
     }
 }

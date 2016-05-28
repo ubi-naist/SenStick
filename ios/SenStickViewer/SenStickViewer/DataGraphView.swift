@@ -83,7 +83,7 @@ class DataGraphView : UIView {
         let scaleY = height / CGFloat(maxValue - minValue)
         let offsetY = -1 * scaleY * CGFloat(minValue)
         
-        let path = drawPath(data, dx: dx, scaleY: scaleY, offsetY: offsetY)
+        let path = drawPath(data, dx: dx, scaleY: scaleY, offsetY: offsetY, height: height)
         
         CGContextAddPath(context, path)
         CGContextSetLineWidth(context, 2)
@@ -91,7 +91,7 @@ class DataGraphView : UIView {
         CGContextStrokePath(context)
     }
     
-    func drawPath(data: [Double], dx: CGFloat, scaleY: CGFloat, offsetY: CGFloat) -> CGPath
+    func drawPath(data: [Double], dx: CGFloat, scaleY: CGFloat, offsetY: CGFloat, height: CGFloat) -> CGPath
     {
         let path = CGPathCreateMutable()
         
@@ -99,7 +99,9 @@ class DataGraphView : UIView {
         CGPathMoveToPoint(path, nil, 0, CGFloat(data[0]) * scaleY + offsetY)
         var x: CGFloat = 0
         for d in data {
-            CGPathAddLineToPoint(path, nil, x, CGFloat(d) * scaleY + offsetY)
+            let y = CGFloat(d) * scaleY + offsetY
+            // UIViewの描画系の原点は左上、だから第1象限にするために、ここでY軸を上下反転する
+            CGPathAddLineToPoint(path, nil, x, (height - y))
             x = x + dx
         }
         

@@ -40,9 +40,9 @@ class UVCellView : SensorDataCellView
         
         // レンジの更新
         self.maxValue = 500
-        self.minValue = -500
+        self.minValue = 0
         self.graphView?.maxValue = 500
-        self.graphView?.minValue = -500
+        self.graphView?.minValue = 0
         
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration

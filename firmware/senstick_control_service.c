@@ -59,11 +59,7 @@ static void onWrite(ble_evt_t * p_ble_evt)
     
     // キャラクタリスティクスごとの処理に振り分ける
     if(p_evt_write->handle == context.control_point_char_handle.value_handle) {
-        
-        senstick_control_command_t currentValue = senstick_getControlCommand();
-        if(currentValue != (senstick_control_command_t)gatts_value.p_value[0]) {
-            senstick_setControlCommand((senstick_control_command_t)gatts_value.p_value[0]);
-        }
+        senstick_setControlCommand((senstick_control_command_t)gatts_value.p_value[0]);
     } else if(p_evt_write->handle == context.rtc_char_handle.value_handle) {
         onWriteRTC(&gatts_value);
     } else if(p_evt_write->handle == context.abstract_text_char_handle.value_handle) {
@@ -97,7 +93,11 @@ static void onRWAuthReq(ble_evt_t *p_ble_evt)
     
     // 実際の読み出し処理, ハンドラが一致しない場合は、終了。
     if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_READ) {
-        if( p_auth_req->request.read.handle == context.rtc_char_handle.value_handle){
+        if(p_auth_req->request.read.handle == context.control_point_char_handle.value_handle) {
+            senstick_control_command_t currentValue = senstick_getControlCommand();
+            length = 1;
+            buffer[0] = currentValue;
+        } else if( p_auth_req->request.read.handle == context.rtc_char_handle.value_handle){
             length = onRWAuthReq_rtc_char(buffer, GATT_MAX_DATA_LENGTH);
         } else if( p_auth_req->request.read.handle == context.abstract_text_char_handle.value_handle){
             length = onRWAuthReq_abstract_txt(buffer, GATT_MAX_DATA_LENGTH);
@@ -148,7 +148,7 @@ static void addService(uint8_t uuid_type)
     params.char_props.write  = true;
     params.char_props.notify = true;
     params.is_var_len        = false;
-    params.is_defered_read   = false;
+    params.is_defered_read   = true;
     params.is_defered_write  = false;
     params.read_access       = SEC_OPEN;
     params.write_access      = SEC_OPEN;

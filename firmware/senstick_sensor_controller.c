@@ -317,6 +317,19 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
     return NRF_SUCCESS;
 }
 
+uint8_t senstickSensorControllerGetNumOfLoggingReadySensor(void)
+{
+    uint8_t count = 0;
+    
+    for(int i=0 ; i < NUM_OF_SENSORS; i++) {
+        sensor_service_command_t command = context.sensorSetting[i].command;
+        if( context.isSensorAvailable[i] && (command & 0x03) != 0) {
+            count++;
+        }
+    }
+    return count;
+}
+
 // sensor serviceが呼び出す、データの読み書きメソッド
 uint8_t senstickSensorControllerReadSetting(sensor_device_t device_type, uint8_t *p_buffer, uint8_t length)
 {

@@ -61,6 +61,12 @@ void senstick_setControlCommand(senstick_control_command_t command)
         return;
     }
     
+    // ログ取得できるセンサーがない場合(センサーがハードウェア無効、ログ/リアルタイム動作にない)、動作開始させません。
+    uint8_t numOfWillLoggingSensors = senstickSensorControllerGetNumOfLoggingReadySensor();
+    if(command == sensorShouldWork && numOfWillLoggingSensors == 0) {
+        return;
+    }
+    
     // コマンドの実行
     // 新旧コマンドを保存
     senstick_control_command_t old_command = context.command;

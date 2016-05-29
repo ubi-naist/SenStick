@@ -92,7 +92,7 @@
 #define EEPROM_WAIT_TIME_MILLISEC	(5) /* データシートに記載された 5ミリ秒 */
 // DFU_FLAG_ADDRESSは、DFUアップデート設定としてブートローダと共有している。
 #define DFU_FLAG_ADDRESS                            0x0001fc40
-
+/*
 bool readEEPROMData(uint32_t eeprom_address, uint8_t *data, uint8_t data_length)
 {
     // I2Cスレーブアドレスを組み立てる。
@@ -132,6 +132,7 @@ bool getDFUFlagFromEEPROM(void)
 {
     return readFlagOfEEPROM(DFU_FLAG_ADDRESS);
 }
+*/
 
 /**@brief Callback function for asserts in the SoftDevice.
  *
@@ -298,7 +299,7 @@ int main(void)
 
     dfu_start  = app_reset;
 //    dfu_start |= ((nrf_gpio_pin_read(BOOTLOADER_BUTTON) == 0) ? true: false);
-    dfu_start |= getDFUFlagFromEEPROM();
+//    dfu_start |= getDFUFlagFromEEPROM();
     
     if (dfu_start || (!bootloader_app_is_valid(DFU_BANK_0_REGION_START)))
     {

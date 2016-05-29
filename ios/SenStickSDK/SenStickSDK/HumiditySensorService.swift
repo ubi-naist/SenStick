@@ -21,11 +21,11 @@ public enum HumiditySensorRange : UInt16, CustomStringConvertible
 
 struct HumiditySensorRawData
 {
-    internal var humidityRawValue : Int16
-    internal var temperatureRawValue     : Int16
+    internal var humidityRawValue    : UInt16
+    internal var temperatureRawValue : UInt16
 
     
-    init(humidityRawValue:Int16, temperatureRawValue:Int16)
+    init(humidityRawValue:UInt16, temperatureRawValue:UInt16)
     {
         self.humidityRawValue    = humidityRawValue
         self.temperatureRawValue = temperatureRawValue
@@ -33,8 +33,8 @@ struct HumiditySensorRawData
     
     static func unpack(data: [Byte]) -> HumiditySensorRawData
     {
-        let humidityRaw    = Int16.unpack(data[0..<2])
-        let temperatureRaw = Int16.unpack(data[2..<4])
+        let humidityRaw    = UInt16.unpack(data[0..<2])
+        let temperatureRaw = UInt16.unpack(data[2..<4])
 
         return HumiditySensorRawData(humidityRawValue: humidityRaw!, temperatureRawValue: temperatureRaw!)
     }

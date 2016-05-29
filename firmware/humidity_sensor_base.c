@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
+#include <nrf_log.h>
 #include "value_types.h"
 
 #include "twi_slave_humidity_sensor.h"
@@ -30,7 +31,7 @@ static uint8_t getSensorDataHandler(uint8_t *p_buffer)
     HumidityAndTemperatureData_t *p_data = (HumidityAndTemperatureData_t *)p_buffer;
     getHumidityData((HumidityData_t *)&(p_data->humidity));
     getTemperatureData((TemperatureData_t *)&(p_data->temperature));
-
+//NRF_LOG_PRINTF_DEBUG("humidity:H0x%04x T0x%04x.\n", p_data->humidity, p_data->temperature);
     return sizeof(HumidityAndTemperatureData_t);
 }
 
@@ -46,7 +47,7 @@ static uint8_t getBLEDataHandler(uint8_t *p_dst, uint8_t *p_src)
     HumidityAndTemperatureData_t *p_data = (HumidityAndTemperatureData_t *)p_src;
     uint16ToByteArrayLittleEndian(&(p_dst[0]), p_data->humidity);
     uint16ToByteArrayLittleEndian(&(p_dst[2]), p_data->temperature);
-    
+//NRF_LOG_PRINTF_DEBUG("humidity:H0x%04x T0x%04x.\n", p_data->humidity, p_data->temperature);
     return 4;
 }
 

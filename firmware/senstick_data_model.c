@@ -27,6 +27,7 @@ typedef struct {
     uint8_t text_length;
     ButtonStatus_t button_status;
     bool is_disk_full;
+    bool is_connected;
 } senstick_core_data_t;
 static senstick_core_data_t context;
 
@@ -246,4 +247,12 @@ void senstick_setButtonStatus(ButtonStatus_t status)
     }
 }
 
+bool senstick_isConnected(void)
+{
+    return context.is_connected;
+}
+void senstick_setIsConnected(bool value)
+{
+    context.is_connected = value;
+}
 

@@ -80,8 +80,6 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     senstickMetaDataService_handleBLEEvent(p_ble_evt);
 
     senstickSensorController_handleBLEEvent(p_ble_evt);
-
-    ledDriver_handleBLEEvent(p_ble_evt);
 //    dm_ble_evt_handler(p_ble_evt);
     printBLEEvent(p_ble_evt);
 }
@@ -95,10 +93,12 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
+            senstick_setIsConnected(true);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONNECTED");
             break;
             
         case BLE_GAP_EVT_DISCONNECTED:
+            senstick_setIsConnected(false);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_DISCONNECTED");
             break;
             

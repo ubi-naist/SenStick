@@ -181,6 +181,7 @@ const ble_uuid128_t senstick_base_uuid = {
         0x51, 0x04,
         0x00, 0x00, 0x00, 0xF0 }
 };
+
 int main(void)
 {
     ret_code_t err_code;

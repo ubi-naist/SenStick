@@ -153,6 +153,7 @@ static void ble_stack_init(bool init_softdevice)
 
     // Braveridgeのモジュールは、Xtalが32MHz。
     NRF_CLOCK->XTALFREQ = CLOCK_XTALFREQ_XTALFREQ_32MHz;
+
     SOFTDEVICE_HANDLER_APPSH_INIT(NRF_CLOCK_LFCLKSRC_XTAL_20_PPM, true);
 
     // Enable BLE stack 

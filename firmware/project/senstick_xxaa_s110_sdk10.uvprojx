@@ -1785,6 +1785,20 @@
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
         </targetInfos>
       </component>
+      <component Cclass="nRF_Libraries" Cgroup="DFU" Csub="dfu_app_handler" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="dfu_app_handler">
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Libraries" Cgroup="DFU" Csub="dfu_bootloader_util" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="dfu_bootloader_util">
+        <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
+          <targetInfo name="nrf51822_xxaa_s110(debug)"/>
+        </targetInfos>
+      </component>
       <component Cclass="nRF_Libraries" Cgroup="app_button" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="app_button">
         <package name="nRF_Libraries" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>

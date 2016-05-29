@@ -8,7 +8,7 @@
 
 // app_timer モジュールのプリスケーラなどの定義
 #define APP_TIMER_PRESCALER             0 // Value of the RTC1 PRESCALER register.
-#define APP_TIMER_OP_QUEUE_SIZE         4
+#define APP_TIMER_OP_QUEUE_SIZE         8
 
 /* Scheduler のパラメータ */
 //  Maximum size of events data in the application scheduler queue aligned to 32 bits

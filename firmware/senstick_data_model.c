@@ -13,6 +13,11 @@
 #include "twi_manager.h"
 #include "gpio_button_monitoring.h"
 
+#include "bootloader_types.h"
+#include "nrf51.h"
+#include "bootloader_util.h"
+#include "nrf_sdm.h"
+
 #define ABSTRACT_TEXT_LENGTH 20
 
 typedef struct {
@@ -22,6 +27,7 @@ typedef struct {
     uint8_t text_length;
     ButtonStatus_t button_status;
     bool is_disk_full;
+    bool is_connected;
 } senstick_core_data_t;
 static senstick_core_data_t context;
 
@@ -32,11 +38,48 @@ void initSenstickDataModel(void)
     context.command = shouldReset;
 }
 
-
 // コントロールコマンド
 senstick_control_command_t senstick_getControlCommand(void)
 {
     return context.command;
+}
+
+#define MAX_NUMBER_INTERRUPTS  32
+#define IRQ_ENABLED            0x01
+static void interrupts_disable(void)
+{
+    uint32_t interrupt_setting_mask;
+    uint32_t irq;
+    
+    // Fetch the current interrupt settings.
+    interrupt_setting_mask = NVIC->ISER[0];
+    
+    // Loop from interrupt 0 for disabling of all interrupts.
+    for (irq = 0; irq < MAX_NUMBER_INTERRUPTS; irq++)
+    {
+        if (interrupt_setting_mask & (IRQ_ENABLED << irq))
+        {
+            // The interrupt was enabled, hence disable it.
+            NVIC_DisableIRQ((IRQn_Type)irq);
+        }
+    }
+}
+static void startDFU(void)
+{
+    uint32_t err_code;
+    
+    err_code = sd_power_gpregret_set(BOOTLOADER_DFU_START);
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = sd_softdevice_disable();
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = sd_softdevice_vector_table_base_set(NRF_UICR->BOOTLOADERADDR);
+    APP_ERROR_CHECK(err_code);
+    
+    NVIC_ClearPendingIRQ(SWI2_IRQn);
+    interrupts_disable();
+    bootloader_util_app_start(NRF_UICR->BOOTLOADERADDR);
 }
 
 void senstick_setControlCommand(senstick_control_command_t command)
@@ -102,10 +145,11 @@ void senstick_setControlCommand(senstick_control_command_t command)
             // ボタンで起動するように設定。
             enableAwakeByButton();
             // パワーを落とします。
-            twiPowerDown();            
+            twiPowerDown();
             sd_power_system_off();
             break;
         case enterDFUmode:
+            startDFU();
             break;
         default: break;
     }
@@ -203,4 +247,12 @@ void senstick_setButtonStatus(ButtonStatus_t status)
     }
 }
 
+bool senstick_isConnected(void)
+{
+    return context.is_connected;
+}
+void senstick_setIsConnected(bool value)
+{
+    context.is_connected = value;
+}
 

@@ -136,7 +136,6 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
     {
-        //        debugPrint("\(#function)")
         dispatch_async(dispatch_get_main_queue(), {
             self.addPeripheral(peripheral)
         })
@@ -144,17 +143,19 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
     {
-        //        debugPrint("\(#function)")
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
-            device.onConnected()
+            dispatch_async(dispatch_get_main_queue(), {
+                device.onConnected()
+            })
         }
     }
     
     public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
     {
-        //        debugPrint("\(#function)")
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
-            device.onDisConnected()
+            dispatch_async(dispatch_get_main_queue(), {
+                device.onDisConnected()
+            })
         }
     }
 }

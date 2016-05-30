@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class DeviceListTableViewController: UITableViewController {
+class DeviceListTableViewController: UITableViewController, SenStickDeviceDelegate {
     
     var detailViewController: DetailViewController? = nil
     
@@ -17,12 +17,15 @@ class DeviceListTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.refreshControl = UIRefreshControl()
-//        self.refreshControl?.attributedTitle = NSAttributedString(string: "Scanning")
         self.refreshControl?.addTarget(self, action: #selector(onRefresh), forControlEvents: .ValueChanged)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        self.tableView.alpha = 1
+        self.tableView.userInteractionEnabled = true
+        
         SenStickDeviceManager.sharedInstance.addObserver(self, forKeyPath: "devices", options: .New, context:nil)
     }
     
@@ -40,7 +43,6 @@ class DeviceListTableViewController: UITableViewController {
     func onRefresh()
     {
         SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: NSTimeInterval)  in
-//            debugPrint("\(#function)")
             if remaining <= 0 {
                 self.refreshControl?.endRefreshing()
             }
@@ -53,29 +55,10 @@ class DeviceListTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
             dataview.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
         }
-        /*
-         // 遷移時にステートを設定
-         if([segue.destinationViewController isKindOfClass:[StateDetailTableViewController class]]) {
-         StateDetailTableViewController *target = (StateDetailTableViewController *)segue.destinationViewController;
-         NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
-         target.soundState = [[SoundStateManager sharedInstance] getState:(int)indexPath.section buttonIndex:(int)indexPath.row];
-         }
-         */
-        /*
-        if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
-                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                controller.navigationItem.leftItemsSupplementBackButton = true
-            }
-        }*/
     }
     
     // MARK: - KVO
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        debugPrint("\(#function)")
         if (keyPath == "devices") {
             self.tableView.reloadData()
         } else {
@@ -89,7 +72,6 @@ class DeviceListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        debugPrint("\(#function) count: \( SenStickDeviceManager.sharedInstance.devices.count)")
         return SenStickDeviceManager.sharedInstance.devices.count
     }
     
@@ -102,5 +84,56 @@ class DeviceListTableViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 74
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
+
+        // 接続していれば画面遷移
+        if device.isConnected {
+            performSegueWithIdentifier("dataView", sender: self)
+        } else {
+            // 今のVCを半透明、操作無効
+            self.tableView.alpha = 0.5
+            self.tableView.userInteractionEnabled = false
+            self.refreshControl?.endRefreshing()
+            
+            device.delegate = self
+            device.connect()
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+                if !device.isConnected {
+                    device.cancelConnection()
+                    self.showAlert()
+                }
+            })
+        }
+    }
+    
+    func showAlert()
+    {
+        self.tableView.alpha = 1
+        self.tableView.userInteractionEnabled = true
+        
+        let alert = UIAlertController(title: "Failed to connect", message: "Failed to connect.", preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(okAction)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    // public protocol SenStickDeviceDelegate
+    func didServiceFound(sender:SenStickDevice)
+    {
+    }
+    
+    func didConnected(sender:SenStickDevice)
+    {
+        performSegueWithIdentifier("dataView", sender: self)
+    }
+    
+    func didDisconnected(sender:SenStickDevice)
+    {
+        showAlert()
     }
 }

@@ -41,7 +41,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         if let backToListView = self.navigationController?.viewControllers.contains(self) {
             // ListViewに戻る時、ナビゲーションに自身が含まれていない。
             if backToListView == false {
-                device?.disconnect()
+                device?.cancelConnection()
             }
         }
     }

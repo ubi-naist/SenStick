@@ -19,38 +19,12 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
 {
     // MARK: variables
     unowned let manager: CBCentralManager
-    let peripheral: CBPeripheral
+    let peripheral:      CBPeripheral
 
     public weak var delegate: SenStickDeviceDelegate?
     
     // MARK: Properties
-    public private(set) var isConnected: Bool {
-        didSet {
-            if isConnected {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.delegate?.didConnected(self)
-                })
-            } else {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.delegate?.didDisconnected(self)
-                })
-            }
-        }
-    }
-    // 接続してサービス検索が完了した時に、Trueになります。
-    /*
     public private(set) var isConnected: Bool
-    {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.delegate?.didIsConnectedChanged(self, isConnected: self.isConnected)
-                debugPrint("\(#function): \(self.isConnected)")
-                debugPrint("    \(self.controlService)")
-                debugPrint("    \(self.accelerationSensorService)")
-                debugPrint("    \(self.gyroSensorService)")
-            })
-        }
-    }*/
     
     public private(set) var name: String
     public private(set) var identifier: NSUUID
@@ -87,6 +61,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     internal func onConnected()
     {
         self.isConnected = true
+        dispatch_async(dispatch_get_main_queue(), {
+            self.delegate?.didConnected(self)
+        })
+        
         findSensticServices()
     }
     
@@ -103,6 +81,10 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         self.uvSensorService            = nil
         self.humiditySensorService      = nil
         self.pressureSensorService      = nil
+
+        dispatch_async(dispatch_get_main_queue(), {
+            self.delegate?.didDisconnected(self)
+        })
     }
     
     // Private methods
@@ -121,11 +103,9 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         }
     }
     
-    public func disconnect()
+    public func cancelConnection()
     {
-        if peripheral.state == .Connected {
-            manager.cancelPeripheralConnection(peripheral)
-        }
+        manager.cancelPeripheralConnection(peripheral)
     }
     
     // MARK: CBPeripheralDelegate

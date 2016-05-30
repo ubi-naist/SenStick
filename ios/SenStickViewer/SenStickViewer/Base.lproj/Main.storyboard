@@ -1064,7 +1064,6 @@
                                 <connections>
                                     <outlet property="deviceNameLabel" destination="ga6-3i-fRz" id="tUd-Je-pwi"/>
                                     <outlet property="deviceUUIDLabel" destination="aRF-Wk-W63" id="Vdy-wt-dm5"/>
-                                    <segue destination="8BX-uL-RNr" kind="show" id="Iei-U9-HP9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1075,6 +1074,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Device list" id="Zdf-7t-Un8"/>
+                    <connections>
+                        <segue destination="8BX-uL-RNr" kind="show" identifier="dataView" id="btj-uX-c9Q"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>

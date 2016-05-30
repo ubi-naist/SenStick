@@ -36,6 +36,14 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         super.viewWillDisappear(animated)
         
         device?.delegate = nil
+
+        // リスト表示に戻る場合は、デバイスとのBLE接続を切る
+        if let backToListView = self.navigationController?.viewControllers.contains(self) {
+            // ListViewに戻る時、ナビゲーションに自身が含まれていない。
+            if backToListView == false {
+                device?.disconnect()
+            }
+        }
     }
     
     func startToReadLog(logid: UInt8) {

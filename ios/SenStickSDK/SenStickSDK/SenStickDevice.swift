@@ -121,6 +121,13 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         }
     }
     
+    public func disconnect()
+    {
+        if peripheral.state == .Connected {
+            manager.cancelPeripheralConnection(peripheral)
+        }
+    }
+    
     // MARK: CBPeripheralDelegate
     
     // サービスの発見、次にキャラクタリスティクスの検索をする

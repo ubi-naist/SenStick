@@ -36,7 +36,22 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var sensorLogDataChar:       CBCharacteristic
 
     var logData: [T] = []
-    var prevousLogDataDateTime: NSDate = NSDate()
+
+    // delegate.didUpdatelogData()の過度な呼び出しを防止するためのフラグ
+    var _flag:Bool = false
+    var flag: Bool {
+        get {
+            objc_sync_enter(self)
+            let val = _flag
+            objc_sync_exit(self)
+            return val
+        }
+        set(newValue) {
+            objc_sync_enter(self)
+            _flag = newValue
+            objc_sync_enter(self)
+        }
+    }
     
     // Properties
     public private(set) var settingData:  SensorSettingData<S>? {
@@ -190,11 +205,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                     self.logData.appendContentsOf(d)
                     objc_sync_exit(self)
                 
-                    // 通知を間引く。描画周りの処理が重くなるので、100ミリ秒に1回に抑える。
-                    if abs(prevousLogDataDateTime.timeIntervalSinceNow) >= 0.3 {
-                        prevousLogDataDateTime = NSDate()
+                    // 過度な通知をしないよう、フラグでデリゲートが確実に実行されてから、次のデリゲート呼び出しを行う
+                    // semaphoreではwaitしちゃうから、フラグで実装。
+                    if(self.flag == false) {
+                        self.flag = true
                         dispatch_async(dispatch_get_main_queue(), {
                             self.delegate?.didUpdateLogData(self)
+                            self.flag = false
                         })
                     }
                 }
@@ -233,6 +250,9 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         updateLogMetaData()
         
         device.setNotify(self.sensorLogDataChar, enabled: true)
+        
+        // delegate呼び出しのフラグをクリアしておく
+        self.flag = false
     }
     
     // メタデータの更新

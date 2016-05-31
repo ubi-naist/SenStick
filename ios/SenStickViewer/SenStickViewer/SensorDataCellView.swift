@@ -48,6 +48,8 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         maxValue = 1.0
         minValue = 0
         duration = SamplingDurationType(milliSeconds: 100)
+
+        logData = nil
         
         super.init(coder:aDecoder)
     }
@@ -59,14 +61,16 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
             return
         }
         
-        self.graphView?.plotDataArray(data)
+        self.graphView?.plotData(data)
     }
     
     func startToReadLog(logid: UInt8)
     {
         self.logid = logid
         logData = [[], [], []]
-        self.progressBar?.hidden = false
+        self.graphView?.clearPlot()
+        self.graphView?.autoRedraw = false
+        self.progressBar?.hidden   = false
     }
     
     func addReadLog(data:[Double], progress: Double) {
@@ -78,7 +82,7 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
             logData![index].append(d)
         }
         
-//        self.graphView?.plotLogData(logData!, percent: progress)
+        self.graphView?.plotData(data)
         self.progressBar?.progress = Float(progress)
         
 //        debugPrint("\(#function), \(progress),  \(logData)")
@@ -86,17 +90,17 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     
     func stopReadingLog(fileName: String, duration: SamplingDurationType?)
     {
-        self.graphView?.plotLogData(logData!, percent: Double((self.progressBar?.progress)!))
-        
         if logData != nil && duration != nil {
             // ファイルに保存
             let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
             let filePath   = folderPath.stringByAppendingPathComponent("\(fileName)_\(self.logid).csv")
-        
+            
             saveToFile(filePath, data: logData!, duration: duration!)
         }
-        
-        self.progressBar?.hidden = true
+
+        logData = nil
+        self.graphView?.autoRedraw = true
+        self.progressBar?.hidden   = true
     }
     
     func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
@@ -124,6 +128,7 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         }
 
         do {
+            try NSFileManager.defaultManager().removeItemAtPath(filePath)
             try content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
         } catch {
             debugPrint("\(#function) fatal error in file save.")
@@ -132,18 +137,23 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
 
     // MARK: - SenStickSensorServiceDelegate
     func didUpdateSetting(sender:AnyObject)
-    {}
+    {
+    }
     
     func didUpdateRealTimeData(sender: AnyObject)
-    {}
+    {
+    }
     
     func didUpdateMetaData(sender: AnyObject)
-    {}
+    {
+    }
     
     func didUpdateLogData(sender: AnyObject)
-    {}
+    {
+    }
 
     func didFinishedLogData(sender: AnyObject)
-    {}
+    {
+    }
     // MARK: - Event handler
 }

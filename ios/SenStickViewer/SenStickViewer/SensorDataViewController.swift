@@ -170,7 +170,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        debugPrint("  \(segue.destinationViewController)")
+//        debugPrint("  \(segue.destinationViewController)")
         if let vc = segue.destinationViewController as? SamplingDurationViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
             switch(indexPath.row) {

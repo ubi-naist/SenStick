@@ -8,104 +8,103 @@
 
 import UIKit
 import SenStickSDK
-/*
- struct graphData {
- var color    :UIColor
- var data     :[Double]
- var maxValue :Double
- var minValue :Double
- var drawArea :Double
- }*/
 
 class DataGraphView : UIView {
-    
+
+    // Y軸の最大/最小
     var maxValue : Double = 1.0
     var minValue : Double = 0.0
-    
-    let maxIndex :Int = 150
-    
-    var data: [[Double]] = [[], [], []]
-    var drawPercent: CGFloat = 1.0
-    
-    var drawColor: [CGColor] = [UIColor.redColor().CGColor, UIColor.greenColor().CGColor, UIColor.blueColor().CGColor]
-    
-    func plotData(value:Double) {
-        plotDataArray([value])
+
+    // データを追加するときの、今まで追加したデータのカウント
+    var nextSamplePoint: Double = 0
+    // 1グラフに収めるサンプルカウント数
+    var sampleCount: Int = 300 {
+        didSet {
+            nextSamplePoint = 0
+        }
     }
     
-    func plotDataArray(value:[Double]) {
-        for (index, d) in value.enumerate() {
-            data[index].append(d)
+    // サンプルカウント数が描画幅を超えたら最初から描画し直すか?
+    var autoRedraw: Bool = true
+    
+    // 内部的に、300点までのパスを保持する
+    let pathCount :Int = 300
+    var pathData :[[CGFloat]] = [[], [], []]
+    let pathColor :[CGColor]  = [UIColor.redColor().CGColor, UIColor.greenColor().CGColor, UIColor.blueColor().CGColor]
+    
+    // データを追加します, 配列はデータの種類ごとに並んだ1サンプル。
+    private func addData(value:[Double]) {
+        // パスをフラッシュ
+        if pathData[0].count > pathCount && autoRedraw {
+            pathData = [[], [], []]
         }
 
-        // 描画可能サイズを超えていたらクリア
-        if data[0].count > maxIndex {
-            data = [[], [], []]
+        // データを間引きながら追加
+        var data: [Double] = []
+        if sampleCount <= pathCount {
+            // そのままデータを追加してOK
+            data = value
+        } else {
+            // データ点列をsampleCountの値に合わせて、間引くなりする
+            nextSamplePoint += Double(pathCount / sampleCount)
+            if nextSamplePoint > 1 {
+                nextSamplePoint -= 1
+                data = value
+            }
         }
         
-        drawPercent = CGFloat(data[0].count) / CGFloat(maxIndex)
-        
-        setNeedsDisplay()
-    }
-    
-    func plotLogData(value:[[Double]], percent: Double) {
-        data        = value
-        drawPercent = CGFloat(percent)
-
-        setNeedsDisplay()
-    }
-    
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
-        
-        if data[0].count < 2 {
+        // データ追加がないなら終了
+        if data.count == 0 {
             return
         }
         
+        // データを正規化して追加
+        for (index, d) in data.enumerate() {
+            let y = CGFloat((d - minValue) / (maxValue - minValue))
+            pathData[index].append(y)
+        }
+    }
+
+    func clearPlot()
+    {
+        pathData = [[], [], []]
+        setNeedsDisplay()
+    }
+    
+    func plotData(value:[Double])
+    {
+        addData(value)
+        setNeedsDisplay()
+    }
+    
+    override func drawRect(rect: CGRect)
+    {
+        super.drawRect(rect)
+
         let context = UIGraphicsGetCurrentContext()!
         
-        for (index, d) in data.enumerate()   {
-            if d.count > 0 {
-                drawSingleData(rect, context: context, data: d, color: drawColor[index])
+        for (index, apath) in pathData.enumerate() {
+            if apath.count == 0 {
+                continue
             }
+            // 1つのパスを描画する
+            let drawPath = CGPathCreateMutable()
+            let dx = self.frame.width / CGFloat(pathCount)
+            for i in 0..<apath.count {
+                var y = apath[i] * self.frame.height
+                // iOSの描画系は左上が原点なので、y軸を反転する
+                y = self.frame.height - y
+                if i == 0 {
+                    CGPathMoveToPoint(drawPath, nil, CGFloat(i) * dx, y)
+                } else {
+                    CGPathAddLineToPoint(drawPath, nil, CGFloat(i) * dx, y)
+                }
+            }
+            // パスを追加
+            CGContextAddPath(context, drawPath)
+            CGContextSetLineWidth(context, 2)
+            CGContextSetStrokeColorWithColor(context, pathColor[index])
+            CGContextStrokePath(context)
         }
     }
-    
-    func drawSingleData(rect: CGRect, context: CGContext, data:[Double], color: CGColor)
-    {
-        let context = UIGraphicsGetCurrentContext()!
-        
-        // 描画範囲の幅と高さ
-        let height = rect.size.height
-        let width  = rect.size.width * drawPercent
-        // 最大/最小値で
-        let dx     = width  / CGFloat(data.count)
-        let scaleY = height / CGFloat(maxValue - minValue)
-        let offsetY = -1 * scaleY * CGFloat(minValue)
-        
-        let path = drawPath(data, dx: dx, scaleY: scaleY, offsetY: offsetY, height: height)
-        
-        CGContextAddPath(context, path)
-        CGContextSetLineWidth(context, 2)
-        CGContextSetStrokeColorWithColor(context, color)
-        CGContextStrokePath(context)
-    }
-    
-    func drawPath(data: [Double], dx: CGFloat, scaleY: CGFloat, offsetY: CGFloat, height: CGFloat) -> CGPath
-    {
-        let path = CGPathCreateMutable()
-        
-        // 開始点
-        CGPathMoveToPoint(path, nil, 0, CGFloat(data[0]) * scaleY + offsetY)
-        var x: CGFloat = 0
-        for d in data {
-            let y = CGFloat(d) * scaleY + offsetY
-            // UIViewの描画系の原点は左上、だから第1象限にするために、ここでY軸を上下反転する
-            CGPathAddLineToPoint(path, nil, x, (height - y))
-            x = x + dx
-        }
-        
-        return path
-    }
-    
 }

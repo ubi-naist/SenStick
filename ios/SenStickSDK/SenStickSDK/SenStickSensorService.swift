@@ -53,6 +53,23 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         }
     }
     
+    var _realTimeDataFlag:Bool = false
+    var _lockObj: NSObject = NSObject()
+    var realTimeDataFlag: Bool {
+        get {
+            objc_sync_enter(_lockObj)
+            let val = _realTimeDataFlag
+            objc_sync_exit(_lockObj)
+            return val
+        }
+        set(newValue) {
+            objc_sync_enter(_lockObj)
+            _realTimeDataFlag = newValue
+            objc_sync_exit(_lockObj)
+        }
+    }
+    
+    
     // Properties
     public private(set) var settingData:  SensorSettingData<S>? {
         didSet {
@@ -63,9 +80,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     }
     public private(set) var realtimeData: T? {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.delegate?.didUpdateRealTimeData(self)
-            })
+            if realTimeDataFlag == false {
+                realTimeDataFlag = true
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.delegate?.didUpdateRealTimeData(self)
+                    self.realTimeDataFlag = false
+                })
+            }
         }
     }
 

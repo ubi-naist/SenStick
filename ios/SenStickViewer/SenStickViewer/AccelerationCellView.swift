@@ -79,7 +79,7 @@ class AccelerationCellView : SensorDataCellView
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+//        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
     }
     
     override func didUpdateLogData(sender: AnyObject)
@@ -96,7 +96,7 @@ class AccelerationCellView : SensorDataCellView
     override func didFinishedLogData(sender: AnyObject)
     {
         didUpdateLogData(self) // FIXME 邪道だけど、取りこぼし防止
-        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData![0].count)")
+//        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData![0].count)")
         stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     

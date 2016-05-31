@@ -73,12 +73,12 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     // MARK: - SenStickControlServiceDelegate
     func didCommandChanged(sender: SenStickControlService, command: SenStickControlCommand)
     {
-        debugPrint("\(#function)")
+//        debugPrint("\(#function)")
         updateView()
     }
     func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
     {
-        debugPrint("\(#function), \(service?.availableLogCount)")
+//        debugPrint("\(#function), \(service?.availableLogCount)")
         updateView()
     }
     func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
@@ -87,12 +87,12 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     }
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
     {
-        debugPrint("\(#function), \(service?.dateTime)")
+//        debugPrint("\(#function), \(service?.dateTime)")
         updateView()
     }
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
     {
-        debugPrint("\(#function)")
+//        debugPrint("\(#function)")
         updateView()
     }
     

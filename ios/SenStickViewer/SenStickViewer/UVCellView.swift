@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class UVCellView : SensorDataCellView
+class UVCellView : SensorDataCellView, SenStickSensorServiceDelegate
 {
     weak var service: UVSensorService? {
         didSet {
@@ -34,7 +34,8 @@ class UVCellView : SensorDataCellView
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    override  func didUpdateSetting(sender:AnyObject)
+
+    func didUpdateSetting(sender:AnyObject)
     {
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
@@ -49,18 +50,24 @@ class UVCellView : SensorDataCellView
         }
     }
     
-    override func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.uv])
         }
     }
     
-    override func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
     {
+        if let count = service?.logMetaData?.availableSampleCount {
+            graphView?.sampleCount = Int(count)
+            if count == 0 {
+                stopReadingLog("", duration: nil)
+            }
+        }
     }
     
-    override func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
     {
         if let array = service?.readLogData() {
             let sampleCount = service!.logMetaData!.availableSampleCount
@@ -70,9 +77,9 @@ class UVCellView : SensorDataCellView
             }
         }
     }
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        didUpdateLogData(self)         
+
+    func didFinishedLogData(sender: AnyObject)
+    { 
         stopReadingLog("uv", duration: service?.logMetaData?.samplingDuration)
     }
 

@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class AccelerationCellView : SensorDataCellView
+class AccelerationCellView : SensorDataCellView, SenStickSensorServiceDelegate
 {
     weak var service: AccelerationSensorService? {
         didSet {
@@ -27,7 +27,6 @@ class AccelerationCellView : SensorDataCellView
     
     override func startToReadLog(logid: UInt8)
     {
-        service?.readLogData() // FIXME 邪道だけど、データフラッシュ
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -35,7 +34,7 @@ class AccelerationCellView : SensorDataCellView
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    override  func didUpdateSetting(sender:AnyObject)
+    func didUpdateSetting(sender:AnyObject)
     {
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
@@ -70,19 +69,25 @@ class AccelerationCellView : SensorDataCellView
         }
     }
     
-    override func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.x, data.y, data.z])
         }
     }
     
-    override func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
     {
-//        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+        if let count = service?.logMetaData?.availableSampleCount {
+            graphView?.sampleCount = Int(count)
+            if count == 0 {
+                stopReadingLog("", duration: nil)
+            }
+        }
     }
     
-    override func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
     {
         if let array = service?.readLogData() {
             let sampleCount = service!.logMetaData!.availableSampleCount
@@ -93,10 +98,10 @@ class AccelerationCellView : SensorDataCellView
             }
         }
     }
-    override func didFinishedLogData(sender: AnyObject)
+
+    func didFinishedLogData(sender: AnyObject)
     {
-        didUpdateLogData(self) // FIXME 邪道だけど、取りこぼし防止
-//        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData![0].count)")
+        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData![0].count)")
         stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     

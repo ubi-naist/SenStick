@@ -46,7 +46,7 @@ class DataGraphView : UIView {
             data = value
         } else {
             // データ点列をsampleCountの値に合わせて、間引くなりする
-            nextSamplePoint += Double(pathCount / sampleCount)
+            nextSamplePoint += Double(pathCount) / Double(sampleCount)
             if nextSamplePoint > 1 {
                 nextSamplePoint -= 1
                 data = value

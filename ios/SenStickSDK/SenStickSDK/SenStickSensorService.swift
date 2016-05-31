@@ -35,24 +35,33 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var sensorLogMetaDataChar:   CBCharacteristic
     var sensorLogDataChar:       CBCharacteristic
 
-    var logData: [T] = []
-
     // delegate.didUpdatelogData()の過度な呼び出しを防止するためのフラグ
     var _flag:Bool = false
+    var _flagLockObj: NSObject = NSObject()
     var flag: Bool {
         get {
-            objc_sync_enter(self)
+            objc_sync_enter(_flagLockObj)
             let val = _flag
-            objc_sync_exit(self)
+            objc_sync_exit(_flagLockObj)
             return val
         }
         set(newValue) {
-            objc_sync_enter(self)
+            objc_sync_enter(_flagLockObj)
             _flag = newValue
-            objc_sync_enter(self)
+            objc_sync_exit(_flagLockObj)
         }
     }
-    
+    var logData: [T] = []
+
+    // Properties
+    public private(set) var settingData:  SensorSettingData<S>? {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didUpdateSetting(self)
+            })
+        }
+    }
+
     var _realTimeDataFlag:Bool = false
     var _lockObj: NSObject = NSObject()
     var realTimeDataFlag: Bool {
@@ -66,16 +75,6 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             objc_sync_enter(_lockObj)
             _realTimeDataFlag = newValue
             objc_sync_exit(_lockObj)
-        }
-    }
-    
-    
-    // Properties
-    public private(set) var settingData:  SensorSettingData<S>? {
-        didSet {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.delegate?.didUpdateSetting(self)
-            })
         }
     }
     public private(set) var realtimeData: T? {
@@ -210,24 +209,18 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             if let d = unpackDataArray(metadata.range, value: data) {
+                // データの終端は、必ず送る。データ取りこぼしが起きないように、データ更新も呼び出す。
                 if d.count == 0 {
-                    // 通知を間引いいているため、ログデータがまだ残っている場合は、ログデータ通知する
-                    if logData.count > 0 {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.delegate?.didUpdateLogData(self)
-                        })
-                    }
-                    // 終了通知
                     dispatch_async(dispatch_get_main_queue(), {
+                        self.delegate?.didUpdateLogData(self)
                         self.delegate?.didFinishedLogData(self)
                     })
                 } else {
+                    // データを追加。スレッドをまたぐので、selfをロックオブジェクトに使う。
                     objc_sync_enter(self)
                     self.logData.appendContentsOf(d)
                     objc_sync_exit(self)
-                
-                    // 過度な通知をしないよう、フラグでデリゲートが確実に実行されてから、次のデリゲート呼び出しを行う
-                    // semaphoreではwaitしちゃうから、フラグで実装。
+                    // 過度な呼び出しにならないように、メインスレッドでの処理が終わったら次の処理を入れるようにする。
                     if(self.flag == false) {
                         self.flag = true
                         dispatch_async(dispatch_get_main_queue(), {
@@ -237,7 +230,6 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                     }
                 }
             }
-
 //            debugPrint("unpacked : \(d)")
             
         default:

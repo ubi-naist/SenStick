@@ -181,7 +181,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         var data = [UInt8](count: characteristics_nsdata.length, repeatedValue: 0)
         characteristics_nsdata.getBytes(&data, length: data.count)
 
-//debugPrint("didUpdate: \(characteristic.UUID) \(data)")
+debugPrint("didUpdate: \(characteristic.UUID) \(data)")
         
         switch characteristic.service.UUID {
         case SenStickUUIDs.ControlServiceUUID:

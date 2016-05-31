@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
+class SensorDataCellView: UITableViewCell {
     @IBOutlet var titleTextLabel: UILabel?
     @IBOutlet var iconButton:     UIButton?
     @IBOutlet var maxTextLabel:   UILabel?
@@ -68,8 +68,10 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
     {
         self.logid = logid
         logData = [[], [], []]
+        
         self.graphView?.clearPlot()
         self.graphView?.autoRedraw = false
+        self.progressBar?.progress = 0
         self.progressBar?.hidden   = false
     }
     
@@ -101,9 +103,13 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         logData = nil
         self.graphView?.autoRedraw = true
         self.progressBar?.hidden   = true
+
+        // グラフの状態復帰
+        graphView?.autoRedraw  = true
+        graphView?.sampleCount = 300
     }
     
-    func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
+    private func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
     {
         var content = ""
         let colomn  = data.count
@@ -128,32 +134,12 @@ class SensorDataCellView: UITableViewCell , SenStickSensorServiceDelegate {
         }
 
         do {
-            try NSFileManager.defaultManager().removeItemAtPath(filePath)
+            if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
+                try NSFileManager.defaultManager().removeItemAtPath(filePath)
+            }
             try content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
         } catch {
             debugPrint("\(#function) fatal error in file save.")
         }
     }
-
-    // MARK: - SenStickSensorServiceDelegate
-    func didUpdateSetting(sender:AnyObject)
-    {
-    }
-    
-    func didUpdateRealTimeData(sender: AnyObject)
-    {
-    }
-    
-    func didUpdateMetaData(sender: AnyObject)
-    {
-    }
-    
-    func didUpdateLogData(sender: AnyObject)
-    {
-    }
-
-    func didFinishedLogData(sender: AnyObject)
-    {
-    }
-    // MARK: - Event handler
 }

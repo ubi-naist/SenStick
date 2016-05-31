@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class BrightnessCellView : SensorDataCellView
+class BrightnessCellView : SensorDataCellView, SenStickSensorServiceDelegate
 {
     weak var service: BrightnessSensorService? {
         didSet {
@@ -34,7 +34,7 @@ class BrightnessCellView : SensorDataCellView
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    override  func didUpdateSetting(sender:AnyObject)
+    func didUpdateSetting(sender:AnyObject)
     {
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
@@ -49,18 +49,24 @@ class BrightnessCellView : SensorDataCellView
         }
     }
     
-    override func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.brightness])
         }
     }
     
-    override func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
     {
+        if let count = service?.logMetaData?.availableSampleCount {
+            graphView?.sampleCount = Int(count)
+            if count == 0 {
+                stopReadingLog("", duration: nil)
+            }
+        }
     }
     
-    override func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
     {
         if let array = service?.readLogData() {
             let sampleCount = service!.logMetaData!.availableSampleCount
@@ -70,9 +76,9 @@ class BrightnessCellView : SensorDataCellView
             }
         }
     }
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        didUpdateLogData(self)         
+
+    func didFinishedLogData(sender: AnyObject)
+    {        
         stopReadingLog("brightness", duration: service?.logMetaData?.samplingDuration)
     }
 

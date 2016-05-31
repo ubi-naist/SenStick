@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class GyroCellView : SensorDataCellView
+class GyroCellView : SensorDataCellView, SenStickSensorServiceDelegate
 {
     weak var service: GyroSensorService? {
         didSet {
@@ -35,7 +35,7 @@ class GyroCellView : SensorDataCellView
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    override  func didUpdateSetting(sender:AnyObject)
+    func didUpdateSetting(sender:AnyObject)
     {
         self.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
@@ -71,18 +71,24 @@ class GyroCellView : SensorDataCellView
         }
     }
     
-    override func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.x, data.y, data.z])
         }
     }
     
-    override func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(sender: AnyObject)
     {
+        if let count = service?.logMetaData?.availableSampleCount {
+            graphView?.sampleCount = Int(count)
+            if count == 0 {
+                stopReadingLog("", duration: nil)
+            }
+        }
     }
     
-    override func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(sender: AnyObject)
     {
         if let array = service?.readLogData() {
             let sampleCount = service!.logMetaData!.availableSampleCount
@@ -93,9 +99,9 @@ class GyroCellView : SensorDataCellView
             }
         }
     }
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        didUpdateLogData(self)         
+
+    func didFinishedLogData(sender: AnyObject)
+    {     
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
     

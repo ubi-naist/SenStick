@@ -133,6 +133,8 @@ void metaDataLogGetLogCount(uint8_t *p_count, bool *p_is_header_full)
 // ターゲットIDの時刻を返します。もしもターゲットIDが存在しなければ、なにもしません。
 void metaDataLogReadDateTime(uint8_t logid, ble_date_time_t *p_date)
 {
+    memset(p_date, 0, sizeof(ble_date_time_t));
+    
     if(logid > senstick_getCurrentLogCount()) {
         return;
     }

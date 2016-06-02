@@ -338,8 +338,7 @@ uint8_t senstickSensorControllerReadSetting(sensor_device_t device_type, uint8_t
     return serializesensor_service_setting(p_buffer, &(context.sensorSetting[device_type]));
 }
 
-// 次のsenstickSensorControllerReadMetaData()でのみ使用可能なメソッド。
-// 書き込み中は読み出せない。
+// 残りサンプル数を読みだす
 uint32_t readSampleCount(sensor_device_t device_type)
 {
     const senstick_sensor_base_t *p_base = m_p_sensor_bases[device_type];
@@ -347,13 +346,21 @@ uint32_t readSampleCount(sensor_device_t device_type)
     
     if(log_count == 0) { // ログがない, すべて空いている
         return p_base->address_info.size / p_base->rawSensorDataSize;
-    } else { // 最後のログヘッダを読みだし、サイズを求める
-        log_context_t context;
-        openLog(&context, (log_count -1),  &(p_base->address_info));
-        uint32_t storage_last_address = (p_base->address_info.startAddress + p_base->address_info.size);
-        uint32_t data_last_address    = (context.header.startAddress + context.header.size);
-        return (storage_last_address - data_last_address) / p_base->rawSensorDataSize;
     }
+    
+    // 最後のログヘッダを読みだし、サイズを求める
+
+    // ログコンテキストを読みだす。書き込み中であればそれをコピー。停止中であれば末尾のログコンテキストを読みだす。
+    log_context_t log_context;
+    if(context.isSensorWorking) {
+        log_context = context.writingLogContext[device_type];
+    } else {
+        openLog(&log_context, (log_count -1),  &(p_base->address_info));
+    }
+
+    uint32_t storage_last_address = (p_base->address_info.startAddress + p_base->address_info.size);
+    uint32_t data_last_address    = (log_context.header.startAddress + log_context.header.size);
+    return (storage_last_address - data_last_address) / p_base->rawSensorDataSize;
 }
 
 uint8_t senstickSensorControllerReadMetaData(sensor_device_t device_type, uint8_t *p_buffer, uint8_t length)

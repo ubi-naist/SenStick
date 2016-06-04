@@ -49,9 +49,10 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         scanCallback = callback
         
         // 接続済のペリフェラルを取得する
+        /*
         for peripheral in (manager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
             addPeripheral(peripheral)
-        }
+        }*/
         
         // スキャンを開始する。
         manager!.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)

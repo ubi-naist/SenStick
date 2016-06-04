@@ -17,6 +17,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     @IBOutlet var startButton: UIButton!
     @IBOutlet var stopButton: UIButton!    
     @IBOutlet var storageStatusTextLabe: UILabel!
+    @IBOutlet var formatButton: UIButton!
     
     weak var controller: SensorDataViewController?
     
@@ -52,14 +53,16 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
             storageStatusTextLabe.hidden = !(self.service?.storageStatus)!
             if (self.service?.storageStatus)! {
                 startButton.enabled = false
-                stopButton.enabled = false
+                stopButton.enabled  = false
             }
+            formatButton.enabled = true
         } else {
             countOfLogTextLabel.text = "0"
             readLogButton.enabled = false
             startButton.enabled   = false
             stopButton.enabled    = false
             storageStatusTextLabe.hidden = true
+            formatButton.enabled = false
         }
         targetLogTextInput.delegate = self
     }
@@ -108,5 +111,9 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     @IBAction func  readLogButtonToutchUpInside(sender: UIButton) {
         let logid = UInt8(targetLogTextInput.text!)!
         controller?.startToReadLog(logid)
+    }
+    
+    @IBAction func  formatButtonToutchUpInside(sender: UIButton) {
+        service?.writeCommand(.FormatStorage)
     }
 }

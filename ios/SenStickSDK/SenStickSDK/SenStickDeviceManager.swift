@@ -38,6 +38,11 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     // 1秒毎にコールバックします。0になれば終了です。
     public func scan(duration:NSTimeInterval = 5.0, callback:((remaining: NSTimeInterval) -> Void)?)
     {
+        // デバイスリストをクリアする
+        dispatch_async(dispatch_get_main_queue(), {
+            self.devices = []
+        })
+        
         // スキャン中、もしくはBTの電源がオフであれば、直ちに終了。
         if manager!.isScanning || manager!.state != CBCentralManagerState.PoweredOn {
             callback?(remaining: 0)

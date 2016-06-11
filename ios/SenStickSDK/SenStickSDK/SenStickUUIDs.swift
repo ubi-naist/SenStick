@@ -46,6 +46,13 @@ public struct SenStickUUIDs
     // アドバタイジングするサービスUUID (コントロールサービス)
     public static let advertisingServiceUUID:CBUUID    = ControlServiceUUID
     
+    // Device information service
+    public static let DeviceInformationServiceUUID:CBUUID    = {return CBUUID(string: "180A")}()
+    public static let ManufacturerNameStringCharUUID:CBUUID  = {return CBUUID(string: "2A29")}()
+    public static let HardwareRevisionStringCharUUID:CBUUID  = {return CBUUID(string: "2A27")}()
+    public static let FirmwareRevisionStringCharUUID:CBUUID  = {return CBUUID(string: "2A26")}()
+    public static let SerialNumberStringCharUUID:CBUUID      = {return CBUUID(string: "2A25")}()
+    
     // control service
     public static let ControlServiceUUID:CBUUID        = {return SenStickUUIDs.createSenstickUUID(0x2000)}()
     public static let StatusCharUUID:CBUUID            = {return SenStickUUIDs.createSenstickUUID(0x7000)}()
@@ -94,29 +101,33 @@ public struct SenStickUUIDs
     public static let pressureSensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AirPressureSensor)}()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
-    public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] =
-        [ ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, StorageStatusCharUUID, DateTimeCharUUID, AbstractCharUUID],
-          MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
+    public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] = [
 
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AccelerationSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }(),
+        DeviceInformationServiceUUID : [ManufacturerNameStringCharUUID, HardwareRevisionStringCharUUID, FirmwareRevisionStringCharUUID, SerialNumberStringCharUUID],
 
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.GyroSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.GyroSensor ) }(),
+        ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, StorageStatusCharUUID, DateTimeCharUUID, AbstractCharUUID],
+        
+        MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
+
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AccelerationSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }(),
+
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.GyroSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.GyroSensor ) }(),
           
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.MagneticFieldSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.MagneticFieldSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.MagneticFieldSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.MagneticFieldSensor ) }(),
           
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.BrightnessSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.BrightnessSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.BrightnessSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.BrightnessSensor ) }(),
           
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.UltraVioletSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.UltraVioletSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.UltraVioletSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.UltraVioletSensor ) }(),
           
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.HumidityAndTemperatureSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.HumidityAndTemperatureSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }(),
           
-          {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AirPressureSensor.rawValue)) }() :
-            { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AirPressureSensor ) }()
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AirPressureSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AirPressureSensor ) }()
     ]
 }

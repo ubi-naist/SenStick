@@ -28,6 +28,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     
     public private(set) var name: String
     public private(set) var identifier: NSUUID
+
+    public private(set) var deviceInformationService:   DeviceInformationService?
     
     public private(set) var controlService:             SenStickControlService?
     public private(set) var metaDataService:            SenStickMetaDataService?
@@ -71,6 +73,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     internal func onDisConnected()
     {
         self.isConnected = false
+        
+        self.deviceInformationService   = nil
         
         self.controlService             = nil
         self.metaDataService            = nil
@@ -139,6 +143,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
 //   debugPrint("\(#function), \(service.UUID).")
         // すべてのサービスのキャラクタリスティクスが発見できれば、インスタンスを生成
         switch service.UUID {
+        case SenStickUUIDs.DeviceInformationServiceUUID:
+            self.deviceInformationService = DeviceInformationService(device:self)
         case SenStickUUIDs.ControlServiceUUID:
             self.controlService = SenStickControlService(device: self)
         case SenStickUUIDs.MetaDataServiceUUID:
@@ -184,6 +190,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
 //debugPrint("didUpdate: \(characteristic.UUID) \(data)")
         
         switch characteristic.service.UUID {
+        case SenStickUUIDs.DeviceInformationServiceUUID:
+            self.deviceInformationService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.ControlServiceUUID:
             self.controlService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.MetaDataServiceUUID:

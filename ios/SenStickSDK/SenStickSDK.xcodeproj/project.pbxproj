@@ -33,6 +33,7 @@
 		F8C17DFF1CC7161F00030B99 /* SensorLogID.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17DFE1CC7161F00030B99 /* SensorLogID.swift */; };
 		F8C17E021CC9AF9700030B99 /* SensorLogMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17E011CC9AF9700030B99 /* SensorLogMetaData.swift */; };
 		F8C17E061CCB071D00030B99 /* AccelerationSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17E051CCB071D00030B99 /* AccelerationSensorService.swift */; };
+		F8CAF9E71D0BACBE0044FFBF /* DeviceInformationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		F8C17DFE1CC7161F00030B99 /* SensorLogID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorLogID.swift; sourceTree = "<group>"; };
 		F8C17E011CC9AF9700030B99 /* SensorLogMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorLogMetaData.swift; sourceTree = "<group>"; };
 		F8C17E051CCB071D00030B99 /* AccelerationSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationSensorService.swift; sourceTree = "<group>"; };
+		F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				F80AD0AF1CAA667E00291197 /* SenStickService.swift */,
+				F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */,
 				F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */,
 				F856CA891CC1186700C30744 /* SenStickMetaDataService.swift */,
 				F8C17E071CCC677700030B99 /* SensorServices */,
@@ -233,6 +236,7 @@
 			files = (
 				F86E76961CF3DDEC001D9DD5 /* BrightnessSensorService.swift in Sources */,
 				F8C17DEF1CC6660000030B99 /* SensorSettingData.swift in Sources */,
+				F8CAF9E71D0BACBE0044FFBF /* DeviceInformationService.swift in Sources */,
 				F856CA8A1CC1186700C30744 /* SenStickMetaDataService.swift in Sources */,
 				F8C17DFD1CC70EE700030B99 /* SensorDataPackable.swift in Sources */,
 				F86322C61C97B7B3001B53A0 /* SenStickDeviceManager.swift in Sources */,

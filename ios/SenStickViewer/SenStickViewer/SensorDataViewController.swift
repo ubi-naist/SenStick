@@ -103,6 +103,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     }
     // MARK: - SenStickDeviceDelegate
     func didServiceFound(sender: SenStickDevice) {
+        // static cellであっても画面範囲外であればインスタンスはない。そのためcellがあるかどうかを逐一確認している。
         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,0], length: 2)) as? SensorStatusCellView {
             statusCell = cell
             cell.controller = self

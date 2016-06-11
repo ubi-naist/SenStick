@@ -68,6 +68,13 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
                 durationField.text = "\(Int(duration.duration * 1000))"
             }
         }
+        
+        // キーボードのDoneツールバーを追加
+        let toolBar   = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
+        toolBar.items = [UIBarButtonItem(barButtonSystemItem: .FlexibleSpace , target: nil, action: nil),
+                         UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(doneToolBarButton))]
+        self.durationField.inputAccessoryView = toolBar
+        toolBar .sizeToFit()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -147,6 +154,10 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         durationField.resignFirstResponder()
         return true
+    }
+    
+    func doneToolBarButton() {
+        durationField.resignFirstResponder()
     }
     
     // UIPickerViewDataSource

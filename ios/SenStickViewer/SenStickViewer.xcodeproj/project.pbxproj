@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AFE07614B48C76DC151AC392 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */; };
 		F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */; };
 		F83941B01CF11DE6008F2A52 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */; };
 		F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322901C979B03001B53A0 /* AppDelegate.swift */; };
@@ -22,31 +23,12 @@
 		F8BD11791CF5996800BA8F3B /* GyroCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11781CF5996800BA8F3B /* GyroCellView.swift */; };
 		F8BD117B1CF59C4300BA8F3B /* MagneticFieldCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD117A1CF59C4300BA8F3B /* MagneticFieldCellView.swift */; };
 		F8BD117D1CF59EB900BA8F3B /* BrightnessCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD117C1CF59EB900BA8F3B /* BrightnessCellView.swift */; };
-		F8C17E1C1CCF271A00030B99 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; };
-		F8C17E1D1CCF271A00030B99 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8C17E121CCF25D500030B99 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F8C3F7461CF5A09600B807B5 /* UVCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3F7451CF5A09600B807B5 /* UVCellView.swift */; };
 		F8C3F7481CF5C02A00B807B5 /* HumidityCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3F7471CF5C02A00B807B5 /* HumidityCellView.swift */; };
 		F8C3F74A1CF5C23600B807B5 /* PressureCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3F7491CF5C23600B807B5 /* PressureCellView.swift */; };
 		F8FCC92E1CCF6195003BCC5A /* DeviceListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */; };
 		F8FCC9301CCF61CD003BCC5A /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		F8C17E111CCF25D500030B99 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F86322AE1C979B20001B53A0;
-			remoteInfo = SenStickSDK;
-		};
-		F8C17E1E1CCF271A00030B99 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F86322AD1C979B20001B53A0;
-			remoteInfo = SenStickSDK;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F8C17E201CCF271A00030B99 /* Embed Frameworks */ = {
@@ -55,7 +37,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F8C17E1D1CCF271A00030B99 /* SenStickSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +44,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8F8912494D9F904F7DB5DF38 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7045972F9A7B2E667A97CD8 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
 		F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataViewController.swift; sourceTree = "<group>"; };
 		F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorStatusCellView.swift; sourceTree = "<group>"; };
 		F863228D1C979B03001B53A0 /* SenStickViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +64,6 @@
 		F8BD11781CF5996800BA8F3B /* GyroCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroCellView.swift; sourceTree = "<group>"; };
 		F8BD117A1CF59C4300BA8F3B /* MagneticFieldCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagneticFieldCellView.swift; sourceTree = "<group>"; };
 		F8BD117C1CF59EB900BA8F3B /* BrightnessCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrightnessCellView.swift; sourceTree = "<group>"; };
-		F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
 		F8C3F7451CF5A09600B807B5 /* UVCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UVCellView.swift; sourceTree = "<group>"; };
 		F8C3F7471CF5C02A00B807B5 /* HumidityCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumidityCellView.swift; sourceTree = "<group>"; };
 		F8C3F7491CF5C23600B807B5 /* PressureCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureCellView.swift; sourceTree = "<group>"; };
@@ -93,20 +76,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8C17E1C1CCF271A00030B99 /* SenStickSDK.framework in Frameworks */,
+				AFE07614B48C76DC151AC392 /* Pods_SenStickViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C76593342C0A05CB0F9F8A3E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E98039C26517B6D4605A9F6C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8F8912494D9F904F7DB5DF38 /* Pods-SenStickViewer.debug.xcconfig */,
+				E7045972F9A7B2E667A97CD8 /* Pods-SenStickViewer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F86322841C979B03001B53A0 = {
 			isa = PBXGroup;
 			children = (
-				F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */,
 				F86322C31C979B92001B53A0 /* images.xcassets */,
 				F863228F1C979B03001B53A0 /* SenStickViewer */,
 				F863228E1C979B03001B53A0 /* Products */,
+				E98039C26517B6D4605A9F6C /* Pods */,
+				C76593342C0A05CB0F9F8A3E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,14 +154,6 @@
 			name = "New Group";
 			sourceTree = "<group>";
 		};
-		F8C17E0E1CCF25D500030B99 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F8C17E121CCF25D500030B99 /* SenStickSDK.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -168,15 +161,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F86322A11C979B03001B53A0 /* Build configuration list for PBXNativeTarget "SenStickViewer" */;
 			buildPhases = (
+				CD5C646A668A3E7DEC89A6E3 /* [CP] Check Pods Manifest.lock */,
 				F86322891C979B03001B53A0 /* Sources */,
 				F863228A1C979B03001B53A0 /* Frameworks */,
 				F863228B1C979B03001B53A0 /* Resources */,
 				F8C17E201CCF271A00030B99 /* Embed Frameworks */,
+				F84AE475222D069680E19A93 /* [CP] Embed Pods Frameworks */,
+				F80AE421B1DE16DBC2BD20BB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F8C17E1F1CCF271A00030B99 /* PBXTargetDependency */,
 			);
 			name = SenStickViewer;
 			productName = SenStickViewer;
@@ -209,28 +204,12 @@
 			mainGroup = F86322841C979B03001B53A0;
 			productRefGroup = F863228E1C979B03001B53A0 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F8C17E0E1CCF25D500030B99 /* Products */;
-					ProjectRef = F8C17E0D1CCF25D500030B99 /* SenStickSDK.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F863228C1C979B03001B53A0 /* SenStickViewer */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		F8C17E121CCF25D500030B99 /* SenStickSDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SenStickSDK.framework;
-			remoteRef = F8C17E111CCF25D500030B99 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F863228B1C979B03001B53A0 /* Resources */ = {
@@ -245,6 +224,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CD5C646A668A3E7DEC89A6E3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F80AE421B1DE16DBC2BD20BB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F84AE475222D069680E19A93 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F86322891C979B03001B53A0 /* Sources */ = {
@@ -271,14 +298,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F8C17E1F1CCF271A00030B99 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SenStickSDK;
-			targetProxy = F8C17E1E1CCF271A00030B99 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F86322961C979B03001B53A0 /* Main.storyboard */ = {
@@ -383,6 +402,7 @@
 		};
 		F86322A21C979B03001B53A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F8912494D9F904F7DB5DF38 /* Pods-SenStickViewer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -395,6 +415,7 @@
 		};
 		F86322A31C979B03001B53A0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7045972F9A7B2E667A97CD8 /* Pods-SenStickViewer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;

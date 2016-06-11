@@ -1,0 +1,1099 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		019D442CB31031E62CA7C16B3057EF7F /* EVObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32C1E31E1C3C391D98A4DD308A0805 /* EVObject.swift */; };
+		09B3312A78B491E705ABA17BA957C772 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D77E4A84EC53CAF05C16B4B237329C /* Zip.swift */; };
+		0B76B5F1B810E4D2EEAEAC77AC824BD6 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 55D4E2DED7DD71F542CC332F504D2DF6 /* pwd2key.c */; };
+		1827E2502F7A284A60944564EFE8259C /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F91426FD0226F5B4A1B269013139D3B /* unzip.c */; };
+		1A566458FA17563514F7CFC6C9B783F0 /* Zip-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B960E5336781F3F843E6CAF55A9ACEA /* Zip-dummy.m */; };
+		1A6BEDBCBE71546DBEF3D7FDF9DB4EA1 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A61845DFD5576036643B016D206B5A4 /* zip.c */; };
+		1CCD660B55359654EB7E5F30955EC2CD /* EVReflection-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C1A6FBD8E7D69A8B1FBDA70C9A26B6D1 /* EVReflection-dummy.m */; };
+		1E2AD19151D8389D8DAC59B6838E4FD8 /* ZipUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536372B312F5F0B437B28352B61540C9 /* ZipUtilities.swift */; };
+		20F1208143BFFBB63FBAD9817A338B1B /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 336577F2B4784DCDD2EDBFBF91E64EC2 /* sha1.c */; };
+		2108910ED13FBB90D6FCEFF781BED76D /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6BFA5BB7B6FD63B1DFE851D9D13A96 /* brg_endian.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2112901F28B38B3CD3C2ED27AA670D96 /* DFUStreamBin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FBB390E46D9AAEE12FF147D17E2026 /* DFUStreamBin.swift */; };
+		21EF8E9EE91678D1FD3B404580C110CE /* DFUPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050318A43F9ADB3C2A662BB17D24543 /* DFUPeripheral.swift */; };
+		29D27E056600FE77435CDA80A7D08A96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */; };
+		2AD573834A79899C5870523A5BD8E957 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = EB07B1D38195CCA7FC33EC9552956813 /* aestab.c */; };
+		2D1AC80C67E22649FE2669C16B81A020 /* Zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F56D1EEC5C3ABBAFD48AD0C893FCA9 /* Zip.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2E47F6F98FF0DA9AA5BF413E01796F3F /* DFUService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA6A89C2AE2670C91C0EB167B2866CF /* DFUService.swift */; };
+		385C6C9BC0122FD9E873B58FD153D243 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */; };
+		3D541FC82539FE8C99B2CA3836CFCCEF /* NSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900FA327C782C3D2E34CF9AF7FA74118 /* NSData.swift */; };
+		4B4608A3BEE2286B5C330555D1831474 /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF24836123067EF59335B080ADFB7ED7 /* Zip.framework */; };
+		4E576506CA276E9FBCBC39157115B08D /* DFUFirmware.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC294FD4958697EA2B217A70F1F60456 /* DFUFirmware.swift */; };
+		52FAD008068A469670B49DB0D823F8B7 /* pwd2key.h in Headers */ = {isa = PBXBuildFile; fileRef = 548BBA2AFC7C2693DBCACB924B871CEA /* pwd2key.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		53BF068AB4A2E1417AE20F06A8CF232F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */; };
+		58F1BD03277AE9110592739B510A8A7D /* fileenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 82E530E43EA17CD5B3E0DF1AA723C842 /* fileenc.c */; };
+		5D63FBD81B15B9CC0F22216B7AB61EC2 /* DFUStreamHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3689F6F06F9A74E3E76EB09F48FEE2CE /* DFUStreamHex.swift */; };
+		5FD7756F9C0D40D3CAA0E1313323F8A1 /* DFUPeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45643FD3CB621ED855DFDDDAD64003AD /* DFUPeripheralDelegate.swift */; };
+		64AD33080B9F4BA337569D809FCBD56B /* Pods-SenStickViewer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 43C779C8B504ABFDA3987B3A6334B1C8 /* Pods-SenStickViewer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B2F57090FA298323813FB567F7969D4 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 92968E9EA4870AB61FDCF534A5AF87D8 /* ioapi.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6F382E3DD279B613F19ACB9DA1EE5588 /* DFUStreamZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB048CE23F6975C005757D283AC4FDA0 /* DFUStreamZip.swift */; };
+		6F46B9EC1003420059A450BE58B01019 /* aes_via_ace.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B243AB118C97075835F5361D5F7E3E5 /* aes_via_ace.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		6FC2BA798DEC0CC024B76AA7DABB2C97 /* DFUExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0C6B1C9995F25E0DEDE9C09A65774 /* DFUExecutor.swift */; };
+		6FC4ADF261A302A1B80302646DC3A87E /* EVWorkaroundHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425B1BA3FC89108BEA1AD06EDAF92E4 /* EVWorkaroundHelpers.swift */; };
+		71B30BBF217524A03EDD40C1579C68E8 /* aestab.h in Headers */ = {isa = PBXBuildFile; fileRef = 61371ADD12D5A877BBB25EB96F7B070B /* aestab.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		757CABB4F289EBC540149CBF2C1A95FF /* EVReflection-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A57A8DF4650B76767E9F292427C01DEE /* EVReflection-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		776369785993719B8161CE5C63EA523D /* DFUControlPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50530E96F79DC8986B450AE2ACF5031 /* DFUControlPoint.swift */; };
+		7812DE0D3C8F06D79D509BD8A0367A9F /* brg_types.h in Headers */ = {isa = PBXBuildFile; fileRef = FB7CF79F813D41D5E0D0E5D489FAC6E6 /* brg_types.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		7AF0C5898B235724E50FFBFADE02EC02 /* ZipArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF345027E8F384351EF7EF3E5308589 /* ZipArchive.swift */; };
+		7FF20BCCE2EC91B853B3CA6E266CB7F5 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 91923CF86343FD354B84AECCA4D93A53 /* crypt.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8293AD6D74EB8F9147DA659884E8C040 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 1700164EB50A696696DFFA56448AF93C /* aescrypt.c */; };
+		83893E5426844C8C4AFFD4AAE542CCBB /* LoggerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD486AACBD6600511C12C14126CFEDC /* LoggerDelegate.swift */; };
+		8F06DEFC0573C2069C6CD702A25D18D3 /* entropy.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CF90ECF0228225FBA18608D0467C96 /* entropy.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		90C2E04717894881777361E4A505ED15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */; };
+		9253B1662FD8441C229686492CFEA9BE /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10926C93838A361AAE65A0910019ACE2 /* LoggerHelper.swift */; };
+		9470BE4FF7CB62456BAE8EF523390152 /* DFUServiceInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75389C92E8A139F6DB932590E879309 /* DFUServiceInitiator.swift */; };
+		949093BF1A21ACCF0800905A88EFF9DB /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = A32426DBF0C4854E7F8A69AD560F9F36 /* IntelHex2BinConverter.m */; };
+		9644440B7094D4CA99669D9280B97A72 /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CF510DC6807DA0908EE92122FF102D6 /* unzip.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		9AC903A9FD43B63452F02E8552AD8240 /* aesopt.h in Headers */ = {isa = PBXBuildFile; fileRef = F89051364FA57E154AF1A13415553BF1 /* aesopt.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		9B479AA5F100E985985149CDFF07E76E /* aes.h in Headers */ = {isa = PBXBuildFile; fileRef = C77A49EB778807BDA0C8026D16EF6500 /* aes.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		A417B2AB34AB9B251271D397821D382E /* prng.h in Headers */ = {isa = PBXBuildFile; fileRef = CA2FFB59D7453D8FC9271ED7A397BB50 /* prng.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B5516C10F34D7320CF2362190914FA31 /* IntelHex2BinConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2916071C34E87F5032FBAD3897C8FEFF /* IntelHex2BinConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE2B820C15CCBB8502ACE2D3407C32D9 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = C07126F1E8F7C5A43A4FF6B41838C4EC /* hmac.c */; };
+		BE44A656A28675783BFB113472075622 /* QuickZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911EAFAFB22522653B0443904A1D44FD /* QuickZip.swift */; };
+		BEA0C6CEBA5F53EA4DF637195F46838A /* iOSDFULibrary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BA54A5250CC0838EFA745FADCB03E44 /* iOSDFULibrary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C3F6A5D2099563B92A6AD03C9F3B240D /* DFUVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379AEBBBD8CFF33B90732B99F1D92A96 /* DFUVersion.swift */; };
+		C8849E2646561D8384946555A3E30063 /* fileenc.h in Headers */ = {isa = PBXBuildFile; fileRef = E93CBBA4A1A7330DDC20982BF78E495E /* fileenc.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		CB00F054E3119C922BC8BDBCAE19090E /* DFUServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1829CACCF5A0E8E5119EC464E821E2F /* DFUServiceController.swift */; };
+		CBD53CE37E5856888F27390916DA4274 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A906362664978C93AC4D91B64CC60B /* Double.swift */; };
+		CCA7218052BB551CF4308440CB851A04 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 416AF0511EF565D19C832B2419CB716C /* zip.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D063FE67D2B25AC211220DAAE119B4D9 /* hmac.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2D567ED35F412DB05378E5C860D4C7 /* hmac.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D6FB4EEA6BCA73E38A769BF4A6DB7799 /* sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE4849EC558FB7648B87C36D23D56A1 /* sha1.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D8F604ABE9C7E520A73BB7B37CE5A9EC /* EVExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D1C8B306EEF4F60F31E4DCA383B49E /* EVExtensions.swift */; };
+		DAB4D5D05357205D2F777E0B2DB3B6D8 /* entropy.c in Sources */ = {isa = PBXBuildFile; fileRef = 48204A86533D6EDC95F8275CECCCFECC /* entropy.c */; };
+		DF3BA370D27044020FA93343B43100BF /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 807EE34EE161C81D491BED8E17F0E997 /* prng.c */; };
+		E04299D789FBD39D69D172B761980B7D /* EVReflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86791DC11C1D320FBC175BA00EF33F8C /* EVReflection.swift */; };
+		F1538753079B3CC8B983938E3AD3453B /* EVReflection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C122E32E693F8D52E8C0D9BBEF82E6 /* EVReflection.framework */; };
+		F89ED715FE8B3D6085561AAB18AA352C /* Pods-SenStickViewer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB703A82E83C75FFFB49B5283787A2F1 /* Pods-SenStickViewer-dummy.m */; };
+		F99FB20A35AF0499DC606D3C007D6387 /* DFUPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2AEDBB50A383CBA2AACCCA95714097 /* DFUPacket.swift */; };
+		F9B4C39B5B268A2A6C608D98D0B02030 /* DFUStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463604651F6F14BC134446B72756F619 /* DFUStream.swift */; };
+		FAC64C3691FA8C5147FDCCDCF17F23D4 /* iOSDFULibrary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 706909D94D9611DB3AECDA1798058368 /* iOSDFULibrary-dummy.m */; };
+		FAEB0729400B2D243AA67BA2835D7D8B /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 17CE63E58B8A4B01D2259938254C426F /* aeskey.c */; };
+		FDC61A59D61301652AFD4C1E47DAF11A /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 922D3C5D1780ADD375948E31AD2D2D6A /* ioapi.c */; };
+		FE74A9B0315361407F76EBD40BAC6ABB /* Zip-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CD1FB46CE436404FB0AD4677E97CAAA /* Zip-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEF2DBCB4B59CD8ED44C951692FC5FBD /* DFUServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645D8A77524042D3AC06897A97E7F3B /* DFUServiceDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		159F53A6D9432CCED1111BFF2DD7685F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3EC7B103F712BD770B4F896CD52A982;
+			remoteInfo = Zip;
+		};
+		2538A35E132843DC0A2690EA2D5D36EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3C2090211A29BD5E3D9489627F6F807;
+			remoteInfo = EVReflection;
+		};
+		53CDD40AA16ED68866DD27E3B9695244 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3C2090211A29BD5E3D9489627F6F807;
+			remoteInfo = EVReflection;
+		};
+		71A49D024F84A45FE412BB601B58B81E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3EC7B103F712BD770B4F896CD52A982;
+			remoteInfo = Zip;
+		};
+		A1A4D1F695EDD2A0BDA088DCEE318034 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A009B69DFE38C5749A24A1E1A21110E8;
+			remoteInfo = iOSDFULibrary;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		071348DB5533444422BBE343E3D5BD5D /* Pods-SenStickViewer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SenStickViewer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		08CF90ECF0228225FBA18608D0467C96 /* entropy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = entropy.h; path = Zip/minizip/aes/entropy.h; sourceTree = "<group>"; };
+		0966D824EA6E94349D5EFB16798215D1 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		0A61845DFD5576036643B016D206B5A4 /* zip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = zip.c; path = Zip/minizip/zip.c; sourceTree = "<group>"; };
+		0AA074374AB65642AD2A059F12160F83 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BA54A5250CC0838EFA745FADCB03E44 /* iOSDFULibrary-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDFULibrary-umbrella.h"; sourceTree = "<group>"; };
+		0D72B859EF4339D56E1137B9DE3160B5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EF7F16CEF58F8E0E7F89AD1AEB038F5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10926C93838A361AAE65A0910019ACE2 /* LoggerHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoggerHelper.swift; path = iOSDFULibrary/Classes/Utilities/Logging/LoggerHelper.swift; sourceTree = "<group>"; };
+		10F56D1EEC5C3ABBAFD48AD0C893FCA9 /* Zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Zip.h; path = Zip/Zip.h; sourceTree = "<group>"; };
+		133146CD1E30EC941739FD3CCA68DE50 /* Zip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1700164EB50A696696DFFA56448AF93C /* aescrypt.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = aescrypt.c; path = Zip/minizip/aes/aescrypt.c; sourceTree = "<group>"; };
+		17CE63E58B8A4B01D2259938254C426F /* aeskey.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = aeskey.c; path = Zip/minizip/aes/aeskey.c; sourceTree = "<group>"; };
+		19C122E32E693F8D52E8C0D9BBEF82E6 /* EVReflection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EVReflection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A8DCAA76B80271413A49276197547DB /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E2D567ED35F412DB05378E5C860D4C7 /* hmac.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = hmac.h; path = Zip/minizip/aes/hmac.h; sourceTree = "<group>"; };
+		20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		2521D2A5661CFCB9E088916DBD95D7A4 /* EVReflection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EVReflection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2916071C34E87F5032FBAD3897C8FEFF /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IntelHex2BinConverter.h; path = iOSDFULibrary/Classes/Utilities/HexToBinConverter/IntelHex2BinConverter.h; sourceTree = "<group>"; };
+		3083A56BDF5C1695217C750AB99C9D69 /* EVReflection-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "EVReflection-prefix.pch"; sourceTree = "<group>"; };
+		31EC8DC45CB4016E78943C2F618AF319 /* Zip.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Zip.modulemap; sourceTree = "<group>"; };
+		336577F2B4784DCDD2EDBFBF91E64EC2 /* sha1.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = sha1.c; path = Zip/minizip/aes/sha1.c; sourceTree = "<group>"; };
+		3689F6F06F9A74E3E76EB09F48FEE2CE /* DFUStreamHex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamHex.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamHex.swift; sourceTree = "<group>"; };
+		379AEBBBD8CFF33B90732B99F1D92A96 /* DFUVersion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUVersion.swift; path = iOSDFULibrary/Classes/Implementation/Characteristics/DFUVersion.swift; sourceTree = "<group>"; };
+		3A374ABF4716E8270B623BE16AFEC16B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F91426FD0226F5B4A1B269013139D3B /* unzip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = Zip/minizip/unzip.c; sourceTree = "<group>"; };
+		416AF0511EF565D19C832B2419CB716C /* zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = zip.h; path = Zip/minizip/zip.h; sourceTree = "<group>"; };
+		43C779C8B504ABFDA3987B3A6334B1C8 /* Pods-SenStickViewer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SenStickViewer-umbrella.h"; sourceTree = "<group>"; };
+		45643FD3CB621ED855DFDDDAD64003AD /* DFUPeripheralDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPeripheralDelegate.swift; path = iOSDFULibrary/Classes/Implementation/Peripherals/DFUPeripheralDelegate.swift; sourceTree = "<group>"; };
+		463604651F6F14BC134446B72756F619 /* DFUStream.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStream.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStream.swift; sourceTree = "<group>"; };
+		46D1C8B306EEF4F60F31E4DCA383B49E /* EVExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EVExtensions.swift; path = EVReflection/pod/EVExtensions.swift; sourceTree = "<group>"; };
+		48204A86533D6EDC95F8275CECCCFECC /* entropy.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = entropy.c; path = Zip/minizip/aes/entropy.c; sourceTree = "<group>"; };
+		4CD1FB46CE436404FB0AD4677E97CAAA /* Zip-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Zip-umbrella.h"; sourceTree = "<group>"; };
+		536372B312F5F0B437B28352B61540C9 /* ZipUtilities.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZipUtilities.swift; path = Zip/ZipUtilities.swift; sourceTree = "<group>"; };
+		548BBA2AFC7C2693DBCACB924B871CEA /* pwd2key.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = pwd2key.h; path = Zip/minizip/aes/pwd2key.h; sourceTree = "<group>"; };
+		55D4E2DED7DD71F542CC332F504D2DF6 /* pwd2key.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = pwd2key.c; path = Zip/minizip/aes/pwd2key.c; sourceTree = "<group>"; };
+		5A55B903A500757D67ED884502D6FBB0 /* Pods-SenStickViewer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SenStickViewer-resources.sh"; sourceTree = "<group>"; };
+		5A6BFA5BB7B6FD63B1DFE851D9D13A96 /* brg_endian.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = brg_endian.h; path = Zip/minizip/aes/brg_endian.h; sourceTree = "<group>"; };
+		5B243AB118C97075835F5361D5F7E3E5 /* aes_via_ace.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes_via_ace.h; path = Zip/minizip/aes/aes_via_ace.h; sourceTree = "<group>"; };
+		5FD486AACBD6600511C12C14126CFEDC /* LoggerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoggerDelegate.swift; path = iOSDFULibrary/Classes/Utilities/Logging/LoggerDelegate.swift; sourceTree = "<group>"; };
+		5FE4849EC558FB7648B87C36D23D56A1 /* sha1.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = Zip/minizip/aes/sha1.h; sourceTree = "<group>"; };
+		61371ADD12D5A877BBB25EB96F7B070B /* aestab.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aestab.h; path = Zip/minizip/aes/aestab.h; sourceTree = "<group>"; };
+		7050318A43F9ADB3C2A662BB17D24543 /* DFUPeripheral.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPeripheral.swift; path = iOSDFULibrary/Classes/Implementation/Peripherals/DFUPeripheral.swift; sourceTree = "<group>"; };
+		706909D94D9611DB3AECDA1798058368 /* iOSDFULibrary-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "iOSDFULibrary-dummy.m"; sourceTree = "<group>"; };
+		71D77E4A84EC53CAF05C16B4B237329C /* Zip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Zip.swift; path = Zip/Zip.swift; sourceTree = "<group>"; };
+		7B69B47CC6B1EB15718A7741879C39C5 /* iOSDFULibrary.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iOSDFULibrary.xcconfig; sourceTree = "<group>"; };
+		7CF510DC6807DA0908EE92122FF102D6 /* unzip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = Zip/minizip/unzip.h; sourceTree = "<group>"; };
+		807EE34EE161C81D491BED8E17F0E997 /* prng.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = prng.c; path = Zip/minizip/aes/prng.c; sourceTree = "<group>"; };
+		82BF5E28C36092C55F7D7EC2CAFDB4F3 /* Pods-SenStickViewer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SenStickViewer-frameworks.sh"; sourceTree = "<group>"; };
+		82E530E43EA17CD5B3E0DF1AA723C842 /* fileenc.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = fileenc.c; path = Zip/minizip/aes/fileenc.c; sourceTree = "<group>"; };
+		8425B1BA3FC89108BEA1AD06EDAF92E4 /* EVWorkaroundHelpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EVWorkaroundHelpers.swift; path = EVReflection/pod/EVWorkaroundHelpers.swift; sourceTree = "<group>"; };
+		8530DF9754F26ADA778C24268C616334 /* Zip-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Zip-prefix.pch"; sourceTree = "<group>"; };
+		86791DC11C1D320FBC175BA00EF33F8C /* EVReflection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EVReflection.swift; path = EVReflection/pod/EVReflection.swift; sourceTree = "<group>"; };
+		8B960E5336781F3F843E6CAF55A9ACEA /* Zip-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Zip-dummy.m"; sourceTree = "<group>"; };
+		8EE0C6B1C9995F25E0DEDE9C09A65774 /* DFUExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUExecutor.swift; path = iOSDFULibrary/Classes/Utilities/DFU/DFUExecutor.swift; sourceTree = "<group>"; };
+		900FA327C782C3D2E34CF9AF7FA74118 /* NSData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSData.swift; path = iOSDFULibrary/Classes/Utilities/NSData.swift; sourceTree = "<group>"; };
+		911EAFAFB22522653B0443904A1D44FD /* QuickZip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickZip.swift; path = Zip/QuickZip.swift; sourceTree = "<group>"; };
+		91923CF86343FD354B84AECCA4D93A53 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = Zip/minizip/crypt.h; sourceTree = "<group>"; };
+		922D3C5D1780ADD375948E31AD2D2D6A /* ioapi.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = Zip/minizip/ioapi.c; sourceTree = "<group>"; };
+		92968E9EA4870AB61FDCF534A5AF87D8 /* ioapi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = Zip/minizip/ioapi.h; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A32426DBF0C4854E7F8A69AD560F9F36 /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IntelHex2BinConverter.m; path = iOSDFULibrary/Classes/Utilities/HexToBinConverter/IntelHex2BinConverter.m; sourceTree = "<group>"; };
+		A57A8DF4650B76767E9F292427C01DEE /* EVReflection-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "EVReflection-umbrella.h"; sourceTree = "<group>"; };
+		AB048CE23F6975C005757D283AC4FDA0 /* DFUStreamZip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamZip.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamZip.swift; sourceTree = "<group>"; };
+		B645D8A77524042D3AC06897A97E7F3B /* DFUServiceDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceDelegate.swift; path = iOSDFULibrary/Classes/Utilities/DFU/DFUServiceDelegate.swift; sourceTree = "<group>"; };
+		B7FBB390E46D9AAEE12FF147D17E2026 /* DFUStreamBin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamBin.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamBin.swift; sourceTree = "<group>"; };
+		BB703A82E83C75FFFB49B5283787A2F1 /* Pods-SenStickViewer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SenStickViewer-dummy.m"; sourceTree = "<group>"; };
+		BDA6A89C2AE2670C91C0EB167B2866CF /* DFUService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUService.swift; path = iOSDFULibrary/Classes/Implementation/Services/DFUService.swift; sourceTree = "<group>"; };
+		BF32C1E31E1C3C391D98A4DD308A0805 /* EVObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EVObject.swift; path = EVReflection/pod/EVObject.swift; sourceTree = "<group>"; };
+		C07126F1E8F7C5A43A4FF6B41838C4EC /* hmac.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = hmac.c; path = Zip/minizip/aes/hmac.c; sourceTree = "<group>"; };
+		C1A6FBD8E7D69A8B1FBDA70C9A26B6D1 /* EVReflection-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "EVReflection-dummy.m"; sourceTree = "<group>"; };
+		C66108405207C21C0A3439FCEBCDF9AF /* iOSDFULibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSDFULibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C69CD721B7046E3C386DF08E7A7A7AE6 /* EVReflection.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = EVReflection.modulemap; sourceTree = "<group>"; };
+		C77A49EB778807BDA0C8026D16EF6500 /* aes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes.h; path = Zip/minizip/aes/aes.h; sourceTree = "<group>"; };
+		C8643A55E63D3EE1F6AD815C6DF3625E /* iOSDFULibrary.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = iOSDFULibrary.modulemap; sourceTree = "<group>"; };
+		CA2FFB59D7453D8FC9271ED7A397BB50 /* prng.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = prng.h; path = Zip/minizip/aes/prng.h; sourceTree = "<group>"; };
+		CC294FD4958697EA2B217A70F1F60456 /* DFUFirmware.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUFirmware.swift; path = iOSDFULibrary/Classes/Utilities/DFU/DFUFirmware.swift; sourceTree = "<group>"; };
+		CCF345027E8F384351EF7EF3E5308589 /* ZipArchive.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZipArchive.swift; path = iOSDFULibrary/Classes/Utilities/ZipArchive.swift; sourceTree = "<group>"; };
+		CD7DC2FA4B3B9E6C33BA71CF4ABB76ED /* iOSDFULibrary-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDFULibrary-prefix.pch"; sourceTree = "<group>"; };
+		D75389C92E8A139F6DB932590E879309 /* DFUServiceInitiator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceInitiator.swift; path = iOSDFULibrary/Classes/Utilities/DFU/DFUServiceInitiator.swift; sourceTree = "<group>"; };
+		DF24836123067EF59335B080ADFB7ED7 /* Zip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4A906362664978C93AC4D91B64CC60B /* Double.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Double.swift; path = iOSDFULibrary/Classes/Utilities/Double.swift; sourceTree = "<group>"; };
+		E50530E96F79DC8986B450AE2ACF5031 /* DFUControlPoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUControlPoint.swift; path = iOSDFULibrary/Classes/Implementation/Characteristics/DFUControlPoint.swift; sourceTree = "<group>"; };
+		E93CBBA4A1A7330DDC20982BF78E495E /* fileenc.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = fileenc.h; path = Zip/minizip/aes/fileenc.h; sourceTree = "<group>"; };
+		EB07B1D38195CCA7FC33EC9552956813 /* aestab.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = aestab.c; path = Zip/minizip/aes/aestab.c; sourceTree = "<group>"; };
+		F1829CACCF5A0E8E5119EC464E821E2F /* DFUServiceController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceController.swift; path = iOSDFULibrary/Classes/Utilities/DFU/DFUServiceController.swift; sourceTree = "<group>"; };
+		F23737A018FC5A5FF3C5DD3EB3448587 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
+		F391524755C916A42C8FCF4EF3AAF600 /* Pods-SenStickViewer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SenStickViewer.modulemap"; sourceTree = "<group>"; };
+		F5EDBA180D1238BCA946C58C94E47BF4 /* EVReflection.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = EVReflection.xcconfig; sourceTree = "<group>"; };
+		F7E987C040EF618163829CC68CD29018 /* Zip.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Zip.xcconfig; sourceTree = "<group>"; };
+		F89051364FA57E154AF1A13415553BF1 /* aesopt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aesopt.h; path = Zip/minizip/aes/aesopt.h; sourceTree = "<group>"; };
+		FB2AEDBB50A383CBA2AACCCA95714097 /* DFUPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPacket.swift; path = iOSDFULibrary/Classes/Implementation/Characteristics/DFUPacket.swift; sourceTree = "<group>"; };
+		FB7CF79F813D41D5E0D0E5D489FAC6E6 /* brg_types.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = brg_types.h; path = Zip/minizip/aes/brg_types.h; sourceTree = "<group>"; };
+		FDED72E17C78824153D287BD4347341D /* Pods-SenStickViewer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SenStickViewer-acknowledgements.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		108CC720E34165BB502B8638747E40EC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29D27E056600FE77435CDA80A7D08A96 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4D8ED45EC7C254BEBDBFDBC7E2AB6150 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1538753079B3CC8B983938E3AD3453B /* EVReflection.framework in Frameworks */,
+				53BF068AB4A2E1417AE20F06A8CF232F /* Foundation.framework in Frameworks */,
+				4B4608A3BEE2286B5C330555D1831474 /* Zip.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A224C043ECFA695229F728EFCB759A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90C2E04717894881777361E4A505ED15 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BEA3372463A5856F4B1F0C277970CDDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				385C6C9BC0122FD9E873B58FD153D243 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		189E72EDC22E4573094932AC9B39F80E /* EVReflection */ = {
+			isa = PBXGroup;
+			children = (
+				46D1C8B306EEF4F60F31E4DCA383B49E /* EVExtensions.swift */,
+				BF32C1E31E1C3C391D98A4DD308A0805 /* EVObject.swift */,
+				86791DC11C1D320FBC175BA00EF33F8C /* EVReflection.swift */,
+				8425B1BA3FC89108BEA1AD06EDAF92E4 /* EVWorkaroundHelpers.swift */,
+				AC4EE4EF78F5327DADE7E95AE41EFBB9 /* Support Files */,
+			);
+			path = EVReflection;
+			sourceTree = "<group>";
+		};
+		299FEFD236DB8BC3A7713CE38151102C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				3A374ABF4716E8270B623BE16AFEC16B /* Info.plist */,
+				31EC8DC45CB4016E78943C2F618AF319 /* Zip.modulemap */,
+				F7E987C040EF618163829CC68CD29018 /* Zip.xcconfig */,
+				8B960E5336781F3F843E6CAF55A9ACEA /* Zip-dummy.m */,
+				8530DF9754F26ADA778C24268C616334 /* Zip-prefix.pch */,
+				4CD1FB46CE436404FB0AD4677E97CAAA /* Zip-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Zip";
+			sourceTree = "<group>";
+		};
+		4F0B6A097D8919B580BF1C6DC74885D4 /* Pods-SenStickViewer */ = {
+			isa = PBXGroup;
+			children = (
+				0AA074374AB65642AD2A059F12160F83 /* Info.plist */,
+				F391524755C916A42C8FCF4EF3AAF600 /* Pods-SenStickViewer.modulemap */,
+				071348DB5533444422BBE343E3D5BD5D /* Pods-SenStickViewer-acknowledgements.markdown */,
+				FDED72E17C78824153D287BD4347341D /* Pods-SenStickViewer-acknowledgements.plist */,
+				BB703A82E83C75FFFB49B5283787A2F1 /* Pods-SenStickViewer-dummy.m */,
+				82BF5E28C36092C55F7D7EC2CAFDB4F3 /* Pods-SenStickViewer-frameworks.sh */,
+				5A55B903A500757D67ED884502D6FBB0 /* Pods-SenStickViewer-resources.sh */,
+				43C779C8B504ABFDA3987B3A6334B1C8 /* Pods-SenStickViewer-umbrella.h */,
+				0966D824EA6E94349D5EFB16798215D1 /* Pods-SenStickViewer.debug.xcconfig */,
+				F23737A018FC5A5FF3C5DD3EB3448587 /* Pods-SenStickViewer.release.xcconfig */,
+			);
+			name = "Pods-SenStickViewer";
+			path = "Target Support Files/Pods-SenStickViewer";
+			sourceTree = "<group>";
+		};
+		53BDB93D10BC91667AD43149AD8E633D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0D72B859EF4339D56E1137B9DE3160B5 /* Info.plist */,
+				C8643A55E63D3EE1F6AD815C6DF3625E /* iOSDFULibrary.modulemap */,
+				7B69B47CC6B1EB15718A7741879C39C5 /* iOSDFULibrary.xcconfig */,
+				706909D94D9611DB3AECDA1798058368 /* iOSDFULibrary-dummy.m */,
+				CD7DC2FA4B3B9E6C33BA71CF4ABB76ED /* iOSDFULibrary-prefix.pch */,
+				0BA54A5250CC0838EFA745FADCB03E44 /* iOSDFULibrary-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/iOSDFULibrary";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BCA3DEC0AB38E71A380C43194CAE20A2 /* Frameworks */,
+				BB7CF02804AE9AF385F52362E09EC3BB /* Pods */,
+				8B9E36683005E740BACA48919F754C72 /* Products */,
+				B0EB9119B04C136E14F8778E5161A760 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		808ABDACA8733C003CA44A22785A8B07 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				20031B534AEA3099AAFF2E4DB41C4279 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		8B9E36683005E740BACA48919F754C72 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2521D2A5661CFCB9E088916DBD95D7A4 /* EVReflection.framework */,
+				C66108405207C21C0A3439FCEBCDF9AF /* iOSDFULibrary.framework */,
+				1A8DCAA76B80271413A49276197547DB /* Pods_SenStickViewer.framework */,
+				133146CD1E30EC941739FD3CCA68DE50 /* Zip.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AC4EE4EF78F5327DADE7E95AE41EFBB9 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C69CD721B7046E3C386DF08E7A7A7AE6 /* EVReflection.modulemap */,
+				F5EDBA180D1238BCA946C58C94E47BF4 /* EVReflection.xcconfig */,
+				C1A6FBD8E7D69A8B1FBDA70C9A26B6D1 /* EVReflection-dummy.m */,
+				3083A56BDF5C1695217C750AB99C9D69 /* EVReflection-prefix.pch */,
+				A57A8DF4650B76767E9F292427C01DEE /* EVReflection-umbrella.h */,
+				0EF7F16CEF58F8E0E7F89AD1AEB038F5 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/EVReflection";
+			sourceTree = "<group>";
+		};
+		B0EB9119B04C136E14F8778E5161A760 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F0B6A097D8919B580BF1C6DC74885D4 /* Pods-SenStickViewer */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		BB7CF02804AE9AF385F52362E09EC3BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				189E72EDC22E4573094932AC9B39F80E /* EVReflection */,
+				FE36CF9D0B7F20CE5B8C84BE45F85BF6 /* iOSDFULibrary */,
+				D19E7B7BFEAE175D20D053759F57D053 /* Zip */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BCA3DEC0AB38E71A380C43194CAE20A2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19C122E32E693F8D52E8C0D9BBEF82E6 /* EVReflection.framework */,
+				DF24836123067EF59335B080ADFB7ED7 /* Zip.framework */,
+				808ABDACA8733C003CA44A22785A8B07 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D19E7B7BFEAE175D20D053759F57D053 /* Zip */ = {
+			isa = PBXGroup;
+			children = (
+				C77A49EB778807BDA0C8026D16EF6500 /* aes.h */,
+				5B243AB118C97075835F5361D5F7E3E5 /* aes_via_ace.h */,
+				1700164EB50A696696DFFA56448AF93C /* aescrypt.c */,
+				17CE63E58B8A4B01D2259938254C426F /* aeskey.c */,
+				F89051364FA57E154AF1A13415553BF1 /* aesopt.h */,
+				EB07B1D38195CCA7FC33EC9552956813 /* aestab.c */,
+				61371ADD12D5A877BBB25EB96F7B070B /* aestab.h */,
+				5A6BFA5BB7B6FD63B1DFE851D9D13A96 /* brg_endian.h */,
+				FB7CF79F813D41D5E0D0E5D489FAC6E6 /* brg_types.h */,
+				91923CF86343FD354B84AECCA4D93A53 /* crypt.h */,
+				48204A86533D6EDC95F8275CECCCFECC /* entropy.c */,
+				08CF90ECF0228225FBA18608D0467C96 /* entropy.h */,
+				82E530E43EA17CD5B3E0DF1AA723C842 /* fileenc.c */,
+				E93CBBA4A1A7330DDC20982BF78E495E /* fileenc.h */,
+				C07126F1E8F7C5A43A4FF6B41838C4EC /* hmac.c */,
+				1E2D567ED35F412DB05378E5C860D4C7 /* hmac.h */,
+				922D3C5D1780ADD375948E31AD2D2D6A /* ioapi.c */,
+				92968E9EA4870AB61FDCF534A5AF87D8 /* ioapi.h */,
+				807EE34EE161C81D491BED8E17F0E997 /* prng.c */,
+				CA2FFB59D7453D8FC9271ED7A397BB50 /* prng.h */,
+				55D4E2DED7DD71F542CC332F504D2DF6 /* pwd2key.c */,
+				548BBA2AFC7C2693DBCACB924B871CEA /* pwd2key.h */,
+				911EAFAFB22522653B0443904A1D44FD /* QuickZip.swift */,
+				336577F2B4784DCDD2EDBFBF91E64EC2 /* sha1.c */,
+				5FE4849EC558FB7648B87C36D23D56A1 /* sha1.h */,
+				3F91426FD0226F5B4A1B269013139D3B /* unzip.c */,
+				7CF510DC6807DA0908EE92122FF102D6 /* unzip.h */,
+				0A61845DFD5576036643B016D206B5A4 /* zip.c */,
+				416AF0511EF565D19C832B2419CB716C /* zip.h */,
+				10F56D1EEC5C3ABBAFD48AD0C893FCA9 /* Zip.h */,
+				71D77E4A84EC53CAF05C16B4B237329C /* Zip.swift */,
+				536372B312F5F0B437B28352B61540C9 /* ZipUtilities.swift */,
+				299FEFD236DB8BC3A7713CE38151102C /* Support Files */,
+			);
+			path = Zip;
+			sourceTree = "<group>";
+		};
+		FE36CF9D0B7F20CE5B8C84BE45F85BF6 /* iOSDFULibrary */ = {
+			isa = PBXGroup;
+			children = (
+				E50530E96F79DC8986B450AE2ACF5031 /* DFUControlPoint.swift */,
+				8EE0C6B1C9995F25E0DEDE9C09A65774 /* DFUExecutor.swift */,
+				CC294FD4958697EA2B217A70F1F60456 /* DFUFirmware.swift */,
+				FB2AEDBB50A383CBA2AACCCA95714097 /* DFUPacket.swift */,
+				7050318A43F9ADB3C2A662BB17D24543 /* DFUPeripheral.swift */,
+				45643FD3CB621ED855DFDDDAD64003AD /* DFUPeripheralDelegate.swift */,
+				BDA6A89C2AE2670C91C0EB167B2866CF /* DFUService.swift */,
+				F1829CACCF5A0E8E5119EC464E821E2F /* DFUServiceController.swift */,
+				B645D8A77524042D3AC06897A97E7F3B /* DFUServiceDelegate.swift */,
+				D75389C92E8A139F6DB932590E879309 /* DFUServiceInitiator.swift */,
+				463604651F6F14BC134446B72756F619 /* DFUStream.swift */,
+				B7FBB390E46D9AAEE12FF147D17E2026 /* DFUStreamBin.swift */,
+				3689F6F06F9A74E3E76EB09F48FEE2CE /* DFUStreamHex.swift */,
+				AB048CE23F6975C005757D283AC4FDA0 /* DFUStreamZip.swift */,
+				379AEBBBD8CFF33B90732B99F1D92A96 /* DFUVersion.swift */,
+				E4A906362664978C93AC4D91B64CC60B /* Double.swift */,
+				2916071C34E87F5032FBAD3897C8FEFF /* IntelHex2BinConverter.h */,
+				A32426DBF0C4854E7F8A69AD560F9F36 /* IntelHex2BinConverter.m */,
+				5FD486AACBD6600511C12C14126CFEDC /* LoggerDelegate.swift */,
+				10926C93838A361AAE65A0910019ACE2 /* LoggerHelper.swift */,
+				900FA327C782C3D2E34CF9AF7FA74118 /* NSData.swift */,
+				CCF345027E8F384351EF7EF3E5308589 /* ZipArchive.swift */,
+				53BDB93D10BC91667AD43149AD8E633D /* Support Files */,
+			);
+			path = iOSDFULibrary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		11A17EBBFCA4DD63912FB57FF47514E8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757CABB4F289EBC540149CBF2C1A95FF /* EVReflection-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A580B2351D716846476B4C3AE852BFD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B479AA5F100E985985149CDFF07E76E /* aes.h in Headers */,
+				6F46B9EC1003420059A450BE58B01019 /* aes_via_ace.h in Headers */,
+				9AC903A9FD43B63452F02E8552AD8240 /* aesopt.h in Headers */,
+				71B30BBF217524A03EDD40C1579C68E8 /* aestab.h in Headers */,
+				2108910ED13FBB90D6FCEFF781BED76D /* brg_endian.h in Headers */,
+				7812DE0D3C8F06D79D509BD8A0367A9F /* brg_types.h in Headers */,
+				7FF20BCCE2EC91B853B3CA6E266CB7F5 /* crypt.h in Headers */,
+				8F06DEFC0573C2069C6CD702A25D18D3 /* entropy.h in Headers */,
+				C8849E2646561D8384946555A3E30063 /* fileenc.h in Headers */,
+				D063FE67D2B25AC211220DAAE119B4D9 /* hmac.h in Headers */,
+				6B2F57090FA298323813FB567F7969D4 /* ioapi.h in Headers */,
+				A417B2AB34AB9B251271D397821D382E /* prng.h in Headers */,
+				52FAD008068A469670B49DB0D823F8B7 /* pwd2key.h in Headers */,
+				D6FB4EEA6BCA73E38A769BF4A6DB7799 /* sha1.h in Headers */,
+				9644440B7094D4CA99669D9280B97A72 /* unzip.h in Headers */,
+				FE74A9B0315361407F76EBD40BAC6ABB /* Zip-umbrella.h in Headers */,
+				CCA7218052BB551CF4308440CB851A04 /* zip.h in Headers */,
+				2D1AC80C67E22649FE2669C16B81A020 /* Zip.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72EB950CB9AEDD347C7FD0741518C8E0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5516C10F34D7320CF2362190914FA31 /* IntelHex2BinConverter.h in Headers */,
+				BEA0C6CEBA5F53EA4DF637195F46838A /* iOSDFULibrary-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8C8AC15B47729CF56C5473B55C04604 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64AD33080B9F4BA337569D809FCBD56B /* Pods-SenStickViewer-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A009B69DFE38C5749A24A1E1A21110E8 /* iOSDFULibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D0046E9704B1BE4B6DBFF840E866D64 /* Build configuration list for PBXNativeTarget "iOSDFULibrary" */;
+			buildPhases = (
+				7621E8C50F2E8C902E6A2DEC313EF81A /* Sources */,
+				4D8ED45EC7C254BEBDBFDBC7E2AB6150 /* Frameworks */,
+				72EB950CB9AEDD347C7FD0741518C8E0 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9227E7736EE4D7E8BBE4B429E13C602F /* PBXTargetDependency */,
+				E8CEE8CDDE630AAF442B44DC14A7C172 /* PBXTargetDependency */,
+			);
+			name = iOSDFULibrary;
+			productName = iOSDFULibrary;
+			productReference = C66108405207C21C0A3439FCEBCDF9AF /* iOSDFULibrary.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		AFEA871DD1CD10D0A40FF7B761421B45 /* Pods-SenStickViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5EB30C85C41D11D52445BE1C33980C5E /* Build configuration list for PBXNativeTarget "Pods-SenStickViewer" */;
+			buildPhases = (
+				AA9BBA32002BD26D5B90AAF8FE18350F /* Sources */,
+				BEA3372463A5856F4B1F0C277970CDDF /* Frameworks */,
+				C8C8AC15B47729CF56C5473B55C04604 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0DEF7F210B2AFA9151B23A05599B4796 /* PBXTargetDependency */,
+				F874D1FFD308C98E71BDA74E2DD63395 /* PBXTargetDependency */,
+				4F7E12E951C62B1C477252B68A23580D /* PBXTargetDependency */,
+			);
+			name = "Pods-SenStickViewer";
+			productName = "Pods-SenStickViewer";
+			productReference = 1A8DCAA76B80271413A49276197547DB /* Pods_SenStickViewer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C3C2090211A29BD5E3D9489627F6F807 /* EVReflection */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CDCFEF65BC3D1746DFD6D6A6CFCC78F /* Build configuration list for PBXNativeTarget "EVReflection" */;
+			buildPhases = (
+				2455AA86E78FDDA8D194110689458436 /* Sources */,
+				108CC720E34165BB502B8638747E40EC /* Frameworks */,
+				11A17EBBFCA4DD63912FB57FF47514E8 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EVReflection;
+			productName = EVReflection;
+			productReference = 2521D2A5661CFCB9E088916DBD95D7A4 /* EVReflection.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C3EC7B103F712BD770B4F896CD52A982 /* Zip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C438A74A5067446696B6636E274BE3D /* Build configuration list for PBXNativeTarget "Zip" */;
+			buildPhases = (
+				147FD4880C80E2AE04546AE4039C859D /* Sources */,
+				7A224C043ECFA695229F728EFCB759A2 /* Frameworks */,
+				4A580B2351D716846476B4C3AE852BFD /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Zip;
+			productName = Zip;
+			productReference = 133146CD1E30EC941739FD3CCA68DE50 /* Zip.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 8B9E36683005E740BACA48919F754C72 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C3C2090211A29BD5E3D9489627F6F807 /* EVReflection */,
+				A009B69DFE38C5749A24A1E1A21110E8 /* iOSDFULibrary */,
+				AFEA871DD1CD10D0A40FF7B761421B45 /* Pods-SenStickViewer */,
+				C3EC7B103F712BD770B4F896CD52A982 /* Zip */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		147FD4880C80E2AE04546AE4039C859D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8293AD6D74EB8F9147DA659884E8C040 /* aescrypt.c in Sources */,
+				FAEB0729400B2D243AA67BA2835D7D8B /* aeskey.c in Sources */,
+				2AD573834A79899C5870523A5BD8E957 /* aestab.c in Sources */,
+				DAB4D5D05357205D2F777E0B2DB3B6D8 /* entropy.c in Sources */,
+				58F1BD03277AE9110592739B510A8A7D /* fileenc.c in Sources */,
+				BE2B820C15CCBB8502ACE2D3407C32D9 /* hmac.c in Sources */,
+				FDC61A59D61301652AFD4C1E47DAF11A /* ioapi.c in Sources */,
+				DF3BA370D27044020FA93343B43100BF /* prng.c in Sources */,
+				0B76B5F1B810E4D2EEAEAC77AC824BD6 /* pwd2key.c in Sources */,
+				BE44A656A28675783BFB113472075622 /* QuickZip.swift in Sources */,
+				20F1208143BFFBB63FBAD9817A338B1B /* sha1.c in Sources */,
+				1827E2502F7A284A60944564EFE8259C /* unzip.c in Sources */,
+				1A566458FA17563514F7CFC6C9B783F0 /* Zip-dummy.m in Sources */,
+				1A6BEDBCBE71546DBEF3D7FDF9DB4EA1 /* zip.c in Sources */,
+				09B3312A78B491E705ABA17BA957C772 /* Zip.swift in Sources */,
+				1E2AD19151D8389D8DAC59B6838E4FD8 /* ZipUtilities.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2455AA86E78FDDA8D194110689458436 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8F604ABE9C7E520A73BB7B37CE5A9EC /* EVExtensions.swift in Sources */,
+				019D442CB31031E62CA7C16B3057EF7F /* EVObject.swift in Sources */,
+				1CCD660B55359654EB7E5F30955EC2CD /* EVReflection-dummy.m in Sources */,
+				E04299D789FBD39D69D172B761980B7D /* EVReflection.swift in Sources */,
+				6FC4ADF261A302A1B80302646DC3A87E /* EVWorkaroundHelpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7621E8C50F2E8C902E6A2DEC313EF81A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				776369785993719B8161CE5C63EA523D /* DFUControlPoint.swift in Sources */,
+				6FC2BA798DEC0CC024B76AA7DABB2C97 /* DFUExecutor.swift in Sources */,
+				4E576506CA276E9FBCBC39157115B08D /* DFUFirmware.swift in Sources */,
+				F99FB20A35AF0499DC606D3C007D6387 /* DFUPacket.swift in Sources */,
+				21EF8E9EE91678D1FD3B404580C110CE /* DFUPeripheral.swift in Sources */,
+				5FD7756F9C0D40D3CAA0E1313323F8A1 /* DFUPeripheralDelegate.swift in Sources */,
+				2E47F6F98FF0DA9AA5BF413E01796F3F /* DFUService.swift in Sources */,
+				CB00F054E3119C922BC8BDBCAE19090E /* DFUServiceController.swift in Sources */,
+				FEF2DBCB4B59CD8ED44C951692FC5FBD /* DFUServiceDelegate.swift in Sources */,
+				9470BE4FF7CB62456BAE8EF523390152 /* DFUServiceInitiator.swift in Sources */,
+				F9B4C39B5B268A2A6C608D98D0B02030 /* DFUStream.swift in Sources */,
+				2112901F28B38B3CD3C2ED27AA670D96 /* DFUStreamBin.swift in Sources */,
+				5D63FBD81B15B9CC0F22216B7AB61EC2 /* DFUStreamHex.swift in Sources */,
+				6F382E3DD279B613F19ACB9DA1EE5588 /* DFUStreamZip.swift in Sources */,
+				C3F6A5D2099563B92A6AD03C9F3B240D /* DFUVersion.swift in Sources */,
+				CBD53CE37E5856888F27390916DA4274 /* Double.swift in Sources */,
+				949093BF1A21ACCF0800905A88EFF9DB /* IntelHex2BinConverter.m in Sources */,
+				FAC64C3691FA8C5147FDCCDCF17F23D4 /* iOSDFULibrary-dummy.m in Sources */,
+				83893E5426844C8C4AFFD4AAE542CCBB /* LoggerDelegate.swift in Sources */,
+				9253B1662FD8441C229686492CFEA9BE /* LoggerHelper.swift in Sources */,
+				3D541FC82539FE8C99B2CA3836CFCCEF /* NSData.swift in Sources */,
+				7AF0C5898B235724E50FFBFADE02EC02 /* ZipArchive.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA9BBA32002BD26D5B90AAF8FE18350F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F89ED715FE8B3D6085561AAB18AA352C /* Pods-SenStickViewer-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0DEF7F210B2AFA9151B23A05599B4796 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EVReflection;
+			target = C3C2090211A29BD5E3D9489627F6F807 /* EVReflection */;
+			targetProxy = 2538A35E132843DC0A2690EA2D5D36EF /* PBXContainerItemProxy */;
+		};
+		4F7E12E951C62B1C477252B68A23580D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iOSDFULibrary;
+			target = A009B69DFE38C5749A24A1E1A21110E8 /* iOSDFULibrary */;
+			targetProxy = A1A4D1F695EDD2A0BDA088DCEE318034 /* PBXContainerItemProxy */;
+		};
+		9227E7736EE4D7E8BBE4B429E13C602F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EVReflection;
+			target = C3C2090211A29BD5E3D9489627F6F807 /* EVReflection */;
+			targetProxy = 53CDD40AA16ED68866DD27E3B9695244 /* PBXContainerItemProxy */;
+		};
+		E8CEE8CDDE630AAF442B44DC14A7C172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Zip;
+			target = C3EC7B103F712BD770B4F896CD52A982 /* Zip */;
+			targetProxy = 71A49D024F84A45FE412BB601B58B81E /* PBXContainerItemProxy */;
+		};
+		F874D1FFD308C98E71BDA74E2DD63395 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Zip;
+			target = C3EC7B103F712BD770B4F896CD52A982 /* Zip */;
+			targetProxy = 159F53A6D9432CCED1111BFF2DD7685F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		191E5ACDEF0EA2E426328487E0FE22FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B69B47CC6B1EB15718A7741879C39C5 /* iOSDFULibrary.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDFULibrary/iOSDFULibrary-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/iOSDFULibrary/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/iOSDFULibrary/iOSDFULibrary.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = iOSDFULibrary;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		196D9AE068AB1B6FC3E7A152952805F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0966D824EA6E94349D5EFB16798215D1 /* Pods-SenStickViewer.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SenStickViewer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SenStickViewer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		39AA8BD7093E615428D413CDDAC570E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B69B47CC6B1EB15718A7741879C39C5 /* iOSDFULibrary.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDFULibrary/iOSDFULibrary-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/iOSDFULibrary/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/iOSDFULibrary/iOSDFULibrary.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = iOSDFULibrary;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		84FD87D359382A37B07149A12641B965 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		964176A31C6B19AD3467C009A5B89AF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7E987C040EF618163829CC68CD29018 /* Zip.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Zip/Zip-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Zip/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Zip/Zip.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Zip;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		9B8092D39EB5154A9A28145632A76538 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5EDBA180D1238BCA946C58C94E47BF4 /* EVReflection.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/EVReflection/EVReflection-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/EVReflection/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/EVReflection/EVReflection.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = EVReflection;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		CDE960AD36A1FFB5E8C09122FDC170AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7E987C040EF618163829CC68CD29018 /* Zip.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Zip/Zip-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Zip/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Zip/Zip.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Zip;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D7B20B5E755ACE830594DC9EBE2F451F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F23737A018FC5A5FF3C5DD3EB3448587 /* Pods-SenStickViewer.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SenStickViewer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SenStickViewer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F594C655D48020EC34B00AA63E001773 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FF18C1AA984E8B5EB9C6289A770C32BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5EDBA180D1238BCA946C58C94E47BF4 /* EVReflection.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/EVReflection/EVReflection-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/EVReflection/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/EVReflection/EVReflection.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = EVReflection;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D0046E9704B1BE4B6DBFF840E866D64 /* Build configuration list for PBXNativeTarget "iOSDFULibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				191E5ACDEF0EA2E426328487E0FE22FA /* Debug */,
+				39AA8BD7093E615428D413CDDAC570E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84FD87D359382A37B07149A12641B965 /* Debug */,
+				F594C655D48020EC34B00AA63E001773 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3C438A74A5067446696B6636E274BE3D /* Build configuration list for PBXNativeTarget "Zip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				964176A31C6B19AD3467C009A5B89AF7 /* Debug */,
+				CDE960AD36A1FFB5E8C09122FDC170AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CDCFEF65BC3D1746DFD6D6A6CFCC78F /* Build configuration list for PBXNativeTarget "EVReflection" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF18C1AA984E8B5EB9C6289A770C32BC /* Debug */,
+				9B8092D39EB5154A9A28145632A76538 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5EB30C85C41D11D52445BE1C33980C5E /* Build configuration list for PBXNativeTarget "Pods-SenStickViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				196D9AE068AB1B6FC3E7A152952805F8 /* Debug */,
+				D7B20B5E755ACE830594DC9EBE2F451F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

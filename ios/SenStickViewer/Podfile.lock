@@ -1,0 +1,18 @@
+PODS:
+  - EVReflection (2.35.0)
+  - iOSDFULibrary (0.1.8):
+    - EVReflection (~> 2.6)
+    - Zip (~> 0.3)
+  - Zip (0.4.1)
+
+DEPENDENCIES:
+  - iOSDFULibrary
+
+SPEC CHECKSUMS:
+  EVReflection: 1a07aa13e279da039b28caf9d9d713d98515baf8
+  iOSDFULibrary: 66071c0d5738618215ee5ffa52d91bc7a21bead3
+  Zip: 5bbe261a6c2c41b7b4e8e55c4a0a03be68ab4c4c
+
+PODFILE CHECKSUM: 55abe61da3f542fe14cd5f4457540ab3499493d5
+
+COCOAPODS: 1.0.1

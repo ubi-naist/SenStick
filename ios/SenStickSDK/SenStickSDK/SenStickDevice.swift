@@ -30,6 +30,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public private(set) var identifier: NSUUID
 
     public private(set) var deviceInformationService:   DeviceInformationService?
+    public private(set) var batteryLevelService:        BatteryService?
     
     public private(set) var controlService:             SenStickControlService?
     public private(set) var metaDataService:            SenStickMetaDataService?
@@ -75,6 +76,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         self.isConnected = false
         
         self.deviceInformationService   = nil
+        self.batteryLevelService        = nil
         
         self.controlService             = nil
         self.metaDataService            = nil
@@ -145,6 +147,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         switch service.UUID {
         case SenStickUUIDs.DeviceInformationServiceUUID:
             self.deviceInformationService = DeviceInformationService(device:self)
+        case SenStickUUIDs.BatteryServiceUUID:
+            self.batteryLevelService = BatteryService(device:self)
         case SenStickUUIDs.ControlServiceUUID:
             self.controlService = SenStickControlService(device: self)
         case SenStickUUIDs.MetaDataServiceUUID:
@@ -192,6 +196,8 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         switch characteristic.service.UUID {
         case SenStickUUIDs.DeviceInformationServiceUUID:
             self.deviceInformationService?.didUpdateValue(characteristic, data: data)
+        case SenStickUUIDs.BatteryServiceUUID:
+            self.batteryLevelService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.ControlServiceUUID:
             self.controlService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.MetaDataServiceUUID:

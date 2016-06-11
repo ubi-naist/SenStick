@@ -53,6 +53,10 @@ public struct SenStickUUIDs
     public static let FirmwareRevisionStringCharUUID:CBUUID  = {return CBUUID(string: "2A26")}()
     public static let SerialNumberStringCharUUID:CBUUID      = {return CBUUID(string: "2A25")}()
     
+    // Battery service
+    public static let BatteryServiceUUID:CBUUID    = {return CBUUID(string: "180F")}()
+    public static let BatteryLevelCharUUID:CBUUID  = {return CBUUID(string: "2A19")}()
+
     // control service
     public static let ControlServiceUUID:CBUUID        = {return SenStickUUIDs.createSenstickUUID(0x2000)}()
     public static let StatusCharUUID:CBUUID            = {return SenStickUUIDs.createSenstickUUID(0x7000)}()
@@ -104,6 +108,8 @@ public struct SenStickUUIDs
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] = [
 
         DeviceInformationServiceUUID : [ManufacturerNameStringCharUUID, HardwareRevisionStringCharUUID, FirmwareRevisionStringCharUUID, SerialNumberStringCharUUID],
+        
+        BatteryServiceUUID: [BatteryLevelCharUUID],
 
         ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, StorageStatusCharUUID, DateTimeCharUUID, AbstractCharUUID],
         

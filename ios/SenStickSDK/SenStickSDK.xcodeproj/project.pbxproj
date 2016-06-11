@@ -34,6 +34,7 @@
 		F8C17E021CC9AF9700030B99 /* SensorLogMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17E011CC9AF9700030B99 /* SensorLogMetaData.swift */; };
 		F8C17E061CCB071D00030B99 /* AccelerationSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C17E051CCB071D00030B99 /* AccelerationSensorService.swift */; };
 		F8CAF9E71D0BACBE0044FFBF /* DeviceInformationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */; };
+		F8CAF9E91D0BCB4B0044FFBF /* BatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CAF9E81D0BCB4B0044FFBF /* BatteryService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		F8C17E011CC9AF9700030B99 /* SensorLogMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorLogMetaData.swift; sourceTree = "<group>"; };
 		F8C17E051CCB071D00030B99 /* AccelerationSensorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationSensorService.swift; sourceTree = "<group>"; };
 		F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationService.swift; sourceTree = "<group>"; };
+		F8CAF9E81D0BCB4B0044FFBF /* BatteryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			children = (
 				F80AD0AF1CAA667E00291197 /* SenStickService.swift */,
 				F8CAF9E61D0BACBE0044FFBF /* DeviceInformationService.swift */,
+				F8CAF9E81D0BCB4B0044FFBF /* BatteryService.swift */,
 				F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */,
 				F856CA891CC1186700C30744 /* SenStickMetaDataService.swift */,
 				F8C17E071CCC677700030B99 /* SensorServices */,
@@ -251,6 +254,7 @@
 				F86E76921CF3CAB8001D9DD5 /* GyroSensorService.swift in Sources */,
 				F8C17DEB1CC5C09A00030B99 /* SenStickSensorService.swift in Sources */,
 				F8C17DFB1CC70CED00030B99 /* SamplingDurationType.swift in Sources */,
+				F8CAF9E91D0BCB4B0044FFBF /* BatteryService.swift in Sources */,
 				F86322D01C98E44B001B53A0 /* SenStickUUIDs.swift in Sources */,
 				F8C17DF71CC704CB00030B99 /* SenStickStatus.swift in Sources */,
 				F8C17DF91CC704EF00030B99 /* SenStickSensorType.swift in Sources */,

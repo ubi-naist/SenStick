@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AFE07614B48C76DC151AC392 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */; };
+		F813B25E1D0E871900EC9EC0 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F813B25B1D0E86E400EC9EC0 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */; };
 		F83941B01CF11DE6008F2A52 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */; };
 		F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322901C979B03001B53A0 /* AppDelegate.swift */; };
@@ -15,7 +16,9 @@
 		F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322991C979B03001B53A0 /* Assets.xcassets */; };
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
 		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
+		F87098A61D0D1D06007A56CA /* DeviceInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */; };
 		F87BED681CF1D40900832E08 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87BED671CF1D40900832E08 /* DetailViewController.swift */; };
+		F888FFB81D0E852A00A99202 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F888FFB71D0E852A00A99202 /* SenStickSDK.framework */; };
 		F8B9F0B51CF86C6700F16969 /* SamplingDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */; };
 		F8BD11721CF4435500BA8F3B /* SensorDataCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */; };
 		F8BD11751CF47AA300BA8F3B /* AccelerationCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */; };
@@ -30,13 +33,31 @@
 		F8FCC9301CCF61CD003BCC5A /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FCC92F1CCF61CD003BCC5A /* DeviceTableViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F813B25A1D0E86E400EC9EC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F86322AE1C979B20001B53A0;
+			remoteInfo = SenStickSDK;
+		};
+		F813B25C1D0E86EF00EC9EC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F86322AD1C979B20001B53A0;
+			remoteInfo = SenStickSDK;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		F8C17E201CCF271A00030B99 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F813B25E1D0E871900EC9EC0 /* SenStickSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,6 +68,7 @@
 		8F8912494D9F904F7DB5DF38 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
 		E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7045972F9A7B2E667A97CD8 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
+		F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
 		F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataViewController.swift; sourceTree = "<group>"; };
 		F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorStatusCellView.swift; sourceTree = "<group>"; };
 		F863228D1C979B03001B53A0 /* SenStickViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,7 +78,9 @@
 		F863229C1C979B03001B53A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
+		F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationViewController.swift; sourceTree = "<group>"; };
 		F87BED671CF1D40900832E08 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		F888FFB71D0E852A00A99202 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
 		F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SamplingDurationViewController.swift; sourceTree = "<group>"; };
 		F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataCellView.swift; sourceTree = "<group>"; };
 		F8BD11741CF47AA300BA8F3B /* AccelerationCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationCellView.swift; sourceTree = "<group>"; };
@@ -76,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F888FFB81D0E852A00A99202 /* SenStickSDK.framework in Frameworks */,
 				AFE07614B48C76DC151AC392 /* Pods_SenStickViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +111,7 @@
 		C76593342C0A05CB0F9F8A3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F888FFB71D0E852A00A99202 /* SenStickSDK.framework */,
 				E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */,
 			);
 			name = Frameworks;
@@ -100,9 +126,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F813B2571D0E86E400EC9EC0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F813B25B1D0E86E400EC9EC0 /* SenStickSDK.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F86322841C979B03001B53A0 = {
 			isa = PBXGroup;
 			children = (
+				F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */,
 				F86322C31C979B92001B53A0 /* images.xcassets */,
 				F863228F1C979B03001B53A0 /* SenStickViewer */,
 				F863228E1C979B03001B53A0 /* Products */,
@@ -129,7 +164,8 @@
 				F8FCC92D1CCF6195003BCC5A /* DeviceListCellView.swift */,
 				F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */,
 				F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */,
-				F8BD11731CF47A8200BA8F3B /* New Group */,
+				F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */,
+				F8BD11731CF47A8200BA8F3B /* SensorDataCell */,
 				F86322991C979B03001B53A0 /* Assets.xcassets */,
 				F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */,
 				F863229E1C979B03001B53A0 /* Info.plist */,
@@ -137,7 +173,7 @@
 			path = SenStickViewer;
 			sourceTree = "<group>";
 		};
-		F8BD11731CF47A8200BA8F3B /* New Group */ = {
+		F8BD11731CF47A8200BA8F3B /* SensorDataCell */ = {
 			isa = PBXGroup;
 			children = (
 				F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */,
@@ -151,7 +187,7 @@
 				F8C3F7471CF5C02A00B807B5 /* HumidityCellView.swift */,
 				F8C3F7491CF5C23600B807B5 /* PressureCellView.swift */,
 			);
-			name = "New Group";
+			name = SensorDataCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +208,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				F813B25D1D0E86EF00EC9EC0 /* PBXTargetDependency */,
 			);
 			name = SenStickViewer;
 			productName = SenStickViewer;
@@ -204,12 +241,28 @@
 			mainGroup = F86322841C979B03001B53A0;
 			productRefGroup = F863228E1C979B03001B53A0 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F813B2571D0E86E400EC9EC0 /* Products */;
+					ProjectRef = F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F863228C1C979B03001B53A0 /* SenStickViewer */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F813B25B1D0E86E400EC9EC0 /* SenStickSDK.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SenStickSDK.framework;
+			remoteRef = F813B25A1D0E86E400EC9EC0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F863228B1C979B03001B53A0 /* Resources */ = {
@@ -285,6 +338,7 @@
 				F8C3F7481CF5C02A00B807B5 /* HumidityCellView.swift in Sources */,
 				F8B9F0B51CF86C6700F16969 /* SamplingDurationViewController.swift in Sources */,
 				F8BD117D1CF59EB900BA8F3B /* BrightnessCellView.swift in Sources */,
+				F87098A61D0D1D06007A56CA /* DeviceInformationViewController.swift in Sources */,
 				F8BD11791CF5996800BA8F3B /* GyroCellView.swift in Sources */,
 				F8FCC92E1CCF6195003BCC5A /* DeviceListCellView.swift in Sources */,
 				F8C3F7461CF5A09600B807B5 /* UVCellView.swift in Sources */,
@@ -298,6 +352,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F813B25D1D0E86EF00EC9EC0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SenStickSDK;
+			targetProxy = F813B25C1D0E86EF00EC9EC0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F86322961C979B03001B53A0 /* Main.storyboard */ = {

@@ -11,6 +11,9 @@ import SenStickSDK
 import CoreMotion
 
 class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
+
+     @IBOutlet var deviceInformationButton: UIBarButtonItem!
+    
     var device: SenStickDevice?
     
     var statusCell: SensorStatusCellView?
@@ -30,6 +33,14 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         if device != nil {
             didServiceFound(device!)
         }
+        
+        // 右上のバーボタンアイテムのenable設定。ログ停止中のみ遷移可能
+        /*
+        if let control = device?.controlService {
+            self.deviceInformationButton.enabled = (control.command == .Stopping)
+        } else {
+            self.deviceInformationButton.enabled = false
+        }*/
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -161,6 +172,11 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     
     // MARK: - Segues
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        // デバイス詳細情報表示に遷移
+        if identifier == "deviceInformation" {
+            return true
+        }
+        
         // 詳細表示遷移できるのはログ停止時だけ
         if let control = device?.controlService {
             return (control.command == .Stopping)
@@ -168,8 +184,11 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
             return false
         }
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let vc = segue.destinationViewController as? DeviceInformationViewController {
+            vc.device = self.device
+        }
         
 //        debugPrint("  \(segue.destinationViewController)")
         if let vc = segue.destinationViewController as? SamplingDurationViewController {

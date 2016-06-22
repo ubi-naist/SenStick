@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -946,7 +945,7 @@
                     <navigationItem key="navigationItem" title="リアルタイムデータ" id="rqC-cZ-OFe">
                         <barButtonItem key="rightBarButtonItem" systemItem="organize" id="mZc-1h-F3k">
                             <connections>
-                                <segue destination="FBB-HQ-tVV" kind="show" identifier="deviceInformation" id="LDy-Bw-94N"/>
+                                <segue destination="FBB-HQ-tVV" kind="showDetail" identifier="deviceInformation" id="LDy-Bw-94N"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1022,7 +1021,7 @@
             </objects>
             <point key="canvasLocation" x="2320" y="-630"/>
         </scene>
-        <!--Device Information View Controller-->
+        <!--デバイス情報-->
         <scene sceneID="jgo-3G-H2z">
             <objects>
                 <viewController id="FBB-HQ-tVV" customClass="DeviceInformationViewController" customModule="SenStickViewer" customModuleProvider="target" sceneMemberID="viewController">
@@ -1035,7 +1034,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Serial number:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8z-fA-ifv">
-                                <rect key="frame" x="28" y="108" width="200" height="44"/>
+                                <rect key="frame" x="28" y="76" width="200" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="UXn-pM-KvV"/>
                                     <constraint firstAttribute="width" constant="200" id="toa-ah-RrA"/>
@@ -1045,38 +1044,35 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manufacturer name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnZ-mP-iSn">
-                                <rect key="frame" x="28" y="160" width="200" height="44"/>
+                                <rect key="frame" x="28" y="128" width="200" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hardware revision:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qC9-Hv-Xbt">
-                                <rect key="frame" x="28" y="212" width="200" height="44"/>
+                                <rect key="frame" x="28" y="180" width="200" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firmware revision:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdL-mQ-R74">
-                                <rect key="frame" x="28" y="264" width="200" height="44"/>
+                                <rect key="frame" x="28" y="232" width="200" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dmC-V2-Ici">
-                                <rect key="frame" x="240" y="328" width="340" height="44"/>
+                                <rect key="frame" x="20" y="294" width="560" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="5Yu-JV-I2F"/>
-                                    <constraint firstAttribute="width" constant="150" id="Zrk-1o-hAl"/>
                                 </constraints>
                                 <state key="normal" title="Update firmware"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Zrk-1o-hAl"/>
-                                    </mask>
-                                </variation>
+                                <connections>
+                                    <action selector="updateFirmwareButtonToutchUpInside:" destination="FBB-HQ-tVV" eventType="touchUpInside" id="fay-OC-c4f"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRi-aI-cb5">
-                                <rect key="frame" x="240" y="108" width="340" height="44"/>
+                                <rect key="frame" x="240" y="76" width="340" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="fNS-mR-FGc"/>
                                 </constraints>
@@ -1085,19 +1081,40 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAq-P5-WQ9">
-                                <rect key="frame" x="240" y="160" width="340" height="44"/>
+                                <rect key="frame" x="240" y="128" width="340" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiV-vu-XAw">
-                                <rect key="frame" x="240" y="212" width="340" height="44"/>
+                                <rect key="frame" x="240" y="180" width="340" height="44"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reo-WP-MjB">
-                                <rect key="frame" x="240" y="264" width="340" height="44"/>
+                                <rect key="frame" x="240" y="232" width="340" height="44"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="uzy-4r-dZL">
+                                <rect key="frame" x="36" y="354" width="528" height="2"/>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="log text label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOO-DX-jGF" userLabel="logTextLabel">
+                                <rect key="frame" x="20" y="410" width="560" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="fxJ-fU-KWi"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="progress text label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cF7-eT-u8X" userLabel="progressTextLabel">
+                                <rect key="frame" x="36" y="364" width="528" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Ehh-74-ZB0"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1106,20 +1123,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="kdL-mQ-R74" firstAttribute="height" secondItem="D8z-fA-ifv" secondAttribute="height" id="0mw-7z-Xpl"/>
-                            <constraint firstItem="dmC-V2-Ici" firstAttribute="width" secondItem="reo-WP-MjB" secondAttribute="width" id="1kX-XN-Vf5"/>
-                            <constraint firstItem="dmC-V2-Ici" firstAttribute="top" secondItem="reo-WP-MjB" secondAttribute="bottom" constant="20" id="1oI-em-gmu"/>
-                            <constraint firstItem="kdL-mQ-R74" firstAttribute="width" secondItem="D8z-fA-ifv" secondAttribute="height" multiplier="112:25" id="2Sh-aF-Kle"/>
+                            <constraint firstItem="dmC-V2-Ici" firstAttribute="top" secondItem="reo-WP-MjB" secondAttribute="bottom" constant="18" id="1oI-em-gmu"/>
                             <constraint firstItem="oAq-P5-WQ9" firstAttribute="centerY" secondItem="wnZ-mP-iSn" secondAttribute="centerY" id="2tp-fj-qX2"/>
                             <constraint firstItem="kiV-vu-XAw" firstAttribute="centerY" secondItem="qC9-Hv-Xbt" secondAttribute="centerY" id="3kP-Dq-iCc"/>
                             <constraint firstItem="qC9-Hv-Xbt" firstAttribute="top" secondItem="wnZ-mP-iSn" secondAttribute="bottom" constant="8" id="4Fr-qq-fKd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uzy-4r-dZL" secondAttribute="trailing" constant="16" id="875-IS-ec9"/>
                             <constraint firstItem="qC9-Hv-Xbt" firstAttribute="width" secondItem="D8z-fA-ifv" secondAttribute="width" id="ELa-4l-iOI"/>
                             <constraint firstItem="kdL-mQ-R74" firstAttribute="top" secondItem="qC9-Hv-Xbt" secondAttribute="bottom" constant="8" id="FgZ-Vv-dj0"/>
                             <constraint firstItem="wnZ-mP-iSn" firstAttribute="height" secondItem="D8z-fA-ifv" secondAttribute="height" id="GON-Pv-eyg"/>
                             <constraint firstItem="kdL-mQ-R74" firstAttribute="width" secondItem="D8z-fA-ifv" secondAttribute="width" id="IKM-jF-KZR"/>
-                            <constraint firstItem="D8z-fA-ifv" firstAttribute="top" secondItem="hyD-R9-lxy" secondAttribute="bottom" constant="44" id="JDG-MA-5N2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oOO-DX-jGF" secondAttribute="trailing" id="IsK-ho-uGW"/>
+                            <constraint firstItem="D8z-fA-ifv" firstAttribute="top" secondItem="hyD-R9-lxy" secondAttribute="bottom" constant="12" id="JDG-MA-5N2"/>
                             <constraint firstItem="wnZ-mP-iSn" firstAttribute="width" secondItem="D8z-fA-ifv" secondAttribute="width" id="KEt-ba-cxJ"/>
                             <constraint firstItem="oAq-P5-WQ9" firstAttribute="height" secondItem="kRi-aI-cb5" secondAttribute="height" id="M0O-qg-R2v"/>
-                            <constraint firstItem="dmC-V2-Ici" firstAttribute="leading" secondItem="reo-WP-MjB" secondAttribute="leading" id="O5a-53-FC2"/>
                             <constraint firstItem="kRi-aI-cb5" firstAttribute="leading" secondItem="D8z-fA-ifv" secondAttribute="trailing" constant="12" id="QMZ-nK-m0L"/>
                             <constraint firstItem="kdL-mQ-R74" firstAttribute="leading" secondItem="D8z-fA-ifv" secondAttribute="leading" id="SCj-iO-2bm"/>
                             <constraint firstItem="kiV-vu-XAw" firstAttribute="height" secondItem="kRi-aI-cb5" secondAttribute="height" id="TB7-pw-lJH"/>
@@ -1127,35 +1143,51 @@
                             <constraint firstItem="reo-WP-MjB" firstAttribute="height" secondItem="kRi-aI-cb5" secondAttribute="height" id="XbS-Ui-6vA"/>
                             <constraint firstItem="qC9-Hv-Xbt" firstAttribute="leading" secondItem="D8z-fA-ifv" secondAttribute="leading" id="Z8Z-j4-LYs"/>
                             <constraint firstItem="reo-WP-MjB" firstAttribute="leading" secondItem="kRi-aI-cb5" secondAttribute="leading" id="bhx-UC-xdg"/>
+                            <constraint firstItem="cF7-eT-u8X" firstAttribute="leading" secondItem="Kjb-ec-tzw" secondAttribute="leadingMargin" constant="16" id="cBl-V6-11P"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dmC-V2-Ici" secondAttribute="trailing" id="deI-bd-Qwb"/>
                             <constraint firstItem="reo-WP-MjB" firstAttribute="width" secondItem="kRi-aI-cb5" secondAttribute="width" id="er7-Xv-GEs"/>
+                            <constraint firstItem="cF7-eT-u8X" firstAttribute="top" secondItem="uzy-4r-dZL" secondAttribute="bottom" constant="8" id="ezF-VP-IA7"/>
+                            <constraint firstItem="uzy-4r-dZL" firstAttribute="leading" secondItem="Kjb-ec-tzw" secondAttribute="leadingMargin" constant="16" id="feS-RD-hFB"/>
                             <constraint firstItem="kiV-vu-XAw" firstAttribute="leading" secondItem="kRi-aI-cb5" secondAttribute="leading" id="hRd-we-kVt"/>
+                            <constraint firstItem="oOO-DX-jGF" firstAttribute="top" secondItem="cF7-eT-u8X" secondAttribute="bottom" constant="22" id="hlY-fk-rB7"/>
                             <constraint firstItem="kiV-vu-XAw" firstAttribute="width" secondItem="kRi-aI-cb5" secondAttribute="width" id="hnB-iY-4bk"/>
                             <constraint firstItem="oAq-P5-WQ9" firstAttribute="width" secondItem="kRi-aI-cb5" secondAttribute="width" id="iWX-jq-yBd"/>
+                            <constraint firstItem="oOO-DX-jGF" firstAttribute="leading" secondItem="Kjb-ec-tzw" secondAttribute="leadingMargin" id="jyl-4S-e46"/>
                             <constraint firstItem="wnZ-mP-iSn" firstAttribute="top" secondItem="D8z-fA-ifv" secondAttribute="bottom" constant="8" id="k1S-or-Sk8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cF7-eT-u8X" secondAttribute="trailing" constant="16" id="mNH-Xd-4Xe"/>
                             <constraint firstItem="wnZ-mP-iSn" firstAttribute="leading" secondItem="D8z-fA-ifv" secondAttribute="leading" id="mUx-Zj-lUL"/>
+                            <constraint firstItem="dmC-V2-Ici" firstAttribute="leading" secondItem="Kjb-ec-tzw" secondAttribute="leadingMargin" id="omc-yO-z1e"/>
                             <constraint firstAttribute="trailingMargin" secondItem="kRi-aI-cb5" secondAttribute="trailing" id="s5d-GP-I0J"/>
+                            <constraint firstItem="uzy-4r-dZL" firstAttribute="top" secondItem="dmC-V2-Ici" secondAttribute="bottom" constant="16" id="u5K-F5-xe0"/>
                             <constraint firstItem="qC9-Hv-Xbt" firstAttribute="height" secondItem="D8z-fA-ifv" secondAttribute="height" id="uau-lE-FuV"/>
                             <constraint firstItem="D8z-fA-ifv" firstAttribute="leading" secondItem="Kjb-ec-tzw" secondAttribute="leadingMargin" constant="8" id="wYC-9P-3EU"/>
                             <constraint firstItem="oAq-P5-WQ9" firstAttribute="leading" secondItem="kRi-aI-cb5" secondAttribute="leading" id="xCG-wd-Jye"/>
                             <constraint firstItem="reo-WP-MjB" firstAttribute="centerY" secondItem="kdL-mQ-R74" secondAttribute="centerY" id="yQ3-eR-Ub8"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="2Sh-aF-Kle"/>
-                            </mask>
-                        </variation>
                     </view>
+                    <navigationItem key="navigationItem" title="デバイス情報" id="6ew-eG-1eE">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="y5d-1u-3zF">
+                            <connections>
+                                <action selector="doneButtonTouchUpInside:" destination="FBB-HQ-tVV" id="aad-R2-iyd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="dfuMessageTextLabel" destination="oOO-DX-jGF" id="rI8-q2-R1d"/>
+                        <outlet property="doneButton" destination="y5d-1u-3zF" id="PgH-fx-y1w"/>
                         <outlet property="firmwareRevisionTextLabel" destination="reo-WP-MjB" id="8jy-q7-DBp"/>
                         <outlet property="hardwareRevisionTextLabel" destination="kiV-vu-XAw" id="Hz7-8x-R3b"/>
                         <outlet property="manufacturerNameTextLabel" destination="oAq-P5-WQ9" id="hNU-R2-Yer"/>
+                        <outlet property="progressBar" destination="uzy-4r-dZL" id="e9x-y4-NX8"/>
+                        <outlet property="progressTextLabel" destination="cF7-eT-u8X" id="fOE-Rh-lpE"/>
                         <outlet property="serialNumberTextLabel" destination="kRi-aI-cb5" id="iwE-b0-E1b"/>
                         <outlet property="updateFirmwareButton" destination="dmC-V2-Ici" id="KNb-N3-fM6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wpZ-K1-9Kn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2309" y="167"/>
+            <point key="canvasLocation" x="1554" y="180"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">

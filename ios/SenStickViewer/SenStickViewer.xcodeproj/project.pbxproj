@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AFE07614B48C76DC151AC392 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */; };
 		F813B25E1D0E871900EC9EC0 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F813B25B1D0E86E400EC9EC0 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F813B2621D0E89CD00EC9EC0 /* firmwareInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = F813B2611D0E89CD00EC9EC0 /* firmwareInfo.plist */; };
+		F813B2651D0E8A3200EC9EC0 /* senstick_xxaa_s110_release_rev101.zip in Resources */ = {isa = PBXBuildFile; fileRef = F813B2641D0E8A3200EC9EC0 /* senstick_xxaa_s110_release_rev101.zip */; };
 		F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */; };
 		F83941B01CF11DE6008F2A52 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */; };
 		F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322901C979B03001B53A0 /* AppDelegate.swift */; };
@@ -69,6 +71,8 @@
 		E6856D24D1BB643178C08B53 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7045972F9A7B2E667A97CD8 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
 		F813B2561D0E86E400EC9EC0 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
+		F813B2611D0E89CD00EC9EC0 /* firmwareInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = firmwareInfo.plist; sourceTree = "<group>"; };
+		F813B2641D0E8A3200EC9EC0 /* senstick_xxaa_s110_release_rev101.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev101.zip; sourceTree = "<group>"; };
 		F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataViewController.swift; sourceTree = "<group>"; };
 		F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorStatusCellView.swift; sourceTree = "<group>"; };
 		F863228D1C979B03001B53A0 /* SenStickViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +138,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F813B2631D0E89D400EC9EC0 /* firmware */ = {
+			isa = PBXGroup;
+			children = (
+				F813B2611D0E89CD00EC9EC0 /* firmwareInfo.plist */,
+				F813B2641D0E8A3200EC9EC0 /* senstick_xxaa_s110_release_rev101.zip */,
+			);
+			name = firmware;
+			sourceTree = "<group>";
+		};
 		F86322841C979B03001B53A0 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +170,7 @@
 		F863228F1C979B03001B53A0 /* SenStickViewer */ = {
 			isa = PBXGroup;
 			children = (
+				F813B2631D0E89D400EC9EC0 /* firmware */,
 				F87BED671CF1D40900832E08 /* DetailViewController.swift */,
 				F86322961C979B03001B53A0 /* Main.storyboard */,
 				F86322901C979B03001B53A0 /* AppDelegate.swift */,
@@ -272,7 +286,9 @@
 				F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */,
 				F86322C41C979B92001B53A0 /* images.xcassets in Resources */,
 				F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */,
+				F813B2651D0E8A3200EC9EC0 /* senstick_xxaa_s110_release_rev101.zip in Resources */,
 				F86322981C979B03001B53A0 /* Main.storyboard in Resources */,
+				F813B2621D0E89CD00EC9EC0 /* firmwareInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

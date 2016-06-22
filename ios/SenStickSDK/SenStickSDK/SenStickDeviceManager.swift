@@ -95,6 +95,18 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         self.isScanning = false
     }
     
+    // CentralManagerにデリゲートを設定して初期状態に戻します。
+    // ファームウェア更新などで、CentralManagerを別に渡して利用した後、復帰するために使います。
+    public func reset()
+    {
+        // デバイスリストをクリアする
+        dispatch_async(dispatch_get_main_queue(), {
+            self.devices = []
+        })
+
+        manager?.delegate = self
+    }
+    
     // MARK: Private methods
     func addPeripheral(peripheral: CBPeripheral)
     {

@@ -18,8 +18,8 @@ public protocol SenStickDeviceDelegate : class {
 public class SenStickDevice : NSObject, CBPeripheralDelegate
 {
     // MARK: variables
-    unowned let manager: CBCentralManager
-    let peripheral:      CBPeripheral
+    public unowned let manager: CBCentralManager
+    public let peripheral:      CBPeripheral
 
     public weak var delegate: SenStickDeviceDelegate?
     

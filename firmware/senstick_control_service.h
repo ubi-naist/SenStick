@@ -10,6 +10,7 @@
 #define STORAGE_STATUS_CHAR_UUID        0x7002
 #define CONTROL_RTC_CHAR_UUID           0x7003
 #define CONTROL_ABSTRACT_TEXT_CHAR_UUID 0x7004
+#define DEVICE_NAME_CHAR_UUID           0x7005
 
 // 初期化します
 uint32_t initSenstickControlService(uint8_t uuid_type);

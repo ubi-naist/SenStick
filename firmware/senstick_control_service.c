@@ -7,6 +7,7 @@
 
 #include <ble.h>
 #include <ble_gatts.h>
+#include <app_gap.h>
 
 #include <sdk_errors.h>
 #include <app_error.h>
@@ -23,6 +24,7 @@ typedef struct senstick_control_service_s {
     ble_gatts_char_handles_t storage_status_char_handle;
     ble_gatts_char_handles_t rtc_char_handle;
     ble_gatts_char_handles_t abstract_text_char_handle;
+    ble_gatts_char_handles_t device_name_char_handle;
     
     uint16_t connection_handle;
 } senstick_control_service_t;
@@ -38,6 +40,11 @@ static void onWriteRTC(ble_gatts_value_t *p_gatts_value)
     if(decode_len == p_gatts_value->len) {
         senstick_setCurrentDateTime(&date_time);
     }
+}
+
+static void onWriteDeviceName(ble_gatts_value_t *p_gatts_value)
+{
+    app_gap_set_device_name(p_gatts_value->p_value, p_gatts_value->len);
 }
 
 static void onWrite(ble_evt_t * p_ble_evt)
@@ -64,6 +71,8 @@ static void onWrite(ble_evt_t * p_ble_evt)
         onWriteRTC(&gatts_value);
     } else if(p_evt_write->handle == context.abstract_text_char_handle.value_handle) {
         senstick_setCurrentLogAbstractText((char *)gatts_value.p_value, gatts_value.len);
+    } if(p_evt_write->handle == context.device_name_char_handle.value_handle) {
+        onWriteDeviceName(&gatts_value);
     }
 }
 
@@ -79,6 +88,12 @@ static uint8_t onRWAuthReq_rtc_char(uint8_t *p_buffer, uint16_t length)
 static uint8_t onRWAuthReq_abstract_txt(uint8_t *p_buffer, uint8_t length)
 {
     return senstick_getCurrentLogAbstractText((char *)p_buffer, length);
+}
+
+static uint8_t onRWAuthReq_device_name(uint8_t *p_buffer, uint8_t length)
+{
+    uint16_t len = app_gap_get_device_name(p_buffer, length);
+    return (uint8_t) len;
 }
 
 static void onRWAuthReq(ble_evt_t *p_ble_evt)
@@ -101,6 +116,8 @@ static void onRWAuthReq(ble_evt_t *p_ble_evt)
             length = onRWAuthReq_rtc_char(buffer, GATT_MAX_DATA_LENGTH);
         } else if( p_auth_req->request.read.handle == context.abstract_text_char_handle.value_handle){
             length = onRWAuthReq_abstract_txt(buffer, GATT_MAX_DATA_LENGTH);
+        } else if( p_auth_req->request.read.handle == context.device_name_char_handle.value_handle){
+            length = onRWAuthReq_device_name(buffer, GATT_MAX_DATA_LENGTH);
         } else {
             return; // ハンドラが一致しない、ここで終了。
         }
@@ -214,6 +231,21 @@ static void addService(uint8_t uuid_type)
     params.write_access      = SEC_OPEN;
     params.cccd_write_access = SEC_NO_ACCESS;
     err_code = characteristic_add(context.service_handle, &params, &context.abstract_text_char_handle);
+    APP_ERROR_CHECK(err_code);
+    
+    // メタ属性:デバイス名
+    params.uuid              = DEVICE_NAME_CHAR_UUID;
+    params.max_len           = 20;
+    params.char_props.read   = true;
+    params.char_props.write  = true;
+    params.char_props.notify = false;
+    params.is_var_len        = true;
+    params.is_defered_read   = true;
+    params.is_defered_write  = false;
+    params.read_access       = SEC_OPEN;
+    params.write_access      = SEC_OPEN;
+    params.cccd_write_access = SEC_NO_ACCESS;
+    err_code = characteristic_add(context.service_handle, &params, &context.device_name_char_handle);
     APP_ERROR_CHECK(err_code);
 }
 

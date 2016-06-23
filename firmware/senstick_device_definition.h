@@ -12,8 +12,8 @@
 #define DEVICE_NAME                "NARA-ACT"    /* アドバタイジング、GAPのデバイス名 */
 //#define HARDWARE_REVISION           0x0100       /* ハードウェアのリビジョン。ver 1.1 0xJJMN で表記。 Jはメイジャー、Mはマイナー、Nはサブマイナーバージョン番号を示す。*/
 #define HARDWARE_REVISION_STRING    "rev 1.0"  /* ハードウェアのリビジョンを表す文字列。Device Information Serviceで使います */
-#define	FIRMWARE_REVISION           0x0101     /* ファームウェアのリビジョン。先頭1バイトがメジャーバージョン、後ろ1バイトがマイナーバージョン 0xJJMN の表記。 */
-#define FIRMWARE_REVISION_STRING    "rev 1.01"  /* ファームウェアのリビジョンを表す文字列。Device Information Serviceで使います */
+#define	FIRMWARE_REVISION           0x0102     /* ファームウェアのリビジョン。先頭1バイトがメジャーバージョン、後ろ1バイトがマイナーバージョン 0xJJMN の表記。 */
+#define FIRMWARE_REVISION_STRING    "rev 1.02"  /* ファームウェアのリビジョンを表す文字列。Device Information Serviceで使います */
 
 
 #endif /* senstick_device_definition_h */

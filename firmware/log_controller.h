@@ -23,6 +23,8 @@ typedef struct {
     
     // 書き込み可能フラグ。
     bool canWrite;
+    // EOP送信終了フラグ
+    bool didSendEndOfDataPacket;
     
     uint32_t readPosition;
     uint32_t writePosition;

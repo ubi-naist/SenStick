@@ -143,7 +143,8 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
     if(p_log == NULL) {
         return false;
     }
-    if(p_log->readPosition >= p_log->header.size) {
+    // EndOfDataパケットを送信済
+    if( p_log->didSendEndOfDataPacket ) { //&& (p_log->readPosition >= p_log->header.size)) {
         return false;
     }
 
@@ -169,6 +170,7 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
         }
         // もしも最後のパケット通知なら、読み出しを終了する。
         if(length == 1) {
+            p_log->didSendEndOfDataPacket = true;
 //            context.p_readingLogContext[device_type] = NULL;
             break;
         }

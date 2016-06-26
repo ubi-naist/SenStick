@@ -9,8 +9,15 @@
 import Foundation
 import CoreBluetooth
 
+public protocol SenStickMetaDataServiceDelegate : class
+{
+    func didUpdateMetaData(sender:SenStickMetaDataService)
+}
+
 public class SenStickMetaDataService : SenStickService
 {
+    public weak var delegate: SenStickMetaDataServiceDelegate?
+    
     // Variables
     unowned let device: SenStickDevice
     
@@ -50,18 +57,27 @@ public class SenStickMetaDataService : SenStickService
     {
         switch characteristic.UUID {
         case SenStickUUIDs.TargetLogIDCharUUID:
-            logID = data[0]
+            dispatch_async(dispatch_get_main_queue(), {
+                self.logID = data[0]
+                self.delegate?.didUpdateMetaData(self)
+            })
             
         case SenStickUUIDs.TargetDateTimeCharUUID:
             if let date = NSDate.unpack(data) {
-                self.dateTime = date
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.dateTime = date
+                })
             }
             
         case SenStickUUIDs.TargetAbstractCharUUID:
             if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
-                abstract = s
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.abstract = s
+                })
             } else {
-                abstract = ""
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.abstract = ""
+                })
             }
 
         default:
@@ -73,8 +89,8 @@ public class SenStickMetaDataService : SenStickService
     // Public methods
     public func requestMetaData(logID: UInt8) {        
         device.writeValue(targetLogIDChar, value: [logID])
-        device.readValue(targetLogIDChar)
         device.readValue(targetDateTimeChar)
         device.readValue(targetAbstractChar)
+        device.readValue(targetLogIDChar)
     }
 }

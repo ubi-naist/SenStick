@@ -209,6 +209,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
                 break
             }
             if let d = unpackDataArray(metadata.range, value: data) {
+//                debugPrint("\(#function) count \(d.count)")
                 // データの終端は、必ず送る。データ取りこぼしが起きないように、データ更新も呼び出す。
                 if d.count == 0 {
                     dispatch_async(dispatch_get_main_queue(), {

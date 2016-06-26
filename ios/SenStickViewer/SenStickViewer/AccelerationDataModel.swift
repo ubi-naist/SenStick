@@ -65,7 +65,7 @@ class AccelerationDataModel :SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+//        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
         if let count = service?.logMetaData?.availableSampleCount {
             cell?.graphView?.sampleCount = Int(count)
             if count == 0 {
@@ -85,7 +85,7 @@ class AccelerationDataModel :SensorDataModel
 
     override func didFinishedLogData(sender: AnyObject)
     {
-        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
+//        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
         stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     

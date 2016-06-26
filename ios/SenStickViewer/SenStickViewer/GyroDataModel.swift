@@ -67,7 +67,7 @@ class GyroDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")        
+//        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
         if let count = service?.logMetaData?.availableSampleCount {
             cell?.graphView?.sampleCount = Int(count)
             if count == 0 {
@@ -78,9 +78,9 @@ class GyroDataModel : SensorDataModel
     
     override func didUpdateLogData(sender: AnyObject)
     {
-        debugPrint("\(#function) \(sender)")
+//        debugPrint("\(#function) \(sender)")
         if let array = service?.readLogData() {
-        debugPrint("     \(array.count)")
+//        debugPrint("     \(array.count)")
             for data in array {
                 addReadLog([data.x, data.y, data.z])
             }
@@ -89,7 +89,7 @@ class GyroDataModel : SensorDataModel
 
     override func didFinishedLogData(sender: AnyObject)
     {
-        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
+//        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
     

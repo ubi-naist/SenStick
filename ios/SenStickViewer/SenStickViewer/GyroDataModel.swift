@@ -10,18 +10,12 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class GyroCellView : SensorDataCellView, SenStickSensorServiceDelegate
+class GyroDataModel : SensorDataModel
 {
     weak var service: GyroSensorService? {
         didSet {
             self.service?.delegate = self
-            
-            if self.service == nil {
-                self.iconButton?.enabled = false
-            } else {
-                self.iconButton?.enabled = true
-                didUpdateSetting(self)                
-            }
+            didUpdateSetting(self)
         }
     }
     
@@ -35,9 +29,10 @@ class GyroCellView : SensorDataCellView, SenStickSensorServiceDelegate
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    func didUpdateSetting(sender:AnyObject)
+    override func didUpdateSetting(sender:AnyObject)
     {
-        self.iconButton?.selected = (service?.settingData?.status != .Stopping)
+        cell?.iconButton?.enabled = (self.service != nil)        
+        cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
         //        let k = M_PI / Double(180), 1/60
@@ -47,68 +42,61 @@ class GyroCellView : SensorDataCellView, SenStickSensorServiceDelegate
             case .ROTATION_RANGE_250DPS:
                 self.maxValue = 5
                 self.minValue = -5
-                self.graphView?.maxValue = 5
-                self.graphView?.minValue = -5
                 
             case .ROTATION_RANGE_500DPS:
                 self.maxValue = 10
                 self.minValue = -10
-                self.graphView?.maxValue = 10
-                self.graphView?.minValue = -10
                 
             case .ROTATION_RANGE_1000DPS:
                 self.maxValue = 20
                 self.minValue = -20
-                self.graphView?.maxValue = 20
-                self.graphView?.minValue = -20
                 
             case .ROTATION_RANGE_2000DPS:
                 self.maxValue = 40
                 self.minValue = -40
-                self.graphView?.maxValue = 40
-                self.graphView?.minValue = -40
             }
         }
     }
     
-    func didUpdateRealTimeData(sender: AnyObject)
+    override func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.x, data.y, data.z])
         }
     }
     
-    func didUpdateMetaData(sender: AnyObject)
+    override func didUpdateMetaData(sender: AnyObject)
     {
+        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")        
         if let count = service?.logMetaData?.availableSampleCount {
-            graphView?.sampleCount = Int(count)
+            cell?.graphView?.sampleCount = Int(count)
             if count == 0 {
-                stopReadingLog("", duration: nil)
+                cell?.progressBar?.hidden    = true
             }
         }
     }
     
-    func didUpdateLogData(sender: AnyObject)
+    override func didUpdateLogData(sender: AnyObject)
     {
+        debugPrint("\(#function) \(sender)")
         if let array = service?.readLogData() {
-            let sampleCount = service!.logMetaData!.availableSampleCount
-            let progress = Double(super.logData![0].count + array.count) / Double(sampleCount)
-            
+        debugPrint("     \(array.count)")
             for data in array {
-                addReadLog([data.x, data.y, data.z], progress: progress)
+                addReadLog([data.x, data.y, data.z])
             }
         }
     }
 
-    func didFinishedLogData(sender: AnyObject)
-    {     
+    override func didFinishedLogData(sender: AnyObject)
+    {
+        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
     
     
     // MARK: - Event handler
-    @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
-        let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
+    override func  iconButtonToutchUpInside(sender: UIButton) {
+        let status :SenStickStatus = cell!.iconButton!.selected ? .Stopping : .SensingAndLogging
         
         if let current_setting = self.service?.settingData {
             let setting = SensorSettingData<RotationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)

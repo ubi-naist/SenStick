@@ -339,7 +339,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20002680</StartAddress>
-                <Size>0x1a00</Size>
+                <Size>0x1980</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -351,7 +351,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1829,8 +1829,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20002600</StartAddress>
-                <Size>0x1a00</Size>
+                <StartAddress>0x20002680</StartAddress>
+                <Size>0x1980</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -1864,7 +1864,7 @@
               <MiscControls>--c99</MiscControls>
               <Define>DEBUG_NRF_USER DOXYGEN NRF_LOG_USES_RTT=0 BLE_STACK_SUPPORT_REQD S110 SOFTDEVICE_PRESENT NRF51 SWI_DISABLE0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\segger_rtt</IncludePath>
+              <IncludePath>..\;..\segger_rtt</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

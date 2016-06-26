@@ -16,6 +16,7 @@ public protocol SenStickControlServiceDelegate : class
     func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
     func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
     func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
+    func didDeviceNameUpdate(sender:SenStickControlService, deviceName:String)
 }
 
 public class SenStickControlService : SenStickService
@@ -28,7 +29,8 @@ public class SenStickControlService : SenStickService
     let availableLogCountChar: CBCharacteristic
     let dateTimeChar:          CBCharacteristic
     let abstractChar:          CBCharacteristic
-
+    let deviceNameChar:        CBCharacteristic?
+    
     public weak var delegate: SenStickControlServiceDelegate?
     
     // Properties, KVO-compatible
@@ -74,6 +76,14 @@ public class SenStickControlService : SenStickService
         }
     }
     
+    public private(set) var deviceName: String {
+        didSet {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.delegate?.didDeviceNameUpdate(self, deviceName: self.deviceName)
+            })
+        }
+    }
+
     // イニシャライザ
     required public init?(device:SenStickDevice)
     {
@@ -87,20 +97,26 @@ public class SenStickControlService : SenStickService
         guard let _dateTimeChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.DateTimeCharUUID) else { return nil }
         guard let _abstractChar          = device.findCharacteristic(service, uuid: SenStickUUIDs.AbstractCharUUID) else { return nil }
         
+        // FIXME: DFUのため、この追加キャラクタリスティクスがなくても動くように
+//        guard let _deviceNameChar        = device.findCharacteristic(service, uuid: SenStickUUIDs.DeviceNameCharUUID) else { return nil }
+        
         statusChar            = _statusChar
         availableLogCountChar = _availableLogCountChar
         storageStatusChar     = _storageStatusChar
         dateTimeChar          = _dateTimeChar
         abstractChar          = _abstractChar
-
-        self.delegate          = nil
+//        deviceNameChar       = _deviceNameChar
+        deviceNameChar = device.findCharacteristic(service, uuid: SenStickUUIDs.DeviceNameCharUUID)
+        
+        self.delegate         = nil
         
         self.command              = .Stopping
         self.availableLogCount    = 0
         self.storageStatus        = false
         self.dateTime             = NSDate.distantPast()
         self.abstractText         = ""
-      
+        self.deviceName           = ""
+        
         // Notifyを有効に。初期値読み出し。
         device.setNotify(statusChar, enabled: true)
         device.setNotify(availableLogCountChar, enabled: true)
@@ -111,6 +127,9 @@ public class SenStickControlService : SenStickService
         device.readValue(storageStatusChar)
         device.readValue(dateTimeChar)
         device.readValue(abstractChar)
+        if deviceNameChar != nil {
+            device.readValue(deviceNameChar!)
+        }
     }
     
     // 値更新通知
@@ -139,6 +158,12 @@ public class SenStickControlService : SenStickService
             if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
                 self.abstractText = s
             }
+            
+        case SenStickUUIDs.DeviceNameCharUUID:
+            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+                self.deviceName = s
+            }
+            
         default:
             debugPrint("\(#function) unexpedted characteristics UUID, \(characteristic).")
             break
@@ -177,9 +202,26 @@ public class SenStickControlService : SenStickService
     {
         device.readValue(abstractChar)
     }
+    
     public func writeAbstract(abstract: String)
     {
         device.writeValue(abstractChar, value: [UInt8](abstract.utf8))
         device.readValue(abstractChar)
+    }
+    
+    public func writeDeviceName(deviceName: String)
+    {
+        if deviceNameChar == nil {
+            return
+        }
+        
+        let data = [UInt8](deviceName.utf8)
+
+        // MAGIC NUMBER, GATTに20バイト以上書き込むことはできない。
+        if data.count > 0 || data.count <= 20 {
+            device.writeValue(deviceNameChar!, value: data)
+        }
+        
+        device.readValue(deviceNameChar!)
     }
 }

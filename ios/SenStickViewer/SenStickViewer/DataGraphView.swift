@@ -24,56 +24,25 @@ class DataGraphView : UIView {
         }
     }
     
-    // サンプルカウント数が描画幅を超えたら最初から描画し直すか?
-    var autoRedraw: Bool = true
+    var value: [[Double]] = [[],[],[]]
     
     // 内部的に、300点までのパスを保持する
     let pathCount :Int = 300
-    var pathData :[[CGFloat]] = [[], [], []]
+    var pathData :[[CGFloat]] = []
     let pathColor :[CGColor]  = [UIColor.redColor().CGColor, UIColor.greenColor().CGColor, UIColor.blueColor().CGColor]
-    
-    // データを追加します, 配列はデータの種類ごとに並んだ1サンプル。
-    private func addData(value:[Double]) {
-        // パスをフラッシュ
-        if pathData[0].count > pathCount && autoRedraw {
-            pathData = [[], [], []]
-        }
-
-        // データを間引きながら追加
-        var data: [Double] = []
-        if sampleCount <= pathCount {
-            // そのままデータを追加してOK
-            data = value
-        } else {
-            // データ点列をsampleCountの値に合わせて、間引くなりする
-            nextSamplePoint += Double(pathCount) / Double(sampleCount)
-            if nextSamplePoint > 1 {
-                nextSamplePoint -= 1
-                data = value
-            }
-        }
-        
-        // データ追加がないなら終了
-        if data.count == 0 {
-            return
-        }
-        
-        // データを正規化して追加
-        for (index, d) in data.enumerate() {
-            let y = CGFloat((d - minValue) / (maxValue - minValue))
-            pathData[index].append(y)
-        }
-    }
 
     func clearPlot()
     {
-        pathData = [[], [], []]
+        pathData = []
         setNeedsDisplay()
     }
     
-    func plotData(value:[Double])
+    // データを描画します 配列は、[x, y, z]を想定。x, もしくはxおよびyのみの利用も可能。
+    func plotData(value:[[Double]])
     {
-        addData(value)
+        self.value = value
+        
+        // 再描画
         setNeedsDisplay()
     }
     
@@ -81,6 +50,34 @@ class DataGraphView : UIView {
     {
         super.drawRect(rect)
 
+        // パスデータを構築
+        pathData = [[], [], []]
+        // データを間引きながら追加します, 配列の中の配列はそれぞれ軸のデータを表す。
+        for (axisIndex, dataArray) in value.enumerate() {
+            for i in (0..<dataArray.count) {
+                var canAdd = false
+                if sampleCount <= pathCount {
+                    // そのままデータを追加してOK
+                    canAdd = true
+                } else {
+                    // データ点列をsampleCountの値に合わせて、間引くなりする
+                    nextSamplePoint += Double(pathCount) / Double(sampleCount)
+                    if nextSamplePoint > 1 {
+                        nextSamplePoint -= 1
+                        canAdd = true
+                    }
+                }
+                // データを正規化して追加
+                if canAdd {
+                    let y = CGFloat((dataArray[i] - minValue) / (maxValue - minValue))
+                    assert(!y.isNaN)
+                    assert(!y.isInfinite)
+                    pathData[axisIndex].append(y)
+                }
+            }
+        }
+        
+        // 描画
         let context = UIGraphicsGetCurrentContext()!
         
         for (index, apath) in pathData.enumerate() {
@@ -94,10 +91,13 @@ class DataGraphView : UIView {
                 var y = apath[i] * self.frame.height
                 // iOSの描画系は左上が原点なので、y軸を反転する
                 y = self.frame.height - y
+                let x = CGFloat(i) * dx
+                assert(!x.isNaN)
+                assert(!y.isNaN)
                 if i == 0 {
-                    CGPathMoveToPoint(drawPath, nil, CGFloat(i) * dx, y)
+                    CGPathMoveToPoint(drawPath, nil, x, y)
                 } else {
-                    CGPathAddLineToPoint(drawPath, nil, CGFloat(i) * dx, y)
+                    CGPathAddLineToPoint(drawPath, nil, x, y)
                 }
             }
             // パスを追加

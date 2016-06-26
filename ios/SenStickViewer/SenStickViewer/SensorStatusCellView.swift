@@ -10,18 +10,16 @@ import UIKit
 import SenStickSDK
 
 class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UITextFieldDelegate {
-    @IBOutlet var deviceNameTextLabel: UILabel!
+    @IBOutlet var deviceNameTextField: UITextField!
     @IBOutlet var countOfLogTextLabel: UILabel!
-    @IBOutlet var targetLogTextInput: UITextField!
-    @IBOutlet var readLogButton: UIButton!
     @IBOutlet var startButton: UIButton!
     @IBOutlet var stopButton: UIButton!    
     @IBOutlet var storageStatusTextLabe: UILabel!
     @IBOutlet var formatButton: UIButton!
     
-    weak var controller: SensorDataViewController?
-    
     var shouldSetDateTime: Bool = true
+    
+    weak var controller: SensorDataViewController?
     
     weak var service: SenStickControlService? {
         didSet {
@@ -36,9 +34,10 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
             }
         }
     }
+
     var name: String? {
         didSet {
-            self.deviceNameTextLabel.text = name
+            self.deviceNameTextField.text = name
         }
     }
     
@@ -47,7 +46,6 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
         if let control = self.service {
             control.delegate = self
             countOfLogTextLabel.text = "\(control.availableLogCount)"
-            readLogButton.enabled = (control.availableLogCount > 0)
             startButton.enabled   = (control.command == .Stopping)
             stopButton.enabled    = (control.command != .Stopping)
             storageStatusTextLabe.hidden = !(self.service?.storageStatus)!
@@ -56,20 +54,24 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
                 stopButton.enabled  = false
             }
             formatButton.enabled = true
+            deviceNameTextField.text = control.deviceName
         } else {
             countOfLogTextLabel.text = "0"
-            readLogButton.enabled = false
             startButton.enabled   = false
             stopButton.enabled    = false
             storageStatusTextLabe.hidden = true
             formatButton.enabled = false
+            deviceNameTextField.text = ""
         }
-        targetLogTextInput.delegate = self
+        deviceNameTextField.delegate = self
     }
     
     // UITextFieldDelegate
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        targetLogTextInput.resignFirstResponder()
+        textField.resignFirstResponder()
+
+        self.service?.writeDeviceName(deviceNameTextField.text!)
+        
         return true
     }
     
@@ -98,19 +100,18 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
 //        debugPrint("\(#function)")
         updateView()
     }
+    func didDeviceNameUpdate(sender: SenStickControlService, deviceName: String) {
+        updateView()
+    }
     
     // MARK: - Eventhandler
     @IBAction func  startButtonToutchUpInside(sender: UIButton) {
+        controller?.clearGraph()
         service?.writeCommand(.Starting)
     }
     
     @IBAction func  stopButtonToutchUpInside(sender: UIButton) {
         service?.writeCommand(.Stopping)
-    }
-
-    @IBAction func  readLogButtonToutchUpInside(sender: UIButton) {
-        let logid = UInt8(targetLogTextInput.text!)!
-        controller?.startToReadLog(logid)
     }
     
     @IBAction func  formatButtonToutchUpInside(sender: UIButton) {

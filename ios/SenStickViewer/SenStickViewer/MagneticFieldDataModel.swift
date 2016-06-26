@@ -10,18 +10,12 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class MagneticFieldCellView : SensorDataCellView, SenStickSensorServiceDelegate
+class MagneticFieldDataModel : SensorDataModel
 {
     weak var service: MagneticFieldSensorService? {
         didSet {
             self.service?.delegate = self
-            
-            if self.service == nil {
-                self.iconButton?.enabled = false
-            } else {
-                self.iconButton?.enabled = true
-                didUpdateSetting(self)
-            }
+            didUpdateSetting(self)            
         }
     }
     
@@ -35,59 +29,54 @@ class MagneticFieldCellView : SensorDataCellView, SenStickSensorServiceDelegate
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    func didUpdateSetting(sender:AnyObject)
+    override func didUpdateSetting(sender:AnyObject)
     {
-        self.iconButton?.selected = (service?.settingData?.status != .Stopping)
+        cell?.iconButton?.enabled = (self.service != nil)        
+        cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
         self.maxValue = 100
         self.minValue = -100
-        self.graphView?.maxValue = 100
-        self.graphView?.minValue = -100
         
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration
         }
     }
     
-    func didUpdateRealTimeData(sender: AnyObject)
+    override func didUpdateRealTimeData(sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.x, data.y, data.z])
         }
     }
     
-    func didUpdateMetaData(sender: AnyObject)
+    override func didUpdateMetaData(sender: AnyObject)
     {
         if let count = service?.logMetaData?.availableSampleCount {
-            graphView?.sampleCount = Int(count)
+            cell?.graphView?.sampleCount = Int(count)
             if count == 0 {
-                stopReadingLog("", duration: nil)
+                 cell?.progressBar?.hidden    = true
             }
         }
     }
-    
 
-    func didUpdateLogData(sender: AnyObject)
+    override func didUpdateLogData(sender: AnyObject)
     {
-        if let array = service?.readLogData() {
-            let sampleCount = service!.logMetaData!.availableSampleCount
-            let progress = Double(super.logData![0].count + array.count) / Double(sampleCount)
-            
+        if let array = service?.readLogData() {            
             for data in array {
-                addReadLog([data.x, data.y, data.z], progress: progress)
+                addReadLog([data.x, data.y, data.z])
             }
         }
     }
 
-    func didFinishedLogData(sender: AnyObject)
+    override func didFinishedLogData(sender: AnyObject)
     {   
         stopReadingLog("magnetic", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler
-    @IBAction func  iconButtonToutchUpInside(sender: UIButton) {
-        let status :SenStickStatus = iconButton!.selected ? .Stopping : .SensingAndLogging
+    override func  iconButtonToutchUpInside(sender: UIButton) {
+        let status :SenStickStatus = cell!.iconButton!.selected ? .Stopping : .SensingAndLogging
         
         if let current_setting = self.service?.settingData {
             let setting = SensorSettingData<MagneticFieldRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)

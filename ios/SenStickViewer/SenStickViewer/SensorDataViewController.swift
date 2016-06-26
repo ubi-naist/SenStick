@@ -11,21 +11,35 @@ import SenStickSDK
 import CoreMotion
 
 class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
-
-     @IBOutlet var deviceInformationButton: UIBarButtonItem!
+    
+    @IBOutlet var deviceInformationButton: UIBarButtonItem!
     
     var device: SenStickDevice?
     
-    var statusCell: SensorStatusCellView?
-    var accelerationSensorCell: AccelerationCellView?
-    var gyroSensorCell: GyroCellView?
-    var magneticFieldCell: MagneticFieldCellView?
-    var brightnessCell: BrightnessCellView?
-    var uvCell: UVCellView?
-    var humidityCell: HumidityCellView?
-    var pressureCell: PressureCellView?
+    var statusCell:             SensorStatusCellView?
+    var accelerationDataModel:  AccelerationDataModel?
+    var gyroDataModel:          GyroDataModel?
+    var magneticFieldDataModel: MagneticFieldDataModel?
+    var brightnessDataModel:    BrightnessDataModel?
+    var uvDataModel:            UVDataModel?
+    var humidityDataModel:      HumidityDataModel?
+    var pressureDataModel:      PressureDataModel?
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        accelerationDataModel  = AccelerationDataModel()
+        gyroDataModel          = GyroDataModel()
+        magneticFieldDataModel = MagneticFieldDataModel()
+        brightnessDataModel    = BrightnessDataModel()
+        uvDataModel            = UVDataModel()
+        humidityDataModel      = HumidityDataModel()
+        pressureDataModel      = PressureDataModel()
+    }
+    
+    override func viewWillAppear(animated: Bool)
+    {
         super.viewWillAppear(animated)
         
         device?.delegate = self
@@ -36,18 +50,19 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         
         // 右上のバーボタンアイテムのenable設定。ログ停止中のみ遷移可能
         /*
-        if let control = device?.controlService {
-            self.deviceInformationButton.enabled = (control.command == .Stopping)
-        } else {
-            self.deviceInformationButton.enabled = false
-        }*/
+         if let control = device?.controlService {
+         self.deviceInformationButton.enabled = (control.command == .Stopping)
+         } else {
+         self.deviceInformationButton.enabled = false
+         }*/
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(animated: Bool)
+    {
         super.viewWillDisappear(animated)
         
         device?.delegate = nil
-
+        
         // リスト表示に戻る場合は、デバイスとのBLE接続を切る
         if let backToListView = self.navigationController?.viewControllers.contains(self) {
             // ListViewに戻る時、ナビゲーションに自身が含まれていない。
@@ -56,122 +71,69 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
             }
         }
     }
-    
-    func startToReadLog(logid: UInt8) {
-        accelerationSensorCell?.startToReadLog(logid)
-        gyroSensorCell?.startToReadLog(logid)
-        magneticFieldCell?.startToReadLog(logid)
-        brightnessCell?.startToReadLog(logid)
-        uvCell?.startToReadLog(logid)
-        humidityCell?.startToReadLog(logid)
-        pressureCell?.startToReadLog(logid)
-    }
-    
-    func setServices(target :AnyObject)
+
+    func clearGraph()
     {
-        if let cell = target as? SensorStatusCellView {
-            statusCell = cell
-            cell.controller = self
-            cell.name = device?.name
-            cell.service = device?.controlService
-        }
-        
-        if let cell = target as? AccelerationCellView {
-            accelerationSensorCell = cell
-            cell.service = device?.accelerationSensorService
-        }
-        
-        if let cell = target as? GyroCellView {
-            gyroSensorCell = cell
-            cell.service = device?.gyroSensorService
-        }
-        
-        if let cell = target as? MagneticFieldCellView {
-            magneticFieldCell = cell
-            cell.service = device?.magneticFieldSensorService
-        }
-        
-        if let cell = target as? BrightnessCellView {
-            brightnessCell = cell
-            cell.service = device?.brightnessSensorService
-        }
-        
-        if let cell = target as? UVCellView {
-            uvCell = cell
-            cell.service = device?.uvSensorService
-        }
-        
-        if let cell = target as? HumidityCellView {
-            humidityCell = cell
-            cell.service = device?.humiditySensorService
-        }
-        
-        if let cell = target as? PressureCellView {
-            pressureCell = cell
-            cell.service = device?.pressureSensorService
-        }
-        
+        accelerationDataModel?.cell?.graphView?.clearPlot()
+        gyroDataModel?.cell?.graphView?.clearPlot()
+        magneticFieldDataModel?.cell?.graphView?.clearPlot()
+        brightnessDataModel?.cell?.graphView?.clearPlot()
+        uvDataModel?.cell?.graphView?.clearPlot()
+        humidityDataModel?.cell?.graphView?.clearPlot()
+        pressureDataModel?.cell?.graphView?.clearPlot()
     }
+
     // MARK: - SenStickDeviceDelegate
     func didServiceFound(sender: SenStickDevice) {
-        // static cellであっても画面範囲外であればインスタンスはない。そのためcellがあるかどうかを逐一確認している。
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,0], length: 2)) as? SensorStatusCellView {
-            statusCell = cell
-            cell.controller = self
-            cell.name = device?.name
-            cell.service = device?.controlService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,1], length: 2)) as? AccelerationCellView {
-            accelerationSensorCell = cell
-            cell.service = device?.accelerationSensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,2], length: 2)) as? GyroCellView {
-            gyroSensorCell = cell
-            cell.service = device?.gyroSensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,3], length: 2)) as? MagneticFieldCellView {
-            magneticFieldCell = cell
-            cell.service = device?.magneticFieldSensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,4], length: 2)) as? BrightnessCellView {
-            brightnessCell = cell
-            cell.service = device?.brightnessSensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,5], length: 2)) as? UVCellView {
-            uvCell = cell
-            cell.service = device?.uvSensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,6], length: 2)) as? HumidityCellView {
-            humidityCell = cell
-            cell.service = device?.humiditySensorService
-        }
-        
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(indexes: [0,7], length: 2)) as? PressureCellView {
-            pressureCell = cell
-            cell.service = device?.pressureSensorService
-        }
+        self.statusCell?.name       = device?.name
+        self.statusCell?.service    = device?.controlService
+
+        accelerationDataModel?.service  = device?.accelerationSensorService
+        gyroDataModel?.service          = device?.gyroSensorService
+        magneticFieldDataModel?.service = device?.magneticFieldSensorService
+        brightnessDataModel?.service    = device?.brightnessSensorService
+        uvDataModel?.service            = device?.uvSensorService
+        humidityDataModel?.service      = device?.humiditySensorService
+        pressureDataModel?.service      = device?.pressureSensorService
     }
     
     func didConnected(sender:SenStickDevice)
-    {}
+    {
+    }
     
     func didDisconnected(sender:SenStickDevice)
     {
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        setServices(cell)
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+    {
+        switch (indexPath.row) {
+        case 0:
+            self.statusCell              = cell as? SensorStatusCellView
+        self.statusCell?.controller      = self
+        case 1:
+            accelerationDataModel?.cell  = cell as? SensorDataCellView
+        case 2:
+            gyroDataModel?.cell          = cell as? SensorDataCellView
+        case 3:
+            magneticFieldDataModel?.cell = cell as? SensorDataCellView
+        case 4:
+            brightnessDataModel?.cell    = cell as? SensorDataCellView
+        case 5:
+            uvDataModel?.cell            = cell as? SensorDataCellView
+        case 6:
+            humidityDataModel?.cell      = cell as? SensorDataCellView
+        case 7:
+            pressureDataModel?.cell      = cell as? SensorDataCellView
+        default: break
+        }
     }
     
+    
     // MARK: - Segues
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool
+    {
         // デバイス詳細情報表示に遷移
         if identifier == "deviceInformation" {
             return true
@@ -184,13 +146,18 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
             return false
         }
     }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
         if let vc = segue.destinationViewController as? DeviceInformationViewController {
             vc.device = self.device
         }
         
-//        debugPrint("  \(segue.destinationViewController)")
+        if let vc = segue.destinationViewController as?  LogListViewController {
+            vc.device = self.device
+        }
+        
+        //        debugPrint("  \(segue.destinationViewController)")
         if let vc = segue.destinationViewController as? SamplingDurationViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
             switch(indexPath.row) {
@@ -212,5 +179,4 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
             }
         }
     }
-    
 }

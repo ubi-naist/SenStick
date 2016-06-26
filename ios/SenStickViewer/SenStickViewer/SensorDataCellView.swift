@@ -17,18 +17,17 @@ class SensorDataCellView: UITableViewCell {
     @IBOutlet var progressBar:    UIProgressView?
     @IBOutlet var graphView:      DataGraphView?
     
-    var logData: [[Double]]?
-    var logid: UInt8 = 0
-    
     // MARK: - Properties
     var maxValue: Double {
         didSet {
             maxTextLabel?.text = String(maxValue) + "/" + String(minValue)
+            graphView?.maxValue = maxValue
         }
     }
     var minValue: Double {
         didSet {
             maxTextLabel?.text = String(maxValue) + "/" + String(minValue)
+            graphView?.minValue = minValue
         }
     }
     var duration: SamplingDurationType {
@@ -41,105 +40,14 @@ class SensorDataCellView: UITableViewCell {
         }
     }
 
-
     // MARK: - Initializer
     required init?(coder aDecoder: NSCoder)
     {
         maxValue = 1.0
         minValue = 0
         duration = SamplingDurationType(milliSeconds: 100)
-
-        logData = nil
         
         super.init(coder:aDecoder)
     }
-    
-    func drawRealTimeData(data: [Double])
-    {
-        // ログ読み出し中は無効化
-        if logData != nil {
-            return
-        }
-        
-        self.graphView?.plotData(data)
-    }
-    
-    func startToReadLog(logid: UInt8)
-    {
-        self.logid = logid
-        logData = [[], [], []]
-        
-        self.graphView?.clearPlot()
-        self.graphView?.autoRedraw = false
-        self.progressBar?.progress = 0
-        self.progressBar?.hidden   = false
-    }
-    
-    func addReadLog(data:[Double], progress: Double) {
-        if logData == nil {
-            return
-        }
 
-        for (index, d) in data.enumerate() {
-            logData![index].append(d)
-        }
-        
-        self.graphView?.plotData(data)
-        self.progressBar?.progress = Float(progress)
-        
-//        debugPrint("\(#function), \(progress),  \(logData)")
-    }
-    
-    func stopReadingLog(fileName: String, duration: SamplingDurationType?)
-    {
-        if logData != nil && duration != nil {
-            // ファイルに保存
-            let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
-            let filePath   = folderPath.stringByAppendingPathComponent("\(fileName)_\(self.logid).csv")
-            
-            saveToFile(filePath, data: logData!, duration: duration!)
-        }
-
-        logData = nil
-        self.graphView?.autoRedraw = true
-        self.progressBar?.hidden   = true
-
-        // グラフの状態復帰
-        graphView?.autoRedraw  = true
-        graphView?.sampleCount = 300
-    }
-    
-    private func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
-    {
-        var content = ""
-        let colomn  = data.count
-        let row     = data[0].count
-
-        var time :Double = 0
-        for r in 0..<row {
-            content += "\(time) , "
-            for c in 0..<colomn {
-                if data[c].count > r {
-                    content += "\((data[c])[r])"
-                } else {
-                    content += " , "
-                    break
-                }
-                if c != (colomn - 1) {
-                    content += " , "
-                }
-            }
-            content += "\n"
-            time    += duration.duration
-        }
-
-        do {
-            if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
-                try NSFileManager.defaultManager().removeItemAtPath(filePath)
-            }
-            try content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
-        } catch {
-            debugPrint("\(#function) fatal error in file save.")
-        }
-    }
 }

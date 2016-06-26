@@ -64,6 +64,7 @@ public struct SenStickUUIDs
     public static let StorageStatusCharUUID:CBUUID     = {return SenStickUUIDs.createSenstickUUID(0x7002)}()
     public static let DateTimeCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7003)}()
     public static let AbstractCharUUID:CBUUID          = {return SenStickUUIDs.createSenstickUUID(0x7004)}()
+    public static let DeviceNameCharUUID:CBUUID        = {return SenStickUUIDs.createSenstickUUID(0x7005)}()
     
     // メタデータ読み出しサービス
     public static let MetaDataServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickUUID(0x2001)}()
@@ -111,7 +112,7 @@ public struct SenStickUUIDs
         
         BatteryServiceUUID: [BatteryLevelCharUUID],
 
-        ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, StorageStatusCharUUID, DateTimeCharUUID, AbstractCharUUID],
+        ControlServiceUUID   : [StatusCharUUID, AvailableLogCountCharUUID, StorageStatusCharUUID, DateTimeCharUUID, AbstractCharUUID, DeviceNameCharUUID],
         
         MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
 

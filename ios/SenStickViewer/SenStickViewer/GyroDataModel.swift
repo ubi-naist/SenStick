@@ -70,6 +70,8 @@ class GyroDataModel : SensorDataModel
 //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
         if let count = service?.logMetaData?.availableSampleCount {
             cell?.graphView?.sampleCount = Int(count)
+            cell?.iconButton?.enabled  = (count != 0)
+            cell?.iconButton?.selected = (count != 0)
             if count == 0 {
                 cell?.progressBar?.hidden    = true
             }

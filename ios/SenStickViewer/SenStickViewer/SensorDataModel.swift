@@ -19,8 +19,8 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         }
         didSet {
             cell?.iconButton?.addTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
-            updateCell()
             didUpdateSetting(self)
+            cell?.graphView?.plotData(logData)
         }
     }
     
@@ -65,6 +65,12 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         cell?.maxValue = self.maxValue
         cell?.minValue = self.minValue
         cell?.duration = duration
+    }
+    
+    func clearPlot()
+    {
+        logData = [[], [], []]
+        cell?.graphView?.clearPlot()        
     }
     
     func drawRealTimeData(data: [Double])

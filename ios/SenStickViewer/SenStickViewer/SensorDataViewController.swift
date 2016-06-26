@@ -74,13 +74,13 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
 
     func clearGraph()
     {
-        accelerationDataModel?.cell?.graphView?.clearPlot()
-        gyroDataModel?.cell?.graphView?.clearPlot()
-        magneticFieldDataModel?.cell?.graphView?.clearPlot()
-        brightnessDataModel?.cell?.graphView?.clearPlot()
-        uvDataModel?.cell?.graphView?.clearPlot()
-        humidityDataModel?.cell?.graphView?.clearPlot()
-        pressureDataModel?.cell?.graphView?.clearPlot()
+        accelerationDataModel?.clearPlot()
+        gyroDataModel?.clearPlot()
+        magneticFieldDataModel?.clearPlot()
+        brightnessDataModel?.clearPlot()
+        uvDataModel?.clearPlot()
+        humidityDataModel?.clearPlot()
+        pressureDataModel?.clearPlot()
     }
 
     // MARK: - SenStickDeviceDelegate

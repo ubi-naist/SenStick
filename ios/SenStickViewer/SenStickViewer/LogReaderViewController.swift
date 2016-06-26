@@ -91,21 +91,44 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate {
     // table view source/delegate
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
+        let dataCell = cell as? SensorDataCellView
+            
         switch (indexPath.row) {
         case 0:
-            accelerationDataModel?.cell  = cell as? SensorDataCellView
+            accelerationDataModel?.cell    = dataCell
+            dataCell?.iconButton?.enabled  = (accelerationDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (accelerationDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 1:
-            gyroDataModel?.cell          = cell as? SensorDataCellView
+            gyroDataModel?.cell            = dataCell
+            dataCell?.iconButton?.enabled  = (gyroDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (gyroDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 2:
-            magneticFieldDataModel?.cell = cell as? SensorDataCellView
+            magneticFieldDataModel?.cell   = dataCell
+            dataCell?.iconButton?.enabled  = (magneticFieldDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (magneticFieldDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 3:
-            brightnessDataModel?.cell    = cell as? SensorDataCellView
+            brightnessDataModel?.cell      = dataCell
+            dataCell?.iconButton?.enabled  = (brightnessDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (brightnessDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 4:
-            uvDataModel?.cell            = cell as? SensorDataCellView
+            uvDataModel?.cell              = dataCell
+            dataCell?.iconButton?.enabled  = (uvDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (uvDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 5:
-            humidityDataModel?.cell      = cell as? SensorDataCellView
+            humidityDataModel?.cell        = dataCell
+            dataCell?.iconButton?.enabled  = (humidityDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (humidityDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         case 6:
-            pressureDataModel?.cell      = cell as? SensorDataCellView
+            pressureDataModel?.cell        = dataCell
+            dataCell?.iconButton?.enabled  = (pressureDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            dataCell?.iconButton?.selected = (pressureDataModel?.service?.logMetaData?.availableSampleCount != 0)
+            
         default: break
         }
     }

@@ -92,7 +92,8 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate {
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
         let dataCell = cell as? SensorDataCellView
-            
+        dataCell?.iconButton?.userInteractionEnabled = false
+        
         switch (indexPath.row) {
         case 0:
             accelerationDataModel?.cell    = dataCell

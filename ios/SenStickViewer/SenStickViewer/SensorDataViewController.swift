@@ -136,7 +136,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     {
         // デバイス詳細情報表示に遷移
         if identifier == "deviceInformation" {
-            return true
+            return (device?.deviceInformationService != nil)
         }
         
         // 詳細表示遷移できるのはログ停止時だけ

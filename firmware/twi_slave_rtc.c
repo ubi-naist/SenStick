@@ -169,6 +169,7 @@ void setTWIRTCDateTime(ble_date_time_t *p_date)
         setting.year };
     writeToRTC(RTCSecondCountRegister, data, sizeof(data));
     
+//    NRF_LOG_PRINTF_DEBUG("setTWIRTCDateTime:hour:%d min:%d\n", setting.hour, setting.minute);
 //    p_context->is_calender_available = true;
 }
 
@@ -218,6 +219,7 @@ void getTWIRTCDateTime(ble_date_time_t *p_date)
     
     convertRTCSettingToBLEDateTime(p_date, &setting);
     
+//    NRF_LOG_PRINTF_DEBUG("getTWIRTCDateTime:hour:%d min:%d\n", setting.hour, setting.minute);
 //    return true;
 }
 /*

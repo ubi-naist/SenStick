@@ -36,6 +36,8 @@ extension NSDate { //: PackableType {
         }
         
         let dateComponents = NSDateComponents()
+        dateComponents.calendar = NSCalendar.currentCalendar()
+
         dateComponents.year   = Int(UInt16.unpack(bytes[0...1])!)
         dateComponents.month  = Int(bytes[2])
         dateComponents.day    = Int(bytes[3])

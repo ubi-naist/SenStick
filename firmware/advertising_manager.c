@@ -18,32 +18,32 @@ static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
             break;
             
         case BLE_ADV_EVT_DIRECTED:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_DIRECTED.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_DIRECTED.\n");
             break;
             
         case BLE_ADV_EVT_FAST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_FAST.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_FAST.\n");
             break;
             
         case BLE_ADV_EVT_SLOW:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_SLOW.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_SLOW.\n");
             break;
             
         case BLE_ADV_EVT_FAST_WHITELIST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_FAST_WHITELIST.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_FAST_WHITELIST.\n");
             break;
             
         case BLE_ADV_EVT_SLOW_WHITELIST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_SLOW_WHITELIST.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_SLOW_WHITELIST.\n");
             break;
             
         case BLE_ADV_EVT_WHITELIST_REQUEST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_WHITELIST_REQUEST.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_WHITELIST_REQUEST.\n");
             break;
             
             // Direct接続を使わないので、これを処理する必要はない。
         case BLE_ADV_EVT_PEER_ADDR_REQUEST:
-            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_PEER_ADDR_REQUEST.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_ADV_EVT_PEER_ADDR_REQUEST.\n");
             break;
             
         default:

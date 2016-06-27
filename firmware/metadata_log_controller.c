@@ -11,6 +11,7 @@
 #include "senstick_flash_address_definition.h"
 
 #include <nrf_assert.h>
+#include <nrf_log.h>
 
 #include "senstick_device_definition.h"
 #include "senstick_log_definition.h"
@@ -37,6 +38,7 @@ static void metaDataLogRead(uint8_t logid, meta_log_content_t *p_content)
 {
     const uint32_t target_address = getTargetAddress(logid);
     readFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
+//    NRF_LOG_PRINTF_DEBUG("metaDataLogRead:hours:%d minutes:%d\n", p_content->date.hours,p_content->date.minutes);
 }
 
 static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content)
@@ -50,6 +52,7 @@ static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content
     
     // 書き込み
     writeFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
+//    NRF_LOG_PRINTF_DEBUG("metaDataLogWriteContext:hours:%d minutes:%d\n", p_content->date.hours,p_content->date.minutes);
 }
 
 static void metaDataLogWrite(bool is_closed_flag, uint8_t logid, ble_date_time_t *p_date, char *text)
@@ -59,9 +62,9 @@ static void metaDataLogWrite(bool is_closed_flag, uint8_t logid, ble_date_time_t
     memset(&content, 0, sizeof(meta_log_content_t));
     content.is_closed_flag = is_closed_flag;
     content.log_id         = logid;
-    content.date           = *p_date;
+    memcpy(&(content.date), p_date, sizeof(ble_date_time_t));
     strncpy(content.text, text, sizeof(content.text));
-    
+//    NRF_LOG_PRINTF_DEBUG("metaDataLogWrite: sizeof(content.text) %d\n", sizeof(content.text));
     metaDataLogWriteContext(logid, &content);
 }
 
@@ -180,6 +183,7 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
             senstick_getCurrentDateTime(&datetime);
             senstick_getCurrentLogAbstractText(txt, sizeof(txt));
             metaDataLogWrite(0xff, new_log_id, &datetime, txt);
+//            NRF_LOG_PRINTF_DEBUG("metaDatalog_observeControlCommand:hour:%d min:%d\n", datetime.hours, datetime.minutes);
             break;
         case formattingStorage:
             metaLogFormatStorage();

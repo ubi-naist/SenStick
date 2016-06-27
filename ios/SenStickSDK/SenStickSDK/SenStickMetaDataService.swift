@@ -90,7 +90,7 @@ public class SenStickMetaDataService : SenStickService
     public func requestMetaData(logID: UInt8) {        
         device.writeValue(targetLogIDChar, value: [logID])
         device.readValue(targetDateTimeChar)
-        device.readValue(targetAbstractChar)
+//        device.readValue(targetAbstractChar)
         device.readValue(targetLogIDChar)
     }
 }

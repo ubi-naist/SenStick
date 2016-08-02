@@ -4,11 +4,17 @@
  *      *** Do not modify ! ***
  *
  * Project: 'senstick_xxaa_s110_sdk10' 
- * Target:  'nrf51822_xxaa_s110(debug)' 
+ * Target:  'nrf51822_xxaa_s110_pana(release)' 
  */
 
 #ifndef RTE_COMPONENTS_H
 #define RTE_COMPONENTS_H
+
+
+/*
+ * Define the Device Header File: 
+ */
+#define CMSIS_device_header "nrf.h"
 
 #define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS
 #define GPIOTE_ENABLED

@@ -37,10 +37,14 @@ static void battery_timer_handler(void *p_arg)
     if(batter_service_context.conn_handle != BLE_CONN_HANDLE_INVALID) {
         update_battery_service_battery_value(battery_level);
     }
-    
+#ifdef PANASONIC
+    // パナソニック版は、電池モニタリングが切断されている。このため電池残量監視機能はなく、スリープへの遷移もしない。
+#else
+    // 電池がなければ、スリープに遷移する
     if( battery_level == 0 ) {
         senstick_setControlCommand(enterDeepSleep);
     }
+#endif
 }
 
 void init_battery_service()

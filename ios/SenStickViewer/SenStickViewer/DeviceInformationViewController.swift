@@ -47,14 +47,6 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
         self.progressTextLabel.text   = ""
         self.dfuMessageTextLabel.text = ""
         
-        self.updateFirmwareButton.enabled = false
-        if let firmwareRevision = self.device?.deviceInformationService?.firmwareRevision {
-            // 空文字でも、ターゲットのリビジョンでもないならば、ファーム更新
-            if firmwareRevision != "" && firmwareRevision != "rev1.0" {
-                self.updateFirmwareButton.enabled = true
-            }
-        }
-        
         // plistを開いて更新ファーム情報を読み取る
         if let path = NSBundle.mainBundle().pathForResource("firmwareInfo", ofType: "plist") {
             let dict = NSDictionary(contentsOfFile: path)

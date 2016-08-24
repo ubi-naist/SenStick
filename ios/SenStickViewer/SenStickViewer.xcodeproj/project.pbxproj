@@ -18,9 +18,9 @@
 		F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322991C979B03001B53A0 /* Assets.xcassets */; };
 		F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F863229B1C979B03001B53A0 /* LaunchScreen.storyboard */; };
 		F86322C41C979B92001B53A0 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322C31C979B92001B53A0 /* images.xcassets */; };
-		F86EAD151D1E9C65007CB071 /* senstick_xxaa_s110_release_rev102.zip in Resources */ = {isa = PBXBuildFile; fileRef = F86EAD141D1E9C65007CB071 /* senstick_xxaa_s110_release_rev102.zip */; };
 		F86EAD211D1EC385007CB071 /* SensorDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EAD201D1EC385007CB071 /* SensorDataModel.swift */; };
 		F86EAD2A1D1FA633007CB071 /* LogListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EAD291D1FA633007CB071 /* LogListViewController.swift */; };
+		F87039151D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip in Resources */ = {isa = PBXBuildFile; fileRef = F87039141D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip */; };
 		F87098A61D0D1D06007A56CA /* DeviceInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */; };
 		F87BED681CF1D40900832E08 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87BED671CF1D40900832E08 /* DetailViewController.swift */; };
 		F888FFB81D0E852A00A99202 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F888FFB71D0E852A00A99202 /* SenStickSDK.framework */; };
@@ -85,9 +85,9 @@
 		F863229C1C979B03001B53A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F863229E1C979B03001B53A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86322C31C979B92001B53A0 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
-		F86EAD141D1E9C65007CB071 /* senstick_xxaa_s110_release_rev102.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev102.zip; sourceTree = "<group>"; };
 		F86EAD201D1EC385007CB071 /* SensorDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataModel.swift; sourceTree = "<group>"; };
 		F86EAD291D1FA633007CB071 /* LogListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogListViewController.swift; sourceTree = "<group>"; };
+		F87039141D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev103.zip; sourceTree = "<group>"; };
 		F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationViewController.swift; sourceTree = "<group>"; };
 		F87BED671CF1D40900832E08 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		F888FFB71D0E852A00A99202 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 		F813B2631D0E89D400EC9EC0 /* firmware */ = {
 			isa = PBXGroup;
 			children = (
-				F86EAD141D1E9C65007CB071 /* senstick_xxaa_s110_release_rev102.zip */,
+				F87039141D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip */,
 				F813B2611D0E89CD00EC9EC0 /* firmwareInfo.plist */,
 			);
 			name = firmware;
@@ -301,10 +301,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F863229D1C979B03001B53A0 /* LaunchScreen.storyboard in Resources */,
+				F87039151D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip in Resources */,
 				F86322C41C979B92001B53A0 /* images.xcassets in Resources */,
 				F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */,
 				F86322981C979B03001B53A0 /* Main.storyboard in Resources */,
-				F86EAD151D1E9C65007CB071 /* senstick_xxaa_s110_release_rev102.zip in Resources */,
 				F813B2621D0E89CD00EC9EC0 /* firmwareInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -44,9 +44,10 @@ static void getMaxMinValueHandler(bool isMax, uint8_t *p_src, uint8_t *p_dst)
 // センサ構造体データをBLEのシリアライズしたバイナリ配列に変換します。
 static uint8_t getBLEDataHandler(uint8_t *p_dst, uint8_t *p_src)
 {
-    HumidityAndTemperatureData_t *p_data = (HumidityAndTemperatureData_t *)p_src;
-    uint16ToByteArrayLittleEndian(&(p_dst[0]), p_data->humidity);
-    uint16ToByteArrayLittleEndian(&(p_dst[2]), p_data->temperature);
+    HumidityAndTemperatureData_t data;
+    memcpy(&data, p_src, sizeof(HumidityAndTemperatureData_t));
+    uint16ToByteArrayLittleEndian(&(p_dst[0]), data.humidity);
+    uint16ToByteArrayLittleEndian(&(p_dst[2]), data.temperature);
 //NRF_LOG_PRINTF_DEBUG("humidity:H0x%04x T0x%04x.\n", p_data->humidity, p_data->temperature);
     return 4;
 }

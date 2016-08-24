@@ -1,6 +1,10 @@
 #include <app_timer_appsh.h>
 #include <nrf_log.h>
 #include <nrf_assert.h>
+#include <app_mailbox.h>
+#include <nrf_soc.h>
+#include <app_util_platform.h>
+#include <app_scheduler.h>
 
 #include "log_controller.h"
 
@@ -21,8 +25,15 @@
 #include "humidity_sensor_base.h"
 #include "pressure_sensor_base.h"
 
-#define NUM_OF_SENSORS  7
-#define TIMER_PERIOD_MS 100
+#define NUM_OF_SENSORS     7
+#define MAILBOX_ITEM_SIZE  (MAX_SENSOR_RAW_DATA_SIZE +2)
+#define MAILBOX_QUEUE_SIZE 45
+
+// TIMER割り込みプリスケーラ。16MHz / 2^4 = 1MHz。
+#define TIMER_PRESCALERS_1US  (4)
+
+// 割り込み周期(かつサンプリング周期の最小量)
+#define TIMER_PERIOD_MS 10
 
 static const senstick_sensor_base_t *m_p_sensor_bases[] = {
     &accelerationSensorBase,
@@ -34,7 +45,10 @@ static const senstick_sensor_base_t *m_p_sensor_bases[] = {
     &pressureSensorBase
 };
 
-APP_TIMER_DEF(m_timer_id);
+
+//APP_TIMER_DEF(m_timer_id);
+// メールボックスのバイナリ配列のフォーマットは、[sensor_device_t, length, シリアライズされた構造体]
+APP_MAILBOX_DEF(m_mailbox, MAILBOX_QUEUE_SIZE, MAILBOX_ITEM_SIZE);
 
 typedef struct {
     // センサー個別のアクセスベースのポインタ、無効なのはNULL
@@ -47,6 +61,10 @@ typedef struct {
     
     // センサ動作状態フラグ
     bool isSensorWorking;
+
+    // ログ吐き出しタスク読みだしフラグ
+    bool isDequeueTaskRunning;
+    
     // センサのサンプリング周期積算カウンタ
     samplingDurationType sensorSampling[NUM_OF_SENSORS];
     
@@ -191,9 +209,61 @@ static void sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_da
     sensorServiceNotifyRealtimeData(&(context.services[deviceType]), buffer, length);
 }
 
-static void sensor_timer_handler(void *p_arg)
+static void flash_mailbox()
 {
+    ret_code_t err_code;
+    uint8_t buffer[MAILBOX_ITEM_SIZE];
+    
+    while(true) {
+        // キューの深さ表示
+        /*
+        static uint32_t queue_length = 1;
+        uint32_t length = app_mailbox_length_get (&m_mailbox);
+        if( length > queue_length ) {
+            queue_length = length;
+            NRF_LOG_PRINTF_DEBUG("queue: %d.\n", queue_length);
+        }
+         */
+        // デキュー
+        err_code = app_mailbox_get(&m_mailbox, buffer);
+        if(err_code == NRF_ERROR_NO_MEM) {
+            break;
+        }
+        
+        sensor_service_command_t command = context.sensorSetting[buffer[0]].command;
+        // BLEリアルタイム通知
+        if((command & 0x01) != 0) {
+            sensor_notify_raw_data((sensor_device_t)buffer[0], &buffer[2], buffer[1]);
+        }
+        // ログ保存とBLE通知
+        if((command & 0x02) != 0) {
+            writeLog(&(context.writingLogContext[buffer[0]]), &buffer[2], buffer[1]);
+            senstickSensorControllerNotifyLogData();
+        }
+    }
+    
+    // タスクフラグをクリア
+    CRITICAL_REGION_ENTER();
+    context.isDequeueTaskRunning = false;
+    CRITICAL_REGION_EXIT();
+}
+
+static void sched_event_handler(void *p_event_data, uint16_t event_size)
+{
+    flash_mailbox();
+}
+
+// Timer2 interrupt handler
+void TIMER2_IRQHandler(void)
+{
+    // clear event flag
+    NRF_TIMER2->EVENTS_COMPARE[0] = 0;
+    //  LOG("\nTIMER2_IRQHandler(), CC[0] %d", NRF_TIMER2->CC[0]);
+    
+    ret_code_t err_code;
     uint8_t buffer[MAX_SENSOR_RAW_DATA_SIZE];
+    uint8_t mailbox_buffer[MAILBOX_ITEM_SIZE];
+    bool did_enqueue = false;
     
     for(int i=0 ; i < NUM_OF_SENSORS; i++) {
         // 時間を増分
@@ -207,18 +277,23 @@ static void sensor_timer_handler(void *p_arg)
                 // データ取得
                 const senstick_sensor_base_t *ptr = m_p_sensor_bases[i];
                 uint8_t length = (ptr->getSensorDataHandler)(buffer);
-                // リアルタイム通知
-                if((command & 0x01) != 0) {
-                    sensor_notify_raw_data((sensor_device_t)i, buffer, length);
-                }
-                // ログ保存とBLE通知
-                if((command & 0x02) != 0) {
-                    writeLog(&(context.writingLogContext[i]), buffer, length);
-                    senstickSensorControllerNotifyLogData();
-                }
+                // メールボックスに格納
+                did_enqueue       = true;
+                mailbox_buffer[0] = i;
+                mailbox_buffer[1] = length;
+                memcpy(&mailbox_buffer[2], buffer, length);
+                err_code = app_mailbox_put (&m_mailbox, mailbox_buffer);
+                APP_ERROR_CHECK(err_code);
             }
         }
     }
+    // メールボックスに何かしらデータが入っている、かつ、タスクにメールボックス吐き出すがないならば、タスクを積む。
+    CRITICAL_REGION_ENTER();
+    if( did_enqueue && !context.isDequeueTaskRunning) {
+        context.isDequeueTaskRunning = true;
+        err_code = app_sched_event_put(NULL, 0, sched_event_handler);
+    }
+    CRITICAL_REGION_EXIT();
 }
 
 static void startLogging(uint8_t new_log_id)
@@ -246,37 +321,69 @@ static void stopLogging(void)
     }
 }
 
+static void setSensorPower(bool isPowerOn)
+{
+    for(int i=0 ; i < NUM_OF_SENSORS; i++) {
+        const senstick_sensor_base_t *ptr = m_p_sensor_bases[i];
+        if( context.isSensorAvailable[i] ) {
+            (ptr->setSensorWakeupHandler)(isPowerOn, &(context.sensorSetting[i]));
+        }
+    }
+}
+
 static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id)
 {
-    ret_code_t err_code;
-    
     // 状態が同じなら何もする必要はない。
     if(shouldWakeup == context.isSensorWorking) {
         return;
     }
     
-    // センサーの電源をon/off。
-    for(int i=0 ; i < NUM_OF_SENSORS; i++) {
-        const senstick_sensor_base_t *ptr = m_p_sensor_bases[i];
-        if( context.isSensorAvailable[i] ) {
-            (ptr->setSensorWakeupHandler)(shouldWakeup, &(context.sensorSetting[i]));
-        }
-    }
-    
     // ログ及びタイマーの開始と停止
     if(shouldWakeup) {
+        // センサースタート
+        setSensorPower(true);
+        // ログスタート
         startLogging(new_log_id);
-        err_code = app_timer_start(m_timer_id,
-                                   APP_TIMER_TICKS(TIMER_PERIOD_MS, APP_TIMER_PRESCALER),
-                                   NULL);
-        APP_ERROR_CHECK(err_code);
+        // タイマーをスタート
+        NRF_TIMER2->CC[0]       = TIMER_PERIOD_MS * 1000; // prescalerは1us。1msec = 1,000us
+        NRF_TIMER2->TASKS_START = 1;
     } else {
-        app_timer_stop(m_timer_id);
+        // タイマーをシャットダウン
+        NRF_TIMER2->TASKS_SHUTDOWN = 1;
+        // ログを閉じる
+        flash_mailbox();
         stopLogging();
+        // センサーの電源を落とす
+        setSensorPower(false);
     }
     
     // 状態保存
     context.isSensorWorking = shouldWakeup;
+}
+
+static void init_timer(void)
+{
+    uint32_t err_code;
+    
+    err_code = sd_nvic_ClearPendingIRQ(TIMER2_IRQn);
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = sd_nvic_SetPriority(TIMER2_IRQn, NRF_APP_PRIORITY_HIGH);
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = sd_nvic_EnableIRQ(TIMER2_IRQn);
+    APP_ERROR_CHECK(err_code);
+    
+    // TIMERは、16MHzのHCLKをソースにする。分周比は2^x。もしもソースが1MHz以下の場合は、消費電流が低減される。
+    NRF_TIMER2->MODE        = TIMER_MODE_MODE_Timer;
+    NRF_TIMER2->BITMODE     = TIMER_BITMODE_BITMODE_16Bit << TIMER_BITMODE_BITMODE_Pos;
+    NRF_TIMER2->PRESCALER   = TIMER_PRESCALERS_1US;
+    
+    // Set a shortcut register to clear a counter register by a compare match event.
+    NRF_TIMER2->SHORTS = (TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos);
+    
+    // Interrupt setup. Enable interuptions by CC0;
+    NRF_TIMER2->INTENSET = (TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos);
 }
 
 /**
@@ -288,16 +395,15 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
     
     // 初期化
     memset(&context, 0, sizeof(seenstick_sensor_controller_context_t));
-    // 設定、周期を300ミリ秒に初期化。
+    // 設定、周期を200ミリ秒に初期化。
     for(int i = 0; i < NUM_OF_SENSORS; i++) {
-        context.sensorSetting[i].samplingDuration = 300; // 300ミリ秒
+        context.sensorSetting[i].samplingDuration = 200; // 200ミリ秒
     }
     // 永続化していたデフォルト設定値を読み込み
     loadSensorSetting();
     
     // タイマーの初期化
-    err_code = app_timer_create(&(m_timer_id), APP_TIMER_MODE_REPEATED, sensor_timer_handler);
-    APP_ERROR_CHECK(err_code);
+    init_timer();
     
     // センサの初期化と、配列を初期化。初期化の成否は、センサ有効フラグに収める。
     for(int i =0; i < NUM_OF_SENSORS; i++) {
@@ -316,6 +422,11 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
             APP_ERROR_CHECK(err_code);
 //        }
     }
+    
+    // メールボックスを用意
+    err_code = app_mailbox_create(&m_mailbox);
+    APP_ERROR_CHECK(err_code);
+    
     return NRF_SUCCESS;
 }
 
@@ -417,26 +528,50 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
     if( ! isValidSensorServiceCommand((uint8_t)setting.command)) {
         return false;
     }
-    // TBD サンプリング周期、レンジ設定の正当性確認(センサーごとの)
-    // FIXME ここにベタ書きするものではない。本来はセンサごとに処理を委譲すべき。
+    // サンプリング周期、レンジ設定の正当性確認(センサーごとの)
+    // 本来はここにベタ書きするものではない。本来はセンサごとに処理を委譲すべき。
+    // I2Cバスを共有している都合、センサー単体で値の領域判定ができない部分があるので、それはここで処理する。
     switch(device_type) {
-        case AccelerationSensor:
-        case GyroSensor:
-        case MagneticFieldSensor:
-            if( setting.samplingDuration < 100 ) {
+        case AccelerationSensor:  // I2Cバスを330マイクロ秒使う。
+        case GyroSensor:          // I2Cバスを330マイクロ秒使う。
+        case MagneticFieldSensor: // I2Cバスを360マイクロ秒使う。
+            // これらのセンサーは20ミリ秒以上の周期。
+            if( setting.samplingDuration < 20) {
+                return false;
+            }
+            // ただし、UV,気圧、気圧および湿度が有効になっている場合は、200ミリ秒以下の周期はうけつけない
+            if( setting.samplingDuration < 200 &&
+               (context.sensorSetting[UltraVioletSensor].command != sensorServiceCommand_stop ||
+                context.sensorSetting[AirPressureSensor].command != sensorServiceCommand_stop ||
+                context.sensorSetting[BrightnessSensor].command  != sensorServiceCommand_stop ||
+                context.sensorSetting[HumidityAndTemperatureSensor].command != sensorServiceCommand_stop
+               )
+              ) {
                 return false;
             }
             break;
-        case BrightnessSensor:
-        case UltraVioletSensor:
-        case HumidityAndTemperatureSensor:
-        case AirPressureSensor:
-            if( setting.samplingDuration < 300 ) {
+        case UltraVioletSensor:            // I2Cバスを170マイクロ秒使う。
+        case AirPressureSensor:            // I2Cバスを500マイクロ秒使う。
+        case BrightnessSensor:             // 150ミリ秒 I2Cバスを専有する
+        case HumidityAndTemperatureSensor: // 21ミリ秒 I2Cバスを専有する
+            // 周期は200ミリ秒以上
+            if( setting.samplingDuration < 200 ) {
+                return false;
+            }
+            // 他のセンサーに、有効で200ミリ秒以下のものがいたら、センサーは有効にはできない
+            if((setting.command != sensorServiceCommand_stop) &&
+               ((context.sensorSetting[AccelerationSensor].command  != sensorServiceCommand_stop && context.sensorSetting[AccelerationSensor].samplingDuration  < 200 ) ||
+                (context.sensorSetting[GyroSensor].command          != sensorServiceCommand_stop && context.sensorSetting[GyroSensor].samplingDuration          < 200 ) ||
+                (context.sensorSetting[MagneticFieldSensor].command != sensorServiceCommand_stop && context.sensorSetting[MagneticFieldSensor].samplingDuration < 200 )
+               )
+              ) {
                 return false;
             }
             break;
+
         default:
-            break;
+            // 未知のデバイスタイプは除外
+            return false;
     }
     // 代入
     context.sensorSetting[device_type] = setting;

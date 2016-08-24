@@ -38,7 +38,10 @@ static void getMaxMinValueHandler(bool isMax, uint8_t *p_src, uint8_t *p_dst)
 // センサ構造体データをBLEのシリアライズしたバイナリ配列に変換します。
 static uint8_t getBLEDataHandler(uint8_t *p_dst, uint8_t *p_src)
 {
-    uint32ToByteArrayLittleEndian(&(p_dst[0]), *((AirPressureData_t *)p_src));
+    // アライメントに乗らないアドレスからもくるため、ここで一旦コピー
+    AirPressureData_t data;
+    memcpy((uint8_t *)&data, p_src, sizeof(AirPressureData_t));
+    uint32ToByteArrayLittleEndian(p_dst, data);
 //NRF_LOG_PRINTF_DEBUG("pressure:getBLEDataHandler() 0x%04x\n", *((uint32_t *)p_src));
     return 4;
 }

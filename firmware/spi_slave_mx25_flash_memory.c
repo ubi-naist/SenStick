@@ -224,6 +224,12 @@ static void waitFlashReady(void)
             break;
         }
     }
+/*
+    static int max_count = 0;    
+    if(cnt > max_count) {
+        max_count = cnt;
+        NRF_LOG_PRINTF_DEBUG("waitFlashReady: %d.\n", max_count);
+    }*/
 }
 
 static void writeCommandWriteEnable(void)
@@ -417,6 +423,9 @@ void erase4kSector(uint32_t address)
     writeToSPISlave( FLASH_CMD_SE4B, buffer, sizeof(buffer));
     
     waitFlashReady();
+    
+    // ワーストケース(120ミリ秒)をシミュレートするための、遅延。素の遅延30ミリ秒を引いて。
+//    nrf_delay_ms(90);
 }
 
 void formatFlash(uint32_t address, int size)

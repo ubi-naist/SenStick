@@ -40,10 +40,11 @@ static void getMaxMinValueHandler(bool isMax, uint8_t *p_src, uint8_t *p_dst)
 // センサ構造体データをBLEのシリアライズしたバイナリ配列に変換します。
 static uint8_t getBLEDataHandler(uint8_t *p_dst, uint8_t *p_src)
 {
-    AccelerationData_t *p_data = (AccelerationData_t *)p_src;
-    int16ToByteArrayLittleEndian(&(p_dst[0]), p_data->x);
-    int16ToByteArrayLittleEndian(&(p_dst[2]), p_data->y);
-    int16ToByteArrayLittleEndian(&(p_dst[4]), p_data->z);
+    AccelerationData_t data;
+    memcpy(&data, p_src, sizeof(AccelerationData_t));
+    int16ToByteArrayLittleEndian(&(p_dst[0]), data.x);
+    int16ToByteArrayLittleEndian(&(p_dst[2]), data.y);
+    int16ToByteArrayLittleEndian(&(p_dst[4]), data.z);
     
     return 6;
 }

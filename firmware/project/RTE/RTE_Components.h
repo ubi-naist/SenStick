@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'senstick_xxaa_s110_sdk10' 
- * Target:  'nrf51822_xxaa_s110_pana(release)' 
+ * Target:  'nrf51822_xxaa_s110(debug)' 
  */
 
 #ifndef RTE_COMPONENTS_H

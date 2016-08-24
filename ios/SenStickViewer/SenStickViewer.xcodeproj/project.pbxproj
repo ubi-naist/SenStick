@@ -12,6 +12,7 @@
 		F81AAA731D1FC55E00BF7E85 /* LogReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAA721D1FC55E00BF7E85 /* LogReaderViewController.swift */; };
 		F81AC9AF1CF11C5300706391 /* SensorDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AC9AE1CF11C5300706391 /* SensorDataViewController.swift */; };
 		F83941B01CF11DE6008F2A52 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83941AF1CF11DE6008F2A52 /* SensorStatusCellView.swift */; };
+		F859514A1D6D2EAA000E623D /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F813B25B1D0E86E400EC9EC0 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F86322911C979B03001B53A0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86322901C979B03001B53A0 /* AppDelegate.swift */; };
 		F86322981C979B03001B53A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F86322961C979B03001B53A0 /* Main.storyboard */; };
 		F863229A1C979B03001B53A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86322991C979B03001B53A0 /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F859514A1D6D2EAA000E623D /* SenStickSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,11 +503,13 @@
 			baseConfigurationReference = 8F8912494D9F904F7DB5DF38 /* Pods-SenStickViewer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SenStickViewer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wa-fu-u.SenStickViewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "401eba30-19bb-4fe6-925d-888e32758a9e";
 			};
 			name = Debug;
 		};
@@ -519,6 +523,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wa-fu-u.SenStickViewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "401eba30-19bb-4fe6-925d-888e32758a9e";
 			};
 			name = Release;
 		};

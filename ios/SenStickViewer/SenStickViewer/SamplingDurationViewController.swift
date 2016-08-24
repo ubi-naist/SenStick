@@ -110,8 +110,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         }
         
         if let service = target as? BrightnessSensorService {
-            if var value = Int(durationField.text!) {
-                value = max(300, value) // 300ミリ秒以上に制限
+            if let value = Int(durationField.text!) {
                 let sd = SamplingDurationType(milliSeconds: UInt16(value))
                 let setting = SensorSettingData<BrightnessRange>(status: (service.settingData?.status)!, samplingDuration: sd, range: (service.settingData?.range)!)
                 service.writeSetting(setting)
@@ -120,8 +119,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         }
         
         if let service = target as? UVSensorService {
-            if var value = Int(durationField.text!) {
-                value = max(300, value) // 300ミリ秒以上に制限
+            if let value = Int(durationField.text!) {
                 let sd = SamplingDurationType(milliSeconds: UInt16(value))
                 let setting = SensorSettingData<UVSensorRange>(status: (service.settingData?.status)!, samplingDuration: sd, range: (service.settingData?.range)!)
                 service.writeSetting(setting)

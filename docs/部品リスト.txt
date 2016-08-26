@@ -1,0 +1,98 @@
+rev0.1
+ 2016年8月25日 上原昭宏 ブレイブリッジから引き継いだ回路図、ファイル名:奈良先端回路図v33.pdf、から抜き出した。
+
+基板構成
+- 本体基板
+- センサー基板
+- デバッガ接続アダプタ用基板
+
+== SenStick本体基板 ==
+パーツ番号	型番			概要
+CN2		C-UBO-05BF2X-03		USBマイクロコネクタ
+
+* USBシリアル周り
+* 注釈: USBシリアル機能を使わないならば、以下のパーツは必要ない。
+IC5		CP2104-F03-GMR		USB-シリアル・インタフェース
+R1		4.7k
+C12		1uF
+C2		4.7uF
+C5		0.1uF
+C11		4.7uF
+ESD1		LXES15AAA1-100
+ESD2		LXES15AAA1-100
+ESD3		LXES15AAA1-100
+
+* USB->Lipo充電周り
+IC8		BQ24090			Li-po充電管理
+LED1		Side_RED
+R10		1k
+C16		0.1uF
+C25		1u/6.3V
+R15		22k
+R14		2k
+R16		10k
+C24		1uF/6.3V
+C14		2.2uF
+F1		FMC16 102WBTP		ヒューズ
+BATT3		3.6V,58mAh,Li-po
+
+* Li-po->Senstick内部電源のDCDCコンバータ周り
+IC6		TOREX_XC9265		DCDCコンバータ
+C15		10uF
+R5		100k
+L1		1239AS-H-100M=P2(TOKO)
+C17		JMK107BJ226MA(Yuden)
+SW1		TACT_Diptronics_T3AL(2.6x3.0)	電源遮断によるリセットスイッチ。
+
+* BLEモジュールまわり
+MOD1		BVMCN5112BK		BLEモジュール。nRF51822, rev. 3, 16kB RAM, 256kB ROM。32MHz X'tal搭載。32kHz X'talおよびDCDC周辺部品は非搭載。
+R3		1608-R(S)
+LED2		R0805UC-S2
+Q1		DTC123EE		LED駆動Tr
+C21		10uF
+C20		10uF
+C13		10uF
+SW2		TACT_Diptronics_T3AL(2.6x3.0)
+CN5		4ピンコネクタ端子		コンスルー用、4ピンスルーホール
+R6		470k			R6,R7,C19は、電池電圧モニタ用抵抗分周回路
+R7		220k
+C19		0.01uF
+
+IC1		MX25L25635FZ2I-10G	256Mbit EEPROM
+
+IC2		MX25L25635FZ2I-10G	9軸センサー
+C8		4.7uF
+C22		0.1uF
+C9		0.1uF
+C1		0.1uF
+
+IC4		R2221L			リコー。カレンダーIC
+X1		32kHz X'tal
+R2		10k
+C4		0.1uF
+
+CN4 		5ピンコネクタ端子		コンスルー用、5ピンスルーホール
+
+== センサー基板 ==
+パーツ番号	型番			概要
+CN1		CONN-5PIN		5ピン、50milピッチ、コンスルーコネクタ
+
+IC9		ST_LPS25HB		STマイクロ。気圧センサー。
+C3		0.1uF
+C7 		10uF
+C10		1.0uF
+
+IC3		SHT20			STマイクロ。温湿度センサー
+C6		0.1uF
+
+IC12		VEML6070		Vishray。UVセンサー
+C18		0.1uF
+R4		560k
+
+IC10		BH1780GLI_OPT 		ROHM。照度センサー
+C23		0.1uF
+
+== デバッグ用アダプタ基板 ==
+パーツ番号	型番			概要
+CN6		2x5_SEGGER_9pin		50milピッチ、9ピンオスヘッダピン
+CN3		COCNON-N4NPI-N4PIN	4ピン、50milピッチ、コンスルーコネクタ

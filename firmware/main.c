@@ -39,6 +39,8 @@
 #include "spi_slave_mx25_flash_memory.h"
 #include "metadata_log_controller.h"
 
+static ble_uuid_t m_advertisiong_uuid;
+
 // 関数宣言
 static void printBLEEvent(ble_evt_t * p_ble_evt);
 
@@ -82,8 +84,17 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     senstickSensorController_handleBLEEvent(p_ble_evt);
 //    dm_ble_evt_handler(p_ble_evt);
     printBLEEvent(p_ble_evt);
+    
+    switch (p_ble_evt->header.evt_id)
+    {
+        case BLE_GAP_EVT_DISCONNECTED:
+            // デバイス名の変更をアドバタイジングに反映するために、切断時にアドバタイジングの再初期化を行う。
+            sd_ble_gap_adv_stop();            
+            init_advertising_manager(&m_advertisiong_uuid);
+            startAdvertising();
+            break;
+    }
 }
-
 
 // デバッグ用、BLEイベントをprintfします。
 static void printBLEEvent(ble_evt_t * p_ble_evt)
@@ -221,10 +232,9 @@ int main(void)
     init_app_gap();
     init_device_manager(true); //    void init_device_manager(bool erase_bonds);
     
-    ble_uuid_t advertisiong_uuid;
-    advertisiong_uuid.uuid = 0x2000;
-    advertisiong_uuid.type = uuid_type;
-    init_advertising_manager(&advertisiong_uuid);
+    m_advertisiong_uuid.uuid = 0x2000;
+    m_advertisiong_uuid.type = uuid_type;
+    init_advertising_manager(&m_advertisiong_uuid);
 
     // BLEサービス
     init_device_information_service();

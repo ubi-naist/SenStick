@@ -26,7 +26,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     // MARK: Properties
     public private(set) var isConnected: Bool
     
-    public private(set) var name: String
+    public var name: String
     public private(set) var identifier: NSUUID
 
     public private(set) var deviceInformationService:   DeviceInformationService?
@@ -43,12 +43,12 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     public private(set) var pressureSensorService:      PressureSensorService?
     
     // MARK: initializer
-    init(manager: CBCentralManager, peripheral:CBPeripheral)
+    init(manager: CBCentralManager, peripheral:CBPeripheral, name: String?)
     {
         self.manager    = manager
         self.peripheral = peripheral
         self.isConnected = false
-        self.name        = peripheral.name ?? ""
+        self.name        = name ?? peripheral.name ?? ""
         self.identifier  = peripheral.identifier
         
         super.init()

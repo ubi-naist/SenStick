@@ -161,7 +161,8 @@ public class SenStickControlService : SenStickService
             
         case SenStickUUIDs.DeviceNameCharUUID:
             if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
-                self.deviceName = s
+                self.deviceName  = s
+                self.device.name = s
             }
             
         default:

@@ -55,7 +55,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         
         // 接続済のペリフェラルを取得する
         for peripheral in (manager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
-            addPeripheral(peripheral)
+            addPeripheral(peripheral, name:nil)
         }
         
         // スキャンを開始する。
@@ -108,12 +108,12 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     }
     
     // MARK: Private methods
-    func addPeripheral(peripheral: CBPeripheral)
+    func addPeripheral(peripheral: CBPeripheral, name: String?)
     {
         //すでに配列にあるかどうか探す, なければ追加。KVOを活かすため、配列それ自体を代入する
         if !devices.contains({ element -> Bool in element.peripheral == peripheral }) {
             var devs = Array<SenStickDevice>(self.devices)
-            devs.append(SenStickDevice(manager: self.manager!, peripheral: peripheral))
+            devs.append(SenStickDevice(manager: self.manager!, peripheral: peripheral, name: name))
             dispatch_async(dispatch_get_main_queue(), {
                 self.devices = devs
             })
@@ -154,7 +154,7 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
     {
         dispatch_async(dispatch_get_main_queue(), {
-            self.addPeripheral(peripheral)
+            self.addPeripheral(peripheral, name: advertisementData[CBAdvertisementDataLocalNameKey] as? String )
         })
     }
     

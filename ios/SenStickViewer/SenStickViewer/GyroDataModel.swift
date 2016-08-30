@@ -21,7 +21,7 @@ class GyroDataModel : SensorDataModel
     
     override func startToReadLog(logid: UInt8)
     {
-        service?.readLogData()         
+        service?.readLogData()
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -31,14 +31,14 @@ class GyroDataModel : SensorDataModel
     // MARK: - SenStickSensorServiceDelegate
     override func didUpdateSetting(sender:AnyObject)
     {
-        cell?.iconButton?.enabled = (self.service != nil)        
+        cell?.iconButton?.enabled = (self.service != nil)
         cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
         //        let k = M_PI / Double(180), 1/60
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration
-            switch(setting.range) {                
+            switch(setting.range) {
             case .ROTATION_RANGE_250DPS:
                 self.maxValue = 5
                 self.minValue = -5
@@ -67,31 +67,30 @@ class GyroDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-//        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
-        if let count = service?.logMetaData?.availableSampleCount {
-            cell?.graphView?.sampleCount = Int(count)
-            cell?.iconButton?.enabled  = (count != 0)
-            cell?.iconButton?.selected = (count != 0)
-            if count == 0 {
-                cell?.progressBar?.hidden    = true
-            }
-        }
+        //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+        self.duration = (service?.logMetaData?.samplingDuration)!
+        
+        let count = (service?.logMetaData?.availableSampleCount)!
+        cell?.graphView?.sampleCount = Int(count)
+        cell?.iconButton?.enabled    = (count != 0)
+        cell?.iconButton?.selected   = (count != 0)
+        cell?.progressBar?.hidden    = (count == 0)
     }
     
     override func didUpdateLogData(sender: AnyObject)
     {
-//        debugPrint("\(#function) \(sender)")
+        //        debugPrint("\(#function) \(sender)")
         if let array = service?.readLogData() {
-//        debugPrint("     \(array.count)")
+            //        debugPrint("     \(array.count)")
             for data in array {
                 addReadLog([data.x, data.y, data.z])
             }
         }
     }
-
+    
     override func didFinishedLogData(sender: AnyObject)
     {
-//        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
+        //        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
         stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
     }
     

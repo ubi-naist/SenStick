@@ -20,7 +20,7 @@ class BrightnessDataModel : SensorDataModel
     
     override func startToReadLog(logid: UInt8)
     {
-        service?.readLogData()         
+        service?.readLogData()
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -30,7 +30,7 @@ class BrightnessDataModel : SensorDataModel
     // MARK: - SenStickSensorServiceDelegate
     override func didUpdateSetting(sender:AnyObject)
     {
-        cell?.iconButton?.enabled = (self.service != nil)        
+        cell?.iconButton?.enabled = (self.service != nil)
         self.cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
@@ -51,14 +51,13 @@ class BrightnessDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        if let count = service?.logMetaData?.availableSampleCount {
-            cell?.graphView?.sampleCount = Int(count)
-            cell?.iconButton?.enabled  = (count != 0)
-            cell?.iconButton?.selected = (count != 0)
-            if count == 0 {
-                cell?.progressBar?.hidden    = true                
-            }
-        }
+        self.duration = (service?.logMetaData?.samplingDuration)!
+        
+        let count = (service?.logMetaData?.availableSampleCount)!
+        cell?.graphView?.sampleCount = Int(count)
+        cell?.iconButton?.enabled  = (count != 0)
+        cell?.iconButton?.selected = (count != 0)
+        cell?.progressBar?.hidden    = (count == 0 )                
     }
     
     override func didUpdateLogData(sender: AnyObject)
@@ -69,18 +68,18 @@ class BrightnessDataModel : SensorDataModel
             }
         }
     }
-
+    
     override func didFinishedLogData(sender: AnyObject)
-    {        
+    {
         stopReadingLog("brightness", duration: service?.logMetaData?.samplingDuration)
     }
-
+    
     // MARK: - Event handler
     override func iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = cell!.iconButton!.selected ? .Stopping : .SensingAndLogging
         
         if let current_setting = self.service?.settingData {
-        let setting = SensorSettingData<BrightnessRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
+            let setting = SensorSettingData<BrightnessRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
             
             service?.writeSetting(setting)
         }

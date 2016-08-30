@@ -20,7 +20,7 @@ class UVDataModel : SensorDataModel
     
     override func startToReadLog(logid: UInt8)
     {
-        service?.readLogData()         
+        service?.readLogData()
         super.startToReadLog(logid)
         
         let logID = SensorLogID(logID: logid, skipCount: 0, position: 0)
@@ -28,10 +28,10 @@ class UVDataModel : SensorDataModel
     }
     
     // MARK: - SenStickSensorServiceDelegate
-
+    
     override func didUpdateSetting(sender:AnyObject)
     {
-        cell?.iconButton?.enabled = (self.service != nil)        
+        cell?.iconButton?.enabled = (self.service != nil)
         cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
@@ -52,14 +52,13 @@ class UVDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        if let count = service?.logMetaData?.availableSampleCount {
-            cell?.graphView?.sampleCount = Int(count)
-            cell?.iconButton?.enabled  = (count != 0)
-            cell?.iconButton?.selected = (count != 0)
-            if count == 0 {
-                cell?.progressBar?.hidden    = true
-            }
-        }
+        self.duration = (service?.logMetaData?.samplingDuration)!
+        
+        let count = (service?.logMetaData?.availableSampleCount)!
+        cell?.graphView?.sampleCount = Int(count)
+        cell?.iconButton?.enabled    = (count != 0)
+        cell?.iconButton?.selected   = (count != 0)
+        cell?.progressBar?.hidden    = (count == 0)
     }
     
     override func didUpdateLogData(sender: AnyObject)
@@ -70,12 +69,12 @@ class UVDataModel : SensorDataModel
             }
         }
     }
-
+    
     override func didFinishedLogData(sender: AnyObject)
-    { 
+    {
         stopReadingLog("uv", duration: service?.logMetaData?.samplingDuration)
     }
-
+    
     // MARK: - Event handler
     override func  iconButtonToutchUpInside(sender: UIButton) {
         let status :SenStickStatus = cell!.iconButton!.selected ? .Stopping : .SensingAndLogging

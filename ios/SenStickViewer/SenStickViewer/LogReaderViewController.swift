@@ -81,6 +81,17 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
     func didStopReadingLog(sender: SensorDataModel)
     {
         debugPrint("\(#function) \(sender.sensorName).")
+        // ファイルに保存
+        let documentFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
+        let folder         = documentFolder.stringByAppendingPathComponent("\(self.device!.name)")                  as NSString
+        let filePath       = folder.stringByAppendingPathComponent("\(sender.sensorName)_\(sender.logid).csv")
+        // フォルダを作成
+        if !NSFileManager.defaultManager().fileExistsAtPath(folder as String)
+        {
+            try! NSFileManager.defaultManager().createDirectoryAtPath(folder as String, withIntermediateDirectories: true, attributes: nil)
+        }
+        // ファイルに保存
+        sender.saveToFile(filePath)
     }
     
     // table view source/delegate

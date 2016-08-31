@@ -128,39 +128,28 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         cell?.progressBar?.progress = Float(logData[0].count) / Float(self.cell!.graphView!.sampleCount)
     }
     
-    func stopReadingLog(fileName: String)
-    {
-        // ファイルに保存
-        let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
-        let filePath   = folderPath.stringByAppendingPathComponent("\(fileName)_\(self.logid).csv")
-        saveToFile(filePath, data: logData)
-        
-        // グラフの終了状態
-        cell?.progressBar?.hidden    = true
-    }
-    
-    private func saveToFile(filePath:String, data:[[Double]])
+    func saveToFile(filePath:String)
     {
         var content = ""
-        let colomn  = data.count
-        let row     = data[0].count
+        let colomn  = logData.count
+        let row     = logData[0].count
         
         var time :Double = 0
         for r in 0..<row {
-            content += "\(time) , "
+            time    += duration.duration
+            content += "\(time),\t"
             for c in 0..<colomn {
-                if data[c].count > r {
-                    content += "\((data[c])[r])"
+                if logData[c].count > r {
+                    content += "\"\((logData[c])[r])\""
                 } else {
-                    content += " , "
+                    content += ",\t"
                     break
                 }
                 if c != (colomn - 1) {
-                    content += " , "
+                    content += ",\t"
                 }
             }
             content += "\n"
-            time    += duration.duration
         }
         
         do {
@@ -188,7 +177,8 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     {}
     func didFinishedLogData(sender: AnyObject)
     {
-        stopReadingLog(self.sensorName)
+        // グラフの終了状態
+        cell?.progressBar?.hidden    = true
         if let dlgt = self.delegate {
             dlgt.didStopReadingLog(self)
         }

@@ -18,6 +18,11 @@ class HumidityDataModel : SensorDataModel
         }
     }
     
+    override init() {
+        super.init()
+        self.sensorName = "humidity"
+    }
+    
     override func startToReadLog(logid: UInt8)
     {
         service?.readLogData()
@@ -52,9 +57,16 @@ class HumidityDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData  else {
+            return
+        }
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        self.duration = metaData.samplingDuration
+        // レンジの更新
+        self.maxValue = 100
+        self.minValue = 0
+        
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
@@ -68,11 +80,6 @@ class HumidityDataModel : SensorDataModel
                 addReadLog([data.humidity, data.temperature])
             }
         }
-    }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        stopReadingLog("humidity", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

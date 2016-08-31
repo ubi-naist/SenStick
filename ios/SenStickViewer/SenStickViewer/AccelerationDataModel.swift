@@ -19,6 +19,11 @@ class AccelerationDataModel :SensorDataModel
         }
     }
     
+    override init() {
+        super.init()
+        self.sensorName = "acceleration"
+    }
+    
     override func startToReadLog(logid: UInt8)
     {
         super.startToReadLog(logid)
@@ -30,29 +35,34 @@ class AccelerationDataModel :SensorDataModel
     // MARK: - SenStickSensorServiceDelegate
     override func didUpdateSetting(sender:AnyObject)
     {
-        cell?.iconButton?.enabled = (self.service != nil)
+        cell?.iconButton?.enabled       = (self.service != nil)
         self.cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
         
         // レンジの更新
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration
-            switch(setting.range) {
-            case .ACCELERATION_RANGE_2G:
-                self.maxValue = 2.5
-                self.minValue = -2.5
-                
-            case .ACCELERATION_RANGE_4G:
-                self.maxValue = 4.5
-                self.minValue = -4.5
-                
-            case .ACCELERATION_RANGE_8G:
-                self.maxValue = 8.0
-                self.minValue = -8.0
-                
-            case .ACCELERATION_RANGE_16G:
-                self.maxValue = 16.0
-                self.minValue = -16.0
-            }
+            updateRange(setting.range)
+        }
+    }
+    
+    func updateRange(range:AccelerationRange)
+    {
+        switch(range) {
+        case .ACCELERATION_RANGE_2G:
+            self.maxValue = 2.5
+            self.minValue = -2.5
+            
+        case .ACCELERATION_RANGE_4G:
+            self.maxValue = 4.5
+            self.minValue = -4.5
+            
+        case .ACCELERATION_RANGE_8G:
+            self.maxValue = 8.0
+            self.minValue = -8.0
+            
+        case .ACCELERATION_RANGE_16G:
+            self.maxValue = 16.0
+            self.minValue = -16.0
         }
     }
     
@@ -65,14 +75,19 @@ class AccelerationDataModel :SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData else {
+            return
+        }
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+        self.duration = metaData.samplingDuration
+        updateRange(metaData.range)
+        
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
-        cell?.progressBar?.hidden    = (count == 0)        
+        cell?.progressBar?.hidden    = (count == 0)
     }
     
     override func didUpdateLogData(sender: AnyObject)
@@ -82,12 +97,6 @@ class AccelerationDataModel :SensorDataModel
                 addReadLog([data.x, data.y, data.z])
             }
         }
-    }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        //        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
-        stopReadingLog("acceleration", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

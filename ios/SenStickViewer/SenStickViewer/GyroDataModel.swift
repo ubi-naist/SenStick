@@ -19,6 +19,11 @@ class GyroDataModel : SensorDataModel
         }
     }
     
+    override init() {
+        super.init()
+        self.sensorName = "gyro"
+    }
+    
     override func startToReadLog(logid: UInt8)
     {
         service?.readLogData()
@@ -38,23 +43,28 @@ class GyroDataModel : SensorDataModel
         //        let k = M_PI / Double(180), 1/60
         if let setting = service?.settingData {
             self.duration = setting.samplingDuration
-            switch(setting.range) {
-            case .ROTATION_RANGE_250DPS:
-                self.maxValue = 5
-                self.minValue = -5
-                
-            case .ROTATION_RANGE_500DPS:
-                self.maxValue = 10
-                self.minValue = -10
-                
-            case .ROTATION_RANGE_1000DPS:
-                self.maxValue = 20
-                self.minValue = -20
-                
-            case .ROTATION_RANGE_2000DPS:
-                self.maxValue = 40
-                self.minValue = -40
-            }
+            updateRange(setting.range)
+        }
+    }
+    
+    func updateRange(range: RotationRange)
+    {
+        switch(range) {
+        case .ROTATION_RANGE_250DPS:
+            self.maxValue = 5
+            self.minValue = -5
+            
+        case .ROTATION_RANGE_500DPS:
+            self.maxValue = 10
+            self.minValue = -10
+            
+        case .ROTATION_RANGE_1000DPS:
+            self.maxValue = 20
+            self.minValue = -20
+            
+        case .ROTATION_RANGE_2000DPS:
+            self.maxValue = 40
+            self.minValue = -40
         }
     }
     
@@ -67,10 +77,15 @@ class GyroDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData else {
+            return
+        }
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        //        debugPrint("\(#function), availableCount: \(service!.logMetaData!.availableSampleCount)")
+        self.duration = metaData.samplingDuration
+        updateRange(metaData.range)
+        
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
@@ -87,13 +102,6 @@ class GyroDataModel : SensorDataModel
             }
         }
     }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        //        debugPrint("\(#function) availableCount: \(service!.logMetaData!.availableSampleCount) read count:\(super.logData[0].count)")
-        stopReadingLog("gyro", duration: service?.logMetaData?.samplingDuration)
-    }
-    
     
     // MARK: - Event handler
     override func  iconButtonToutchUpInside(sender: UIButton) {

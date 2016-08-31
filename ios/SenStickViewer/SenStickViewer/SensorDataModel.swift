@@ -19,10 +19,17 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         }
         didSet {
             cell?.iconButton?.addTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
-            didUpdateSetting(self)
+            if self.isLogReading {
+                didUpdateMetaData(self)
+            } else {
+                didUpdateSetting(self)
+            }
             cell?.graphView?.plotData(logData)
         }
     }
+    var isLogReading: Bool = false
+    
+    var sensorName: String = "sensor"
     
     var logData: [[Double]] = [[], [], []]
     var logid: UInt8 = 0
@@ -91,6 +98,8 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     
     func startToReadLog(logid: UInt8)
     {
+        self.isLogReading = true
+        
         self.logid = logid
         logData = [[], [], []]
         
@@ -108,18 +117,18 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         cell?.progressBar?.progress = Float(logData[0].count) / Float(self.cell!.graphView!.sampleCount)
     }
     
-    func stopReadingLog(fileName: String, duration: SamplingDurationType?)
+    func stopReadingLog(fileName: String)
     {
         // ファイルに保存
         let folderPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
         let filePath   = folderPath.stringByAppendingPathComponent("\(fileName)_\(self.logid).csv")
-        saveToFile(filePath, data: logData, duration: duration!)
+        saveToFile(filePath, data: logData)
         
         // グラフの終了状態
         cell?.progressBar?.hidden    = true
     }
     
-    private func saveToFile(filePath:String, data:[[Double]], duration: SamplingDurationType)
+    private func saveToFile(filePath:String, data:[[Double]])
     {
         var content = ""
         let colomn  = data.count
@@ -167,5 +176,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     func didUpdateLogData(sender: AnyObject)
     {}
     func didFinishedLogData(sender: AnyObject)
-    {}
+    {
+        stopReadingLog(self.sensorName)
+    }
 }

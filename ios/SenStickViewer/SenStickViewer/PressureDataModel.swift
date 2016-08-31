@@ -18,6 +18,11 @@ class PressureDataModel : SensorDataModel
         }
     }
     
+    override init() {
+        super.init()
+        self.sensorName = "pressure"
+    }
+    
     override func startToReadLog(logid: UInt8)
     {
         service?.readLogData()
@@ -52,9 +57,16 @@ class PressureDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData  else {
+            return
+        }
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        self.duration = metaData.samplingDuration
+        // レンジの更新
+        self.maxValue = 1300
+        self.minValue = 800
+        
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
@@ -68,11 +80,6 @@ class PressureDataModel : SensorDataModel
                 addReadLog([data.pressure])
             }
         }
-    }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        stopReadingLog("pressure", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

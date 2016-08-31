@@ -17,6 +17,11 @@ class UVDataModel : SensorDataModel
             didUpdateSetting(self)
         }
     }
+
+    override init() {
+        super.init()
+        self.sensorName = "uv"
+    }
     
     override func startToReadLog(logid: UInt8)
     {
@@ -52,9 +57,16 @@ class UVDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData  else {
+            return
+        }
+
+        self.duration = metaData.samplingDuration
+        // レンジの更新
+        self.maxValue = 500
+        self.minValue = 0
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
@@ -68,11 +80,6 @@ class UVDataModel : SensorDataModel
                 addReadLog([data.uv])
             }
         }
-    }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        stopReadingLog("uv", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

@@ -19,6 +19,11 @@ class MagneticFieldDataModel : SensorDataModel
         }
     }
     
+    override init() {
+        super.init()
+        self.sensorName = "magnetic"
+    }
+    
     override func startToReadLog(logid: UInt8)
     {
         service?.readLogData()
@@ -52,9 +57,16 @@ class MagneticFieldDataModel : SensorDataModel
     
     override func didUpdateMetaData(sender: AnyObject)
     {
-        self.duration = (service?.logMetaData?.samplingDuration)!
+        guard let metaData = service?.logMetaData  else {
+            return
+        }
         
-        let count = (service?.logMetaData?.availableSampleCount)!
+        self.duration = metaData.samplingDuration
+        // レンジの更新
+        self.maxValue = 100
+        self.minValue = -100
+        
+        let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
         cell?.iconButton?.enabled    = (count != 0)
         cell?.iconButton?.selected   = (count != 0)
@@ -68,11 +80,6 @@ class MagneticFieldDataModel : SensorDataModel
                 addReadLog([data.x, data.y, data.z])
             }
         }
-    }
-    
-    override func didFinishedLogData(sender: AnyObject)
-    {
-        stopReadingLog("magnetic", duration: service?.logMetaData?.samplingDuration)
     }
     
     // MARK: - Event handler

@@ -9,10 +9,16 @@
 import UIKit
 import SenStickSDK
 
+protocol SensorDataModelDelegate :class {
+    func didStopReadingLog(sender: SensorDataModel)
+}
+
 class SensorDataModel: SenStickSensorServiceDelegate {
     
-    let sampleCount: Int = 300
+    weak var delegate: SensorDataModelDelegate?
     
+    let sampleCount: Int = 300
+
     var cell: SensorDataCellView? {
         willSet {
             cell?.iconButton?.removeTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
@@ -59,7 +65,12 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         minValue = 0
         duration = SamplingDurationType(milliSeconds: 100)    
     }
-
+    convenience init(_ delegate: SensorDataModelDelegate?)
+    {
+        self.init()
+        self.delegate = delegate
+    }
+    
     deinit
     {
         cell = nil
@@ -178,5 +189,8 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     func didFinishedLogData(sender: AnyObject)
     {
         stopReadingLog(self.sensorName)
+        if let dlgt = self.delegate {
+            dlgt.didStopReadingLog(self)
+        }
     }
 }

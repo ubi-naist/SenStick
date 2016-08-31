@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class LogReaderViewController: UITableViewController, SenStickDeviceDelegate {
+class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, SensorDataModelDelegate {
     var device: SenStickDevice?
     var logID: UInt8?
     var dataModels : [SensorDataModel]?
@@ -26,13 +26,13 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate {
     {
         super.viewDidLoad()
         
-        accelerationDataModel  = AccelerationDataModel()
-        gyroDataModel          = GyroDataModel()
-        magneticFieldDataModel = MagneticFieldDataModel()
-        brightnessDataModel    = BrightnessDataModel()
-        uvDataModel            = UVDataModel()
-        humidityDataModel      = HumidityDataModel()
-        pressureDataModel      = PressureDataModel()
+        accelerationDataModel  = AccelerationDataModel(self)
+        gyroDataModel          = GyroDataModel(self)
+        magneticFieldDataModel = MagneticFieldDataModel(self)
+        brightnessDataModel    = BrightnessDataModel(self)
+        uvDataModel            = UVDataModel(self)
+        humidityDataModel      = HumidityDataModel(self)
+        pressureDataModel      = PressureDataModel(self)
 
         dataModels = [accelerationDataModel!, gyroDataModel!, magneticFieldDataModel!, brightnessDataModel!, uvDataModel!, humidityDataModel!, pressureDataModel!]
     }
@@ -75,6 +75,12 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate {
     func didDisconnected(sender:SenStickDevice)
     {
         self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    // SensorDataModelDelegate
+    func didStopReadingLog(sender: SensorDataModel)
+    {
+        debugPrint("\(#function) \(sender.sensorName).")
     }
     
     // table view source/delegate

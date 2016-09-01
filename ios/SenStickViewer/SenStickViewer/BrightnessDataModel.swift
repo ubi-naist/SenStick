@@ -21,6 +21,8 @@ class BrightnessDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "brightness"
+        self.csvHeader  = "Brightness"
+        self.csvEmptyData = ""
     }
     
     override func startToReadLog(logid: UInt8)

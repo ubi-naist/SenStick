@@ -21,6 +21,8 @@ class HumidityDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "humidity"
+        self.csvHeader  = "Humidity"
+        self.csvEmptyData = ""        
     }
     
     override func startToReadLog(logid: UInt8)

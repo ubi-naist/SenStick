@@ -22,6 +22,8 @@ class MagneticFieldDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "magnetic"
+        self.csvHeader  = "Magnetic.X,\tMagnetic.Y,\tMagnetic.Z"
+        self.csvEmptyData = ",\t,\t"
     }
     
     override func startToReadLog(logid: UInt8)

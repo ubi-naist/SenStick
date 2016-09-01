@@ -21,6 +21,8 @@ class PressureDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "pressure"
+        self.csvHeader  = "AirPressure"
+        self.csvEmptyData = ""        
     }
     
     override func startToReadLog(logid: UInt8)

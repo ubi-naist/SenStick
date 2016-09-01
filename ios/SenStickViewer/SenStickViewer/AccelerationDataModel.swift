@@ -22,6 +22,8 @@ class AccelerationDataModel :SensorDataModel
     override init() {
         super.init()
         self.sensorName = "acceleration"
+        self.csvHeader  = "Accs.X,\tAccs.Y,\tAccs.Z"
+        self.csvEmptyData = ",\t,\t"
     }
     
     override func startToReadLog(logid: UInt8)

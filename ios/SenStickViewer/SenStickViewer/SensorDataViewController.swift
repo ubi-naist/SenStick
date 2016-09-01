@@ -87,7 +87,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     func didServiceFound(sender: SenStickDevice) {
         self.statusCell?.name       = device?.name
         self.statusCell?.service    = device?.controlService
-
+        
         accelerationDataModel?.service  = device?.accelerationSensorService
         gyroDataModel?.service          = device?.gyroSensorService
         magneticFieldDataModel?.service = device?.magneticFieldSensorService

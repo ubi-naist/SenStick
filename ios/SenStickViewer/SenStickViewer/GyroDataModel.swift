@@ -22,6 +22,8 @@ class GyroDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "gyro"
+        self.csvHeader  = "Gyro.X,\tGyro.Y,\tGyro.Z"
+        self.csvEmptyData = ",\t,\t"
     }
     
     override func startToReadLog(logid: UInt8)

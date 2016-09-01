@@ -18,7 +18,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     weak var delegate: SensorDataModelDelegate?
     
     let sampleCount: Int = 300
-
+    
     var cell: SensorDataCellView? {
         willSet {
             cell?.iconButton?.removeTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
@@ -36,6 +36,8 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     var isLogReading: Bool = false
     
     var sensorName: String = "sensor"
+    var csvHeader: String = "header"
+    var csvEmptyData: String = ""
     
     var logData: [[Double]] = [[], [], []]
     var logid: UInt8 = 0
@@ -63,7 +65,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     {
         maxValue = 1.0
         minValue = 0
-        duration = SamplingDurationType(milliSeconds: 100)    
+        duration = SamplingDurationType(milliSeconds: 100)
     }
     convenience init(_ delegate: SensorDataModelDelegate?)
     {
@@ -75,7 +77,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     {
         cell = nil
     }
-
+    
     // methods
     
     func updateCell()
@@ -88,7 +90,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     func clearPlot()
     {
         logData = [[], [], []]
-        cell?.graphView?.clearPlot()        
+        cell?.graphView?.clearPlot()
     }
     
     func drawRealTimeData(data: [Double])
@@ -128,27 +130,33 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         cell?.progressBar?.progress = Float(logData[0].count) / Float(self.cell!.graphView!.sampleCount)
     }
     
+    // 指定したrowのデータをCSVテキストに変換。該当データがない場合は、CSVとしてデータが空の文字列を返す。
+    func getCSVDataText(index:Int) -> String
+    {
+        let colomn  = logData.count
+        var items = [String]()
+        for c in 0..<colomn {
+            if logData[c].count > index {
+                items.append( "\((logData[c])[index])" )
+            } else {
+                break
+            }
+        }
+        return items.joinWithSeparator(",\t")    
+    }
+    
     func saveToFile(filePath:String)
     {
         var content = ""
-        let colomn  = logData.count
         let row     = logData[0].count
         
-        var time :Double = 0
+        // 浮動小数点型だと、インクリメントしていくと微妙な端数がでるので、ミリ秒単位で整数で扱う
+        let samplingDuration = Int(duration.duration * 1000)
+        var time :Int = 0
         for r in 0..<row {
-            time    += duration.duration
-            content += "\(time),\t"
-            for c in 0..<colomn {
-                if logData[c].count > r {
-                    content += "\"\((logData[c])[r])\""
-                } else {
-                    content += ",\t"
-                    break
-                }
-                if c != (colomn - 1) {
-                    content += ",\t"
-                }
-            }
+            time    += samplingDuration
+            content += "\(Double(time) / 1000),\t"
+            content += self.getCSVDataText(r)
             content += "\n"
         }
         
@@ -165,7 +173,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     // Event
     @objc func iconButtonToutchUpInside(sender: UIButton)
     {}
-
+    
     // SenStickSensorServiceDelegate
     func didUpdateSetting(sender:AnyObject)
     {}

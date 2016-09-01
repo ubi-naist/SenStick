@@ -21,6 +21,8 @@ class UVDataModel : SensorDataModel
     override init() {
         super.init()
         self.sensorName = "uv"
+        self.csvHeader  = "UV"
+        self.csvEmptyData = ""        
     }
     
     override func startToReadLog(logid: UInt8)

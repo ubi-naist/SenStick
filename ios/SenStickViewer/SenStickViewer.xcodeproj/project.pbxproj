@@ -90,6 +90,7 @@
 		F87039141D6DC80D0004D434 /* senstick_xxaa_s110_release_rev103.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev103.zip; sourceTree = "<group>"; };
 		F87098A51D0D1D06007A56CA /* DeviceInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationViewController.swift; sourceTree = "<group>"; };
 		F87BED671CF1D40900832E08 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		F87D4C711D78271C00E33DA4 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		F888FFB71D0E852A00A99202 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
 		F8B9F0B41CF86C6700F16969 /* SamplingDurationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SamplingDurationViewController.swift; sourceTree = "<group>"; };
 		F8BD11711CF4435500BA8F3B /* SensorDataCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorDataCellView.swift; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		F863228F1C979B03001B53A0 /* SenStickViewer */ = {
 			isa = PBXGroup;
 			children = (
+				F87D4C711D78271C00E33DA4 /* MyPlayground.playground */,
 				F813B2631D0E89D400EC9EC0 /* firmware */,
 				F87BED671CF1D40900832E08 /* DetailViewController.swift */,
 				F86322961C979B03001B53A0 /* Main.storyboard */,

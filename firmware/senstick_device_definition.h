@@ -15,7 +15,7 @@
 
 // FIRMWARE_REVISIONは、ファームウェアのリビジョン。先頭1バイトがメジャーバージョン、後ろ1バイトがマイナーバージョン 0xJJMN の表記。
 // FIRMWARE_REVISION_STRINGは、ファームウェアのリビジョンを表す文字列。Device Information Serviceで使います
-#define	FIRMWARE_REVISION           0x0103
-#define FIRMWARE_REVISION_STRING    "rev 1.03"
+#define	FIRMWARE_REVISION           0x0104
+#define FIRMWARE_REVISION_STRING    "rev 1.04"
 
 #endif /* senstick_device_definition_h */

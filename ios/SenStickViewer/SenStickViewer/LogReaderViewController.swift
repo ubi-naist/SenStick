@@ -145,10 +145,10 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
             var isValid = false
             let csv = dataModels!.map {
                 let ms    = Int($0.duration.duration * 1000)
-                let index = time / ms
+                let index = time / ms - 1
                 if time % ms == 0 && index < $0.logData[0].count {
                     isValid = true
-                    return $0.getCSVDataText(time / ms)
+                    return $0.getCSVDataText(index)
                 } else {
                     return $0.csvEmptyData
                 }
@@ -159,7 +159,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
                 content += csv
                 content += "\n"
             }            
-        } while(time < endTime)
+        } while(time <= endTime)
         
         let folder   = self.getDataFileFolder() as NSString
         let filePath = folder.stringByAppendingPathComponent("data_\(self.dataModels![0].logid).csv")

@@ -90,7 +90,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
        && command != formattingStorage
        && command != enterDeepSleep
        && command != enterDFUmode) {
-        NRF_LOG_PRINTF_DEBUG("_setControlCommand, unexpected command: %d.\n", command);
+//       NRF_LOG_PRINTF_DEBUG("_setControlCommand, unexpected command: %d.\n", command);
         return;
     }
     

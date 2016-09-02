@@ -209,6 +209,7 @@ static void sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_da
     sensorServiceNotifyRealtimeData(&(context.services[deviceType]), buffer, length);
 }
 
+static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id);
 static void flash_mailbox()
 {
     ret_code_t err_code;
@@ -237,8 +238,16 @@ static void flash_mailbox()
         }
         // ログ保存とBLE通知
         if((command & 0x02) != 0) {
-            writeLog(&(context.writingLogContext[buffer[0]]), &buffer[2], buffer[1]);
+            int wlen = writeLog(&(context.writingLogContext[buffer[0]]), &buffer[2], buffer[1]);
             senstickSensorControllerNotifyLogData();
+            // 書き込みサイズが指定と違う、つまりログがいっぱいだったら、ロギングの停止、ディスクフルフラグを立てる
+            if( wlen != buffer[1]) {
+                do {
+                    err_code = app_mailbox_get(&m_mailbox, buffer);
+                } while(err_code == NRF_SUCCESS);
+                setSensorShoudlWork(false, 0); // ロギングの定義, このメソッドは内部でflash_mailbox()を呼び出すので、再帰されても大丈夫なように、あらかじめメイルボックスをフラッシュしておく。
+                senstick_setDiskFull(true);    // ディスクフルフラグを立てる。
+            }
         }
     }
     
@@ -618,6 +627,22 @@ void senstickSensorControllerNotifyLogData(void)
     }
 }
 
+// データ領域がいっぱいかを返します。
+bool senstickSensorControllerIsDataFull(uint8_t logID)
+{
+    log_context_t log_context;
+    for(int i =0; i < NUM_OF_SENSORS; i++) {
+        openLog(&log_context, logID, &(m_p_sensor_bases[i]->address_info));
+
+        // 末尾がデータ領域を超えていないか?
+        // センサ構造体は最大で6バイト。余裕を見て128サンプルくらいが空いているかを確認。
+        if( (log_context.header.startAddress + log_context.header.size + 6 * 128) > (m_p_sensor_bases[i]->address_info.startAddress + m_p_sensor_bases[i]->address_info.size) ) {
+            NRF_LOG_PRINTF_DEBUG("storage over: sensor:%d.\n", i);
+            return true;
+        }
+    }
+    return false;
+}
 
 /**
  *  observer

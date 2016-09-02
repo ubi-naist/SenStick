@@ -10,6 +10,9 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type);
 // ログ取得開始時に動作するセンサ数を返します。
 uint8_t senstickSensorControllerGetNumOfLoggingReadySensor(void);
 
+// 指定したlog_idで、データ領域がいっぱいかを返します。
+bool senstickSensorControllerIsDataFull(uint8_t log_id);
+
 // sensor serviceが呼び出す、データの読み書きメソッド
 uint8_t senstickSensorControllerReadSetting(sensor_device_t device_type, uint8_t *p_buffer, uint8_t length);
 uint8_t senstickSensorControllerReadMetaData(sensor_device_t device_type, uint8_t *p_buffer, uint8_t length);

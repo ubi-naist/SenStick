@@ -36,6 +36,7 @@ void createLog(log_context_t *p_context, uint8_t logID, samplingDurationType sam
     p_context->header.measurementRange  = measurementRange;
     
     // もしもlogIDが > 0 ならば、前のヘッダ情報からスタートアドレスとサイズを設定します
+ASSERT(SECTOR_SIZE / sizeof(log_header_t) > 255 ); // ヘッダに1セクタを割り当てているので、ログID0-255のヘッダを収められる容量があることを仮定。
     if(logID == 0) {
         p_context->header.startAddress = p_address_info->startAddress + SECTOR_SIZE;
     } else {

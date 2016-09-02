@@ -252,12 +252,20 @@ int main(void)
     }
 
     // 初期値設定
-    uint8_t count = 0;    
-    bool is_header_full = false;
-    metaDataLogGetLogCount(&count, &is_header_full);
-NRF_LOG_PRINTF_DEBUG("meta, count:%d is_full:%d", count, is_header_full);
+    uint8_t count = 0;
+    // メタ領域の容量チェック
+    bool is_storage_full = false;
+    metaDataLogGetLogCount(&count, &is_storage_full);
+NRF_LOG_PRINTF_DEBUG("meta, count:%d is_full:%d\n", count, is_storage_full);
     senstick_setCurrentLogCount(count);
-    senstick_setDiskFull(is_header_full);
+    // データ領域のチェック, データ領域があれば
+    if( count > 0 ) {
+        bool isFull      = senstickSensorControllerIsDataFull(count -1);
+        is_storage_full |= isFull;
+NRF_LOG_PRINTF_DEBUG("data area: is_full:%d\n", isFull);
+    }
+    // フラグ設定
+    senstick_setDiskFull(is_storage_full);
 
     // 電源が入れば、ログ取り開始
     senstick_setControlCommand(sensorShouldSleep);

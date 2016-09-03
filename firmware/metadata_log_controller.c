@@ -22,7 +22,7 @@
 #define MAGIC_WORD (0xab5a ^ FIRMWARE_REVISION)
 
 typedef struct {
-    bool is_closed_flag;
+    uint8_t is_closed_value; // 0x00 closed, 0xff is not closed
     uint8_t log_id;
     ble_date_time_t date;
     char text[21]; // マジックワード GATTの最大長+1バイト。
@@ -55,13 +55,13 @@ static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogWriteContext:hours:%d minutes:%d\n", p_content->date.hours,p_content->date.minutes);
 }
 
-static void metaDataLogWrite(bool is_closed_flag, uint8_t logid, ble_date_time_t *p_date, char *text)
+static void metaDataLogWrite(bool is_closed, uint8_t logid, ble_date_time_t *p_date, char *text)
 {
     meta_log_content_t content;
     
     memset(&content, 0, sizeof(meta_log_content_t));
-    content.is_closed_flag = is_closed_flag;
-    content.log_id         = logid;
+    content.is_closed_value = is_closed ? 0x00 : 0xff; // フラッシュはクリアで0xff、書き込みで0。ただし0->1の書き込みはできない。したがってboolをここで変換する。
+    content.log_id          = logid;
     memcpy(&(content.date), p_date, sizeof(ble_date_time_t));
     strncpy(content.text, text, sizeof(content.text));
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogWrite: sizeof(content.text) %d\n", sizeof(content.text));
@@ -74,7 +74,7 @@ static void closeLog(uint8_t logid)
     meta_log_content_t content;
     metaDataLogRead(logid, &content);
 
-    content.is_closed_flag = 0x00;
+    content.is_closed_value = 0x00;
 
     // フラグだけ変えて上書き
     const uint32_t target_address = getTargetAddress(logid);
@@ -118,7 +118,7 @@ void metaDataLogGetLogCount(uint8_t *p_count, bool *p_is_header_full)
             break;
         }
         // フラグが閉じていないならば、
-        if(content.is_closed_flag != 0x00) {
+        if(content.is_closed_value != 0x00) {
             is_header_full = true;
             break;
         }
@@ -182,7 +182,7 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
         case sensorShouldWork:
             senstick_getCurrentDateTime(&datetime);
             senstick_getCurrentLogAbstractText(txt, sizeof(txt));
-            metaDataLogWrite(0xff, new_log_id, &datetime, txt);
+            metaDataLogWrite(false, new_log_id, &datetime, txt);
 //            NRF_LOG_PRINTF_DEBUG("metaDatalog_observeControlCommand:hour:%d min:%d\n", datetime.hours, datetime.minutes);
             break;
         case formattingStorage:

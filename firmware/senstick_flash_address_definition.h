@@ -29,7 +29,7 @@
 // サンプリングレートと測定レンジ=4バイト
 // センサーごとのデータ
 
-// 全セクター数は、8000セクター (32MB/4kB)
+// 全セクター数は、8192セクター (32MB/4kB)
 
 // セクタは、最初にアクセスした部分は、消去済だとする。
 
@@ -38,17 +38,17 @@
 // メタデータ    1セクタ
 // 空きセクタ    1セクタ
 
-// 2バイトを1単位として、15単位。(8000 - 3 - 7 ) / 15 = 532.6, 1単位 530セクターとしよう。
+// 2バイトを1単位として、96単位。(8192 - 3 - 7 ) / 96 = 85.2 1単位 85セクターとしよう。
 
-// 種類       サンプルのバイトサイズ     想定サンプリング数
-// 加速度     3x2= 6バイト            100ミリ秒          3
-// ジャイロ   6バイト                 100ミリ秒           3
-// 地磁気     6バイト                 100ミリ秒          3
-// 照度       2バイト                100ミリ秒          1
-// UV        2バイト                100ミリ秒          1
-// 湿度       4バイト                100ミリ秒          2
-// 気圧       4バイト                100ミリ秒          2
-
+// 種類       サンプルのバイトサイズ  想定サンプリング数
+// 加速度     3x2= 6バイト          20ミリ秒           3 * 10
+// ジャイロ   6バイト               20ミリ秒           3 * 10
+// 地磁気     6バイト               20ミリ秒           3 * 10
+// 照度       2バイト               200ミリ秒          1
+// UV        2バイト               200ミリ秒          1
+// 湿度       4バイト               200ミリ秒          2
+// 気圧       4バイト               200ミリ秒          2
+//                                                  合計 96
 // センサごとのセクター割当
 // ヘッダ       1
 // データ
@@ -65,20 +65,20 @@
 #define METADATA_STORAGE_END_ADDRESS   (METADATA_STORAGE_START_ADDRESS + METADATA_STORAGE_SIZE)
 
 // 2バイトのセンサデータあたりに割りつける、セクター数
-#define SENSOR_DATA_SECTOR_UNIT     530
+#define SENSOR_DATA_SECTOR_UNIT     85
 
 // 書き込みは次のセクタを消去するため、前のデータ領域から1セクタ空ける。
 // ACCELERATION_SENSOR_STORAGE_SIZE は、ヘッダサイズ(1セクタ)+センサデータ(3*センサ単位)で割当。
 #define ACCELERATION_SENSOR_STORAGE_START_ADDRESS (METADATA_STORAGE_END_ADDRESS + SECTOR_SIZE)
-#define ACCELERATION_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3) * SECTOR_SIZE)
+#define ACCELERATION_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3 * 10) * SECTOR_SIZE)
 #define ACCELERATION_SENSOR_STORAGE_END_ADDRESS   (ACCELERATION_SENSOR_STORAGE_START_ADDRESS + ACCELERATION_SENSOR_STORAGE_SIZE)
 
 #define GYRO_SENSOR_STORAGE_START_ADDRESS (ACCELERATION_SENSOR_STORAGE_END_ADDRESS + SECTOR_SIZE)
-#define GYRO_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3) * SECTOR_SIZE)
+#define GYRO_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3 * 10) * SECTOR_SIZE)
 #define GYRO_SENSOR_STORAGE_END_ADDRESS   (GYRO_SENSOR_STORAGE_START_ADDRESS + GYRO_SENSOR_STORAGE_SIZE)
 
 #define MAGNETIC_SENSOR_STORAGE_START_ADDRESS (GYRO_SENSOR_STORAGE_END_ADDRESS + SECTOR_SIZE)
-#define MAGNETIC_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3) * SECTOR_SIZE)
+#define MAGNETIC_SENSOR_STORAGE_SIZE          ((1 + SENSOR_DATA_SECTOR_UNIT * 3 * 10) * SECTOR_SIZE)
 #define MAGNETIC_SENSOR_STORAGE_END_ADDRESS   (MAGNETIC_SENSOR_STORAGE_START_ADDRESS + MAGNETIC_SENSOR_STORAGE_SIZE)
 
 #define BRIGHTNESS_SENSOR_STORAGE_START_ADDRESS (MAGNETIC_SENSOR_STORAGE_END_ADDRESS + SECTOR_SIZE)

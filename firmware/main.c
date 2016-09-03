@@ -38,6 +38,7 @@
 
 #include "spi_slave_mx25_flash_memory.h"
 #include "metadata_log_controller.h"
+#include "senstick_flash_address_definition.h"
 
 static ble_uuid_t m_advertisiong_uuid;
 
@@ -256,6 +257,7 @@ int main(void)
     // メタ領域の容量チェック
     bool is_storage_full = false;
     metaDataLogGetLogCount(&count, &is_storage_full);
+NRF_LOG_PRINTF_DEBUG("FLASH_END_ADDR: 0x%0x\n", PRESSURE_SENSOR_STORAGE_END_ADDRESS);
 NRF_LOG_PRINTF_DEBUG("meta, count:%d is_full:%d\n", count, is_storage_full);
     senstick_setCurrentLogCount(count);
     // データ領域のチェック, データ領域があれば

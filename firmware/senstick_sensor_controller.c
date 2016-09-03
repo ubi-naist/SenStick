@@ -241,11 +241,13 @@ static void flash_mailbox()
             int wlen = writeLog(&(context.writingLogContext[buffer[0]]), &buffer[2], buffer[1]);
             senstickSensorControllerNotifyLogData();
             // 書き込みサイズが指定と違う、つまりログがいっぱいだったら、ロギングの停止、ディスクフルフラグを立てる
+            // このメソッドは内部でflash_mailbox()を呼び出すので、再帰されても大丈夫なように、あらかじめメイルボックスをフラッシュしておく。
             if( wlen != buffer[1]) {
                 do {
                     err_code = app_mailbox_get(&m_mailbox, buffer);
                 } while(err_code == NRF_SUCCESS);
-                setSensorShoudlWork(false, 0); // ロギングの定義, このメソッドは内部でflash_mailbox()を呼び出すので、再帰されても大丈夫なように、あらかじめメイルボックスをフラッシュしておく。
+                // ロギング停止
+                senstick_setControlCommand(sensorShouldSleep);
                 senstick_setDiskFull(true);    // ディスクフルフラグを立てる。
             }
         }

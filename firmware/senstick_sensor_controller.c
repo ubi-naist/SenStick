@@ -65,6 +65,9 @@ typedef struct {
     // ログ吐き出しタスク読みだしフラグ
     bool isDequeueTaskRunning;
     
+    // 通知フラグ
+    bool isNotificationRunning;
+    
     // センサのサンプリング周期積算カウンタ
     samplingDurationType sensorSampling[NUM_OF_SENSORS];
     
@@ -619,14 +622,29 @@ void senstickSensorControllerWriteLogID(sensor_device_t device_type, uint8_t *p_
     seekLog(context.p_readingLogContext[device_type], log_id.position * m_p_sensor_bases[device_type]->rawSensorDataSize);
 }
 
+// BLEイベントと、TIMER割り込みイベントから呼ばれるため、スレッドセーフにしておく。
 void senstickSensorControllerNotifyLogData(void)
 {
+    if( context.isNotificationRunning ) {
+        return;
+    }
+    
+    // タスクフラグをセット
+    CRITICAL_REGION_ENTER();
+    context.isNotificationRunning = true;
+    CRITICAL_REGION_EXIT();
+    
     for(int i =0; i < NUM_OF_SENSORS; i++) {
         bool didNotified = notifyLogDataOfDevice((sensor_device_t) i);
         if(didNotified) {
             break;
         }
     }
+
+    // タスクフラグをクリア
+    CRITICAL_REGION_ENTER();
+    context.isNotificationRunning = false;
+    CRITICAL_REGION_EXIT();
 }
 
 // データ領域がいっぱいかを返します。

@@ -1,6 +1,0 @@
-framework module Pods_SenStickViewer {
-  umbrella header "Pods-SenStickViewer-umbrella.h"
-
-  export *
-  module * { export * }
-}

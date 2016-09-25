@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F80AD0AE1CAA662C00291197 /* SenStickControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */; };
 		F80AD0B01CAA667E00291197 /* SenStickService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AD0AF1CAA667E00291197 /* SenStickService.swift */; };
+		F83825611D9895B90081917F /* DFULibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F838255A1D9895A40081917F /* DFULibrary.framework */; };
+		F83825621D9895BD0081917F /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F838254B1D98959D0081917F /* Zip.framework */; };
 		F856CA881CC1162A00C30744 /* NSDate+PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CA871CC1162A00C30744 /* NSDate+PackableType.swift */; };
 		F856CA8A1CC1186700C30744 /* SenStickMetaDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CA891CC1186700C30744 /* SenStickMetaDataService.swift */; };
 		F86322B21C979B20001B53A0 /* SenStickSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F86322B11C979B20001B53A0 /* SenStickSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,9 +39,77 @@
 		F8CAF9E91D0BCB4B0044FFBF /* BatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CAF9E81D0BCB4B0044FFBF /* BatteryService.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F838254A1D98959D0081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 347E3A741C1DFFB500A11FD3;
+			remoteInfo = Zip;
+		};
+		F838254C1D98959D0081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 347E3A7E1C1DFFB500A11FD3;
+			remoteInfo = ZipTests;
+		};
+		F838254E1D98959D0081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343F50FF1C8DAEEC0028C434;
+			remoteInfo = "Zip OSX";
+		};
+		F83825501D98959D0081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 343F51081C8DAEEC0028C434;
+			remoteInfo = "Zip OSXTests";
+		};
+		F83825521D98959D0081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 342545B51CE525B200336074;
+			remoteInfo = "Zip tvOS";
+		};
+		F83825591D9895A40081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825541D9895A40081917F /* DFULibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52C12B5E1C6B8B28004D9DB8;
+			remoteInfo = DFULibrary;
+		};
+		F838255B1D9895A40081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825541D9895A40081917F /* DFULibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52C12B681C6B8B28004D9DB8;
+			remoteInfo = DFULibraryTests;
+		};
+		F838255D1D9895B00081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825541D9895A40081917F /* DFULibrary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 52C12B5D1C6B8B28004D9DB8;
+			remoteInfo = DFULibrary;
+		};
+		F838255F1D9895B30081917F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83825421D98959D0081917F /* Zip.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 347E3A731C1DFFB500A11FD3;
+			remoteInfo = Zip;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		F80AD0AD1CAA662C00291197 /* SenStickControlService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickControlService.swift; sourceTree = "<group>"; };
 		F80AD0AF1CAA667E00291197 /* SenStickService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickService.swift; sourceTree = "<group>"; };
+		F83825421D98959D0081917F /* Zip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Zip.xcodeproj; path = Zip/Zip.xcodeproj; sourceTree = "<group>"; };
+		F83825541D9895A40081917F /* DFULibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DFULibrary.xcodeproj; path = iOSDFULibrary/DFULibrary.xcodeproj; sourceTree = "<group>"; };
 		F856CA871CC1162A00C30744 /* NSDate+PackableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+PackableType.swift"; sourceTree = "<group>"; };
 		F856CA891CC1186700C30744 /* SenStickMetaDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenStickMetaDataService.swift; sourceTree = "<group>"; };
 		F86322AE1C979B20001B53A0 /* SenStickSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SenStickSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +146,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F83825621D9895BD0081917F /* Zip.framework in Frameworks */,
+				F83825611D9895B90081917F /* DFULibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,9 +167,32 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
+		F83825431D98959D0081917F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F838254B1D98959D0081917F /* Zip.framework */,
+				F838254D1D98959D0081917F /* ZipTests.xctest */,
+				F838254F1D98959D0081917F /* Zip.framework */,
+				F83825511D98959D0081917F /* Zip OSXTests.xctest */,
+				F83825531D98959D0081917F /* Zip.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F83825551D9895A40081917F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F838255A1D9895A40081917F /* DFULibrary.framework */,
+				F838255C1D9895A40081917F /* DFULibraryTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F86322A41C979B20001B53A0 = {
 			isa = PBXGroup;
 			children = (
+				F83825541D9895A40081917F /* DFULibrary.xcodeproj */,
+				F83825421D98959D0081917F /* Zip.xcodeproj */,
 				F86322B01C979B20001B53A0 /* SenStickSDK */,
 				F86322AF1C979B20001B53A0 /* Products */,
 			);
@@ -185,6 +280,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				F83825601D9895B30081917F /* PBXTargetDependency */,
+				F838255E1D9895B00081917F /* PBXTargetDependency */,
 			);
 			name = SenStickSDK;
 			productName = SenStickSDK;
@@ -215,12 +312,74 @@
 			mainGroup = F86322A41C979B20001B53A0;
 			productRefGroup = F86322AF1C979B20001B53A0 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F83825551D9895A40081917F /* Products */;
+					ProjectRef = F83825541D9895A40081917F /* DFULibrary.xcodeproj */;
+				},
+				{
+					ProductGroup = F83825431D98959D0081917F /* Products */;
+					ProjectRef = F83825421D98959D0081917F /* Zip.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F86322AD1C979B20001B53A0 /* SenStickSDK */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F838254B1D98959D0081917F /* Zip.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Zip.framework;
+			remoteRef = F838254A1D98959D0081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F838254D1D98959D0081917F /* ZipTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ZipTests.xctest;
+			remoteRef = F838254C1D98959D0081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F838254F1D98959D0081917F /* Zip.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Zip.framework;
+			remoteRef = F838254E1D98959D0081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F83825511D98959D0081917F /* Zip OSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Zip OSXTests.xctest";
+			remoteRef = F83825501D98959D0081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F83825531D98959D0081917F /* Zip.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Zip.framework;
+			remoteRef = F83825521D98959D0081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F838255A1D9895A40081917F /* DFULibrary.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DFULibrary.framework;
+			remoteRef = F83825591D9895A40081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F838255C1D9895A40081917F /* DFULibraryTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DFULibraryTests.xctest;
+			remoteRef = F838255B1D9895A40081917F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F86322AC1C979B20001B53A0 /* Resources */ = {
@@ -268,6 +427,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F838255E1D9895B00081917F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DFULibrary;
+			targetProxy = F838255D1D9895B00081917F /* PBXContainerItemProxy */;
+		};
+		F83825601D9895B30081917F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Zip;
+			targetProxy = F838255F1D9895B30081917F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F86322B41C979B20001B53A0 /* Debug */ = {

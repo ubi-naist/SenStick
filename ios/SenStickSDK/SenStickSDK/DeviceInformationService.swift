@@ -9,16 +9,16 @@
 import Foundation
 import CoreBluetooth
 
-public class DeviceInformationService : NSObject, SenStickService //, CustomStringConvertible
+open class DeviceInformationService : NSObject, SenStickService //, CustomStringConvertible
 {
     // Variables
     unowned let device: SenStickDevice
     
     // Properties, KVO
-    dynamic public private(set) var manufacturerName: String
-    dynamic public private(set) var hardwareRevision: String
-    dynamic public private(set) var firmwareRevision: String
-    dynamic public private(set) var serialNumber: String
+    dynamic open fileprivate(set) var manufacturerName: String
+    dynamic open fileprivate(set) var hardwareRevision: String
+    dynamic open fileprivate(set) var firmwareRevision: String
+    dynamic open fileprivate(set) var serialNumber: String
     
     // イニシャライザ
     required public init?(device:SenStickDevice)
@@ -48,26 +48,26 @@ public class DeviceInformationService : NSObject, SenStickService //, CustomStri
     }
     
     // 値更新通知
-    func didUpdateValue(characteristic: CBCharacteristic, data: [UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data: [UInt8])
     {
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case SenStickUUIDs.ManufacturerNameStringCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.manufacturerName = s
             }
             
         case SenStickUUIDs.HardwareRevisionStringCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.hardwareRevision = s
             }
             
         case SenStickUUIDs.FirmwareRevisionStringCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.firmwareRevision = s
             }
             
         case SenStickUUIDs.SerialNumberStringCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.serialNumber = s
             }
             
@@ -78,7 +78,7 @@ public class DeviceInformationService : NSObject, SenStickService //, CustomStri
     }
     
     // CustomStringConvertible
-    override public var description: String {
+    override open var description: String {
         get {
             return "Device information: \n  Manufacturer: \(manufacturerName)\n  Hardware revision:\(hardwareRevision)\n  Firmware revision:\(firmwareRevision)\n  Serial number:\(serialNumber)"
         }

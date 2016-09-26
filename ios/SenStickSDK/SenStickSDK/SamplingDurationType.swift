@@ -11,14 +11,14 @@ import Foundation
 // サンプリング・レート
 public struct SamplingDurationType : CustomStringConvertible
 {
-    public let duration : NSTimeInterval
+    public let duration : TimeInterval
     
     public init(milliSeconds value: UInt16)
     {
         duration = 1e-3 * Double(value)
     }
     
-    init(secondcs value: NSTimeInterval)
+    init(secondcs value: TimeInterval)
     {
         duration = value
     }
@@ -34,12 +34,12 @@ public struct SamplingDurationType : CustomStringConvertible
 
 extension SamplingDurationType : PackableType
 {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         let durationMilliSec = Int16( duration * 1e3 )
         return durationMilliSec.pack(byteOrder: byteOrder)
     }
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> SamplingDurationType?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> SamplingDurationType? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard let value = UInt16.unpack(data, byteOrder: byteOrder) else {
             return nil

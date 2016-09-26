@@ -11,15 +11,15 @@ import CoreBluetooth
 
 public protocol SenStickControlServiceDelegate : class
 {
-    func didCommandChanged(sender:SenStickControlService, command:SenStickControlCommand)
-    func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
-    func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
-    func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
-    func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
-    func didDeviceNameUpdate(sender:SenStickControlService, deviceName:String)
+    func didCommandChanged(_ sender:SenStickControlService, command:SenStickControlCommand)
+    func didAvailableLogCountChanged(_ sender:SenStickControlService, logCount: UInt8)
+    func didStorageStatusChanged(_ sender:SenStickControlService, storageStatus: Bool)
+    func didDateTimeUpdate(_ sender:SenStickControlService, dateTime:Date)
+    func didAbstractUpdate(_ sender:SenStickControlService, abstractText:String)
+    func didDeviceNameUpdate(_ sender:SenStickControlService, deviceName:String)
 }
 
-public class SenStickControlService : SenStickService
+open class SenStickControlService : SenStickService
 {
     // Variables
     unowned let device: SenStickDevice
@@ -31,12 +31,12 @@ public class SenStickControlService : SenStickService
     let abstractChar:          CBCharacteristic
     let deviceNameChar:        CBCharacteristic?
     
-    public weak var delegate: SenStickControlServiceDelegate?
+    open weak var delegate: SenStickControlServiceDelegate?
     
     // Properties, KVO-compatible
-    public private(set) var command: SenStickControlCommand {
+    open fileprivate(set) var command: SenStickControlCommand {
         didSet{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didCommandChanged(self, command: self.command)
             })
             // FIXME ログカウント値が通知されないので、能動的にここで読み出す
@@ -44,41 +44,41 @@ public class SenStickControlService : SenStickService
         }
     }
 
-    public private(set) var storageStatus: Bool {
+    open fileprivate(set) var storageStatus: Bool {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didStorageStatusChanged(self, storageStatus: self.storageStatus)
             })
         }
     }
     
-    public private(set) var availableLogCount: UInt8 {
+    open fileprivate(set) var availableLogCount: UInt8 {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didAvailableLogCountChanged(self, logCount: self.availableLogCount)
             })
         }
     }
     
-    public private(set) var dateTime: NSDate {
+    open fileprivate(set) var dateTime: Date {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didDateTimeUpdate(self, dateTime: self.dateTime)
             })
         }
     }
 
-    public private(set) var abstractText: String {
+    open fileprivate(set) var abstractText: String {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didAbstractUpdate(self, abstractText: self.abstractText)
             })
         }
     }
     
-    public private(set) var deviceName: String {
+    open fileprivate(set) var deviceName: String {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didDeviceNameUpdate(self, deviceName: self.deviceName)
             })
         }
@@ -110,10 +110,10 @@ public class SenStickControlService : SenStickService
         
         self.delegate         = nil
         
-        self.command              = .Stopping
+        self.command              = .stopping
         self.availableLogCount    = 0
         self.storageStatus        = false
-        self.dateTime             = NSDate.distantPast()
+        self.dateTime             = Date.distantPast
         self.abstractText         = ""
         self.deviceName           = ""
         
@@ -133,11 +133,11 @@ public class SenStickControlService : SenStickService
     }
     
     // 値更新通知
-    func didUpdateValue(characteristic: CBCharacteristic, data:[UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data:[UInt8])
     {
         guard data.count > 0  else { return }
         
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case SenStickUUIDs.StatusCharUUID:
             if let s = SenStickControlCommand(rawValue: data[0]) {
                 self.command = s
@@ -150,17 +150,17 @@ public class SenStickControlService : SenStickService
             self.storageStatus = (data[0] != 0)
             
         case SenStickUUIDs.DateTimeCharUUID:
-            if let datetime = NSDate.unpack(data) {
+            if let datetime = Date.unpack(data) {
                 self.dateTime = datetime
             }
             
         case SenStickUUIDs.AbstractCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.abstractText = s
             }
             
         case SenStickUUIDs.DeviceNameCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
                 self.deviceName  = s
                 self.device.name = s
             }
@@ -172,45 +172,45 @@ public class SenStickControlService : SenStickService
     }
     
     // Public methods
-    public func writeCommand(command:SenStickControlCommand)
+    open func writeCommand(_ command:SenStickControlCommand)
     {
         device.writeValue(statusChar, value: command.rawValue.pack())
         device.readValue(statusChar)
     }
     
-    public func readAvailableLogCount()
+    open func readAvailableLogCount()
     {
         device.readValue(availableLogCountChar)
     }
 
-    public func readStorageStatus()
+    open func readStorageStatus()
     {
         device.readValue(storageStatusChar)
     }
     
-    public func readDateTime()
+    open func readDateTime()
     {
         device.readValue(dateTimeChar)
     }
 
-    public func writeDateTime(datetime: NSDate)
+    open func writeDateTime(_ datetime: Date)
     {
         device.writeValue(dateTimeChar, value: datetime.pack())
         device.readValue(dateTimeChar)
     }
     
-    public func readAbstract()
+    open func readAbstract()
     {
         device.readValue(abstractChar)
     }
     
-    public func writeAbstract(abstract: String)
+    open func writeAbstract(_ abstract: String)
     {
         device.writeValue(abstractChar, value: [UInt8](abstract.utf8))
         device.readValue(abstractChar)
     }
     
-    public func writeDeviceName(deviceName: String)
+    open func writeDeviceName(_ deviceName: String)
     {
         if deviceNameChar == nil {
             return

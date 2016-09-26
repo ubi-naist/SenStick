@@ -10,11 +10,11 @@ import Foundation
 
 public enum PressureRange : UInt16, CustomStringConvertible
 {
-    case PRESSURE_RANGE_DEFAULT = 0x00
+    case pressure_RANGE_DEFAULT = 0x00
     
     public var description : String {
         switch self {
-        case .PRESSURE_RANGE_DEFAULT: return "PRESSURE_RANGE_DEFAULT"
+        case .pressure_RANGE_DEFAULT: return "PRESSURE_RANGE_DEFAULT"
         }
     }
 }
@@ -29,7 +29,7 @@ public struct PressureData : SensorDataPackableType
     
     public typealias RangeType = PressureRange
     
-    public static func unpack(range:PressureRange, value: [UInt8]) -> PressureData?
+    public static func unpack(_ range:PressureRange, value: [UInt8]) -> PressureData?
     {
         guard value.count >= 4 else {
             return nil
@@ -42,10 +42,10 @@ public struct PressureData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-public class PressureSensorService: SenStickSensorService<PressureData, PressureRange>, SenStickService
+open class PressureSensorService: SenStickSensorService<PressureData, PressureRange>, SenStickService
 {
     required public init?(device:SenStickDevice)
     {
-        super.init(device: device, sensorType: SenStickSensorType.AirPressureSensor)
+        super.init(device: device, sensorType: SenStickSensorType.airPressureSensor)
     }
 }

@@ -11,11 +11,11 @@ import CoreMotion
 
 public enum MagneticFieldRange : UInt16, CustomStringConvertible
 {
-    case MAGNETIC_RANGE_DEFAULT = 0x00
+    case magnetic_RANGE_DEFAULT = 0x00
     
     public var description : String {
         switch self {
-        case .MAGNETIC_RANGE_DEFAULT:    return "MAGNETIC_RANGE_DEFAULT"
+        case .magnetic_RANGE_DEFAULT:    return "MAGNETIC_RANGE_DEFAULT"
         }
     }
 }
@@ -36,14 +36,14 @@ struct MagneticFieldRawData
     }
     
     // 物理センサーの1uTあたりのLBSの値
-    static func getLSBperuT(range: MagneticFieldRange) -> Double
+    static func getLSBperuT(_ range: MagneticFieldRange) -> Double
     {
         switch range {
-        case .MAGNETIC_RANGE_DEFAULT: return 1/0.15; // AK8963, 16-bit mode
+        case .magnetic_RANGE_DEFAULT: return 1/0.15; // AK8963, 16-bit mode
         }
     }
     
-    static func unpack(data: [Byte]) -> MagneticFieldRawData
+    static func unpack(_ data: [Byte]) -> MagneticFieldRawData
     {
         let x = Int16.unpack(data[0..<2])
         let y = Int16.unpack(data[2..<4])
@@ -57,7 +57,7 @@ extension CMMagneticField : SensorDataPackableType
 {
     public typealias RangeType = MagneticFieldRange
     
-    public static func unpack(range:MagneticFieldRange, value: [UInt8]) -> CMMagneticField?
+    public static func unpack(_ range:MagneticFieldRange, value: [UInt8]) -> CMMagneticField?
     {
         guard value.count >= 6 else {
             return nil
@@ -73,10 +73,10 @@ extension CMMagneticField : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-public class MagneticFieldSensorService: SenStickSensorService<CMMagneticField, MagneticFieldRange>, SenStickService
+open class MagneticFieldSensorService: SenStickSensorService<CMMagneticField, MagneticFieldRange>, SenStickService
 {
     required public init?(device:SenStickDevice)
     {
-        super.init(device: device, sensorType: SenStickSensorType.MagneticFieldSensor)
+        super.init(device: device, sensorType: SenStickSensorType.magneticFieldSensor)
     }
 }

@@ -8,25 +8,25 @@
 
 import Foundation
 
-extension NSDate { //: PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+extension Date { //: PackableType {
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
-        let calendar = NSCalendar.currentCalendar()
-        let dateComponents = calendar.components([.Year , .Month , .Day , .Hour , .Minute , .Second], fromDate: self)
+        let calendar = Calendar.current
+        let dateComponents = (calendar as NSCalendar).components([.year , .month , .day , .hour , .minute , .second], from: self)
         
-        var buf = [UInt8](count: 0, repeatedValue: 0)
+        var buf = [UInt8](repeating: 0, count: 0)
 
-        buf.appendContentsOf( UInt16(dateComponents.year).pack() )
-        buf.appendContentsOf( UInt8(dateComponents.month).pack() )
-        buf.appendContentsOf( UInt8(dateComponents.day).pack()   )
-        buf.appendContentsOf( UInt8(dateComponents.hour).pack()  )
-        buf.appendContentsOf( UInt8(dateComponents.minute).pack())
-        buf.appendContentsOf( UInt8(dateComponents.second).pack())
+        buf.append( contentsOf: UInt16(dateComponents.year!).pack() )
+        buf.append( contentsOf: UInt8(dateComponents.month!).pack() )
+        buf.append( contentsOf: UInt8(dateComponents.day!).pack()   )
+        buf.append( contentsOf: UInt8(dateComponents.hour!).pack()  )
+        buf.append( contentsOf: UInt8(dateComponents.minute!).pack())
+        buf.append( contentsOf: UInt8(dateComponents.second!).pack())
         
         return buf
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> NSDate?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> Date? where C.Iterator.Element == Byte ,C.Index == Int
     {
         let bytes = Array(data)
         
@@ -35,8 +35,8 @@ extension NSDate { //: PackableType {
             return nil
         }
         
-        let dateComponents = NSDateComponents()
-        dateComponents.calendar = NSCalendar.currentCalendar()
+        var dateComponents = DateComponents()
+        (dateComponents as NSDateComponents).calendar = Calendar.current
 
         dateComponents.year   = Int(UInt16.unpack(bytes[0...1])!)
         dateComponents.month  = Int(bytes[2])
@@ -45,6 +45,6 @@ extension NSDate { //: PackableType {
         dateComponents.minute = Int(bytes[5])
         dateComponents.second = Int(bytes[6])
         
-        return dateComponents.date
+        return (dateComponents as NSDateComponents).date
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SensorLogMetaData<T: RawRepresentable where T.RawValue == UInt16> : PackableType
+public struct SensorLogMetaData<T: RawRepresentable> : PackableType where T.RawValue == UInt16
 {
     public let logID: UInt8
     public let samplingDuration: SamplingDurationType
@@ -17,7 +17,7 @@ public struct SensorLogMetaData<T: RawRepresentable where T.RawValue == UInt16> 
     public let position: UInt32
     public let remainingCapacity: UInt32
     
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         var b = [UInt8]()
 
@@ -33,7 +33,7 @@ public struct SensorLogMetaData<T: RawRepresentable where T.RawValue == UInt16> 
         return b
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> SensorLogMetaData?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> SensorLogMetaData? where C.Iterator.Element == Byte ,C.Index == Int
     {
         let bytes = Array(data)
         

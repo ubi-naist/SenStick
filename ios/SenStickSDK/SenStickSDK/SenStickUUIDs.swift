@@ -16,14 +16,14 @@ public struct SenStickUUIDs
     public static let baseUUIDString = "F0000000-0451-4000-B000-000000000000"
     public static let baseUUID:CBUUID = {return SenStickUUIDs.createSenstickUUID(0x0000)}()
     // UUID生成メソッド
-    public static func createSenstickUUID(uuid:UInt16) -> CBUUID {
-        return CBUUID.init(string: (SenStickUUIDs.baseUUIDString as NSString).stringByReplacingCharactersInRange(NSMakeRange(4, 4), withString: NSString(format: "%04x", uuid) as String))
+    public static func createSenstickUUID(_ uuid:UInt16) -> CBUUID {
+        return CBUUID.init(string: (SenStickUUIDs.baseUUIDString as NSString).replacingCharacters(in: NSMakeRange(4, 4), with: NSString(format: "%04x", uuid) as String))
     }
-    public static func getShortUUID(uuid:CBUUID) -> UInt16 {
+    public static func getShortUUID(_ uuid:CBUUID) -> UInt16 {
         // UUIDをバイト配列にして、16ビット短縮UUID部分を取り出す
-        var buf = [UInt8](count: 16, repeatedValue: 0)
-        uuid.data.getBytes(&buf, length: buf.count)
-        return UInt16.unpack(buf[2..<4], byteOrder: .BigEndian)!
+        var buf = [UInt8](repeating: 0, count: 16)
+        (uuid.data as NSData).getBytes(&buf, length: buf.count)
+        return UInt16.unpack(buf[2..<4], byteOrder: .bigEndian)!
         /*
         // UUIDをバイト配列にして、16ビット短縮UUID部分を取り出す
         var buf = [UInt8](count: 16, repeatedValue: 0)
@@ -81,11 +81,11 @@ public struct SenStickUUIDs
     public static let sensorLogDataCharBaseUUID:UInt16       = 0x7500
     
     // センサのサービスのUUID生成
-    public static func createSenstickSensorServiceUUID(sensorType:SenStickSensorType) -> CBUUID {
+    public static func createSenstickSensorServiceUUID(_ sensorType:SenStickSensorType) -> CBUUID {
         return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(sensorType.rawValue))
     }
     // Senstickのセンサデバイスの、キャラクタリスティクスのUUIDの配列、を返します。
-    public static func createSenstickSensorCharacteristicUUIDs(sensorType: SenStickSensorType) -> [CBUUID]
+    public static func createSenstickSensorCharacteristicUUIDs(_ sensorType: SenStickSensorType) -> [CBUUID]
     {
         return [
             createSenstickUUID(sensorSettingCharBaseUUID | UInt16(sensorType.rawValue)),
@@ -97,13 +97,13 @@ public struct SenStickUUIDs
     }
 
     // センサごとのサービスのUUID
-    public static let accelerationSensorServiceUUID:CBUUID  = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AccelerationSensor) }()
-    public static let gyroSensorServiceUUID:CBUUID          = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.GyroSensor) }()
-    public static let magneticFieldSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.MagneticFieldSensor) }()
-    public static let brightnessSensorServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.BrightnessSensor) }()
-    public static let uvSensorServiceUUID:CBUUID            = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.UltraVioletSensor) }()
-    public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.HumidityAndTemperatureSensor)} ()
-    public static let pressureSensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.AirPressureSensor)}()
+    public static let accelerationSensorServiceUUID:CBUUID  = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.accelerationSensor) }()
+    public static let gyroSensorServiceUUID:CBUUID          = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.gyroSensor) }()
+    public static let magneticFieldSensorServiceUUID:CBUUID = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.magneticFieldSensor) }()
+    public static let brightnessSensorServiceUUID:CBUUID    = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.brightnessSensor) }()
+    public static let uvSensorServiceUUID:CBUUID            = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.ultraVioletSensor) }()
+    public static let humiditySensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.humidityAndTemperatureSensor)} ()
+    public static let pressureSensorServiceUUID:CBUUID      = {return SenStickUUIDs.createSenstickSensorServiceUUID(SenStickSensorType.airPressureSensor)}()
 
     // デバイスが持つべき、サービスUUIDがキー、キャラクタリスティクスの配列、の辞書を返します。
     public static let SenStickServiceUUIDs: [CBUUID: [CBUUID]] = [
@@ -116,25 +116,25 @@ public struct SenStickUUIDs
         
         MetaDataServiceUUID  : [TargetLogIDCharUUID, TargetDateTimeCharUUID, TargetAbstractCharUUID],
 
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AccelerationSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AccelerationSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.accelerationSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.accelerationSensor ) }(),
 
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.GyroSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.GyroSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.gyroSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.gyroSensor ) }(),
           
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.MagneticFieldSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.MagneticFieldSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.magneticFieldSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.magneticFieldSensor ) }(),
           
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.BrightnessSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.BrightnessSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.brightnessSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.brightnessSensor ) }(),
           
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.UltraVioletSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.UltraVioletSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.ultraVioletSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.ultraVioletSensor ) }(),
           
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.HumidityAndTemperatureSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.HumidityAndTemperatureSensor ) }(),
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.humidityAndTemperatureSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.humidityAndTemperatureSensor ) }(),
           
-        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.AirPressureSensor.rawValue)) }() :
-          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.AirPressureSensor ) }()
+        {return SenStickUUIDs.createSenstickUUID(sensorServiceBaseUUID | UInt16(SenStickSensorType.airPressureSensor.rawValue)) }() :
+          { return SenStickUUIDs.createSenstickSensorCharacteristicUUIDs(SenStickSensorType.airPressureSensor ) }()
     ]
 }

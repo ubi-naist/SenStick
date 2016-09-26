@@ -12,17 +12,17 @@ import CoreMotion
 // ジャイロセンサーの範囲設定値。列挙側の値は、BLEでの設定値に合わせている。
 public enum RotationRange : UInt16, CustomStringConvertible
 {
-    case ROTATION_RANGE_250DPS   = 0x00
-    case ROTATION_RANGE_500DPS   = 0x01
-    case ROTATION_RANGE_1000DPS  = 0x02
-    case ROTATION_RANGE_2000DPS  = 0x03
+    case rotation_RANGE_250DPS   = 0x00
+    case rotation_RANGE_500DPS   = 0x01
+    case rotation_RANGE_1000DPS  = 0x02
+    case rotation_RANGE_2000DPS  = 0x03
     
     public var description : String {
         switch self {
-        case .ROTATION_RANGE_250DPS:    return "250DPS"
-        case .ROTATION_RANGE_500DPS:    return "500DPS"
-        case .ROTATION_RANGE_1000DPS:   return "1000DPS"
-        case .ROTATION_RANGE_2000DPS:   return "2000DPS"
+        case .rotation_RANGE_250DPS:    return "250DPS"
+        case .rotation_RANGE_500DPS:    return "500DPS"
+        case .rotation_RANGE_1000DPS:   return "1000DPS"
+        case .rotation_RANGE_2000DPS:   return "2000DPS"
         }
     }
 }
@@ -44,17 +44,17 @@ struct RotationRawData
     }
     
     // 物理センサーの1deg/sあたりのLBSの値
-    static func getLSBperDegS(range: RotationRange) -> Double
+    static func getLSBperDegS(_ range: RotationRange) -> Double
     {
         switch range {
-        case .ROTATION_RANGE_250DPS:    return (32768.0 / 250.0)
-        case .ROTATION_RANGE_500DPS:    return (32768.0 / 500.0)
-        case .ROTATION_RANGE_1000DPS:   return (32768.0 / 1000.0)
-        case .ROTATION_RANGE_2000DPS:   return (32768.0 / 2000.0)
+        case .rotation_RANGE_250DPS:    return (32768.0 / 250.0)
+        case .rotation_RANGE_500DPS:    return (32768.0 / 500.0)
+        case .rotation_RANGE_1000DPS:   return (32768.0 / 1000.0)
+        case .rotation_RANGE_2000DPS:   return (32768.0 / 2000.0)
         }
     }
     
-    static func unpack(data: [Byte]) -> RotationRawData
+    static func unpack(_ data: [Byte]) -> RotationRawData
     {
         let x = Int16.unpack(data[0..<2])
         let y = Int16.unpack(data[2..<4])
@@ -68,7 +68,7 @@ extension CMRotationRate : SensorDataPackableType
 {
     public typealias RangeType = RotationRange
     
-    public static func unpack(range:RotationRange, value: [UInt8]) -> CMRotationRate?
+    public static func unpack(_ range:RotationRange, value: [UInt8]) -> CMRotationRate?
     {
         guard value.count >= 6 else {
             return nil
@@ -86,10 +86,10 @@ extension CMRotationRate : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-public class GyroSensorService: SenStickSensorService<CMRotationRate, RotationRange>, SenStickService
+open class GyroSensorService: SenStickSensorService<CMRotationRate, RotationRange>, SenStickService
 {
     required public init?(device:SenStickDevice)
     {
-        super.init(device: device, sensorType: SenStickSensorType.GyroSensor)
+        super.init(device: device, sensorType: SenStickSensorType.gyroSensor)
     }
 }

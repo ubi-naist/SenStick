@@ -10,37 +10,37 @@ import Foundation
 import CoreBluetooth
 
 public protocol SenStickDeviceDelegate : class {
-    func didServiceFound(sender:SenStickDevice)
-    func didConnected(sender:SenStickDevice)
-    func didDisconnected(sender:SenStickDevice)
+    func didServiceFound(_ sender:SenStickDevice)
+    func didConnected(_ sender:SenStickDevice)
+    func didDisconnected(_ sender:SenStickDevice)
 }
 
-public class SenStickDevice : NSObject, CBPeripheralDelegate
+open class SenStickDevice : NSObject, CBPeripheralDelegate
 {
     // MARK: variables
-    public unowned let manager: CBCentralManager
-    public let peripheral:      CBPeripheral
+    open unowned let manager: CBCentralManager
+    open let peripheral:      CBPeripheral
 
-    public weak var delegate: SenStickDeviceDelegate?
+    open weak var delegate: SenStickDeviceDelegate?
     
     // MARK: Properties
-    public private(set) var isConnected: Bool
+    open fileprivate(set) var isConnected: Bool
     
-    public var name: String
-    public private(set) var identifier: NSUUID
+    open var name: String
+    open fileprivate(set) var identifier: UUID
 
-    public private(set) var deviceInformationService:   DeviceInformationService?
-    public private(set) var batteryLevelService:        BatteryService?
+    open fileprivate(set) var deviceInformationService:   DeviceInformationService?
+    open fileprivate(set) var batteryLevelService:        BatteryService?
     
-    public private(set) var controlService:             SenStickControlService?
-    public private(set) var metaDataService:            SenStickMetaDataService?
-    public private(set) var accelerationSensorService:  AccelerationSensorService?
-    public private(set) var gyroSensorService:          GyroSensorService?
-    public private(set) var magneticFieldSensorService: MagneticFieldSensorService?
-    public private(set) var brightnessSensorService:    BrightnessSensorService?
-    public private(set) var uvSensorService:            UVSensorService?
-    public private(set) var humiditySensorService:      HumiditySensorService?
-    public private(set) var pressureSensorService:      PressureSensorService?
+    open fileprivate(set) var controlService:             SenStickControlService?
+    open fileprivate(set) var metaDataService:            SenStickMetaDataService?
+    open fileprivate(set) var accelerationSensorService:  AccelerationSensorService?
+    open fileprivate(set) var gyroSensorService:          GyroSensorService?
+    open fileprivate(set) var magneticFieldSensorService: MagneticFieldSensorService?
+    open fileprivate(set) var brightnessSensorService:    BrightnessSensorService?
+    open fileprivate(set) var uvSensorService:            UVSensorService?
+    open fileprivate(set) var humiditySensorService:      HumiditySensorService?
+    open fileprivate(set) var pressureSensorService:      PressureSensorService?
     
     // MARK: initializer
     init(manager: CBCentralManager, peripheral:CBPeripheral, name: String?)
@@ -54,7 +54,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         super.init()
 
         self.peripheral.delegate = self
-        if self.peripheral.state == .Connected {
+        if self.peripheral.state == .connected {
             self.isConnected = true
             findSensticServices()
         }
@@ -64,7 +64,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     internal func onConnected()
     {
         self.isConnected = true
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.delegate?.didConnected(self)
         })
         
@@ -88,7 +88,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         self.humiditySensorService      = nil
         self.pressureSensorService      = nil
 
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.delegate?.didDisconnected(self)
         })
     }
@@ -102,14 +102,14 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     }
     
     // MARK: Public methods
-    public func connect()
+    open func connect()
     {
-        if peripheral.state == .Disconnected || peripheral.state == .Disconnecting {
-            manager.connectPeripheral(peripheral, options:nil)
+        if peripheral.state == .disconnected || peripheral.state == .disconnecting {
+            manager.connect(peripheral, options:nil)
         }
     }
     
-    public func cancelConnection()
+    open func cancelConnection()
     {
         manager.cancelPeripheralConnection(peripheral)
     }
@@ -117,7 +117,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
     // MARK: CBPeripheralDelegate
     
     // サービスの発見、次にキャラクタリスティクスの検索をする
-    public func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
+    open func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?)
     {
         // エラーなきことを確認
         if error != nil {
@@ -127,13 +127,13 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         
         // FIXME サービスが一部なかった場合などは、どのような処理になる? すべてのサービスが発見できなければエラー?
         for service in peripheral.services! {
-            let characteristicsUUIDs = SenStickUUIDs.SenStickServiceUUIDs[service.UUID]
-            peripheral.discoverCharacteristics(characteristicsUUIDs, forService: service)
+            let characteristicsUUIDs = SenStickUUIDs.SenStickServiceUUIDs[service.uuid]
+            peripheral.discoverCharacteristics(characteristicsUUIDs, for: service)
         }
     }
     
     // サービスのインスタンスを作る
-    public func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?)
+    open func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?)
     {
         // エラーなきことを確認
         if error != nil {
@@ -144,7 +144,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         // FIXME キャラクタリスティクスが発見できないサービスがあった場合、コールバックに通知が来ない。タイムアウトなどで処理する?
 //   debugPrint("\(#function), \(service.UUID).")
         // すべてのサービスのキャラクタリスティクスが発見できれば、インスタンスを生成
-        switch service.UUID {
+        switch service.uuid {
         case SenStickUUIDs.DeviceInformationServiceUUID:
             self.deviceInformationService = DeviceInformationService(device:self)
         case SenStickUUIDs.BatteryServiceUUID:
@@ -173,27 +173,27 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
             break
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.delegate?.didServiceFound(self)
         })        
     }
     
-    public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?)
+    open func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?)
     {
         if error != nil {
-            debugPrint("didUpdate: \(characteristic.UUID) \(error)")
+            debugPrint("didUpdate: \(characteristic.uuid) \(error)")
             return
         }
         
         // キャラクタリスティクスから[UInt8]を取り出す。なければreturn。
         guard let characteristics_nsdata = characteristic.value else { return }
         
-        var data = [UInt8](count: characteristics_nsdata.length, repeatedValue: 0)
-        characteristics_nsdata.getBytes(&data, length: data.count)
+        var data = [UInt8](repeating: 0, count: characteristics_nsdata.count)
+        (characteristics_nsdata as NSData).getBytes(&data, length: data.count)
 
 //debugPrint("didUpdate: \(characteristic.UUID) \(data)")
         
-        switch characteristic.service.UUID {
+        switch characteristic.service.uuid {
         case SenStickUUIDs.DeviceInformationServiceUUID:
             self.deviceInformationService?.didUpdateValue(characteristic, data: data)
         case SenStickUUIDs.BatteryServiceUUID:
@@ -222,7 +222,7 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
         }
     }
     
-    public func peripheralDidUpdateName(peripheral: CBPeripheral)
+    open func peripheralDidUpdateName(_ peripheral: CBPeripheral)
     {
         self.name = peripheral.name ?? "(unknown)"
     }
@@ -240,35 +240,35 @@ public class SenStickDevice : NSObject, CBPeripheralDelegate
 // サービスなど発見のヘルパーメソッド
 extension SenStickDevice {
     // ペリフェラルから指定したUUIDのCBServiceを取得します
-    func findService(uuid: CBUUID) -> CBService?
+    func findService(_ uuid: CBUUID) -> CBService?
     {
-        return (self.peripheral.services?.filter{$0.UUID == uuid}.first)
+        return (self.peripheral.services?.filter{$0.uuid == uuid}.first)
     }
     // 指定したUUIDのCharacteristicsを取得します
-    func findCharacteristic(service: CBService, uuid: CBUUID) -> CBCharacteristic?
+    func findCharacteristic(_ service: CBService, uuid: CBUUID) -> CBCharacteristic?
     {
-        return (service.characteristics?.filter{$0.UUID == uuid}.first)
+        return (service.characteristics?.filter{$0.uuid == uuid}.first)
     }
 }
 
 // SenstickServiceが呼び出すメソッド
 extension SenStickDevice {
     // Notificationを設定します。コールバックはdidUpdateValueの都度呼びだされます。初期値を読みだすために、enabeledがtrueなら初回の読み出しが実行されます。
-    internal func setNotify(characteristic: CBCharacteristic, enabled: Bool)
+    internal func setNotify(_ characteristic: CBCharacteristic, enabled: Bool)
     {
-        peripheral.setNotifyValue(enabled, forCharacteristic: characteristic)
+        peripheral.setNotifyValue(enabled, for: characteristic)
     }
     // 値読み出しを要求します
-    internal func readValue(characteristic: CBCharacteristic)
+    internal func readValue(_ characteristic: CBCharacteristic)
     {
-        peripheral.readValueForCharacteristic(characteristic)
+        peripheral.readValue(for: characteristic)
     }
     // 値の書き込み
-    internal func writeValue(characteristic: CBCharacteristic, value: [UInt8])
+    internal func writeValue(_ characteristic: CBCharacteristic, value: [UInt8])
     {
-        let data = NSData(bytes: value, length: value.count)
+        let data = Data(bytes: UnsafePointer<UInt8>(value), count: value.count)
 //        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithoutResponse)
-        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithResponse)
-        debugPrint("writeValue: \(characteristic.UUID) \(value)")
+        peripheral.writeValue( data, for: characteristic, type: .withResponse)
+        debugPrint("writeValue: \(characteristic.uuid) \(value)")
     }
 }

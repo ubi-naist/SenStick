@@ -9,13 +9,13 @@
 import Foundation
 import CoreBluetooth
 
-public class BatteryService : NSObject, SenStickService //, CustomStringConvertible
+open class BatteryService : NSObject, SenStickService //, CustomStringConvertible
 {
     // Variables
     unowned let device: SenStickDevice
     
     // Properties, KVO
-    dynamic public private(set) var batteryLevel: Int
+    dynamic open fileprivate(set) var batteryLevel: Int
     
     let batteryLevelChar:            CBCharacteristic
     
@@ -35,9 +35,9 @@ public class BatteryService : NSObject, SenStickService //, CustomStringConverti
     }
     
     // 値更新通知
-    func didUpdateValue(characteristic: CBCharacteristic, data: [UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data: [UInt8])
     {
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case SenStickUUIDs.BatteryLevelCharUUID:
             batteryLevel = Int(data[0])
 

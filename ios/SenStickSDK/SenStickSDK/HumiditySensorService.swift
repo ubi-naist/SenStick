@@ -10,11 +10,11 @@ import Foundation
 
 public enum HumiditySensorRange : UInt16, CustomStringConvertible
 {
-    case HUMIDITY_RANGE_DEFAULT = 0x00
+    case humidity_RANGE_DEFAULT = 0x00
     
     public var description : String {
         switch self {
-        case .HUMIDITY_RANGE_DEFAULT:    return "HUMIDITY_RANGE_DEFAULT"
+        case .humidity_RANGE_DEFAULT:    return "HUMIDITY_RANGE_DEFAULT"
         }
     }
 }
@@ -31,7 +31,7 @@ struct HumiditySensorRawData
         self.temperatureRawValue = temperatureRawValue
     }
     
-    static func unpack(data: [Byte]) -> HumiditySensorRawData
+    static func unpack(_ data: [Byte]) -> HumiditySensorRawData
     {
         let humidityRaw    = UInt16.unpack(data[0..<2])
         let temperatureRaw = UInt16.unpack(data[2..<4])
@@ -52,7 +52,7 @@ public struct HumiditySensorData : SensorDataPackableType
     
     public typealias RangeType = HumiditySensorRange
     
-    public static func unpack(range:HumiditySensorRange, value: [UInt8]) -> HumiditySensorData?
+    public static func unpack(_ range:HumiditySensorRange, value: [UInt8]) -> HumiditySensorData?
     {
         guard value.count >= 4 else {
             return nil
@@ -68,10 +68,10 @@ public struct HumiditySensorData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-public class HumiditySensorService: SenStickSensorService<HumiditySensorData, HumiditySensorRange>, SenStickService
+open class HumiditySensorService: SenStickSensorService<HumiditySensorData, HumiditySensorRange>, SenStickService
 {
     required public init?(device:SenStickDevice)
     {
-        super.init(device: device, sensorType: SenStickSensorType.HumidityAndTemperatureSensor)
+        super.init(device: device, sensorType: SenStickSensorType.humidityAndTemperatureSensor)
     }
 }

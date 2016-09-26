@@ -11,12 +11,12 @@ import CoreBluetooth
 
 public protocol SenStickMetaDataServiceDelegate : class
 {
-    func didUpdateMetaData(sender:SenStickMetaDataService)
+    func didUpdateMetaData(_ sender:SenStickMetaDataService)
 }
 
-public class SenStickMetaDataService : SenStickService
+open class SenStickMetaDataService : SenStickService
 {
-    public weak var delegate: SenStickMetaDataServiceDelegate?
+    open weak var delegate: SenStickMetaDataServiceDelegate?
     
     // Variables
     unowned let device: SenStickDevice
@@ -26,9 +26,9 @@ public class SenStickMetaDataService : SenStickService
     let targetAbstractChar: CBCharacteristic
     
     // Properties
-    public private(set) var logID:    UInt8
-    public private(set) var dateTime: NSDate
-    public private(set) var abstract: String
+    open fileprivate(set) var logID:    UInt8
+    open fileprivate(set) var dateTime: Date
+    open fileprivate(set) var abstract: String
     
     // イニシャライザ
     required public init?(device:SenStickDevice)
@@ -45,7 +45,7 @@ public class SenStickMetaDataService : SenStickService
         targetAbstractChar = _targetAbstractChar
         
         self.logID = 0
-        self.dateTime = NSDate.distantPast()
+        self.dateTime = Date.distantPast
         self.abstract = ""
         
         // Notifyを有効に。初期値読み出し。
@@ -53,29 +53,29 @@ public class SenStickMetaDataService : SenStickService
     }
     
     // 値更新通知
-    func didUpdateValue(characteristic: CBCharacteristic, data: [UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data: [UInt8])
     {
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case SenStickUUIDs.TargetLogIDCharUUID:
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.logID = data[0]
                 self.delegate?.didUpdateMetaData(self)
             })
             
         case SenStickUUIDs.TargetDateTimeCharUUID:
-            if let date = NSDate.unpack(data) {
-                dispatch_async(dispatch_get_main_queue(), {
+            if let date = Date.unpack(data) {
+                DispatchQueue.main.async(execute: {
                     self.dateTime = date
                 })
             }
             
         case SenStickUUIDs.TargetAbstractCharUUID:
-            if let s = String(bytes: data, encoding: NSUTF8StringEncoding) {
-                dispatch_async(dispatch_get_main_queue(), {
+            if let s = String(bytes: data, encoding: String.Encoding.utf8) {
+                DispatchQueue.main.async(execute: {
                     self.abstract = s
                 })
             } else {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.abstract = ""
                 })
             }
@@ -87,7 +87,7 @@ public class SenStickMetaDataService : SenStickService
     }
     
     // Public methods
-    public func requestMetaData(logID: UInt8) {        
+    open func requestMetaData(_ logID: UInt8) {        
         device.writeValue(targetLogIDChar, value: [logID])
         device.readValue(targetDateTimeChar)
 //        device.readValue(targetAbstractChar)

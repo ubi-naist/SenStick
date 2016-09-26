@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SensorSettingData<T: RawRepresentable where T.RawValue == UInt16> : CustomStringConvertible, PackableType
+public struct SensorSettingData<T: RawRepresentable> : CustomStringConvertible, PackableType where T.RawValue == UInt16
 {
     public let status:           SenStickStatus
     public let samplingDuration: SamplingDurationType
@@ -26,7 +26,7 @@ public struct SensorSettingData<T: RawRepresentable where T.RawValue == UInt16> 
         return "SensorSetting: status \(status), sampling duration \(samplingDuration) ms, range \(range)."
     }
     
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         var b = [UInt8]()
         
@@ -39,7 +39,7 @@ public struct SensorSettingData<T: RawRepresentable where T.RawValue == UInt16> 
         return b
     }
 
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> SensorSettingData?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> SensorSettingData? where C.Iterator.Element == Byte ,C.Index == Int
     {
         let bytes = Array(data)
         

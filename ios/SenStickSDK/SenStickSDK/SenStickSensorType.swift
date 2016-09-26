@@ -12,26 +12,26 @@ import Foundation
 // センサータイプ
 public enum SenStickSensorType: UInt8, CustomStringConvertible
 {
-    case AccelerationSensor              = 0
-    case GyroSensor                      = 1
-    case MagneticFieldSensor             = 2
-    case BrightnessSensor                = 3
-    case UltraVioletSensor               = 4
-    case HumidityAndTemperatureSensor    = 5
-    case AirPressureSensor               = 6
+    case accelerationSensor              = 0
+    case gyroSensor                      = 1
+    case magneticFieldSensor             = 2
+    case brightnessSensor                = 3
+    case ultraVioletSensor               = 4
+    case humidityAndTemperatureSensor    = 5
+    case airPressureSensor               = 6
     
-    static let allValues = [AccelerationSensor, GyroSensor, MagneticFieldSensor, BrightnessSensor, UltraVioletSensor, HumidityAndTemperatureSensor, AirPressureSensor]
+    static let allValues = [accelerationSensor, gyroSensor, magneticFieldSensor, brightnessSensor, ultraVioletSensor, humidityAndTemperatureSensor, airPressureSensor]
     
     public var description : String
     {
         switch self {
-        case .AccelerationSensor:              return "AccelerationSensor"
-        case .GyroSensor:                      return "GyroSensor"
-        case .MagneticFieldSensor:             return "MagneticFieldSensor"
-        case .BrightnessSensor:                return "BrightnessSensor"
-        case .UltraVioletSensor:               return "UltraVioletSensor"
-        case .HumidityAndTemperatureSensor:    return "HumidityAndTemperatureSensor"
-        case .AirPressureSensor:               return "AirPressureSensor"
+        case .accelerationSensor:              return "AccelerationSensor"
+        case .gyroSensor:                      return "GyroSensor"
+        case .magneticFieldSensor:             return "MagneticFieldSensor"
+        case .brightnessSensor:                return "BrightnessSensor"
+        case .ultraVioletSensor:               return "UltraVioletSensor"
+        case .humidityAndTemperatureSensor:    return "HumidityAndTemperatureSensor"
+        case .airPressureSensor:               return "AirPressureSensor"
         }
     }
 }

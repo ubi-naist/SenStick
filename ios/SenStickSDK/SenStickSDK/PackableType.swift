@@ -24,29 +24,29 @@ public typealias Byte = UInt8
  */
 
 public protocol PackableType {
-    func pack(byteOrder byteOrder: ByteOrder) -> [Byte]
-    static func unpack(data: Array<Byte>, byteOrder: ByteOrder) -> Self?
+    func pack(byteOrder: ByteOrder) -> [Byte]
+    static func unpack(_ data: Array<Byte>, byteOrder: ByteOrder) -> Self?
 }
 
 public enum ByteOrder : CustomStringConvertible {
-    case LittleEndian
-    case BigEndian
+    case littleEndian
+    case bigEndian
     
     public var description: String {
         switch self {
-        case .LittleEndian: return "LittleEndian"
-        case .BigEndian: return "BigEndian"
+        case .littleEndian: return "LittleEndian"
+        case .bigEndian: return "BigEndian"
         }
     }
 }
 
 extension UInt8 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         return [self]
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> UInt8?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> UInt8? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard data.count >= 1 else {
             assert(false, #function)
@@ -58,12 +58,12 @@ extension UInt8 : PackableType {
 }
 
 extension Int8 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         return [UInt8.init(bitPattern: self)]
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> Int8?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> Int8? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard data.count >= 1 else {
             assert(false, #function)
@@ -75,15 +75,15 @@ extension Int8 : PackableType {
 }
 
 extension UInt16 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
-        var buf = [UInt8](count: 2, repeatedValue: 0)
+        var buf = [UInt8](repeating: 0, count: 2)
         
         switch byteOrder {
-        case .LittleEndian:
+        case .littleEndian:
             buf[0] = UInt8(UInt16(0x00ff) & self)
             buf[1] = UInt8(UInt16(0x00ff) & (self >> 8))
-        case .BigEndian:
+        case .bigEndian:
             buf[1] = UInt8(UInt16(0x00ff) & self)
             buf[0] = UInt8(UInt16(0x00ff) & (self >> 8))
         }
@@ -91,7 +91,7 @@ extension UInt16 : PackableType {
         return buf
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> UInt16?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> UInt16? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard data.count >= 2 else {
             assert(false, #function)
@@ -99,22 +99,22 @@ extension UInt16 : PackableType {
         }
         let bytes = Array(data)
         switch byteOrder {
-        case .LittleEndian:
+        case .littleEndian:
             return UInt16(bytes[0])      + UInt16(bytes[1]) << 8
-        case .BigEndian:
+        case .bigEndian:
             return UInt16(bytes[0]) << 8 + UInt16(bytes[1])
         }
     }
 }
 
 extension Int16 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         let v = UInt16(bitPattern: self)
         return v.pack(byteOrder: byteOrder)
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> Int16?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> Int16? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard let value = UInt16.unpack(data, byteOrder: byteOrder) else {
             assert(false, #function)
@@ -125,18 +125,18 @@ extension Int16 : PackableType {
 }
 
 extension UInt32 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
-        var buf = [UInt8](count: 4, repeatedValue: 0)
+        var buf = [UInt8](repeating: 0, count: 4)
         
         switch byteOrder {
-        case .LittleEndian:
+        case .littleEndian:
             buf[0] = UInt8(UInt32(0x00ff) & (self >> 0))
             buf[1] = UInt8(UInt32(0x00ff) & (self >> 8))
             buf[2] = UInt8(UInt32(0x00ff) & (self >> 16))
             buf[3] = UInt8(UInt32(0x00ff) & (self >> 24))
             
-        case .BigEndian:
+        case .bigEndian:
             buf[3] = UInt8(UInt32(0x00ff) & (self >> 0))
             buf[2] = UInt8(UInt32(0x00ff) & (self >> 8))
             buf[1] = UInt8(UInt32(0x00ff) & (self >> 16))
@@ -146,7 +146,7 @@ extension UInt32 : PackableType {
         return buf
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> UInt32?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> UInt32? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard data.count >= 4 else {
             assert(false, #function)
@@ -155,11 +155,11 @@ extension UInt32 : PackableType {
         
         let bytes = Array(data)
         switch byteOrder {
-        case .LittleEndian:
+        case .littleEndian:
             let b1 = UInt32(bytes[0])       + UInt32(bytes[1]) << 8
             let b2 = UInt32(bytes[2]) << 16 + UInt32(bytes[3]) << 24
             return b1 + b2
-        case .BigEndian:
+        case .bigEndian:
             let b1 = UInt32(bytes[0]) << 24 + UInt32(bytes[1]) << 16
             let b2 = UInt32(bytes[2]) << 8  + UInt32(bytes[3])
             return b1 + b2
@@ -168,13 +168,13 @@ extension UInt32 : PackableType {
 }
 
 extension Int32 : PackableType {
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         let v = UInt32(bitPattern: self)
         return v.pack(byteOrder: byteOrder)
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> Int32?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> Int32? where C.Iterator.Element == Byte ,C.Index == Int
     {
         guard let value = UInt32.unpack(data, byteOrder: byteOrder) else {
             assert(false, #function)            
@@ -185,11 +185,11 @@ extension Int32 : PackableType {
 }
 
 
-extension _ArrayType where Generator.Element == UInt8{
+extension _ArrayType where Iterator.Element == UInt8{
     func toHexString() -> String
     {
         var s = String()
-        for (_, value) in enumerate() {
+        for (_, value) in enumerated() {
             s += String(format:"0x%02x,", value)
         }
         return s

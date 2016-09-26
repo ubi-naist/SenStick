@@ -14,5 +14,5 @@ protocol SenStickService
     init?(device: SenStickDevice)
     
     // 値が更新される都度CBPeripheralDelegateから呼びだされます
-    func didUpdateValue(characteristic: CBCharacteristic, data:[UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data:[UInt8])
 }

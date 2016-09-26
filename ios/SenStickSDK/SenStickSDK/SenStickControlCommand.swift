@@ -11,20 +11,20 @@ import Foundation
 
 public enum SenStickControlCommand : UInt8, CustomStringConvertible
 {
-    case Stopping      = 0x00
-    case Starting      = 0x01
-    case FormatStorage = 0x10
-    case DeepSleep     = 0x20
-    case EnterDFUMode  = 0x40
+    case stopping      = 0x00
+    case starting      = 0x01
+    case formatStorage = 0x10
+    case deepSleep     = 0x20
+    case enterDFUMode  = 0x40
     
     public var description : String
     {
         switch self {
-        case .Stopping      : return "Stopping"
-        case .Starting      : return "Starting"
-        case .FormatStorage : return "FormatStorage"
-        case .DeepSleep     : return "DeepSleep"
-        case .EnterDFUMode  : return "EnterDFUMode"
+        case .stopping      : return "Stopping"
+        case .starting      : return "Starting"
+        case .formatStorage : return "FormatStorage"
+        case .deepSleep     : return "DeepSleep"
+        case .enterDFUMode  : return "EnterDFUMode"
         }
     }
 }

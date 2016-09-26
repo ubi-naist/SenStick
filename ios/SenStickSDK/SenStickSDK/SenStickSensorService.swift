@@ -11,20 +11,20 @@ import CoreBluetooth
 
 public protocol SenStickSensorServiceDelegate : class
 {
-    func didUpdateSetting(sender:AnyObject)
-    func didUpdateRealTimeData(sender: AnyObject)
-    func didUpdateMetaData(sender: AnyObject)
-    func didUpdateLogData(sender: AnyObject)
-    func didFinishedLogData(sender: AnyObject)
+    func didUpdateSetting(_ sender:AnyObject)
+    func didUpdateRealTimeData(_ sender: AnyObject)
+    func didUpdateMetaData(_ sender: AnyObject)
+    func didUpdateLogData(_ sender: AnyObject)
+    func didFinishedLogData(_ sender: AnyObject)
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
-public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable where S.RawValue == UInt16, T.RangeType == S> 
+open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable> where S.RawValue == UInt16, T.RangeType == S 
 {
-    let lockQueue = dispatch_queue_create("com.SenStickSensorService.LockQueue", nil)
+    let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue", attributes: [])
 
     // code
-    public weak var delegate: SenStickSensorServiceDelegate?
+    open weak var delegate: SenStickSensorServiceDelegate?
     
     // Variables
     unowned let device: SenStickDevice
@@ -54,9 +54,9 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     var logData: [T] = []
 
     // Properties
-    public private(set) var settingData:  SensorSettingData<S>? {
+    open fileprivate(set) var settingData:  SensorSettingData<S>? {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didUpdateSetting(self)
             })
         }
@@ -77,11 +77,11 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             objc_sync_exit(_lockObj)
         }
     }
-    public private(set) var realtimeData: T? {
+    open fileprivate(set) var realtimeData: T? {
         didSet {
             if realTimeDataFlag == false {
                 realTimeDataFlag = true
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.delegate?.didUpdateRealTimeData(self)
                     self.realTimeDataFlag = false
                 })
@@ -89,11 +89,11 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
         }
     }
 
-    public private(set) var logID: SensorLogID?
+    open fileprivate(set) var logID: SensorLogID?
 
-    public private(set) var logMetaData: SensorLogMetaData<S>? {
+    open fileprivate(set) var logMetaData: SensorLogMetaData<S>? {
         didSet {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.delegate?.didUpdateMetaData(self)
             })
         }
@@ -136,7 +136,7 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     }
     
     // internal methods
-    func unpackDataArray(range:S, value: [UInt8]) -> [T]?
+    func unpackDataArray(_ range:S, value: [UInt8]) -> [T]?
     {
         // 空配列
         if value.count == 1 && value[0] == 0 {
@@ -174,10 +174,10 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     }
 
     // 値更新通知
-    func didUpdateValue(characteristic: CBCharacteristic, data: [UInt8])
+    func didUpdateValue(_ characteristic: CBCharacteristic, data: [UInt8])
     {
-        switch characteristic.UUID {
-        case sensorSettingChar.UUID:
+        switch characteristic.uuid {
+        case sensorSettingChar.uuid:
             guard let settingData = SensorSettingData<S>.unpack(data) else {
                 // FIXME 不正なデータ処理
                 assert(false, #function)
@@ -185,25 +185,25 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
             }
             self.settingData = settingData
             
-        case sensorRealTimeDataChar.UUID:
+        case sensorRealTimeDataChar.uuid:
             self.realtimeData = T.unpack(self.settingData!.range, value: data)
 //debugPrint("\(self.realtimeData)")
             
-        case sensorLogIDChar.UUID:
+        case sensorLogIDChar.uuid:
             guard let logID = SensorLogID.unpack(data) else {
                 assert(false, #function)
                 break
             }
             self.logID = logID
 
-        case sensorLogMetaDataChar.UUID:
+        case sensorLogMetaDataChar.uuid:
             guard let metadata = SensorLogMetaData<S>.unpack(data) else {
                 assert(false, #function)
                 break
             }
             self.logMetaData = metadata
             
-        case sensorLogDataChar.UUID:
+        case sensorLogDataChar.uuid:
             guard let metadata = self.logMetaData else {
 //                assert(false, #function)
                 break
@@ -212,19 +212,19 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
 //                debugPrint("\(#function) count \(d.count)")
                 // データの終端は、必ず送る。データ取りこぼしが起きないように、データ更新も呼び出す。
                 if d.count == 0 {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.delegate?.didUpdateLogData(self)
                         self.delegate?.didFinishedLogData(self)
                     })
                 } else {
                     // データを追加。スレッドをまたぐので、selfをロックオブジェクトに使う。
                     objc_sync_enter(self)
-                    self.logData.appendContentsOf(d)
+                    self.logData.append(contentsOf: d)
                     objc_sync_exit(self)
                     // 過度な呼び出しにならないように、メインスレッドでの処理が終わったら次の処理を入れるようにする。
                     if(self.flag == false) {
                         self.flag = true
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.delegate?.didUpdateLogData(self)
                             self.flag = false
                         })
@@ -242,19 +242,19 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     // Public methods
 
     // セッテイングを書き込みます
-    public func writeSetting(setting: SensorSettingData<S>)
+    open func writeSetting(_ setting: SensorSettingData<S>)
     {
         let data = setting.pack()
         device.writeValue(sensorSettingChar, value: data)
     }
     
-    public func readSetting()
+    open func readSetting()
     {
         device.readValue(sensorSettingChar)
     }
 
     // ログIDを書き込みます。自動的にメタデータが更新されます。
-    public func writeLogID(logID: SensorLogID)
+    open func writeLogID(_ logID: SensorLogID)
     {
         device.setNotify(self.sensorLogDataChar, enabled: false)
 
@@ -270,13 +270,13 @@ public class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentabl
     }
     
     // メタデータの更新
-    public func updateLogMetaData()
+    open func updateLogMetaData()
     {
         device.readValue(sensorLogMetaDataChar)
     }
     
     // センサデータを読みだし
-    public func readLogData() -> [T]
+    open func readLogData() -> [T]
     {
         var ret: [T]
         

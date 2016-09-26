@@ -9,24 +9,24 @@
 import Foundation
 import CoreBluetooth
 
-public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
+open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
 {
-    let queue: dispatch_queue_t
+    let queue: DispatchQueue
     var manager: CBCentralManager?
     
-    var scanTimer: dispatch_source_t?
-    var scanCallback:((remaining: NSTimeInterval) -> Void)?
+    var scanTimer: DispatchSource?
+    var scanCallback:((_ remaining: TimeInterval) -> Void)?
     
     // Properties, KVO
-    dynamic public private(set) var devices:[SenStickDevice] = []
-    dynamic public private(set) var state: CBCentralManagerState = .Unknown
-    dynamic public private(set) var isScanning: Bool = false
+    dynamic open fileprivate(set) var devices:[SenStickDevice] = []
+    dynamic open fileprivate(set) var state: CBCentralManagerState = .unknown
+    dynamic open fileprivate(set) var isScanning: Bool = false
     
     // Initializer, Singleton design pattern.
-    public static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
+    open static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
     
-    private override init() {
-        queue = dispatch_queue_create("senstick.ble-queue", DISPATCH_QUEUE_SERIAL)
+    fileprivate override init() {
+        queue = DispatchQueue(label: "senstick.ble-queue", attributes: [])
         
         super.init()
         
@@ -36,16 +36,16 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     // MARK: Public methods
     
     // 1秒毎にコールバックします。0になれば終了です。
-    public func scan(duration:NSTimeInterval = 5.0, callback:((remaining: NSTimeInterval) -> Void)?)
+    open func scan(_ duration:TimeInterval = 5.0, callback:((_ remaining: TimeInterval) -> Void)?)
     {
         // デバイスリストをクリアする
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.devices = []
         })
         
         // スキャン中、もしくはBTの電源がオフであれば、直ちに終了。
-        if manager!.isScanning || manager!.state != CBCentralManagerState.PoweredOn {
-            callback?(remaining: 0)
+        if manager!.isScanning || manager!.state != CBCentralManagerState.poweredOn {
+            callback?(0)
             return
         }
         
@@ -54,41 +54,41 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         scanCallback = callback
         
         // 接続済のペリフェラルを取得する
-        for peripheral in (manager!.retrieveConnectedPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID])) {
+        for peripheral in (manager!.retrieveConnectedPeripherals(withServices: [SenStickUUIDs.advertisingServiceUUID])) {
             addPeripheral(peripheral, name:nil)
         }
         
         // スキャンを開始する。
-        manager!.scanForPeripheralsWithServices([SenStickUUIDs.advertisingServiceUUID], options: nil)
+        manager!.scanForPeripherals(withServices: [SenStickUUIDs.advertisingServiceUUID], options: nil)
         isScanning = true
         
         var remaining = scanDuration
-        scanTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue())
-        dispatch_source_set_timer(scanTimer!, DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC, 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
-        dispatch_source_set_event_handler(scanTimer!) {
+        scanTimer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: DispatchQueue.main) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
+        scanTimer!.setTimer(start: DispatchTime.now(), interval: 1 * NSEC_PER_SEC, leeway: 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
+        scanTimer!.setEventHandler {
             // 時間を-1秒。
             remaining = max(0, remaining - 1)
             if remaining <= 0 {
                 self.cancelScan()
             }
             // 継続ならばシグナリング
-            self.scanCallback?(remaining: remaining)
+            self.scanCallback?(remaining)
         }
-        dispatch_resume(scanTimer!)
+        scanTimer!.resume()
     }
     
-    public func scan(duration:NSTimeInterval = 5.0)
+    open func scan(_ duration:TimeInterval = 5.0)
     {
         scan(duration, callback: nil)
     }
     
-    public func cancelScan()
+    open func cancelScan()
     {
         guard manager!.isScanning else { return }
         
-        dispatch_source_cancel(scanTimer!)
+        scanTimer!.cancel()
         
-        self.scanCallback?(remaining: 0)
+        self.scanCallback?(0)
         self.scanCallback = nil
         
         self.manager!.stopScan()
@@ -97,10 +97,10 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     // CentralManagerにデリゲートを設定して初期状態に戻します。
     // ファームウェア更新などで、CentralManagerを別に渡して利用した後、復帰するために使います。
-    public func reset()
+    open func reset()
     {
         // デバイスリストをクリアする
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.devices = []
         })
 
@@ -108,42 +108,42 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     }
     
     // MARK: Private methods
-    func addPeripheral(peripheral: CBPeripheral, name: String?)
+    func addPeripheral(_ peripheral: CBPeripheral, name: String?)
     {
         //すでに配列にあるかどうか探す, なければ追加。KVOを活かすため、配列それ自体を代入する
-        if !devices.contains({ element -> Bool in element.peripheral == peripheral }) {
+        if !devices.contains(where: { element -> Bool in element.peripheral == peripheral }) {
             var devs = Array<SenStickDevice>(self.devices)
             devs.append(SenStickDevice(manager: self.manager!, peripheral: peripheral, name: name))
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.devices = devs
             })
         }
     }
     
     // MARK: CBCentralManagerDelegate
-    public func centralManagerDidUpdateState(central: CBCentralManager)
+    open func centralManagerDidUpdateState(_ central: CBCentralManager)
     {
         // BLEの処理は独立したキューで走っているので、KVOを活かすためにメインキューで代入する
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.state = central.state
         })
         
         switch central.state {
-        case .PoweredOn: break
-        case .PoweredOff:
-            dispatch_async(dispatch_get_main_queue(), {
+        case .poweredOn: break
+        case .poweredOff:
+            DispatchQueue.main.async(execute: {
                 self.devices = []
             })
-        case .Unauthorized:
-            dispatch_async(dispatch_get_main_queue(), {
+        case .unauthorized:
+            DispatchQueue.main.async(execute: {
                 self.devices = []
             })
-        case .Unknown:
-            dispatch_async(dispatch_get_main_queue(), {
+        case .unknown:
+            DispatchQueue.main.async(execute: {
                 self.devices = []
             })
-        case .Unsupported:
-            dispatch_async(dispatch_get_main_queue(), {
+        case .unsupported:
+            DispatchQueue.main.async(execute: {
                 self.devices = []
             })
             break
@@ -151,26 +151,26 @@ public class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         }
     }
     
-    public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber)
+    open func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)
     {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.addPeripheral(peripheral, name: advertisementData[CBAdvertisementDataLocalNameKey] as? String )
         })
     }
     
-    public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral)
+    open func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral)
     {
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 device.onConnected()
             })
         }
     }
     
-    public func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?)
+    open func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?)
     {
         for device in devices.filter({element -> Bool in element.peripheral == peripheral}) {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 device.onDisConnected()
             })
         }

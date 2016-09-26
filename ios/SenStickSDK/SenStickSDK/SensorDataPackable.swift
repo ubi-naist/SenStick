@@ -10,5 +10,5 @@ import Foundation
 
 public protocol SensorDataPackableType {
     associatedtype RangeType
-    static func unpack(range:RangeType, value: [UInt8]) -> Self?
+    static func unpack(_ range:RangeType, value: [UInt8]) -> Self?
 }

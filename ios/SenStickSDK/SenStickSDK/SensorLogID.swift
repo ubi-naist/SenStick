@@ -22,7 +22,7 @@ public struct SensorLogID : PackableType
         self.position  = position
     }
     
-    public func pack(byteOrder byteOrder: ByteOrder = .LittleEndian) -> [Byte]
+    public func pack(byteOrder: ByteOrder = .littleEndian) -> [Byte]
     {
         var b = [UInt8]()
         
@@ -35,7 +35,7 @@ public struct SensorLogID : PackableType
         return b
     }
     
-    public static func unpack<C: CollectionType where C.Generator.Element == Byte ,C.Index == Int>(data: C, byteOrder: ByteOrder = .LittleEndian) -> SensorLogID?
+    public static func unpack<C: Collection>(_ data: C, byteOrder: ByteOrder = .littleEndian) -> SensorLogID? where C.Iterator.Element == Byte ,C.Index == Int
     {
         let bytes = Array(data)
         

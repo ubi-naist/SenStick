@@ -14,12 +14,12 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     let queue: DispatchQueue
     var manager: CBCentralManager?
     
-    var scanTimer: DispatchSource?
+    var scanTimer: DispatchSourceTimer?
     var scanCallback:((_ remaining: TimeInterval) -> Void)?
     
     // Properties, KVO
     dynamic open fileprivate(set) var devices:[SenStickDevice] = []
-    dynamic open fileprivate(set) var state: CBCentralManagerState = .unknown
+    dynamic open fileprivate(set) var state: CBManagerState = .unknown
     dynamic open fileprivate(set) var isScanning: Bool = false
     
     // Initializer, Singleton design pattern.
@@ -44,7 +44,7 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         })
         
         // スキャン中、もしくはBTの電源がオフであれば、直ちに終了。
-        if manager!.isScanning || manager!.state != CBCentralManagerState.poweredOn {
+        if manager!.isScanning || manager!.state != .poweredOn {
             callback?(0)
             return
         }
@@ -63,9 +63,9 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
         isScanning = true
         
         var remaining = scanDuration
-        scanTimer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: DispatchQueue.main) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
-        scanTimer!.setTimer(start: DispatchTime.now(), interval: 1 * NSEC_PER_SEC, leeway: 100 * 1000 * USEC_PER_SEC) // 1秒ごとのタイマー
-        scanTimer!.setEventHandler {
+        scanTimer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: DispatchQueue.main)
+        scanTimer?.scheduleRepeating(deadline: DispatchTime.now(), interval: 1.0) // 1秒ごとのタイマー
+        scanTimer?.setEventHandler {
             // 時間を-1秒。
             remaining = max(0, remaining - 1)
             if remaining <= 0 {

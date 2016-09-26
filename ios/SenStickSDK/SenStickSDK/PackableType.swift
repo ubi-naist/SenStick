@@ -184,13 +184,14 @@ extension Int32 : PackableType {
     }
 }
 
-
-extension _ArrayType where Iterator.Element == UInt8{
+protocol _UInt8Type { }
+extension UInt8: _UInt8Type {}
+extension Array where Element : _UInt8Type {
     func toHexString() -> String
     {
         var s = String()
-        for (_, value) in enumerated() {
-            s += String(format:"0x%02x,", value)
+        for (_, value) in self.enumerated() {
+            s += String(format:"0x%02x,", value as! CVarArg)
         }
         return s
     }

@@ -38,7 +38,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         pressureDataModel      = PressureDataModel()
     }
     
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         
@@ -57,7 +57,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
          }*/
     }
     
-    override func viewWillDisappear(animated: Bool)
+    override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillDisappear(animated)
         
@@ -84,7 +84,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     }
 
     // MARK: - SenStickDeviceDelegate
-    func didServiceFound(sender: SenStickDevice) {
+    func didServiceFound(_ sender: SenStickDevice) {
         self.statusCell?.name       = device?.name
         self.statusCell?.service    = device?.controlService
         
@@ -97,21 +97,21 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         pressureDataModel?.service      = device?.pressureSensorService
     }
     
-    func didConnected(sender:SenStickDevice)
+    func didConnected(_ sender:SenStickDevice)
     {
     }
     
-    func didDisconnected(sender:SenStickDevice)
+    func didDisconnected(_ sender:SenStickDevice)
     {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
-        switch (indexPath.row) {
+        switch ((indexPath as NSIndexPath).row) {
         case 0:
             self.statusCell              = cell as? SensorStatusCellView
-        self.statusCell?.controller      = self
+            self.statusCell?.controller  = self
         case 1:
             accelerationDataModel?.cell  = cell as? SensorDataCellView
         case 2:
@@ -132,7 +132,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     
     
     // MARK: - Segues
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool
     {
         // デバイス詳細情報表示に遷移
         if identifier == "deviceInformation" {
@@ -141,26 +141,26 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         
         // 詳細表示遷移できるのはログ停止時だけ
         if let control = device?.controlService {
-            return (control.command == .Stopping)
+            return (control.command == .stopping)
         } else {
             return false
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        if let vc = segue.destinationViewController as? DeviceInformationViewController {
+        if let vc = segue.destination as? DeviceInformationViewController {
             vc.device = self.device
         }
         
-        if let vc = segue.destinationViewController as?  LogListViewController {
+        if let vc = segue.destination as?  LogListViewController {
             vc.device = self.device
         }
         
         //        debugPrint("  \(segue.destinationViewController)")
-        if let vc = segue.destinationViewController as? SamplingDurationViewController {
+        if let vc = segue.destination as? SamplingDurationViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 1:
                 vc.target = device?.accelerationSensorService
             case 2:

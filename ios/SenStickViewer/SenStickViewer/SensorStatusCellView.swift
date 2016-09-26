@@ -29,7 +29,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
             if service == nil {
                 shouldSetDateTime = true
             } else if shouldSetDateTime {
-                service?.writeDateTime(NSDate())
+                service?.writeDateTime(Date())
                 shouldSetDateTime = false
             }
         }
@@ -46,28 +46,28 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
         if let control = self.service {
             control.delegate = self
             countOfLogTextLabel.text = "\(control.availableLogCount)"
-            startButton.enabled   = (control.command == .Stopping)
-            stopButton.enabled    = (control.command != .Stopping)
-            storageStatusTextLabe.hidden = !(self.service?.storageStatus)!
+            startButton.isEnabled   = (control.command == .stopping)
+            stopButton.isEnabled    = (control.command != .stopping)
+            storageStatusTextLabe.isHidden = !(self.service?.storageStatus)!
             if (self.service?.storageStatus)! {
-                startButton.enabled = false
-                stopButton.enabled  = false
+                startButton.isEnabled = false
+                stopButton.isEnabled  = false
             }
-            formatButton.enabled = true
+            formatButton.isEnabled = true
             deviceNameTextField.text = control.deviceName
         } else {
             countOfLogTextLabel.text = "0"
-            startButton.enabled   = false
-            stopButton.enabled    = false
-            storageStatusTextLabe.hidden = true
-            formatButton.enabled = false
+            startButton.isEnabled   = false
+            stopButton.isEnabled    = false
+            storageStatusTextLabe.isHidden = true
+            formatButton.isEnabled = false
             deviceNameTextField.text = ""
         }
         deviceNameTextField.delegate = self
     }
     
     // UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
         self.service?.writeDeviceName(deviceNameTextField.text!)
@@ -76,45 +76,45 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     }
     
     // MARK: - SenStickControlServiceDelegate
-    func didCommandChanged(sender: SenStickControlService, command: SenStickControlCommand)
+    func didCommandChanged(_ sender: SenStickControlService, command: SenStickControlCommand)
     {
 //        debugPrint("\(#function)")
         updateView()
     }
-    func didAvailableLogCountChanged(sender:SenStickControlService, logCount: UInt8)
+    func didAvailableLogCountChanged(_ sender:SenStickControlService, logCount: UInt8)
     {
 //        debugPrint("\(#function), \(service?.availableLogCount)")
         updateView()
     }
-    func didStorageStatusChanged(sender:SenStickControlService, storageStatus: Bool)
+    func didStorageStatusChanged(_ sender:SenStickControlService, storageStatus: Bool)
     {
         updateView()
     }
-    func didDateTimeUpdate(sender:SenStickControlService, dateTime:NSDate)
+    func didDateTimeUpdate(_ sender:SenStickControlService, dateTime:Date)
     {
 //        debugPrint("\(#function), \(service?.dateTime)")
         updateView()
     }
-    func didAbstractUpdate(sender:SenStickControlService, abstractText:String)
+    func didAbstractUpdate(_ sender:SenStickControlService, abstractText:String)
     {
 //        debugPrint("\(#function)")
         updateView()
     }
-    func didDeviceNameUpdate(sender: SenStickControlService, deviceName: String) {
+    func didDeviceNameUpdate(_ sender: SenStickControlService, deviceName: String) {
         updateView()
     }
     
     // MARK: - Eventhandler
-    @IBAction func  startButtonToutchUpInside(sender: UIButton) {
+    @IBAction func  startButtonToutchUpInside(_ sender: UIButton) {
         controller?.clearGraph()
-        service?.writeCommand(.Starting)
+        service?.writeCommand(.starting)
     }
     
-    @IBAction func  stopButtonToutchUpInside(sender: UIButton) {
-        service?.writeCommand(.Stopping)
+    @IBAction func  stopButtonToutchUpInside(_ sender: UIButton) {
+        service?.writeCommand(.stopping)
     }
     
-    @IBAction func  formatButtonToutchUpInside(sender: UIButton) {
-        service?.writeCommand(.FormatStorage)
+    @IBAction func  formatButtonToutchUpInside(_ sender: UIButton) {
+        service?.writeCommand(.formatStorage)
     }
 }

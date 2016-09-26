@@ -191,7 +191,7 @@ open class SenStickDevice : NSObject, CBPeripheralDelegate
         var data = [UInt8](repeating: 0, count: characteristics_nsdata.count)
         (characteristics_nsdata as NSData).getBytes(&data, length: data.count)
 
-//debugPrint("didUpdate: \(characteristic.UUID) \(data)")
+//debugPrint("didUpdate: \(characteristic.uuid) \(data)")
         
         switch characteristic.service.uuid {
         case SenStickUUIDs.DeviceInformationServiceUUID:
@@ -269,6 +269,6 @@ extension SenStickDevice {
         let data = Data(bytes: UnsafePointer<UInt8>(value), count: value.count)
 //        peripheral.writeValue( data, forCharacteristic: characteristic, type: .WithoutResponse)
         peripheral.writeValue( data, for: characteristic, type: .withResponse)
-        debugPrint("writeValue: \(characteristic.uuid) \(value)")
+//debugPrint("writeValue: \(characteristic.uuid) \(value)")
     }
 }

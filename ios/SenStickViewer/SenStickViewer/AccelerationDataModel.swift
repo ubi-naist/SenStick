@@ -26,7 +26,7 @@ class AccelerationDataModel :SensorDataModel
         self.csvEmptyData = ",\t,\t"
     }
     
-    override func startToReadLog(logid: UInt8)
+    override func startToReadLog(_ logid: UInt8)
     {
         super.startToReadLog(logid)
         
@@ -35,10 +35,10 @@ class AccelerationDataModel :SensorDataModel
     }
     
     // MARK: - SenStickSensorServiceDelegate
-    override func didUpdateSetting(sender:AnyObject)
+    override func didUpdateSetting(_ sender:AnyObject)
     {
-        cell?.iconButton?.enabled       = (self.service != nil)
-        self.cell?.iconButton?.selected = (service?.settingData?.status != .Stopping)
+        cell?.iconButton?.isEnabled       = (self.service != nil)
+        self.cell?.iconButton?.isSelected = (service?.settingData?.status != .stopping)
         
         // レンジの更新
         if let setting = service?.settingData {
@@ -47,35 +47,35 @@ class AccelerationDataModel :SensorDataModel
         }
     }
     
-    func updateRange(range:AccelerationRange)
+    func updateRange(_ range:AccelerationRange)
     {
         switch(range) {
-        case .ACCELERATION_RANGE_2G:
+        case .acceleration_RANGE_2G:
             self.maxValue = 2.5
             self.minValue = -2.5
             
-        case .ACCELERATION_RANGE_4G:
+        case .acceleration_RANGE_4G:
             self.maxValue = 4.5
             self.minValue = -4.5
             
-        case .ACCELERATION_RANGE_8G:
+        case .acceleration_RANGE_8G:
             self.maxValue = 8.0
             self.minValue = -8.0
             
-        case .ACCELERATION_RANGE_16G:
+        case .acceleration_RANGE_16G:
             self.maxValue = 16.0
             self.minValue = -16.0
         }
     }
     
-    override func didUpdateRealTimeData(sender: AnyObject)
+    override func didUpdateRealTimeData(_ sender: AnyObject)
     {
         if let data = service?.realtimeData {
             drawRealTimeData([data.x, data.y, data.z])
         }
     }
     
-    override func didUpdateMetaData(sender: AnyObject)
+    override func didUpdateMetaData(_ sender: AnyObject)
     {
         guard let metaData = service?.logMetaData else {
             return
@@ -87,12 +87,12 @@ class AccelerationDataModel :SensorDataModel
         
         let count = metaData.availableSampleCount
         cell?.graphView?.sampleCount = Int(count)
-        cell?.iconButton?.enabled    = (count != 0)
-        cell?.iconButton?.selected   = (count != 0)
-        cell?.progressBar?.hidden    = (count == 0)
+        cell?.iconButton?.isEnabled    = (count != 0)
+        cell?.iconButton?.isSelected   = (count != 0)
+        cell?.progressBar?.isHidden    = (count == 0)
     }
     
-    override func didUpdateLogData(sender: AnyObject)
+    override func didUpdateLogData(_ sender: AnyObject)
     {
         if let array = service?.readLogData() {
             for data in array {
@@ -102,8 +102,8 @@ class AccelerationDataModel :SensorDataModel
     }
     
     // MARK: - Event handler
-    override func iconButtonToutchUpInside(sender: UIButton) {
-        let status :SenStickStatus = cell!.iconButton!.selected ? .Stopping : .SensingAndLogging
+    override func iconButtonToutchUpInside(_ sender: UIButton) {
+        let status :SenStickStatus = cell!.iconButton!.isSelected ? .stopping : .sensingAndLogging
         
         if let current_setting = self.service?.settingData {
             let setting = SensorSettingData<AccelerationRange>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)

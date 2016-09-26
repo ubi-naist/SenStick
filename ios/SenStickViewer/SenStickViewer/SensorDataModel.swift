@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 
 protocol SensorDataModelDelegate :class {
-    func didStopReadingLog(sender: SensorDataModel)
+    func didStopReadingLog(_ sender: SensorDataModel)
 }
 
 class SensorDataModel: SenStickSensorServiceDelegate {
@@ -21,16 +21,17 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     
     var cell: SensorDataCellView? {
         willSet {
-            cell?.iconButton?.removeTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
+            cell?.iconButton?.removeTarget(self, action: #selector(iconButtonToutchUpInside), for: .touchUpInside)
         }
         didSet {
-            cell?.iconButton?.addTarget(self, action: #selector(iconButtonToutchUpInside), forControlEvents: .TouchUpInside)
+            cell?.iconButton?.addTarget(self, action: #selector(iconButtonToutchUpInside), for: .touchUpInside)
             if self.isLogReading {
                 didUpdateMetaData(self)
             } else {
                 didUpdateSetting(self)
             }
             cell?.graphView?.plotData(logData)
+//debugPrint("\(#function)")
         }
     }
     var isLogReading: Bool = false
@@ -93,10 +94,10 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         cell?.graphView?.clearPlot()
     }
     
-    func drawRealTimeData(data: [Double])
+    func drawRealTimeData(_ data: [Double])
     {
         // データを追加
-        for (index, d) in data.enumerate() {
+        for (index, d) in data.enumerated() {
             logData[index].append(d)
         }
         
@@ -109,7 +110,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         self.cell?.graphView?.plotData(logData)
     }
     
-    func startToReadLog(logid: UInt8)
+    func startToReadLog(_ logid: UInt8)
     {
         self.isLogReading = true
         
@@ -118,11 +119,11 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         
         cell?.graphView?.clearPlot()
         cell?.progressBar?.progress = 0
-        cell?.progressBar?.hidden   = false
+        cell?.progressBar?.isHidden   = false
     }
     
-    func addReadLog(data:[Double]) {
-        for (index, d) in data.enumerate() {
+    func addReadLog(_ data:[Double]) {
+        for (index, d) in data.enumerated() {
             logData[index].append(d)
         }
         
@@ -131,7 +132,7 @@ class SensorDataModel: SenStickSensorServiceDelegate {
     }
     
     // 指定したrowのデータをCSVテキストに変換。該当データがない場合は、CSVとしてデータが空の文字列を返す。
-    func getCSVDataText(index:Int) -> String
+    func getCSVDataText(_ index:Int) -> String
     {
         let colomn  = logData.count
         var items = [String]()
@@ -142,10 +143,10 @@ class SensorDataModel: SenStickSensorServiceDelegate {
                 break
             }
         }
-        return items.joinWithSeparator(",\t")    
+        return items.joined(separator: ",\t")    
     }
     
-    func saveToFile(filePath:String)
+    func saveToFile(_ filePath:String)
     {
         var content = ""
         let row     = logData[0].count
@@ -161,32 +162,32 @@ class SensorDataModel: SenStickSensorServiceDelegate {
         }
         
         do {
-            if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
-                try NSFileManager.defaultManager().removeItemAtPath(filePath)
+            if FileManager.default.fileExists(atPath: filePath) {
+                try FileManager.default.removeItem(atPath: filePath)
             }
-            try content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try content.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             debugPrint("\(#function) fatal error in file save.")
         }
     }
     
     // Event
-    @objc func iconButtonToutchUpInside(sender: UIButton)
+    @objc func iconButtonToutchUpInside(_ sender: UIButton)
     {}
     
     // SenStickSensorServiceDelegate
-    func didUpdateSetting(sender:AnyObject)
+    func didUpdateSetting(_ sender:AnyObject)
     {}
-    func didUpdateRealTimeData(sender: AnyObject)
+    func didUpdateRealTimeData(_ sender: AnyObject)
     {}
-    func didUpdateMetaData(sender: AnyObject)
+    func didUpdateMetaData(_ sender: AnyObject)
     {}
-    func didUpdateLogData(sender: AnyObject)
+    func didUpdateLogData(_ sender: AnyObject)
     {}
-    func didFinishedLogData(sender: AnyObject)
+    func didFinishedLogData(_ sender: AnyObject)
     {
         // グラフの終了状態
-        cell?.progressBar?.hidden    = true
+        cell?.progressBar?.isHidden    = true
         if let dlgt = self.delegate {
             dlgt.didStopReadingLog(self)
         }

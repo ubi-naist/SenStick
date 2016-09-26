@@ -17,19 +17,19 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
         super.viewDidLoad()
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: #selector(onRefresh), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         self.tableView.alpha = 1
-        self.tableView.userInteractionEnabled = true
+        self.tableView.isUserInteractionEnabled = true
         
-        SenStickDeviceManager.sharedInstance.addObserver(self, forKeyPath: "devices", options: .New, context:nil)
+        SenStickDeviceManager.sharedInstance.addObserver(self, forKeyPath: "devices", options: .new, context:nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SenStickDeviceManager.sharedInstance.removeObserver(self, forKeyPath: "devices")
     }
@@ -42,7 +42,7 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     // MARK
     func onRefresh()
     {
-        SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: NSTimeInterval)  in
+        SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: TimeInterval)  in
             if remaining <= 0 {
                 self.refreshControl?.endRefreshing()
             }
@@ -50,58 +50,58 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     }
     
     // MARK: - Segues    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let dataview = segue.destinationViewController as? SensorDataViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dataview = segue.destination as? SensorDataViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
             dataview.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
         }
     }
     
     // MARK: - KVO
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "devices") {
             self.tableView.reloadData()
         } else {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
     // MARK: - Table View
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return SenStickDeviceManager.sharedInstance.devices.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deviceCell", forIndexPath: indexPath) as! DeviceListCellView
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "deviceCell", for: indexPath) as! DeviceListCellView
 
         cell.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
         
         return cell
     }
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 74
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
 
         // 接続していれば画面遷移
         if device.isConnected {
-            performSegueWithIdentifier("dataView", sender: self)
+            performSegue(withIdentifier: "dataView", sender: self)
         } else {
             // 今のVCを半透明、操作無効
             self.tableView.alpha = 0.5
-            self.tableView.userInteractionEnabled = false
+            self.tableView.isUserInteractionEnabled = false
             self.refreshControl?.endRefreshing()
             
             device.delegate = self
             device.connect()
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(5 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
                 if !device.isConnected {
                     device.cancelConnection()
                     self.showAlert()
@@ -113,26 +113,26 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     func showAlert()
     {
         self.tableView.alpha = 1
-        self.tableView.userInteractionEnabled = true
+        self.tableView.isUserInteractionEnabled = true
         
-        let alert = UIAlertController(title: "Failed to connect", message: "Failed to connect.", preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alert = UIAlertController(title: "Failed to connect", message: "Failed to connect.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     // public protocol SenStickDeviceDelegate
-    func didServiceFound(sender:SenStickDevice)
+    func didServiceFound(_ sender:SenStickDevice)
     {
     }
     
-    func didConnected(sender:SenStickDevice)
+    func didConnected(_ sender:SenStickDevice)
     {
-        performSegueWithIdentifier("dataView", sender: self)
+        performSegue(withIdentifier: "dataView", sender: self)
     }
     
-    func didDisconnected(sender:SenStickDevice)
+    func didDisconnected(_ sender:SenStickDevice)
     {
         showAlert()
     }

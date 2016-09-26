@@ -39,7 +39,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         dataModels = [accelerationDataModel!, gyroDataModel!, magneticFieldDataModel!, brightnessDataModel!, uvDataModel!, humidityDataModel!, pressureDataModel!]
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         device?.delegate = self
@@ -59,7 +59,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         device?.delegate = nil
@@ -67,29 +67,29 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
     
     // MARK: - SenStickDeviceDelegate
     
-    func didServiceFound(sender: SenStickDevice)
+    func didServiceFound(_ sender: SenStickDevice)
     {
     }
     
-    func didConnected(sender:SenStickDevice)
+    func didConnected(_ sender:SenStickDevice)
     {
     }
     
-    func didDisconnected(sender:SenStickDevice)
+    func didDisconnected(_ sender:SenStickDevice)
     {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
     // SensorDataModelDelegate
-    func didStopReadingLog(sender: SensorDataModel)
+    func didStopReadingLog(_ sender: SensorDataModel)
     {
         debugPrint("\(#function) \(sender.sensorName).")
         
         // データフォルダを用意
         let folder         = getDataFileFolder()
-        if !NSFileManager.defaultManager().fileExistsAtPath(folder)
+        if !FileManager.default.fileExists(atPath: folder)
         {
-            try! NSFileManager.defaultManager().createDirectoryAtPath(folder, withIntermediateDirectories: true, attributes: nil)
+            try! FileManager.default.createDirectory(atPath: folder, withIntermediateDirectories: true, attributes: nil)
         }
         // ファイルに保存
         let filePath       = getDataFilePath(sender)
@@ -103,24 +103,24 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
     }
     
     // table view source/delegate
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
         let dataCell = cell as? SensorDataCellView
         
-        dataCell?.iconButton?.userInteractionEnabled = false
-        dataModels![indexPath.row].cell = dataCell
+        dataCell?.iconButton?.isUserInteractionEnabled = false
+        dataModels![(indexPath as NSIndexPath).row].cell = dataCell
     }
     
     func getDataFileFolder() -> String
     {
-        let documentFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,  .UserDomainMask, true).first! as NSString
-        return documentFolder.stringByAppendingPathComponent("\(self.device!.name)") as String
+        let documentFolder = NSSearchPathForDirectoriesInDomains(.documentDirectory,  .userDomainMask, true).first! as NSString
+        return documentFolder.appendingPathComponent("\(self.device!.name)") as String
     }
     
-    func getDataFilePath(model: SensorDataModel) -> String
+    func getDataFilePath(_ model: SensorDataModel) -> String
     {
         let folder = self.getDataFileFolder() as NSString
-        return folder.stringByAppendingPathComponent("\(model.sensorName)_\(model.logid).csv") as String
+        return folder.appendingPathComponent("\(model.sensorName)_\(model.logid).csv") as String
     }
     
     func saveDataFile()
@@ -132,15 +132,15 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         
         // ヘッダを吐き出す
         content += "time,\t"
-        content +=  dataModels!.map { $0.csvHeader}.joinWithSeparator(",\t")
+        content +=  dataModels!.map { $0.csvHeader}.joined(separator: ",\t")
         content += "\n"
         
         var time: Int   = 0
         // データ系列の終端時間を求める。
-        let endTime = dataModels!.map{ Int($0.duration.duration * 1000 ) * $0.logData[0].count }.maxElement()!
+        let endTime = dataModels!.map{ Int($0.duration.duration * 1000 ) * $0.logData[0].count }.max()!
         repeat {
             // 次のサンプリング時間を求める。
-            time = samplingDurations.map { (time / $0 + 1) * $0 }.minElement()!
+            time = samplingDurations.map { (time / $0 + 1) * $0 }.min()!
             // CSVデータ部分を作る
             var isValid = false
             let csv = dataModels!.map {
@@ -152,7 +152,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
                 } else {
                     return $0.csvEmptyData
                 }
-                }.joinWithSeparator(",\t")
+                }.joined(separator: ",\t")
             // CSVを出力
             if isValid {
                 content += "\(Double(time) / 1000),\t"
@@ -162,15 +162,15 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         } while(time <= endTime)
         
         let folder   = self.getDataFileFolder() as NSString
-        let filePath = folder.stringByAppendingPathComponent("data_\(self.dataModels![0].logid).csv")
+        let filePath = folder.appendingPathComponent("data_\(self.dataModels![0].logid).csv")
         
         // データフォルダを用意
-        if !NSFileManager.defaultManager().fileExistsAtPath(folder as String)
+        if !FileManager.default.fileExists(atPath: folder as String)
         {
-            try! NSFileManager.defaultManager().createDirectoryAtPath(folder as String, withIntermediateDirectories: true, attributes: nil)
+            try! FileManager.default.createDirectory(atPath: folder as String, withIntermediateDirectories: true, attributes: nil)
         }
         // ファイルに保存
-        try! content.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        try! content.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
     }
 }
 

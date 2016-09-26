@@ -19,9 +19,9 @@ class DeviceListCellView: UITableViewCell
             self.device?.removeObserver(self, forKeyPath: "name")
         }
         didSet {
-            self.device?.addObserver(self, forKeyPath: "name", options: .New , context: nil)
+            self.device?.addObserver(self, forKeyPath: "name", options: .new , context: nil)
             self.deviceNameLabel.text = device?.name ?? "(null)"
-            self.deviceUUIDLabel.text = device?.identifier.UUIDString ?? "(null)"
+            self.deviceUUIDLabel.text = device?.identifier.uuidString ?? "(null)"
         }
     }
     
@@ -30,11 +30,11 @@ class DeviceListCellView: UITableViewCell
         self.device = nil
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (context == nil) {
             self.deviceNameLabel.text = device?.name
         } else {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
 }

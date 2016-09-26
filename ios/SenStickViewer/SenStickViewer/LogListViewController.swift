@@ -14,7 +14,7 @@ class LogListViewController: UITableViewController, SenStickDeviceDelegate, SenS
     var device: SenStickDevice?
     
     // View Controller life cycle
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.device?.delegate = self
@@ -22,55 +22,55 @@ class LogListViewController: UITableViewController, SenStickDeviceDelegate, SenS
     }
     
     // SenStickDeviceDelegate
-    func didServiceFound(sender: SenStickSDK.SenStickDevice)
+    func didServiceFound(_ sender: SenStickSDK.SenStickDevice)
     {
     }
-    func didConnected(sender: SenStickSDK.SenStickDevice)
+    func didConnected(_ sender: SenStickSDK.SenStickDevice)
     {
     }
-    func didDisconnected(sender: SenStickSDK.SenStickDevice)
+    func didDisconnected(_ sender: SenStickSDK.SenStickDevice)
     {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
     // SenStickSensorServiceDelegate
-    func didUpdateMetaData(sender:SenStickMetaDataService)
+    func didUpdateMetaData(_ sender:SenStickMetaDataService)
     {
-        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: Int(sender.logID), inSection: 0)) {
+        if let cell = self.tableView.cellForRow(at: IndexPath(row: Int(sender.logID), section: 0)) {
             cell.textLabel?.text = "Log ID:\(sender.logID)"
 
-            let formatter = NSDateFormatter()
+            let formatter = DateFormatter()
             formatter.dateFormat = "  yyyy年MM月dd日 HH時mm分ss秒 Z"
-            cell.detailTextLabel?.text = formatter.stringFromDate(sender.dateTime)
+            cell.detailTextLabel?.text = formatter.string(from: sender.dateTime)
         }
     }
     
     // segue
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let vc = segue.destinationViewController as? LogReaderViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? LogReaderViewController {
             vc.device = self.device
-            vc.logID  = UInt8(self.tableView.indexPathForSelectedRow!.row)
+            vc.logID  = UInt8((self.tableView.indexPathForSelectedRow! as NSIndexPath).row)
         }
     }
     
     // MARK: - Table View
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    override func numberOfSections(in tableView: UITableView) -> Int
     {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if device?.controlService?.command == .Stopping {
+        if device?.controlService?.command == .stopping {
             return Int(device!.controlService!.availableLogCount)
         } else {
             return max(0, Int(device!.controlService!.availableLogCount) - 1)
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("logListCell", forIndexPath: indexPath)
-        cell.textLabel?.text = "Log ID:\(indexPath.row)"
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "logListCell", for: indexPath)
+        cell.textLabel?.text = "Log ID:\((indexPath as NSIndexPath).row)"
         
         device?.metaDataService?.requestMetaData(UInt8(indexPath.row))
         

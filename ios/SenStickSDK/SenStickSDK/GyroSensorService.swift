@@ -12,17 +12,17 @@ import CoreMotion
 // ジャイロセンサーの範囲設定値。列挙側の値は、BLEでの設定値に合わせている。
 public enum RotationRange : UInt16, CustomStringConvertible
 {
-    case rotation_RANGE_250DPS   = 0x00
-    case rotation_RANGE_500DPS   = 0x01
-    case rotation_RANGE_1000DPS  = 0x02
-    case rotation_RANGE_2000DPS  = 0x03
+    case rotationRange250DPS   = 0x00
+    case rotationRange500DPS   = 0x01
+    case rotationRange1000DPS  = 0x02
+    case rotationRange2000DPS  = 0x03
     
     public var description : String {
         switch self {
-        case .rotation_RANGE_250DPS:    return "250DPS"
-        case .rotation_RANGE_500DPS:    return "500DPS"
-        case .rotation_RANGE_1000DPS:   return "1000DPS"
-        case .rotation_RANGE_2000DPS:   return "2000DPS"
+        case .rotationRange250DPS:    return "250DPS"
+        case .rotationRange500DPS:    return "500DPS"
+        case .rotationRange1000DPS:   return "1000DPS"
+        case .rotationRange2000DPS:   return "2000DPS"
         }
     }
 }
@@ -47,10 +47,10 @@ struct RotationRawData
     static func getLSBperDegS(_ range: RotationRange) -> Double
     {
         switch range {
-        case .rotation_RANGE_250DPS:    return (32768.0 / 250.0)
-        case .rotation_RANGE_500DPS:    return (32768.0 / 500.0)
-        case .rotation_RANGE_1000DPS:   return (32768.0 / 1000.0)
-        case .rotation_RANGE_2000DPS:   return (32768.0 / 2000.0)
+        case .rotationRange250DPS:    return (32768.0 / 250.0)
+        case .rotationRange500DPS:    return (32768.0 / 500.0)
+        case .rotationRange1000DPS:   return (32768.0 / 1000.0)
+        case .rotationRange2000DPS:   return (32768.0 / 2000.0)
         }
     }
     

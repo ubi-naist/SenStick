@@ -52,19 +52,19 @@ class GyroDataModel : SensorDataModel
     func updateRange(_ range: RotationRange)
     {
         switch(range) {
-        case .rotation_RANGE_250DPS:
+        case .rotationRange250DPS:
             self.maxValue = 5
             self.minValue = -5
             
-        case .rotation_RANGE_500DPS:
+        case .rotationRange500DPS:
             self.maxValue = 10
             self.minValue = -10
             
-        case .rotation_RANGE_1000DPS:
+        case .rotationRange1000DPS:
             self.maxValue = 20
             self.minValue = -20
             
-        case .rotation_RANGE_2000DPS:
+        case .rotationRange2000DPS:
             self.maxValue = 40
             self.minValue = -40
         }

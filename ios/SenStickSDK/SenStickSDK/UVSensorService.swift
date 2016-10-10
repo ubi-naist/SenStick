@@ -10,11 +10,11 @@ import Foundation
 
 public enum UVSensorRange : UInt16, CustomStringConvertible
 {
-    case uv_RANGE_DEFAULT = 0x00
+    case uvRangeDefault = 0x00
     
     public var description : String {
         switch self {
-        case .uv_RANGE_DEFAULT: return "UV_RANGE_DEFAULT"
+        case .uvRangeDefault: return "uvRangeDefault"
         }
     }
 }
@@ -32,7 +32,7 @@ struct UVRawData
     static func getLSBperuWcm2(_ range: UVSensorRange) -> Double
     {
         switch range {
-        case .uv_RANGE_DEFAULT: return (1.0 / 5.0)
+        case .uvRangeDefault: return (1.0 / 5.0)
         }
     }
     

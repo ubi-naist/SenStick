@@ -10,11 +10,11 @@ import Foundation
 
 public enum BrightnessRange : UInt16, CustomStringConvertible
 {
-    case brightness_RANGE_DEFAULT = 0x00
+    case brightnessRangeDefault = 0x00
     
     public var description : String {
         switch self {
-        case .brightness_RANGE_DEFAULT: return "BRIGHTNESS_RANGE_DEFAULT"
+        case .brightnessRangeDefault: return "brightnessRangeDefault"
         }
     }
 }
@@ -32,7 +32,7 @@ struct BrightnessRawData
     static func getLSBperLux(_ range: BrightnessRange) -> Double
     {
         switch range {
-        case .brightness_RANGE_DEFAULT: return 1
+        case .brightnessRangeDefault: return 1
         }
     }
     

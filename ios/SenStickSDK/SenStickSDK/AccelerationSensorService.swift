@@ -12,18 +12,18 @@ import CoreMotion
 // 加速度センサーの範囲設定値。列挙側の値は、BLEでの設定値に合わせている。
 public enum AccelerationRange : UInt16, CustomStringConvertible
 {
-    case acceleration_RANGE_2G   = 0x00 // +- 2g
-    case acceleration_RANGE_4G   = 0x01 // +- 4g
-    case acceleration_RANGE_8G   = 0x02 // +- 8g
-    case acceleration_RANGE_16G  = 0x03 // +- 16g
+    case accelerationRange2G   = 0x00 // +- 2g
+    case accelerationRange4G   = 0x01 // +- 4g
+    case accelerationRange8G   = 0x02 // +- 8g
+    case accelerationRange16G  = 0x03 // +- 16g
     
     public var description : String
     {
         switch self {
-        case .acceleration_RANGE_2G: return "2G"
-        case .acceleration_RANGE_4G: return "4G"
-        case .acceleration_RANGE_8G: return "8G"
-        case .acceleration_RANGE_16G:return "16G"
+        case .accelerationRange2G: return "2G"
+        case .accelerationRange4G: return "4G"
+        case .accelerationRange8G: return "8G"
+        case .accelerationRange16G:return "16G"
         }
     }
 }
@@ -46,10 +46,10 @@ struct AccelerationRawData
     static func getLSBperG(_ range: AccelerationRange) -> Double
     {
         switch range {
-        case .acceleration_RANGE_2G: return 16384
-        case .acceleration_RANGE_4G: return 8192
-        case .acceleration_RANGE_8G: return 4096
-        case .acceleration_RANGE_16G:return 2048
+        case .accelerationRange2G: return 16384
+        case .accelerationRange4G: return 8192
+        case .accelerationRange8G: return 4096
+        case .accelerationRange16G:return 2048
         }
     }
     

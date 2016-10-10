@@ -10,11 +10,11 @@ import Foundation
 
 public enum HumiditySensorRange : UInt16, CustomStringConvertible
 {
-    case humidity_RANGE_DEFAULT = 0x00
+    case humidityRangeDefault = 0x00
     
     public var description : String {
         switch self {
-        case .humidity_RANGE_DEFAULT:    return "HUMIDITY_RANGE_DEFAULT"
+        case .humidityRangeDefault:    return "humidityRangeDefault"
         }
     }
 }

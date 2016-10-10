@@ -11,11 +11,11 @@ import CoreMotion
 
 public enum MagneticFieldRange : UInt16, CustomStringConvertible
 {
-    case magnetic_RANGE_DEFAULT = 0x00
+    case magneticRangeDefault = 0x00
     
     public var description : String {
         switch self {
-        case .magnetic_RANGE_DEFAULT:    return "MAGNETIC_RANGE_DEFAULT"
+        case .magneticRangeDefault:    return "magneticRangeDefault"
         }
     }
 }
@@ -39,7 +39,7 @@ struct MagneticFieldRawData
     static func getLSBperuT(_ range: MagneticFieldRange) -> Double
     {
         switch range {
-        case .magnetic_RANGE_DEFAULT: return 1/0.15; // AK8963, 16-bit mode
+        case .magneticRangeDefault: return 1/0.15; // AK8963, 16-bit mode
         }
     }
     

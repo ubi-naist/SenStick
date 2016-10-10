@@ -10,11 +10,11 @@ import Foundation
 
 public enum PressureRange : UInt16, CustomStringConvertible
 {
-    case pressure_RANGE_DEFAULT = 0x00
+    case pressureRangeDefault = 0x00
     
     public var description : String {
         switch self {
-        case .pressure_RANGE_DEFAULT: return "PRESSURE_RANGE_DEFAULT"
+        case .pressureRangeDefault: return "pressureRangeDefault"
         }
     }
 }

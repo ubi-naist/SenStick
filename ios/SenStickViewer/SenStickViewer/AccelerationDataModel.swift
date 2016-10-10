@@ -50,19 +50,19 @@ class AccelerationDataModel :SensorDataModel
     func updateRange(_ range:AccelerationRange)
     {
         switch(range) {
-        case .acceleration_RANGE_2G:
+        case .accelerationRange2G:
             self.maxValue = 2.5
             self.minValue = -2.5
             
-        case .acceleration_RANGE_4G:
+        case .accelerationRange4G:
             self.maxValue = 4.5
             self.minValue = -4.5
             
-        case .acceleration_RANGE_8G:
+        case .accelerationRange8G:
             self.maxValue = 8.0
             self.minValue = -8.0
             
-        case .acceleration_RANGE_16G:
+        case .accelerationRange16G:
             self.maxValue = 16.0
             self.minValue = -16.0
         }

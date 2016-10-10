@@ -79,8 +79,6 @@ open class DeviceInformationService : NSObject, SenStickService //, CustomString
     
     // CustomStringConvertible
     override open var description: String {
-        get {
-            return "Device information: \n  Manufacturer: \(manufacturerName)\n  Hardware revision:\(hardwareRevision)\n  Firmware revision:\(firmwareRevision)\n  Serial number:\(serialNumber)"
-        }
+        return "Device information: \n  Manufacturer: \(manufacturerName)\n  Hardware revision:\(hardwareRevision)\n  Firmware revision:\(firmwareRevision)\n  Serial number:\(serialNumber)"
     }
 }

@@ -1,6 +1,0 @@
-[submodule "ios/SenStickSDK/iOSDFULibrary"]
-	path = ios/SenStickSDK/iOSDFULibrary
-	url = https://github.com/pruthvikar/IOS-DFU-Library
-[submodule "ios/SenStickSDK/Zip"]
-	path = ios/SenStickSDK/Zip
-	url = https://github.com/marmelroy/Zip

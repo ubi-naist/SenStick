@@ -8,7 +8,7 @@
 
 import UIKit
 import SenStickSDK
-import DFULibrary
+import iOSDFULibrary
 import CoreBluetooth
 
 class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUServiceDelegate, DFUProgressDelegate, CBCentralManagerDelegate
@@ -168,24 +168,26 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
     }
     
     // DFUServiceDelegate
-    func didStateChangedTo(_ state:State) {
+    func didStateChangedTo(_ state:DFUState) {
         switch state {
             case .connecting: break
             case .starting: break
-            case .enablingDfuMode:
-            break
+            case .enablingDfuMode: break
             case .uploading:
                 self.dfuMessageTextLabel.text = "Uploading"
-            break
             case .validating:
                 self.dfuMessageTextLabel.text = "Validating"
-            break
             case .disconnecting: break
             case .completed:
                 showDialogAndDismiss("完了", message: "ファームウェア更新完了")
-            
             case .aborted:
                 showDialogAndDismiss("エラー", message: "アボート")
+            case .signatureMismatch:
+                showDialogAndDismiss("エラー", message: "署名の不一致")
+            case .operationNotPermitted:
+                showDialogAndDismiss("エラー", message: "操作の許可がありません")
+            case .failed:
+                showDialogAndDismiss("エラー", message: "失敗")
         }
     }
 

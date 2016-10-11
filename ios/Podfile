@@ -8,5 +8,5 @@ target 'SenStickViewer' do
   use_frameworks!
 
   # Pods for SenStickViewer
-  pod 'SenStickSDK' , :path => 'SenStickSDK'
+  pod 'SenStickSDK' , :path => '../SenStickSDK'
 end

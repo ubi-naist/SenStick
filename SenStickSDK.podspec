@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "SenStickSDK"
-  s.version      = "0.9.0"
+  s.version      = "0.9.1"
   s.summary      = "SenStick software development kit."
 
   # This description is used to generate tags and improve search results.
@@ -90,7 +90,7 @@ s.license      = { :type => "MIT", :file => "LICENSE.txt" }
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "ios/SenStickSDK/SenStickSDK/*.{h,swift}"
+  s.source_files  = "**/SenStickSDK/*.{h,swift}"
   s.exclude_files = "**/*.playground/**"
 
   # s.public_header_files = "Classes/**/*.h"

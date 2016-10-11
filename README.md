@@ -11,5 +11,33 @@ SenStickのハードウェアは、開発者向けのデバイスで、店頭で
 - Senstickデバイス仕様書_rev103.pdf
 - Senstickファーム実装概要書_rev100.pdf
 
+## SDKのインストール
+
+cocoapodsをインストールします。
+
+$ sudo gem install cocoapods
+$ pod setup
+
+ファイル Podfile を作ります。
+
+```
+project 'YourProject.xcodeproj'
+target 'YourProject' do
+  use_frameworks!
+  pod 'SenStickSDK'
+end
+```
+
+podsをインストールします。
+$ pod install
+
+インストールしたあとに、更新する場合は、"update"を使います。
+$ pod update
+
 ## ライセンス
 MITライセンスです。
+
+<!--
+$pod lib lint SenStickSDK.podspec
+$pod trunk push ios/SenStickSDK/SenStickSDK.podspec
+-->

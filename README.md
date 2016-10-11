@@ -39,5 +39,5 @@ MITライセンスです。
 
 <!--
 $pod lib lint SenStickSDK.podspec
-$pod trunk push ios/SenStickSDK/SenStickSDK.podspec
+$pod trunk push SenStickSDK.podspec
 -->

@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-s.license      = { :type => "MIT", :file => "../../LICENSE.txt" }
+s.license      = { :type => "MIT", :file => "LICENSE.txt" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -90,7 +90,7 @@ s.license      = { :type => "MIT", :file => "../../LICENSE.txt" }
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "SenStickSDK/**/*.{h,swift}"
+  s.source_files  = "ios/SenStickSDK/SenStickSDK/*.{h,swift}"
   s.exclude_files = "**/*.playground/**"
 
   # s.public_header_files = "Classes/**/*.h"

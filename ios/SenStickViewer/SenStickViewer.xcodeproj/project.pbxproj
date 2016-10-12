@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		EE841D5DFF3EBAFFCDC24B68 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */; };
 		F8E398551DAB3D120016F789 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E398541DAB3D120016F789 /* SenStickSDK.framework */; };
-		F8E3985E1DAB3DB00016F789 /* SenStickSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8E3985B1DAB3D960016F789 /* SenStickSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F8F580CC1D9A5C0700811025 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F580CB1D9A5C0700811025 /* images.xcassets */; };
 		F8F580CF1D9A5C8800811025 /* AccelerationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */; };
 		F8F580D01D9A5C8800811025 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CE1D9A5C8800811025 /* AppDelegate.swift */; };
@@ -38,23 +37,6 @@
 		F8F581041D9A5D1A00811025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F581031D9A5D1A00811025 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		F8E3985A1DAB3D960016F789 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8E398561DAB3D960016F789 /* SenStickSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F86322AE1C979B20001B53A0;
-			remoteInfo = SenStickSDK;
-		};
-		F8E3985C1DAB3D9E0016F789 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8E398561DAB3D960016F789 /* SenStickSDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F86322AD1C979B20001B53A0;
-			remoteInfo = SenStickSDK;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		F8F581DA1D9A669D00811025 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -62,7 +44,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F8E3985E1DAB3DB00016F789 /* SenStickSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,7 +55,6 @@
 		3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C7240E1DB84FBADABED69D /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
 		F8E398541DAB3D120016F789 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
-		F8E398561DAB3D960016F789 /* SenStickSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenStickSDK.xcodeproj; path = ../SenStickSDK/SenStickSDK.xcodeproj; sourceTree = "<group>"; };
 		F8F580CB1D9A5C0700811025 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationDataModel.swift; sourceTree = "<group>"; };
 		F8F580CE1D9A5C8800811025 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,14 +110,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F8E398571DAB3D960016F789 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F8E3985B1DAB3D960016F789 /* SenStickSDK.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		F8F580F71D9A5CAE00811025 /* firmware */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,10 +134,10 @@
 			children = (
 				F8F580EC1D9A5CA500811025 /* SensorDataModel.swift */,
 				F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */,
+				F8F580DD1D9A5C9700811025 /* GyroDataModel.swift */,
 				F8F580F51D9A5CAA00811025 /* UVDataModel.swift */,
 				F8F580E91D9A5CA500811025 /* PressureDataModel.swift */,
 				F8F580E41D9A5C9C00811025 /* MagneticFieldDataModel.swift */,
-				F8F580DD1D9A5C9700811025 /* GyroDataModel.swift */,
 				F8F580DE1D9A5C9700811025 /* HumidityDataModel.swift */,
 				F8F580D11D9A5C9000811025 /* BrightnessDataModel.swift */,
 			);
@@ -186,7 +158,6 @@
 		F8FE05201D9A110D00222E43 = {
 			isa = PBXGroup;
 			children = (
-				F8E398561DAB3D960016F789 /* SenStickSDK.xcodeproj */,
 				F8F580CB1D9A5C0700811025 /* images.xcassets */,
 				F8FE052B1D9A110D00222E43 /* SenStickViewer */,
 				F8FE052A1D9A110D00222E43 /* Products */,
@@ -245,7 +216,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				F8E3985D1DAB3D9E0016F789 /* PBXTargetDependency */,
 			);
 			name = SenStickViewer;
 			productName = SenStickViewer;
@@ -281,28 +251,12 @@
 			mainGroup = F8FE05201D9A110D00222E43;
 			productRefGroup = F8FE052A1D9A110D00222E43 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = F8E398571DAB3D960016F789 /* Products */;
-					ProjectRef = F8E398561DAB3D960016F789 /* SenStickSDK.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F8FE05281D9A110D00222E43 /* SenStickViewer */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		F8E3985B1DAB3D960016F789 /* SenStickSDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SenStickSDK.framework;
-			remoteRef = F8E3985A1DAB3D960016F789 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F8FE05271D9A110D00222E43 /* Resources */ = {
@@ -397,14 +351,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		F8E3985D1DAB3D9E0016F789 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SenStickSDK;
-			targetProxy = F8E3985C1DAB3D9E0016F789 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F8F580FD1D9A5D0A00811025 /* LaunchScreen.storyboard */ = {

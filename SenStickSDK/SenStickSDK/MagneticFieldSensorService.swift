@@ -73,7 +73,7 @@ extension CMMagneticField : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class MagneticFieldSensorService: SenStickSensorService<CMMagneticField, MagneticFieldRange>, SenStickService
+open class MagneticFieldSensorService: SenStickSensorService<CMMagneticField, MagneticFieldRange>
 {
     required public init?(device:SenStickDevice)
     {

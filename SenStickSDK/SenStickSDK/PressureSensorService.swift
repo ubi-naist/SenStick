@@ -42,7 +42,7 @@ public struct PressureData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class PressureSensorService: SenStickSensorService<PressureData, PressureRange>, SenStickService
+open class PressureSensorService: SenStickSensorService<PressureData, PressureRange>
 {
     required public init?(device:SenStickDevice)
     {

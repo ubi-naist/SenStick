@@ -19,15 +19,16 @@ public protocol SenStickSensorServiceDelegate : class
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
-open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable> where S.RawValue == UInt16, T.RangeType == S 
+open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable> where S.RawValue == UInt16, T.RangeType == S
 {
     let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue", attributes: [])
 
     // code
     open weak var delegate: SenStickSensorServiceDelegate?
     
-    // Variables
+    // MARK: - Variables
     unowned let device: SenStickDevice
+    open let sensorType: SenStickSensorType
     
     var sensorSettingChar:       CBCharacteristic
     var sensorRealTimeDataChar:  CBCharacteristic
@@ -53,7 +54,9 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     }
     var logData: [T] = []
 
-    // Properties
+    // MARK: - Properties
+
+    
     open fileprivate(set) var settingData:  SensorSettingData<S>? {
         didSet {
             DispatchQueue.main.async(execute: {
@@ -99,10 +102,11 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
         }
     }
 
-    // イニシャライザ
+    // MARK: - イニシャライザ
     init?(device:SenStickDevice, sensorType:SenStickSensorType)
     {
-        self.device = device
+        self.device     = device
+        self.sensorType = sensorType
         
         // UUID
         let serviceUUID                  = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorServiceBaseUUID           | UInt16(sensorType.rawValue))
@@ -110,22 +114,23 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
         let sensorRealTimeDataCharUUID   = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorRealTimeDataCharBaseUUID  | UInt16(sensorType.rawValue))
         let sensorLogIDCharUUID          = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogIDCharBaseUUID         | UInt16(sensorType.rawValue))
         let sensorLogMetaDataCharUUID    = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogMetaDataCharBaseUUID   | UInt16(sensorType.rawValue))
-        let sensorLogDataCharUUID        = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogDataCharBaseUUID | UInt16(sensorType.rawValue))
+        let sensorLogDataCharUUID        = SenStickUUIDs.createSenstickUUID(SenStickUUIDs.sensorLogDataCharBaseUUID       | UInt16(sensorType.rawValue))
 
         // サービス
         guard let service = device.findService(serviceUUID) else { return nil }
+        
         // キャラクタリスティクスの取得
         guard let _sensorSettingChar       = device.findCharacteristic(service, uuid: sensorSettingCharUUID) else { return nil }
         guard let _sensorRealTimeDataChar  = device.findCharacteristic(service, uuid: sensorRealTimeDataCharUUID) else { return nil }
         guard let _sensorLogIDChar         = device.findCharacteristic(service, uuid: sensorLogIDCharUUID) else { return nil }
         guard let _sensorLogMetaDataChar   = device.findCharacteristic(service, uuid: sensorLogMetaDataCharUUID) else { return nil }
-        guard let _sensorLogDataChar = device.findCharacteristic(service, uuid: sensorLogDataCharUUID) else { return nil }
+        guard let _sensorLogDataChar       = device.findCharacteristic(service, uuid: sensorLogDataCharUUID) else { return nil }
         
         self.sensorSettingChar       = _sensorSettingChar
         self.sensorRealTimeDataChar  = _sensorRealTimeDataChar
         self.sensorLogIDChar         = _sensorLogIDChar
         self.sensorLogMetaDataChar   = _sensorLogMetaDataChar
-        self.sensorLogDataChar = _sensorLogDataChar
+        self.sensorLogDataChar       = _sensorLogDataChar
         
         //初期値読み出し。
         device.readValue(self.sensorSettingChar)
@@ -135,7 +140,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
         device.setNotify(self.sensorLogDataChar, enabled: true)
     }
     
-    // internal methods
+    // MARK: - Private methods
     func unpackDataArray(_ range:S, value: [UInt8]) -> [T]?
     {
         // 空配列
@@ -239,7 +244,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
         }
     }
 
-    // Public methods
+    // MARK: -  Public methods
 
     // セッテイングを書き込みます
     open func writeSetting(_ setting: SensorSettingData<S>)

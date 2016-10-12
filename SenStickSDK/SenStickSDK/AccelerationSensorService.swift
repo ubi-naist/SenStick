@@ -83,7 +83,7 @@ extension CMAcceleration : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class AccelerationSensorService: SenStickSensorService<CMAcceleration, AccelerationRange>, SenStickService
+open class AccelerationSensorService: SenStickSensorService<CMAcceleration, AccelerationRange>
 {
     required public init?(device:SenStickDevice)
     {

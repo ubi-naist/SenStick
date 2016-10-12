@@ -68,7 +68,7 @@ public struct HumiditySensorData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class HumiditySensorService: SenStickSensorService<HumiditySensorData, HumiditySensorRange>, SenStickService
+open class HumiditySensorService: SenStickSensorService<HumiditySensorData, HumiditySensorRange>
 {
     required public init?(device:SenStickDevice)
     {

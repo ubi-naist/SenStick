@@ -67,7 +67,7 @@ public struct BrightnessData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class BrightnessSensorService: SenStickSensorService<BrightnessData, BrightnessRange>, SenStickService
+open class BrightnessSensorService: SenStickSensorService<BrightnessData, BrightnessRange>
 {
     required public init?(device:SenStickDevice)
     {

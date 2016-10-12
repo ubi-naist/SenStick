@@ -9,6 +9,8 @@
 import Foundation
 import CoreBluetooth
 
+// BLEのサービスを一律して扱うためのプロトコルです。ライブラリを使う側が、使うことはありません。
+
 protocol SenStickService
 {
     init?(device: SenStickDevice)

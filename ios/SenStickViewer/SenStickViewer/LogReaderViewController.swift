@@ -12,7 +12,7 @@ import SenStickSDK
 class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, SensorDataModelDelegate {
     var device: SenStickDevice?
     var logID: UInt8?
-    var dataModels : [SensorDataModel]?
+    var dataModels : [SensorDataModelProtocol]?
     var accelerationDataModel:  AccelerationDataModel?
     var gyroDataModel:          GyroDataModel?
     var magneticFieldDataModel: MagneticFieldDataModel?
@@ -81,7 +81,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
     }
     
     // SensorDataModelDelegate
-    func didStopReadingLog(_ sender: SensorDataModel)
+    func didStopReadingLog(_ sender: SensorDataModelProtocol)
     {
         debugPrint("\(#function) \(sender.sensorName).")
         
@@ -117,7 +117,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         return documentFolder.appendingPathComponent("\(self.device!.name)") as String
     }
     
-    func getDataFilePath(_ model: SensorDataModel) -> String
+    func getDataFilePath(_ model: SensorDataModelProtocol) -> String
     {
         let folder = self.getDataFileFolder() as NSString
         return folder.appendingPathComponent("\(model.sensorName)_\(model.logid).csv") as String

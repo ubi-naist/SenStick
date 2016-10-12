@@ -67,7 +67,7 @@ public struct UVSensorData : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class UVSensorService: SenStickSensorService<UVSensorData, UVSensorRange>, SenStickService
+open class UVSensorService: SenStickSensorService<UVSensorData, UVSensorRange>
 {
     required public init?(device:SenStickDevice)
     {

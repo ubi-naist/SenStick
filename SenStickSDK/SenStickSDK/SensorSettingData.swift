@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct SensorSettingData<T: RawRepresentable> : CustomStringConvertible, PackableType where T.RawValue == UInt16
+public struct SensorSettingData<RangeType: RawRepresentable> : CustomStringConvertible, PackableType where RangeType.RawValue == UInt16
 {
     public let status:           SenStickStatus
     public let samplingDuration: SamplingDurationType
-    public let range:            T
+    public let range:            RangeType
     
-    public init(status:  SenStickStatus, samplingDuration:SamplingDurationType, range: T)
+    public init(status:  SenStickStatus, samplingDuration:SamplingDurationType, range: RangeType)
     {
         self.status = status
         self.samplingDuration = samplingDuration
@@ -56,7 +56,7 @@ public struct SensorSettingData<T: RawRepresentable> : CustomStringConvertible, 
         guard let rangeRawValue = UInt16.unpack(bytes[3...4]) else {
             return nil
         }
-        guard let range = T(rawValue: rangeRawValue) else {
+        guard let range = RangeType(rawValue: rangeRawValue) else {
             return nil
         }
         

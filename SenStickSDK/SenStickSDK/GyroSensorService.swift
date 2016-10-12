@@ -86,7 +86,7 @@ extension CMRotationRate : SensorDataPackableType
 }
 
 // センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型、
-open class GyroSensorService: SenStickSensorService<CMRotationRate, RotationRange>, SenStickService
+open class GyroSensorService: SenStickSensorService<CMRotationRate, RotationRange>
 {
     required public init?(device:SenStickDevice)
     {

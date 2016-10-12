@@ -9,98 +9,97 @@
 /* Begin PBXBuildFile section */
 		00152BB58E8F86A424FCDA96ADAF7D46 /* SecureDFUControlPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDBFB1CC59E78180F2CFA0B8D33C2A /* SecureDFUControlPoint.swift */; };
 		00BBCA5CBC0EAB4A6A7B298AD00A54EA /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD83FE45AEEC00A3540450C0660387B7 /* Zip.framework */; };
+		02FA1E0238E540D29C5D2DA25ACF6253 /* SenStickUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9277423CA865763EDF89D8911562D2DA /* SenStickUUIDs.swift */; };
+		041D386F20FAC51CDEBF60BE647A7AE8 /* SenStickDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84027495DBA66E7802F9C876BEEE1D45 /* SenStickDeviceManager.swift */; };
 		05979DE641F769E771D267E86330C7A2 /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD83FE45AEEC00A3540450C0660387B7 /* Zip.framework */; };
+		05F53F2A7CF064D38FDF21887BB68D6A /* DeviceInformationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A3B0C302B63B6FC563DD96E61EF81 /* DeviceInformationService.swift */; };
+		07490D3209D5A08B2342B9A1DC331764 /* SenStickStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63079D5004B56D13384E6967A79733DF /* SenStickStatus.swift */; };
 		07A178463B2C90BBF478331B7A817128 /* DFUServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7016AEF66AD9C1EDB16C8F47BE5A2CC8 /* DFUServiceController.swift */; };
+		09A9022594050B52CA49D5D9F2893ACA /* SenStickSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567DAF78F08C0EE92ECF3AFF0C04A61B /* SenStickSensorService.swift */; };
 		0F2BDAD60E1E151BD51A2D0936429F70 /* Pods-SenStickViewer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 43C779C8B504ABFDA3987B3A6334B1C8 /* Pods-SenStickViewer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FB689E62167841AE9C7658357238A2A /* SenStickControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39719A9AEB434B90E11AE5DF9AB2AF /* SenStickControlCommand.swift */; };
-		1010ECB65E92E55C397517ECB3BF3B24 /* UVSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6350C9BE6467F2F8095A1FFE89C47229 /* UVSensorService.swift */; };
 		11378AB556B50BDA84D4DCDAED414FBB /* DFUPeripheralSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A7A825ECC87AE2A2539E124D99B5D /* DFUPeripheralSelector.swift */; };
-		129FBACF1182E887BF9DF350BA4C512F /* SenStickControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A427A0CEBC18D2DDD424A360CCB90DE3 /* SenStickControlService.swift */; };
+		187BCFDF845250BD08E00BDE2C446B00 /* SamplingDurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AEE0881CCD5AB1F170D08099609784 /* SamplingDurationType.swift */; };
 		19DFDF48A586A319E12F5A095FAB12EE /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 47EEFF95DA53808881138C9B24A3EF40 /* ioapi.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1C2C88327A999EA3A962598F11C7111E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318CA49355260A123026209238821187 /* Foundation.framework */; };
-		1D54367BD23E579EF996786A1E8EFA96 /* PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A3C9C8F073C121DAB8CE4C753ADA9 /* PackableType.swift */; };
+		1CCE5DC67EFF6713608221404EB840CE /* SenStickControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9543BDDBEB688BCB7943583BA7CB369F /* SenStickControlCommand.swift */; };
 		1EBC94355ECC53F5FE9F665F308F17BC /* DFUStreamHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1064CAA8F63D748C2AA3EAB9C699E4 /* DFUStreamHex.swift */; };
 		203753CA6ABEB95626D9FCF013E8469B /* LegacyDFUServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB7B375AEF2D1B507A4070F7B268138 /* LegacyDFUServiceController.swift */; };
+		23B8310696BD827CBAE087FB37B19F82 /* NSDate+PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA2D2BC3C6EE0CCBC39D9C9907FFA9D /* NSDate+PackableType.swift */; };
 		254825FDC3505026000B5374887BF7C0 /* LegacyDFUPeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F2A73F0C576AC0E78629DA2467C848 /* LegacyDFUPeripheralDelegate.swift */; };
 		2A7A7D87BBF4598A2000431641E46CB4 /* Pods-SenStickViewer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB703A82E83C75FFFB49B5283787A2F1 /* Pods-SenStickViewer-dummy.m */; };
-		3009715F9677D4B5AC1787BF39AC4A81 /* NSDate+PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4F7976F222ADE964700A004A29872 /* NSDate+PackableType.swift */; };
+		3106FACF9E6FD757143518EC7AF6C9BF /* SensorDataPackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315EDC2EBF5027441B75D885B0E26717 /* SensorDataPackable.swift */; };
 		3199A6C54A91BBE6E0E87EAA454E8A54 /* LoggerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7472B95AF99B3E663D338FA3B1C40F31 /* LoggerDelegate.swift */; };
-		31EFDF01254B1969A7D7BB8AA4E0FA29 /* AccelerationSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93473CD764CFE93CDBEF8EB16971C49B /* AccelerationSensorService.swift */; };
 		36C681BA363054C142CB61FB0A54E397 /* IntelHex2BinConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93A5E849B32A4A4C135E8781830BA297 /* IntelHex2BinConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		38D6500072380002FA36B9A65BB54FEA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C305C2ED76E7E74620C800DB08107C5 /* Double.swift */; };
 		3C1D24BAB3467D8BBADB474FE1FF66C7 /* ZipArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6B6F675C883A05682EFD35CF080B93 /* ZipArchive.swift */; };
-		418CF88819D633EC578E88CFE145EE23 /* PressureSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165B369A2A9779FB3592991EEC66861 /* PressureSensorService.swift */; };
-		421F24FA75C2DC95FB80735C81FB0430 /* SensorLogMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB2AC21E95E8DDD28EF5A95F331B210 /* SensorLogMetaData.swift */; };
 		4359A8B168968958773D88BC27FE2969 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318CA49355260A123026209238821187 /* Foundation.framework */; };
-		439AB32950F82126DC62B965FC263E00 /* SenStickSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 33D9F70704B11A766DE7F08C0A1805DF /* SenStickSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		439AB32950F82126DC62B965FC263E00 /* SenStickSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DC4375A482F39931A3E139B9FD6DAEB /* SenStickSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49167FDF81579DE4984214096F1AEB99 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = BE4D935BFC2D09FA3C6CF6CBC84AA105 /* unzip.c */; };
 		4AD41CDBDC0C35A06DCC2635009DDBE2 /* DFUControlPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C136F01690C509E651442FC02F56574A /* DFUControlPoint.swift */; };
 		4BFF52BC06A3069BB175EAE837982D1B /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C92BFF418C09F756CFBB65EEF4831FE /* unzip.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4D1B859C1B3EA3BBBD0BA1012BD4EE4C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318CA49355260A123026209238821187 /* Foundation.framework */; };
-		588A1F7ECB657333034888B4EE6CF938 /* SenStickService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043798CD4DD6D1F35FFAEE77E700FB45 /* SenStickService.swift */; };
-		5C0AF253BAB6FEF0EE64955B5D6532AD /* SenStickMetaDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C030AE95EFDBF8F92605C7FDBBBDD92F /* SenStickMetaDataService.swift */; };
 		5E21023249F012B461B6EAA85C75A69F /* SecureDFUService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F03DD987286B73C91D378FD509C6F0 /* SecureDFUService.swift */; };
-		610CD93529851FD2369F9888A35EA29B /* SenStickSDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E38089D57597AB8062094D233A557BE /* SenStickSDK-dummy.m */; };
 		611EA79548DA7BB6A35F3AA38B258E64 /* iOSDFULibrary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8284DF50B72E7053419ACFCCF91F7908 /* iOSDFULibrary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		61D587F75DF6D619E7DF87D917244CAB /* ZipUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74C4887FC3ADCB7CE71D55B252B32EF /* ZipUtilities.swift */; };
-		69CD6845B6C23C25D243D73B98376BB9 /* SensorSettingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2E030D92D2509A6FD80A58A53A5F5 /* SensorSettingData.swift */; };
 		6A269F8011518A6AD138EE93BDA79B94 /* DFUStreamBin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F3982ED0D6AC5D7D49E92A7CF8DBD9 /* DFUStreamBin.swift */; };
 		6ADC9D00F86EA1CFD9F8702BE24CB2F8 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 43D4C95F9DCCDC0B7739C83C75E7E66A /* zip.c */; };
 		6F718C3C45B5F4625CD6AB8A457EB945 /* iOSDFULibrary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C9215F32FD4B4A564B90ACE8606322C3 /* iOSDFULibrary-dummy.m */; };
 		6FF7B4084842B11ACCD6EB79A5DD37E0 /* DFUFirmware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80073117C9A04E4C917D9E185379269B /* DFUFirmware.swift */; };
 		70BE4424AD8034A4A7C73724AEA32175 /* DFUVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA7ECB64B42146B252F4BC50D96B97 /* DFUVersion.swift */; };
 		7465BF01A708883C5B2EFDC7ACA88DB0 /* DFUServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA8423069943FFD76BF9ECB2E22A412 /* DFUServiceDelegate.swift */; };
-		74734C6489984F427869A2151262B7A5 /* HumiditySensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC01B37D17C3AFB63EE012FB12E9BBA /* HumiditySensorService.swift */; };
-		7CD06B3C9C15846F76C015B79EAFCA5B /* SensorDataPackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5CFF8C41811D3FC3B541979EBA88CD /* SensorDataPackable.swift */; };
-		7CE2EE4CE892A1AD47F7F9E07CFCF5C7 /* GAPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FBFF32DA213AFF60AB3D37E2CDF9AC /* GAPService.swift */; };
+		753D17265DB5F4487D16042E56C18C61 /* SenStickMetaDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C193EF08DAEC93F11D0C6BEB8DE067 /* SenStickMetaDataService.swift */; };
 		7D668AA27DF1A0AC26B3C5BEF1AFD432 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 632648FA251BD14F38AF099E8AD230B8 /* crypt.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		7DE8901AA85CCBFE006975724F60C3E0 /* SenStickDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD77C286EC79E80EE8795773A48FA8C7 /* SenStickDataModels.swift */; };
 		80378D8D6AA08048B95018084E991D04 /* LegacyDFUPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBFF97238BA9B72FCFFD53974480814 /* LegacyDFUPeripheral.swift */; };
+		817EAB22A560A52992EA902B2ED2E173 /* SenStickSDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7450D03F63A735AD08AB9F46A4685097 /* SenStickSDK-dummy.m */; };
 		86A962BFA7B9AC0B641398C20AA11D4C /* SecureDFUServiceInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08369DD6957E940D58EE3CD7D01248E /* SecureDFUServiceInitiator.swift */; };
 		8831C473DCF7E88B346DCBEA9D447C5D /* LegacyDFUExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A70DB79424F0FFEC4E8B264B7FB0EFB /* LegacyDFUExecutor.swift */; };
+		887DCFE3FDFB8AD9BF785F3E90F37E64 /* BatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346B2272C03578AADBD595EA9F8EDA5D /* BatteryService.swift */; };
 		8B5FACAE62A3616B42B5E7FD08975BB7 /* Manifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8B2D7B4E9AAE2537F54016A7B0850 /* Manifest.swift */; };
 		9365806502947BC4C1EBC85C3AB6D2D6 /* DFUServiceInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF66F7A88EBD3055868CFF4C0D15EC6 /* DFUServiceInitiator.swift */; };
 		95376882C67E850B04789D1408998550 /* DFUPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAD977391FCE85D9102C3E8AA6352DC /* DFUPacket.swift */; };
 		95DACDBB1C4309846F37748B26DFC49F /* DFUStreamZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730042FE6CAD41CBA3A22A88832C482 /* DFUStreamZip.swift */; };
 		993F62474A31EDBAE72824907BF200ED /* QuickZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A522F3E242357DE3B384D461C7DB5A1 /* QuickZip.swift */; };
 		9AD0F59D73BEA03C78FB21F492D5BD63 /* SoftdeviceBootloaderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE0186F0060D72FFA0F72E09DF5F8B1 /* SoftdeviceBootloaderInfo.swift */; };
+		9AF992090269FF679248B3F512249CD4 /* PressureSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65B7614399EC122E218224A23634A8D /* PressureSensorService.swift */; };
 		9B0BA8BC39D3E40E024DCB9790AD2960 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318CA49355260A123026209238821187 /* Foundation.framework */; };
 		9F2C2FAAA8083F163FB3D8262DBE1F0B /* DFUStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F91F0A32451DAD86F528B8E6B959B41 /* DFUStream.swift */; };
-		A43E6859303A719E8E6ACF3E13BB4EAE /* BrightnessSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9554DC2B4CEC1095780158C66864F1B9 /* BrightnessSensorService.swift */; };
+		A05D9396920B3B5050DE5A2E500A9B55 /* SenStickService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED7135FEC5593279E4A15F6CC3A05DB /* SenStickService.swift */; };
+		A2A31FC08267EB501CAEE1AF10E3F15C /* SenStickSensorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE294B86CE108A8716C94A0A7F1064 /* SenStickSensorType.swift */; };
 		A4ADDC8FA2E4B116BDF33916AEC273CA /* SecureDFUPeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B067378E9E6C48C9BFFBC910E54B10E9 /* SecureDFUPeripheralDelegate.swift */; };
 		A5061B763D3802682A7BDE3D3F82A24B /* SecureDFUServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1147E0232B55F671706E2A77D05F96D /* SecureDFUServiceController.swift */; };
 		A5F4FD3B00D0DFF71A786E1D8E4CB922 /* ManifestFirmwareInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765421B4A03C884FA26224312CEAC056 /* ManifestFirmwareInfo.swift */; };
 		A8C05C913C5A01B11D1986C3FAF463F0 /* DFUPeripheralSelectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194484BDCEC68147EE70614788B6F749 /* DFUPeripheralSelectorDelegate.swift */; };
-		A9B9F36A36FBFA852B97023FAFD6FA6F /* BatteryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199B143F57F7FEB4F7D8D7D86D2285B9 /* BatteryService.swift */; };
 		AF73B421518B6BC65EABD88712D8ABBB /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 80036801C0E7468D7335C0374799C4DB /* zip.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		B012E9564A4252CC1043E1DA0A9743FA /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF52D70E37E44F1D520B9229FDCA752C /* Data.swift */; };
-		B16E3C4C4DC739E48CDEB281D0B3D531 /* SenStickDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28FC2FB97AF30E5488F3E5EF723320C /* SenStickDevice.swift */; };
-		B1F3136856702430A3E8D0DDAF08AF76 /* SensorLogID.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB210F620C0F22007817EB823AAAC1C /* SensorLogID.swift */; };
+		B04D159F667612DD1390578917662EE7 /* UVSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE54FFE4B244A2CF6340185820EF339 /* UVSensorService.swift */; };
+		BC24411016B947FD86C0B8EA051E3D0D /* SenStickDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66DE9EAF920BD286534EDABAB1B99F7 /* SenStickDevice.swift */; };
 		C012854963E90C5ED326C04D6E26EE10 /* Zip-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 21C2D33209DE6BC84FECFB2ADECB262C /* Zip-dummy.m */; };
+		C115DD77F044C3C7E1705477A49B057B /* MagneticFieldSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC865D25C75C02291A2A4F44D35B410 /* MagneticFieldSensorService.swift */; };
+		C2E87448F0E26A40E914ABCEA0E169D9 /* SensorLogMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A3AE113B9A3B8A36DB1B26C37748A0 /* SensorLogMetaData.swift */; };
 		C34E804DAAAD21F891085DB90E02CAE1 /* LegacyDFUServiceInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D758A64F6471C11587827D725E5A68 /* LegacyDFUServiceInitiator.swift */; };
-		C47E5C806DEDB88ABDCB2DC1A5B7D3BF /* SamplingDurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4DC52BD67EB81FB3865C8FCB79042C /* SamplingDurationType.swift */; };
 		C5E2EAA36E55C7F90741A8427B0BBDCF /* LegacyDFUService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092C5E4305409B8686696B8993FB1EA0 /* LegacyDFUService.swift */; };
-		C5F1F2081A9EE5ACBA05EECC1885D0A0 /* SenStickSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727CC65C574DCFEA87C8E43E034E5484 /* SenStickSensorService.swift */; };
-		C690920DD8BBE595B310E0D22CB9A3A3 /* SenStickSDK-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A827AC7CB0E036401F7A089F09C4DB3 /* SenStickSDK-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C690920DD8BBE595B310E0D22CB9A3A3 /* SenStickSDK-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 10DC3668300DAECCC3CD97173934BF7B /* SenStickSDK-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C853C817F28C63773C81875B1D942BBD /* SensorSettingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D64B9F39BEF31D46CDB97383F932BA /* SensorSettingData.swift */; };
+		CB93E433A3EC94BE819B6111478A73B7 /* HumiditySensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FC7BFBA2C02275529E17B94B4565F4 /* HumiditySensorService.swift */; };
 		CD66C2697BEB26DB82D66DFA4DE38070 /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990753F38EF4B70C83DEC75846434982 /* LoggerHelper.swift */; };
 		CFECC998006BE6968B92DA3716C758FD /* crc32.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8B9979DB21D33B2DA83A943967617A /* crc32.swift */; };
-		D29B7BE14476727443AB4AFEE6E73684 /* SenStickDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12D9175692BB762161BC43DEEDADC4 /* SenStickDeviceManager.swift */; };
 		D608C04F0126916A2B64DD2F96EB5153 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 607950172F0B9341C7940537949236BB /* ioapi.c */; };
 		D73221DB255A585D20DEEE81C48A386C /* SecureDFUServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAC89930800E1C9F164954341276C26 /* SecureDFUServiceDelegate.swift */; };
-		DA583157014DFFC7A6713D551ABDD56A /* SenStickUUIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0523F9F1498CE6C4A28B2BE5D168E84 /* SenStickUUIDs.swift */; };
 		DD645BEF3C76A1596D36166E7DBA8819 /* iOSDFULibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA19D0F86702ECF3B9250C74F6ED109 /* iOSDFULibrary.framework */; };
 		DDF798CF29A879B8689E81A84581486C /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB886F3F55DFF780F8BBDF0737929D75 /* Zip.swift */; };
-		DFD7BF9612833CD72389DDDEE3935C86 /* MagneticFieldSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B26C360F16370BDEF30333F74EE1A /* MagneticFieldSensorService.swift */; };
+		DF3A04BEAB540F371BD08234F7A512E8 /* SensorLogID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC87B842EF493A4314D976D1E8D36F09 /* SensorLogID.swift */; };
 		E009B2EF456F1578A936DDE67AECF31D /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C765669781E12C0A110A736F854B47A /* IntelHex2BinConverter.m */; };
+		E07BCF6FD12C4224103C7EBAED04F754 /* BrightnessSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97458758C175A217B750E080FCAA5633 /* BrightnessSensorService.swift */; };
 		E0F56BBD9DAAFB398985C52A6F95938B /* SecureDFUPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFB19D0397B89B79EC4824960279793 /* SecureDFUPacket.swift */; };
+		E50AC42A87573F65B084E1147DF348E2 /* GyroSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40854A902E17A4478D410263A3EBFF00 /* GyroSensorService.swift */; };
 		E572E22C82705164F4BE11636FF60393 /* SecureDFUPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE908D0B11213127F559119321B0ECA /* SecureDFUPeripheral.swift */; };
+		ED3C46C8140BBB2EF5C0A53E14FD1108 /* PackableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E602C721155D8B4126D163261A7AFC4A /* PackableType.swift */; };
 		EF0A5F08429FB9CE8025DC7087F0E04E /* Zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F257569F8893981A1FCB6367C3B3927 /* Zip.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EFD41970FC9BE037F72F9A814F363382 /* GyroSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2F87D684B39D3FEB5886D08C90AAE9 /* GyroSensorService.swift */; };
 		F12E4874FFE8F6DC36A2C0BD66F3A396 /* DFUExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB36873CA4D0FC41874870E18FCABCE /* DFUExecutor.swift */; };
+		F1A579B6FB8F5B98423436700AEB38DA /* GAPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB6A64AA27C998E39CA3342A882075C /* GAPService.swift */; };
 		F297EB175D97F6E505279064C4845536 /* Zip-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 73A25FA45DC73C244BF057459F50F280 /* Zip-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F32A887A7AE2A39924820A4F24ABA366 /* SenStickStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B989F60440BCB550546BC0E00779C77A /* SenStickStatus.swift */; };
-		F64E7535968AB2F15BE867C51AF5B0CB /* DeviceInformationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8DFAE5F08B2A14D9D34E4C8CF8C108 /* DeviceInformationService.swift */; };
-		FC84E35792447E38A64FCA026D07404B /* SenStickSensorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD6983A0E5FCD7F29F05DB0196EFA39 /* SenStickSensorType.swift */; };
+		F99D36AAE5623E2C14647ACFF0483DB1 /* AccelerationSensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2DB46A7AFC2B8B2BB36CE2F38B6F51 /* AccelerationSensorService.swift */; };
+		FCF7594EA46B96E7480781F19BAFD95D /* SenStickControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08402ED09938CC90CE2EA081573165 /* SenStickControlService.swift */; };
 		FE60D95EC8CDAA7D0B0FF2456DD23CAC /* SecureDFUExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB94BF4F5E2B09F8AFE9774176C57450 /* SecureDFUExecutor.swift */; };
 /* End PBXBuildFile section */
 
@@ -150,7 +149,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		043798CD4DD6D1F35FFAEE77E700FB45 /* SenStickService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickService.swift; sourceTree = "<group>"; };
+		029A3B0C302B63B6FC563DD96E61EF81 /* DeviceInformationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceInformationService.swift; sourceTree = "<group>"; };
 		04D758A64F6471C11587827D725E5A68 /* LegacyDFUServiceInitiator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LegacyDFUServiceInitiator.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/DFU/LegacyDFUServiceInitiator.swift; sourceTree = "<group>"; };
 		059DC247C2D1B066C864C05F03AE43AE /* Zip.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Zip.xcconfig; sourceTree = "<group>"; };
 		071348DB5533444422BBE343E3D5BD5D /* Pods-SenStickViewer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SenStickViewer-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -162,11 +161,11 @@
 		0BE908D0B11213127F559119321B0ECA /* SecureDFUPeripheral.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUPeripheral.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/Peripheral/SecureDFUPeripheral.swift; sourceTree = "<group>"; };
 		0C305C2ED76E7E74620C800DB08107C5 /* Double.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Double.swift; path = iOSDFULibrary/Classes/Utilities/Double.swift; sourceTree = "<group>"; };
 		0CF66F7A88EBD3055868CFF4C0D15EC6 /* DFUServiceInitiator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceInitiator.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFUServiceInitiator.swift; sourceTree = "<group>"; };
-		0E38089D57597AB8062094D233A557BE /* SenStickSDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SenStickSDK-dummy.m"; sourceTree = "<group>"; };
+		10DC3668300DAECCC3CD97173934BF7B /* SenStickSDK-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SenStickSDK-umbrella.h"; sourceTree = "<group>"; };
 		16F2A73F0C576AC0E78629DA2467C848 /* LegacyDFUPeripheralDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LegacyDFUPeripheralDelegate.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/Peripherals/LegacyDFUPeripheralDelegate.swift; sourceTree = "<group>"; };
 		1730042FE6CAD41CBA3A22A88832C482 /* DFUStreamZip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamZip.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamZip.swift; sourceTree = "<group>"; };
+		18A3AE113B9A3B8A36DB1B26C37748A0 /* SensorLogMetaData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorLogMetaData.swift; sourceTree = "<group>"; };
 		194484BDCEC68147EE70614788B6F749 /* DFUPeripheralSelectorDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPeripheralSelectorDelegate.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFUPeripheralSelectorDelegate.swift; sourceTree = "<group>"; };
-		199B143F57F7FEB4F7D8D7D86D2285B9 /* BatteryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BatteryService.swift; sourceTree = "<group>"; };
 		1A70DB79424F0FFEC4E8B264B7FB0EFB /* LegacyDFUExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LegacyDFUExecutor.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/DFU/LegacyDFUExecutor.swift; sourceTree = "<group>"; };
 		1C765669781E12C0A110A736F854B47A /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IntelHex2BinConverter.m; path = iOSDFULibrary/Classes/Utilities/HexToBinConverter/IntelHex2BinConverter.m; sourceTree = "<group>"; };
 		1DC8B2D7B4E9AAE2537F54016A7B0850 /* Manifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Manifest.swift; path = iOSDFULibrary/Classes/Utilities/DFUPackage/Manifest/Manifest.swift; sourceTree = "<group>"; };
@@ -174,96 +173,95 @@
 		21F03DD987286B73C91D378FD509C6F0 /* SecureDFUService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUService.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/Services/SecureDFUService.swift; sourceTree = "<group>"; };
 		2B97BAE16B1B5186E3C136705D697825 /* iOSDFULibrary-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDFULibrary-prefix.pch"; sourceTree = "<group>"; };
 		2DB36873CA4D0FC41874870E18FCABCE /* DFUExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUExecutor.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFUExecutor.swift; sourceTree = "<group>"; };
+		315EDC2EBF5027441B75D885B0E26717 /* SensorDataPackable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorDataPackable.swift; sourceTree = "<group>"; };
 		318CA49355260A123026209238821187 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		33D9F70704B11A766DE7F08C0A1805DF /* SenStickSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SenStickSDK.h; sourceTree = "<group>"; };
+		346B2272C03578AADBD595EA9F8EDA5D /* BatteryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BatteryService.swift; sourceTree = "<group>"; };
 		3DFB19D0397B89B79EC4824960279793 /* SecureDFUPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUPacket.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/Characteristics/SecureDFUPacket.swift; sourceTree = "<group>"; };
-		3F39719A9AEB434B90E11AE5DF9AB2AF /* SenStickControlCommand.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickControlCommand.swift; sourceTree = "<group>"; };
 		3FAC89930800E1C9F164954341276C26 /* SecureDFUServiceDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUServiceDelegate.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/DFU/SecureDFUServiceDelegate.swift; sourceTree = "<group>"; };
+		3FC865D25C75C02291A2A4F44D35B410 /* MagneticFieldSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MagneticFieldSensorService.swift; sourceTree = "<group>"; };
+		40854A902E17A4478D410263A3EBFF00 /* GyroSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GyroSensorService.swift; sourceTree = "<group>"; };
 		432BFA33F22163F2C2B5E5C131040A91 /* Zip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C779C8B504ABFDA3987B3A6334B1C8 /* Pods-SenStickViewer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SenStickViewer-umbrella.h"; sourceTree = "<group>"; };
 		43D4C95F9DCCDC0B7739C83C75E7E66A /* zip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = zip.c; path = Zip/minizip/zip.c; sourceTree = "<group>"; };
-		4421309E92D0462952A26AEFB5035E18 /* SenStickSDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SenStickSDK-prefix.pch"; sourceTree = "<group>"; };
 		47E6DB1F30F61AD919E3127CB7D2737A /* Zip.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Zip.modulemap; sourceTree = "<group>"; };
 		47EEFF95DA53808881138C9B24A3EF40 /* ioapi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = Zip/minizip/ioapi.h; sourceTree = "<group>"; };
+		4A2DB46A7AFC2B8B2BB36CE2F38B6F51 /* AccelerationSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccelerationSensorService.swift; sourceTree = "<group>"; };
 		55D011EF83C7751A47438C6A3253B3C7 /* iOSDFULibrary.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = iOSDFULibrary.modulemap; sourceTree = "<group>"; };
+		567DAF78F08C0EE92ECF3AFF0C04A61B /* SenStickSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickSensorService.swift; sourceTree = "<group>"; };
 		5A55B903A500757D67ED884502D6FBB0 /* Pods-SenStickViewer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SenStickViewer-resources.sh"; sourceTree = "<group>"; };
 		5AA19D0F86702ECF3B9250C74F6ED109 /* iOSDFULibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSDFULibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B8DFAE5F08B2A14D9D34E4C8CF8C108 /* DeviceInformationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceInformationService.swift; sourceTree = "<group>"; };
 		607950172F0B9341C7940537949236BB /* ioapi.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = Zip/minizip/ioapi.c; sourceTree = "<group>"; };
+		63079D5004B56D13384E6967A79733DF /* SenStickStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickStatus.swift; sourceTree = "<group>"; };
 		632648FA251BD14F38AF099E8AD230B8 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = Zip/minizip/crypt.h; sourceTree = "<group>"; };
-		6350C9BE6467F2F8095A1FFE89C47229 /* UVSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UVSensorService.swift; sourceTree = "<group>"; };
 		66FDE45A2F07CE8838D5068EF0FDABAD /* iOSDFULibrary.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = iOSDFULibrary.xcconfig; sourceTree = "<group>"; };
 		6A522F3E242357DE3B384D461C7DB5A1 /* QuickZip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickZip.swift; path = Zip/QuickZip.swift; sourceTree = "<group>"; };
-		6A827AC7CB0E036401F7A089F09C4DB3 /* SenStickSDK-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SenStickSDK-umbrella.h"; sourceTree = "<group>"; };
 		6BBFF97238BA9B72FCFFD53974480814 /* LegacyDFUPeripheral.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LegacyDFUPeripheral.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/Peripherals/LegacyDFUPeripheral.swift; sourceTree = "<group>"; };
-		6DD2E030D92D2509A6FD80A58A53A5F5 /* SensorSettingData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorSettingData.swift; sourceTree = "<group>"; };
 		6F257569F8893981A1FCB6367C3B3927 /* Zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Zip.h; path = Zip/Zip.h; sourceTree = "<group>"; };
-		6FA4F7976F222ADE964700A004A29872 /* NSDate+PackableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSDate+PackableType.swift"; sourceTree = "<group>"; };
-		700A3C9C8F073C121DAB8CE4C753ADA9 /* PackableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PackableType.swift; sourceTree = "<group>"; };
 		7016AEF66AD9C1EDB16C8F47BE5A2CC8 /* DFUServiceController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceController.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFUServiceController.swift; sourceTree = "<group>"; };
-		727CC65C574DCFEA87C8E43E034E5484 /* SenStickSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickSensorService.swift; sourceTree = "<group>"; };
 		73A25FA45DC73C244BF057459F50F280 /* Zip-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Zip-umbrella.h"; sourceTree = "<group>"; };
 		73FDA36CB2873227089012DFFC389F14 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7450D03F63A735AD08AB9F46A4685097 /* SenStickSDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SenStickSDK-dummy.m"; sourceTree = "<group>"; };
 		7472B95AF99B3E663D338FA3B1C40F31 /* LoggerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoggerDelegate.swift; path = iOSDFULibrary/Classes/Utilities/Logging/LoggerDelegate.swift; sourceTree = "<group>"; };
 		765421B4A03C884FA26224312CEAC056 /* ManifestFirmwareInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ManifestFirmwareInfo.swift; path = iOSDFULibrary/Classes/Utilities/DFUPackage/Manifest/ManifestFirmwareInfo.swift; sourceTree = "<group>"; };
 		77F3982ED0D6AC5D7D49E92A7CF8DBD9 /* DFUStreamBin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamBin.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamBin.swift; sourceTree = "<group>"; };
-		79FBFF32DA213AFF60AB3D37E2CDF9AC /* GAPService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GAPService.swift; sourceTree = "<group>"; };
 		7C92BFF418C09F756CFBB65EEF4831FE /* unzip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = Zip/minizip/unzip.h; sourceTree = "<group>"; };
+		7ED7135FEC5593279E4A15F6CC3A05DB /* SenStickService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickService.swift; sourceTree = "<group>"; };
 		7F91F0A32451DAD86F528B8E6B959B41 /* DFUStream.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStream.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStream.swift; sourceTree = "<group>"; };
 		80036801C0E7468D7335C0374799C4DB /* zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = zip.h; path = Zip/minizip/zip.h; sourceTree = "<group>"; };
 		80073117C9A04E4C917D9E185379269B /* DFUFirmware.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUFirmware.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFU/DFUFirmware.swift; sourceTree = "<group>"; };
 		8284DF50B72E7053419ACFCCF91F7908 /* iOSDFULibrary-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "iOSDFULibrary-umbrella.h"; sourceTree = "<group>"; };
 		82BF5E28C36092C55F7D7EC2CAFDB4F3 /* Pods-SenStickViewer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SenStickViewer-frameworks.sh"; sourceTree = "<group>"; };
-		8463D8369B1A8596CFC41F4F372B7AEB /* SenStickSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SenStickSDK.xcconfig; sourceTree = "<group>"; };
+		84027495DBA66E7802F9C876BEEE1D45 /* SenStickDeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickDeviceManager.swift; sourceTree = "<group>"; };
+		858CB5D25FE276B66CCAE74C98BEDF6E /* SenStickSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SenStickSDK.modulemap; sourceTree = "<group>"; };
+		88AEE0881CCD5AB1F170D08099609784 /* SamplingDurationType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SamplingDurationType.swift; sourceTree = "<group>"; };
 		8A1064CAA8F63D748C2AA3EAB9C699E4 /* DFUStreamHex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUStreamHex.swift; path = iOSDFULibrary/Classes/Utilities/Streams/DFUStreamHex.swift; sourceTree = "<group>"; };
-		8CB2AC21E95E8DDD28EF5A95F331B210 /* SensorLogMetaData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorLogMetaData.swift; sourceTree = "<group>"; };
-		93473CD764CFE93CDBEF8EB16971C49B /* AccelerationSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccelerationSensorService.swift; sourceTree = "<group>"; };
+		8AE54FFE4B244A2CF6340185820EF339 /* UVSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UVSensorService.swift; sourceTree = "<group>"; };
+		8DC4375A482F39931A3E139B9FD6DAEB /* SenStickSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SenStickSDK.h; sourceTree = "<group>"; };
+		9277423CA865763EDF89D8911562D2DA /* SenStickUUIDs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickUUIDs.swift; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93A5E849B32A4A4C135E8781830BA297 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IntelHex2BinConverter.h; path = iOSDFULibrary/Classes/Utilities/HexToBinConverter/IntelHex2BinConverter.h; sourceTree = "<group>"; };
-		9554DC2B4CEC1095780158C66864F1B9 /* BrightnessSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrightnessSensorService.swift; sourceTree = "<group>"; };
+		9543BDDBEB688BCB7943583BA7CB369F /* SenStickControlCommand.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickControlCommand.swift; sourceTree = "<group>"; };
+		9657A03C6EB0C4CABF8D35901FEB5CED /* SenStickSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SenStickSDK.xcconfig; sourceTree = "<group>"; };
 		96F9FFBBB2109C3B481C7CC6DDCFDB72 /* SenStickSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SenStickSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97458758C175A217B750E080FCAA5633 /* BrightnessSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrightnessSensorService.swift; sourceTree = "<group>"; };
 		9789452E61A53055872BB7518E7ED9B4 /* iOSDFULibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSDFULibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		990753F38EF4B70C83DEC75846434982 /* LoggerHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoggerHelper.swift; path = iOSDFULibrary/Classes/Utilities/Logging/LoggerHelper.swift; sourceTree = "<group>"; };
 		9AB7B375AEF2D1B507A4070F7B268138 /* LegacyDFUServiceController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LegacyDFUServiceController.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/DFU/LegacyDFUServiceController.swift; sourceTree = "<group>"; };
 		9CEA7ECB64B42146B252F4BC50D96B97 /* DFUVersion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUVersion.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/Characteristics/DFUVersion.swift; sourceTree = "<group>"; };
-		9FD6983A0E5FCD7F29F05DB0196EFA39 /* SenStickSensorType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickSensorType.swift; sourceTree = "<group>"; };
-		A28FC2FB97AF30E5488F3E5EF723320C /* SenStickDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickDevice.swift; sourceTree = "<group>"; };
-		A427A0CEBC18D2DDD424A360CCB90DE3 /* SenStickControlService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickControlService.swift; sourceTree = "<group>"; };
 		ABFDBFB1CC59E78180F2CFA0B8D33C2A /* SecureDFUControlPoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUControlPoint.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/Characteristics/SecureDFUControlPoint.swift; sourceTree = "<group>"; };
-		AF4DC52BD67EB81FB3865C8FCB79042C /* SamplingDurationType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SamplingDurationType.swift; sourceTree = "<group>"; };
-		AFB210F620C0F22007817EB823AAAC1C /* SensorLogID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorLogID.swift; sourceTree = "<group>"; };
 		B067378E9E6C48C9BFFBC910E54B10E9 /* SecureDFUPeripheralDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUPeripheralDelegate.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/Peripheral/SecureDFUPeripheralDelegate.swift; sourceTree = "<group>"; };
-		B989F60440BCB550546BC0E00779C77A /* SenStickStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickStatus.swift; sourceTree = "<group>"; };
+		BA290ECCC9A5E40F21F52EAE9912D48E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB703A82E83C75FFFB49B5283787A2F1 /* Pods-SenStickViewer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SenStickViewer-dummy.m"; sourceTree = "<group>"; };
-		BC5CFF8C41811D3FC3B541979EBA88CD /* SensorDataPackable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorDataPackable.swift; sourceTree = "<group>"; };
 		BC6B6F675C883A05682EFD35CF080B93 /* ZipArchive.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZipArchive.swift; path = iOSDFULibrary/Classes/Utilities/ZipArchive.swift; sourceTree = "<group>"; };
 		BCE0186F0060D72FFA0F72E09DF5F8B1 /* SoftdeviceBootloaderInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoftdeviceBootloaderInfo.swift; path = iOSDFULibrary/Classes/Utilities/DFUPackage/Manifest/SoftdeviceBootloaderInfo.swift; sourceTree = "<group>"; };
-		BD77C286EC79E80EE8795773A48FA8C7 /* SenStickDataModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickDataModels.swift; sourceTree = "<group>"; };
 		BE4D935BFC2D09FA3C6CF6CBC84AA105 /* unzip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = Zip/minizip/unzip.c; sourceTree = "<group>"; };
-		BF12D9175692BB762161BC43DEEDADC4 /* SenStickDeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickDeviceManager.swift; sourceTree = "<group>"; };
-		C030AE95EFDBF8F92605C7FDBBBDD92F /* SenStickMetaDataService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickMetaDataService.swift; sourceTree = "<group>"; };
-		C04B26C360F16370BDEF30333F74EE1A /* MagneticFieldSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MagneticFieldSensorService.swift; sourceTree = "<group>"; };
-		C0523F9F1498CE6C4A28B2BE5D168E84 /* SenStickUUIDs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickUUIDs.swift; sourceTree = "<group>"; };
+		BF08402ED09938CC90CE2EA081573165 /* SenStickControlService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickControlService.swift; sourceTree = "<group>"; };
 		C136F01690C509E651442FC02F56574A /* DFUControlPoint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUControlPoint.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/Characteristics/DFUControlPoint.swift; sourceTree = "<group>"; };
 		C2501C01418F11CA2EEBA6A84FAA4F3A /* Zip-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Zip-prefix.pch"; sourceTree = "<group>"; };
+		C5D64B9F39BEF31D46CDB97383F932BA /* SensorSettingData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorSettingData.swift; sourceTree = "<group>"; };
 		C9215F32FD4B4A564B90ACE8606322C3 /* iOSDFULibrary-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "iOSDFULibrary-dummy.m"; sourceTree = "<group>"; };
 		CB94BF4F5E2B09F8AFE9774176C57450 /* SecureDFUExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUExecutor.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/DFU/SecureDFUExecutor.swift; sourceTree = "<group>"; };
-		CF913D8FFDBEA580634DADD86C7F4BA8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D6689A93C7D171434593CCE098A12BFA /* SenStickSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SenStickSDK.modulemap; sourceTree = "<group>"; };
+		CCB6A64AA27C998E39CA3342A882075C /* GAPService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GAPService.swift; sourceTree = "<group>"; };
+		CCFE294B86CE108A8716C94A0A7F1064 /* SenStickSensorType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickSensorType.swift; sourceTree = "<group>"; };
+		CDA2D2BC3C6EE0CCBC39D9C9907FFA9D /* NSDate+PackableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSDate+PackableType.swift"; sourceTree = "<group>"; };
+		D1C193EF08DAEC93F11D0C6BEB8DE067 /* SenStickMetaDataService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickMetaDataService.swift; sourceTree = "<group>"; };
+		D65B7614399EC122E218224A23634A8D /* PressureSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PressureSensorService.swift; sourceTree = "<group>"; };
+		D66DE9EAF920BD286534EDABAB1B99F7 /* SenStickDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SenStickDevice.swift; sourceTree = "<group>"; };
 		DB886F3F55DFF780F8BBDF0737929D75 /* Zip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Zip.swift; path = Zip/Zip.swift; sourceTree = "<group>"; };
+		DC87B842EF493A4314D976D1E8D36F09 /* SensorLogID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensorLogID.swift; sourceTree = "<group>"; };
 		DD83FE45AEEC00A3540450C0660387B7 /* Zip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE03DB9B92183B22372ECD5EB7000C7E /* SenStickSDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SenStickSDK-prefix.pch"; sourceTree = "<group>"; };
 		E08369DD6957E940D58EE3CD7D01248E /* SecureDFUServiceInitiator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUServiceInitiator.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/DFU/SecureDFUServiceInitiator.swift; sourceTree = "<group>"; };
 		E1147E0232B55F671706E2A77D05F96D /* SecureDFUServiceController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureDFUServiceController.swift; path = iOSDFULibrary/Classes/Implementation/SecureDFU/DFU/SecureDFUServiceController.swift; sourceTree = "<group>"; };
-		E165B369A2A9779FB3592991EEC66861 /* PressureSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PressureSensorService.swift; sourceTree = "<group>"; };
+		E602C721155D8B4126D163261A7AFC4A /* PackableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PackableType.swift; sourceTree = "<group>"; };
 		E74C4887FC3ADCB7CE71D55B252B32EF /* ZipUtilities.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZipUtilities.swift; path = Zip/ZipUtilities.swift; sourceTree = "<group>"; };
-		EA2F87D684B39D3FEB5886D08C90AAE9 /* GyroSensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GyroSensorService.swift; sourceTree = "<group>"; };
 		EE7A7A825ECC87AE2A2539E124D99B5D /* DFUPeripheralSelector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPeripheralSelector.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFUPeripheralSelector.swift; sourceTree = "<group>"; };
 		EF52D70E37E44F1D520B9229FDCA752C /* Data.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Data.swift; path = iOSDFULibrary/Classes/Utilities/Data.swift; sourceTree = "<group>"; };
 		EF8B9979DB21D33B2DA83A943967617A /* crc32.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = crc32.swift; path = iOSDFULibrary/Classes/Utilities/crc32.swift; sourceTree = "<group>"; };
 		EFAD977391FCE85D9102C3E8AA6352DC /* DFUPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUPacket.swift; path = iOSDFULibrary/Classes/Implementation/LegacyDFU/Characteristics/DFUPacket.swift; sourceTree = "<group>"; };
 		F23737A018FC5A5FF3C5DD3EB3448587 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
 		F391524755C916A42C8FCF4EF3AAF600 /* Pods-SenStickViewer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SenStickViewer.modulemap"; sourceTree = "<group>"; };
-		FBC01B37D17C3AFB63EE012FB12E9BBA /* HumiditySensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HumiditySensorService.swift; sourceTree = "<group>"; };
+		F5FC7BFBA2C02275529E17B94B4565F4 /* HumiditySensorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HumiditySensorService.swift; sourceTree = "<group>"; };
 		FCA8423069943FFD76BF9ECB2E22A412 /* DFUServiceDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DFUServiceDelegate.swift; path = iOSDFULibrary/Classes/Implementation/GenericDFU/DFU/DFUServiceDelegate.swift; sourceTree = "<group>"; };
 		FDED72E17C78824153D287BD4347341D /* Pods-SenStickViewer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SenStickViewer-acknowledgements.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -321,6 +319,16 @@
 			path = "../Target Support Files/iOSDFULibrary";
 			sourceTree = "<group>";
 		};
+		1929BFB37F30F0986F72616D6D13CF57 /* SenStickSDK */ = {
+			isa = PBXGroup;
+			children = (
+				7B9495ED452884FC2428D9C048331E91 /* SenStickSDK */,
+				2833EA245D3F1F5BE4DF7430713D6A7C /* Support Files */,
+			);
+			name = SenStickSDK;
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		1AAB34198A8F42B61A3D4FE20567B64C /* iOSDFULibrary */ = {
 			isa = PBXGroup;
 			children = (
@@ -369,6 +377,20 @@
 			path = iOSDFULibrary;
 			sourceTree = "<group>";
 		};
+		2833EA245D3F1F5BE4DF7430713D6A7C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BA290ECCC9A5E40F21F52EAE9912D48E /* Info.plist */,
+				858CB5D25FE276B66CCAE74C98BEDF6E /* SenStickSDK.modulemap */,
+				9657A03C6EB0C4CABF8D35901FEB5CED /* SenStickSDK.xcconfig */,
+				7450D03F63A735AD08AB9F46A4685097 /* SenStickSDK-dummy.m */,
+				DE03DB9B92183B22372ECD5EB7000C7E /* SenStickSDK-prefix.pch */,
+				10DC3668300DAECCC3CD97173934BF7B /* SenStickSDK-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "ios/Pods/Target Support Files/SenStickSDK";
+			sourceTree = "<group>";
+		};
 		2979B06BD7119ED8BCCA996E84CDE68C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,10 +415,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		47F71B0849A97B736D4EF5DCFECA4F41 /* Development Pods */ = {
+		468C6927ED11824A66EFCBCDBE4BE079 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9DD6A3CC955F9B462BCA601637B4F319 /* SenStickSDK */,
+				1929BFB37F30F0986F72616D6D13CF57 /* SenStickSDK */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -430,16 +452,59 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7B9495ED452884FC2428D9C048331E91 /* SenStickSDK */ = {
+			isa = PBXGroup;
+			children = (
+				8F2D83165076FF9BD08AAD32943415F5 /* SenStickSDK */,
+			);
+			path = SenStickSDK;
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				47F71B0849A97B736D4EF5DCFECA4F41 /* Development Pods */,
+				468C6927ED11824A66EFCBCDBE4BE079 /* Development Pods */,
 				3433DFBDF3723C995057D0BCB5E14767 /* Frameworks */,
 				976882D39152D750A0B1816B00DFE1FD /* Pods */,
 				731C8F23AB607D3AA43AB248380C6A0A /* Products */,
 				B0EB9119B04C136E14F8778E5161A760 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		8F2D83165076FF9BD08AAD32943415F5 /* SenStickSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4A2DB46A7AFC2B8B2BB36CE2F38B6F51 /* AccelerationSensorService.swift */,
+				346B2272C03578AADBD595EA9F8EDA5D /* BatteryService.swift */,
+				97458758C175A217B750E080FCAA5633 /* BrightnessSensorService.swift */,
+				029A3B0C302B63B6FC563DD96E61EF81 /* DeviceInformationService.swift */,
+				CCB6A64AA27C998E39CA3342A882075C /* GAPService.swift */,
+				40854A902E17A4478D410263A3EBFF00 /* GyroSensorService.swift */,
+				F5FC7BFBA2C02275529E17B94B4565F4 /* HumiditySensorService.swift */,
+				3FC865D25C75C02291A2A4F44D35B410 /* MagneticFieldSensorService.swift */,
+				CDA2D2BC3C6EE0CCBC39D9C9907FFA9D /* NSDate+PackableType.swift */,
+				E602C721155D8B4126D163261A7AFC4A /* PackableType.swift */,
+				D65B7614399EC122E218224A23634A8D /* PressureSensorService.swift */,
+				88AEE0881CCD5AB1F170D08099609784 /* SamplingDurationType.swift */,
+				315EDC2EBF5027441B75D885B0E26717 /* SensorDataPackable.swift */,
+				DC87B842EF493A4314D976D1E8D36F09 /* SensorLogID.swift */,
+				18A3AE113B9A3B8A36DB1B26C37748A0 /* SensorLogMetaData.swift */,
+				C5D64B9F39BEF31D46CDB97383F932BA /* SensorSettingData.swift */,
+				9543BDDBEB688BCB7943583BA7CB369F /* SenStickControlCommand.swift */,
+				BF08402ED09938CC90CE2EA081573165 /* SenStickControlService.swift */,
+				D66DE9EAF920BD286534EDABAB1B99F7 /* SenStickDevice.swift */,
+				84027495DBA66E7802F9C876BEEE1D45 /* SenStickDeviceManager.swift */,
+				D1C193EF08DAEC93F11D0C6BEB8DE067 /* SenStickMetaDataService.swift */,
+				8DC4375A482F39931A3E139B9FD6DAEB /* SenStickSDK.h */,
+				567DAF78F08C0EE92ECF3AFF0C04A61B /* SenStickSensorService.swift */,
+				CCFE294B86CE108A8716C94A0A7F1064 /* SenStickSensorType.swift */,
+				7ED7135FEC5593279E4A15F6CC3A05DB /* SenStickService.swift */,
+				63079D5004B56D13384E6967A79733DF /* SenStickStatus.swift */,
+				9277423CA865763EDF89D8911562D2DA /* SenStickUUIDs.swift */,
+				8AE54FFE4B244A2CF6340185820EF339 /* UVSensorService.swift */,
+			);
+			path = SenStickSDK;
 			sourceTree = "<group>";
 		};
 		976882D39152D750A0B1816B00DFE1FD /* Pods */ = {
@@ -449,52 +514,6 @@
 				A354FD66A17CF0DB3417EC75F1EBACFC /* Zip */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		9DA97ED4266AA5372C1C202E7B3EFE04 /* SenStickSDK */ = {
-			isa = PBXGroup;
-			children = (
-				93473CD764CFE93CDBEF8EB16971C49B /* AccelerationSensorService.swift */,
-				199B143F57F7FEB4F7D8D7D86D2285B9 /* BatteryService.swift */,
-				9554DC2B4CEC1095780158C66864F1B9 /* BrightnessSensorService.swift */,
-				5B8DFAE5F08B2A14D9D34E4C8CF8C108 /* DeviceInformationService.swift */,
-				79FBFF32DA213AFF60AB3D37E2CDF9AC /* GAPService.swift */,
-				EA2F87D684B39D3FEB5886D08C90AAE9 /* GyroSensorService.swift */,
-				FBC01B37D17C3AFB63EE012FB12E9BBA /* HumiditySensorService.swift */,
-				C04B26C360F16370BDEF30333F74EE1A /* MagneticFieldSensorService.swift */,
-				6FA4F7976F222ADE964700A004A29872 /* NSDate+PackableType.swift */,
-				700A3C9C8F073C121DAB8CE4C753ADA9 /* PackableType.swift */,
-				E165B369A2A9779FB3592991EEC66861 /* PressureSensorService.swift */,
-				AF4DC52BD67EB81FB3865C8FCB79042C /* SamplingDurationType.swift */,
-				BC5CFF8C41811D3FC3B541979EBA88CD /* SensorDataPackable.swift */,
-				AFB210F620C0F22007817EB823AAAC1C /* SensorLogID.swift */,
-				8CB2AC21E95E8DDD28EF5A95F331B210 /* SensorLogMetaData.swift */,
-				6DD2E030D92D2509A6FD80A58A53A5F5 /* SensorSettingData.swift */,
-				3F39719A9AEB434B90E11AE5DF9AB2AF /* SenStickControlCommand.swift */,
-				A427A0CEBC18D2DDD424A360CCB90DE3 /* SenStickControlService.swift */,
-				BD77C286EC79E80EE8795773A48FA8C7 /* SenStickDataModels.swift */,
-				A28FC2FB97AF30E5488F3E5EF723320C /* SenStickDevice.swift */,
-				BF12D9175692BB762161BC43DEEDADC4 /* SenStickDeviceManager.swift */,
-				C030AE95EFDBF8F92605C7FDBBBDD92F /* SenStickMetaDataService.swift */,
-				33D9F70704B11A766DE7F08C0A1805DF /* SenStickSDK.h */,
-				727CC65C574DCFEA87C8E43E034E5484 /* SenStickSensorService.swift */,
-				9FD6983A0E5FCD7F29F05DB0196EFA39 /* SenStickSensorType.swift */,
-				043798CD4DD6D1F35FFAEE77E700FB45 /* SenStickService.swift */,
-				B989F60440BCB550546BC0E00779C77A /* SenStickStatus.swift */,
-				C0523F9F1498CE6C4A28B2BE5D168E84 /* SenStickUUIDs.swift */,
-				6350C9BE6467F2F8095A1FFE89C47229 /* UVSensorService.swift */,
-			);
-			path = SenStickSDK;
-			sourceTree = "<group>";
-		};
-		9DD6A3CC955F9B462BCA601637B4F319 /* SenStickSDK */ = {
-			isa = PBXGroup;
-			children = (
-				9DA97ED4266AA5372C1C202E7B3EFE04 /* SenStickSDK */,
-				C5E25729E59956A799EDC2C9CBCF6BE1 /* Support Files */,
-			);
-			name = SenStickSDK;
-			path = ../SenStickSDK;
 			sourceTree = "<group>";
 		};
 		A354FD66A17CF0DB3417EC75F1EBACFC /* Zip */ = {
@@ -522,20 +541,6 @@
 				4F0B6A097D8919B580BF1C6DC74885D4 /* Pods-SenStickViewer */,
 			);
 			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		C5E25729E59956A799EDC2C9CBCF6BE1 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				CF913D8FFDBEA580634DADD86C7F4BA8 /* Info.plist */,
-				D6689A93C7D171434593CCE098A12BFA /* SenStickSDK.modulemap */,
-				8463D8369B1A8596CFC41F4F372B7AEB /* SenStickSDK.xcconfig */,
-				0E38089D57597AB8062094D233A557BE /* SenStickSDK-dummy.m */,
-				4421309E92D0462952A26AEFB5035E18 /* SenStickSDK-prefix.pch */,
-				6A827AC7CB0E036401F7A089F09C4DB3 /* SenStickSDK-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Pods/Target Support Files/SenStickSDK";
 			sourceTree = "<group>";
 		};
 		EC93C441FF41B68F8F0D82C1BD597938 /* iOS */ = {
@@ -630,7 +635,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4224269EBF5D75FBEA25383212F16193 /* Build configuration list for PBXNativeTarget "SenStickSDK" */;
 			buildPhases = (
-				678605F6BFE21EFF1FC832C1A6F59BA6 /* Sources */,
+				1464C464903E4F1401FE003883CA4EED /* Sources */,
 				CBF23A276D5695A1A361E741A15D5DE0 /* Frameworks */,
 				B93B2FBD319D0AB34526567D770831FA /* Headers */,
 			);
@@ -695,6 +700,41 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1464C464903E4F1401FE003883CA4EED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F99D36AAE5623E2C14647ACFF0483DB1 /* AccelerationSensorService.swift in Sources */,
+				887DCFE3FDFB8AD9BF785F3E90F37E64 /* BatteryService.swift in Sources */,
+				E07BCF6FD12C4224103C7EBAED04F754 /* BrightnessSensorService.swift in Sources */,
+				05F53F2A7CF064D38FDF21887BB68D6A /* DeviceInformationService.swift in Sources */,
+				F1A579B6FB8F5B98423436700AEB38DA /* GAPService.swift in Sources */,
+				E50AC42A87573F65B084E1147DF348E2 /* GyroSensorService.swift in Sources */,
+				CB93E433A3EC94BE819B6111478A73B7 /* HumiditySensorService.swift in Sources */,
+				C115DD77F044C3C7E1705477A49B057B /* MagneticFieldSensorService.swift in Sources */,
+				23B8310696BD827CBAE087FB37B19F82 /* NSDate+PackableType.swift in Sources */,
+				ED3C46C8140BBB2EF5C0A53E14FD1108 /* PackableType.swift in Sources */,
+				9AF992090269FF679248B3F512249CD4 /* PressureSensorService.swift in Sources */,
+				187BCFDF845250BD08E00BDE2C446B00 /* SamplingDurationType.swift in Sources */,
+				3106FACF9E6FD757143518EC7AF6C9BF /* SensorDataPackable.swift in Sources */,
+				DF3A04BEAB540F371BD08234F7A512E8 /* SensorLogID.swift in Sources */,
+				C2E87448F0E26A40E914ABCEA0E169D9 /* SensorLogMetaData.swift in Sources */,
+				C853C817F28C63773C81875B1D942BBD /* SensorSettingData.swift in Sources */,
+				1CCE5DC67EFF6713608221404EB840CE /* SenStickControlCommand.swift in Sources */,
+				FCF7594EA46B96E7480781F19BAFD95D /* SenStickControlService.swift in Sources */,
+				BC24411016B947FD86C0B8EA051E3D0D /* SenStickDevice.swift in Sources */,
+				041D386F20FAC51CDEBF60BE647A7AE8 /* SenStickDeviceManager.swift in Sources */,
+				753D17265DB5F4487D16042E56C18C61 /* SenStickMetaDataService.swift in Sources */,
+				817EAB22A560A52992EA902B2ED2E173 /* SenStickSDK-dummy.m in Sources */,
+				09A9022594050B52CA49D5D9F2893ACA /* SenStickSensorService.swift in Sources */,
+				A2A31FC08267EB501CAEE1AF10E3F15C /* SenStickSensorType.swift in Sources */,
+				A05D9396920B3B5050DE5A2E500A9B55 /* SenStickService.swift in Sources */,
+				07490D3209D5A08B2342B9A1DC331764 /* SenStickStatus.swift in Sources */,
+				02FA1E0238E540D29C5D2DA25ACF6253 /* SenStickUUIDs.swift in Sources */,
+				B04D159F667612DD1390578917662EE7 /* UVSensorService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		43B3125EF38DC62427A39166A39B872B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -706,42 +746,6 @@
 				6ADC9D00F86EA1CFD9F8702BE24CB2F8 /* zip.c in Sources */,
 				DDF798CF29A879B8689E81A84581486C /* Zip.swift in Sources */,
 				61D587F75DF6D619E7DF87D917244CAB /* ZipUtilities.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		678605F6BFE21EFF1FC832C1A6F59BA6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				31EFDF01254B1969A7D7BB8AA4E0FA29 /* AccelerationSensorService.swift in Sources */,
-				A9B9F36A36FBFA852B97023FAFD6FA6F /* BatteryService.swift in Sources */,
-				A43E6859303A719E8E6ACF3E13BB4EAE /* BrightnessSensorService.swift in Sources */,
-				F64E7535968AB2F15BE867C51AF5B0CB /* DeviceInformationService.swift in Sources */,
-				7CE2EE4CE892A1AD47F7F9E07CFCF5C7 /* GAPService.swift in Sources */,
-				EFD41970FC9BE037F72F9A814F363382 /* GyroSensorService.swift in Sources */,
-				74734C6489984F427869A2151262B7A5 /* HumiditySensorService.swift in Sources */,
-				DFD7BF9612833CD72389DDDEE3935C86 /* MagneticFieldSensorService.swift in Sources */,
-				3009715F9677D4B5AC1787BF39AC4A81 /* NSDate+PackableType.swift in Sources */,
-				1D54367BD23E579EF996786A1E8EFA96 /* PackableType.swift in Sources */,
-				418CF88819D633EC578E88CFE145EE23 /* PressureSensorService.swift in Sources */,
-				C47E5C806DEDB88ABDCB2DC1A5B7D3BF /* SamplingDurationType.swift in Sources */,
-				7CD06B3C9C15846F76C015B79EAFCA5B /* SensorDataPackable.swift in Sources */,
-				B1F3136856702430A3E8D0DDAF08AF76 /* SensorLogID.swift in Sources */,
-				421F24FA75C2DC95FB80735C81FB0430 /* SensorLogMetaData.swift in Sources */,
-				69CD6845B6C23C25D243D73B98376BB9 /* SensorSettingData.swift in Sources */,
-				0FB689E62167841AE9C7658357238A2A /* SenStickControlCommand.swift in Sources */,
-				129FBACF1182E887BF9DF350BA4C512F /* SenStickControlService.swift in Sources */,
-				7DE8901AA85CCBFE006975724F60C3E0 /* SenStickDataModels.swift in Sources */,
-				B16E3C4C4DC739E48CDEB281D0B3D531 /* SenStickDevice.swift in Sources */,
-				D29B7BE14476727443AB4AFEE6E73684 /* SenStickDeviceManager.swift in Sources */,
-				5C0AF253BAB6FEF0EE64955B5D6532AD /* SenStickMetaDataService.swift in Sources */,
-				610CD93529851FD2369F9888A35EA29B /* SenStickSDK-dummy.m in Sources */,
-				C5F1F2081A9EE5ACBA05EECC1885D0A0 /* SenStickSensorService.swift in Sources */,
-				FC84E35792447E38A64FCA026D07404B /* SenStickSensorType.swift in Sources */,
-				588A1F7ECB657333034888B4EE6CF938 /* SenStickService.swift in Sources */,
-				F32A887A7AE2A39924820A4F24ABA366 /* SenStickStatus.swift in Sources */,
-				DA583157014DFFC7A6713D551ABDD56A /* SenStickUUIDs.swift in Sources */,
-				1010ECB65E92E55C397517ECB3BF3B24 /* UVSensorService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -888,7 +892,7 @@
 		};
 		579638776C5378776848319F12D7A6E9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8463D8369B1A8596CFC41F4F372B7AEB /* SenStickSDK.xcconfig */;
+			baseConfigurationReference = 9657A03C6EB0C4CABF8D35901FEB5CED /* SenStickSDK.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1089,7 +1093,7 @@
 		};
 		E30E9619E269827EAF3C7476953FB96F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8463D8369B1A8596CFC41F4F372B7AEB /* SenStickSDK.xcconfig */;
+			baseConfigurationReference = 9657A03C6EB0C4CABF8D35901FEB5CED /* SenStickSDK.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";

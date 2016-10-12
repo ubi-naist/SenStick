@@ -12,6 +12,7 @@
             <objects>
                 <navigationController title="Master" id="RMx-3f-FxP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -143,7 +144,7 @@
                                         <rect key="frame" x="0.0" y="174" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uf1-3b-Rzb" id="rzP-ID-gAt">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYc-aJ-Ew8">
@@ -237,7 +238,7 @@
                                         <rect key="frame" x="0.0" y="314" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aGK-Jx-GUR" id="XsK-J9-un4">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rh3-WW-Mbg">
@@ -312,9 +313,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="xN2-pd-f4z"/>
                                                     <exclude reference="AM4-tQ-he9"/>
                                                     <exclude reference="XkB-NY-h6U"/>
-                                                    <exclude reference="xN2-pd-f4z"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -332,7 +333,7 @@
                                         <rect key="frame" x="0.0" y="454" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v1T-Mt-5MU" id="45s-sb-tEI">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="grF-h0-0cV">
@@ -407,8 +408,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="wsH-TP-6gz"/>
                                                     <exclude reference="kJy-JW-7VJ"/>
+                                                    <exclude reference="wsH-TP-6gz"/>
                                                     <exclude reference="kOC-nu-SQ9"/>
                                                 </mask>
                                             </variation>
@@ -427,7 +428,7 @@
                                         <rect key="frame" x="0.0" y="594" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cG7-TE-jpW" id="Vs5-yK-io9">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LO3-Ae-KYZ">
@@ -502,9 +503,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="3XE-NS-gfM"/>
-                                                    <exclude reference="1Dh-Rl-X8L"/>
                                                     <exclude reference="VQZ-q7-cZ5"/>
+                                                    <exclude reference="1Dh-Rl-X8L"/>
+                                                    <exclude reference="3XE-NS-gfM"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -522,7 +523,7 @@
                                         <rect key="frame" x="0.0" y="734" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Sx-QF-mcz" id="Ai8-jK-gVH">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3k-9U-YfL">
@@ -597,9 +598,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="xR6-Li-c5W"/>
-                                                    <exclude reference="euh-4V-Z74"/>
                                                     <exclude reference="VdT-S0-c6C"/>
+                                                    <exclude reference="euh-4V-Z74"/>
+                                                    <exclude reference="xR6-Li-c5W"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -617,7 +618,7 @@
                                         <rect key="frame" x="0.0" y="874" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j4A-KA-Bcb" id="oWJ-44-Suq">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e1B-1L-YeK">
@@ -692,9 +693,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="5Hw-Jf-5yr"/>
                                                     <exclude reference="HzD-2z-Opx"/>
                                                     <exclude reference="0jk-L5-OaW"/>
-                                                    <exclude reference="5Hw-Jf-5yr"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -712,7 +713,7 @@
                                         <rect key="frame" x="0.0" y="1014" width="375" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eve-Ka-1wd" id="u8T-X9-E12">
-                                            <frame key="frameInset" width="342" height="139"/>
+                                            <frame key="frameInset" width="342" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="65564" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3od-R3-6XC">
@@ -787,9 +788,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="ksQ-9O-fzM"/>
                                                     <exclude reference="uiq-6v-oK8"/>
                                                     <exclude reference="7NT-5H-CG6"/>
+                                                    <exclude reference="ksQ-9O-fzM"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1067,7 +1068,7 @@
                                 <rect key="frame" x="0.0" y="86" width="375" height="74"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
-                                    <frame key="frameInset" width="328" height="74"/>
+                                    <frame key="frameInset" width="328" height="73.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_ble_4_2" translatesAutoresizingMaskIntoConstraints="NO" id="hm6-3m-n1G">
@@ -1099,7 +1100,7 @@
                                         <constraint firstItem="hm6-3m-n1G" firstAttribute="centerY" secondItem="37f-cq-3Eg" secondAttribute="centerY" id="GrI-Mk-L5Y"/>
                                         <constraint firstItem="aRF-Wk-W63" firstAttribute="top" secondItem="ga6-3i-fRz" secondAttribute="bottom" constant="4" id="IaF-9p-7uV"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="ga6-3i-fRz" secondAttribute="trailing" constant="42" id="Wb4-Ms-wOA"/>
-                                        <constraint firstItem="aRF-Wk-W63" firstAttribute="leading" secondItem="hm6-3m-n1G" secondAttribute="trailing" constant="32" id="dAt-p1-wIE"/>
+                                        <constraint firstItem="aRF-Wk-W63" firstAttribute="leading" secondItem="hm6-3m-n1G" secondAttribute="trailing" constant="12" id="dAt-p1-wIE"/>
                                         <constraint firstItem="ga6-3i-fRz" firstAttribute="leading" secondItem="hm6-3m-n1G" secondAttribute="trailing" constant="20" id="jgr-hr-33O"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1263,8 +1264,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="jxP-BC-BFe"/>
                                                     <exclude reference="Z0m-mT-jqp"/>
+                                                    <exclude reference="jxP-BC-BFe"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1356,9 +1357,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="3FQ-VL-3mk"/>
                                                     <exclude reference="NoN-Ew-EmZ"/>
                                                     <exclude reference="sgf-Kt-EB2"/>
-                                                    <exclude reference="3FQ-VL-3mk"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1450,9 +1451,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="vOl-us-oan"/>
                                                     <exclude reference="NTT-9x-3Ij"/>
                                                     <exclude reference="DW7-63-dC1"/>
+                                                    <exclude reference="vOl-us-oan"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1544,8 +1545,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="XMJ-O5-Ose"/>
                                                     <exclude reference="k6h-g6-3bR"/>
+                                                    <exclude reference="XMJ-O5-Ose"/>
                                                     <exclude reference="XQg-mN-tNF"/>
                                                 </mask>
                                             </variation>
@@ -1638,9 +1639,9 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="y1A-Vm-YcT"/>
-                                                    <exclude reference="eKY-Fy-NYe"/>
                                                     <exclude reference="7vw-51-RMY"/>
+                                                    <exclude reference="eKY-Fy-NYe"/>
+                                                    <exclude reference="y1A-Vm-YcT"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1826,8 +1827,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="XMH-X7-c30"/>
                                                     <exclude reference="W6D-JS-SMm"/>
+                                                    <exclude reference="XMH-X7-c30"/>
                                                     <exclude reference="QJU-En-LRw"/>
                                                 </mask>
                                             </variation>

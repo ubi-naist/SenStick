@@ -9,10 +9,15 @@
 import UIKit
 import SenStickSDK
 
+// デバイスのリストビューを提供します。
+// テーブルをぷるすると、BLEデバイスのスキャンを開始して、デバイスリストをリフレッシュします。
+// デバイスのセルをタップすると、接続処理が開始され、接続すればデバイス詳細ビューに表示遷移します。
+
 class DeviceListTableViewController: UITableViewController, SenStickDeviceDelegate {
     
     var detailViewController: DetailViewController? = nil
     
+    // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,7 +44,8 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK
+    // MARK: refresh event handler
+    
     func onRefresh()
     {
         SenStickDeviceManager.sharedInstance.scan(5.0, callback: { (remaining: TimeInterval)  in
@@ -49,7 +55,8 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
         })
     }
     
-    // MARK: - Segues    
+    // MARK: - Segues
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dataview = segue.destination as? SensorDataViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
@@ -58,6 +65,7 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     }
     
     // MARK: - KVO
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "devices") {
             self.tableView.reloadData()
@@ -67,6 +75,7 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     }
     
     // MARK: - Table View
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -122,7 +131,8 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
         present(alert, animated: true, completion: nil)
     }
     
-    // public protocol SenStickDeviceDelegate
+    // MARK: - SenStickDeviceDelegate
+    
     func didServiceFound(_ sender:SenStickDevice)
     {
     }

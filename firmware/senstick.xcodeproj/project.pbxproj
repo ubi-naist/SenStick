@@ -58,11 +58,11 @@
 		F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameters_config.h; sourceTree = "<group>"; };
 		F8AC9D5D1C22408E00366AEF /* senstick_ble_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_ble_definition.h; sourceTree = "<group>"; };
 		F8AC9D5E1C2240CC00366AEF /* senstick_device_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_definition.h; sourceTree = "<group>"; };
-		F8AC9D661C263F6100366AEF /* components */ = {isa = PBXFileReference; lastKnownFileType = folder; name = components; path = ../tmp/nRF51_SDK_10/components; sourceTree = "<group>"; };
 		F8AC9D671C266F2700366AEF /* nrf_drv_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nrf_drv_config.h; sourceTree = "<group>"; };
-		F8AC9D681C26927100366AEF /* RTE */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RTE; path = project/RTE; sourceTree = "<group>"; };
 		F8AC9D691C28472000366AEF /* pstorage_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pstorage_platform.h; sourceTree = "<group>"; };
 		F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = segger_rtt; sourceTree = "<group>"; };
+		F8B43EF91DAF1A94008735CD /* nrf51_s110v8_sdk10 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = nrf51_s110v8_sdk10; sourceTree = "<group>"; };
+		F8B43EFA1DAF1A94008735CD /* nrf52_s132v3_sdk12 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = nrf52_s132v3_sdk12; sourceTree = "<group>"; };
 		F8C3F74E1CF6979100B807B5 /* gpio_button_monitoring.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_button_monitoring.c; sourceTree = "<group>"; };
 		F8C3F74F1CF6979100B807B5 /* gpio_button_monitoring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_button_monitoring.h; sourceTree = "<group>"; };
 		F8C3F7501CF6CC5400B807B5 /* senstick_log_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_log_definition.h; sourceTree = "<group>"; };
@@ -144,9 +144,9 @@
 				F8AC9D3E1C22393B00366AEF /* twi */,
 				F84B633E1CEDD0270097C1EC /* gpio */,
 				F820A1A51CEECB6900E549D0 /* test */,
+				F8B43EF91DAF1A94008735CD /* nrf51_s110v8_sdk10 */,
+				F8B43EFA1DAF1A94008735CD /* nrf52_s132v3_sdk12 */,
 				F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */,
-				F8AC9D681C26927100366AEF /* RTE */,
-				F8AC9D661C263F6100366AEF /* components */,
 			);
 			sourceTree = "<group>";
 		};

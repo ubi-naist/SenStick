@@ -1,0 +1,426 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: É Vision V5.21.1.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: akihiro uehara, matilda co., ltd., LIC=QGX8W-9RG2P-ZJFAS-J1JYG-5HIEK-FJ8B2
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Standard Cortex-M only  Version: 5.21a
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 3 (build 300)
+Assembler:       Armasm.exe V5.06 update 3 (build 300)
+Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
+Library Manager: ArmAr.exe V5.06 update 3 (build 300)
+Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
+CPU DLL:         SARMCM3.DLL V5.21a
+Dialog DLL:      DARMCM1.DLL V1.14.0.0
+Target DLL:      UL2CM3.DLL V1.158.5.0
+Dialog DLL:      TARMCM1.DLL V1.10.0.0
+ 
+<h2>Project:</h2>
+\\vmware-host\Shared Folders\SenStick\firmware\project_nrf51_s110_sd8_sdk10\senstick_xxaa_s110_sdk10.uvprojx
+Project File Date:  09/26/2016
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'nrf51822_xxaa_s110(debug)'
+compiling main.c...
+compiling senstick_data_model.c...
+compiling RTT_Syscalls_KEIL.c...
+compiling SEGGER_RTT.c...
+compiling SEGGER_RTT_printf.c...
+compiling metadata_log_controller.c...
+compiling value_types.c...
+compiling senstick_types.c...
+compiling advertising_manager.c...
+compiling ble_stack.c...
+compiling app_gap.c...
+compiling senstick_device_manager.c...
+compiling battery_service.c...
+compiling device_information_service.c...
+compiling senstick_meta_data_service.c...
+compiling senstick_control_service.c...
+compiling service_util.c...
+compiling log_controller.c...
+compiling senstick_sensor_controller.c...
+compiling sensor_service.c...
+..\sensor_service.c(45): warning:  #550-D: variable "result" was set but never used
+          bool result = true;
+..\sensor_service.c: 1 warning, 0 errors
+compiling acceleration_sensor_base.c...
+compiling senstick_sensor_base_data.c...
+compiling gyro_sensor_base.c...
+compiling magnetic_sensor_base.c...
+compiling brightness_sensor_base.c...
+compiling uv_sensor_base.c...
+compiling humidity_sensor_base.c...
+compiling pressure_sensor_base.c...
+compiling twi_manager.c...
+compiling twi_slave_rtc.c...
+compiling twi_slave_nine_axes_sensor.c...
+compiling twi_slave_brightness_sensor.c...
+compiling twi_slave_uv_sensor.c...
+compiling twi_slave_humidity_sensor.c...
+compiling twi_slave_pressure_sensor.c...
+compiling spi_slave_mx25_flash_memory.c...
+compiling gpio_led_driver.c...
+compiling gpio_button_monitoring.c...
+compiling test_storage.c...
+..\test_storage.c(29): warning:  #177-D: variable "result" was declared but never referenced
+      bool result;
+..\test_storage.c: 1 warning, 0 errors
+assembling arm_startup_nrf51.s...
+compiling system_nrf51.c...
+compiling ble_advdata.c...
+compiling ble_advertising.c...
+compiling ble_conn_params.c...
+compiling ble_db_discovery.c...
+compiling ble_bas.c...
+compiling ble_dis.c...
+compiling ble_srv_common.c...
+compiling device_manager_peripheral.c...
+compiling app_uart.c...
+compiling pstorage.c...
+compiling nrf_drv_clock.c...
+compiling nrf_drv_common.c...
+compiling nrf_delay.c...
+compiling nrf_drv_gpiote.c...
+compiling nrf_adc.c...
+compiling nrf_drv_spi.c...
+compiling nrf_drv_twi.c...
+compiling nrf_drv_uart.c...
+compiling app_button.c...
+compiling app_error.c...
+compiling app_scheduler.c...
+compiling app_timer.c...
+compiling app_timer_appsh.c...
+compiling app_trace.c...
+compiling nrf_assert.c...
+compiling nrf_log.c...
+compiling retarget.c...
+compiling bootloader_util.c...
+compiling app_mailbox.c...
+compiling softdevice_handler.c...
+compiling softdevice_handler_appsh.c...
+linking...
+Program Size: Code=35656 RO-data=1184 RW-data=384 ZI-data=6104  
+FromELF: creating hex file...
+".\_build\senstick_xxaa_s110_debug.axf" - 0 Error(s), 2 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM::CMSIS:CORE:4.3.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 4.3.0
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/NordicSemiconductor.nRF_BLE.3.1.0.pack
+                NordicSemiconductor::nRF_BLE:BLE_Modules:ble_db_discovery:3.1.0
+                Bluetooth Low Energy (Bluetooth Smart) services and software modules for Nordic Semiconductor nRF family.
+   * Component: ble_db_discovery Version: 3.1.0
+   * Component: ble_conn_params Version: 3.1.0
+   * Component: ble_service_common Version: 3.1.0
+   * Component: ble_bas Version: 3.1.0
+   * Component: device_manager Variant: Peripheral Version: 3.1.0
+   * Component: ble_dis Version: 3.1.0
+   * Component: ble_advertising Version: 3.1.0
+   * Component: ble_advdata Version: 3.1.0
+   * Component: ble_common Version: 3.1.0
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/NordicSemiconductor.nRF_DeviceFamilyPack.8.2.0.pack
+                NordicSemiconductor::Device:Startup:8.2.0
+                Nordic Semiconductor nRF ARM devices Device Family Pack.
+   * Component: Startup Version: 8.2.0
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/NordicSemiconductor.nRF_Drivers.3.1.0.pack
+                NordicSemiconductor::nRF_Drivers:nrf_delay:3.1.0
+                Drivers for Nordic Semiconductor nRF family.
+   * Component: nrf_delay Version: 3.1.0
+   * Component: nrf_gpio Version: 3.1.0
+   * Component: nrf_drv_spi Version: 3.1.0
+   * Component: nrf_gpiote Version: 3.1.0
+   * Component: nrf_clock Version: 3.1.0
+   * Component: nrf_uart Version: 3.1.0
+   * Component: nrf_error Variant: default Version: 3.1.0
+   * Component: nrf_spi Version: 3.1.0
+   * Component: nrf_drv_clock Version: 3.1.0
+   * Component: nrf_spim Version: 3.1.0
+   * Component: nrf_uarte Version: 3.1.0
+   * Component: nrf_twi Version: 3.1.0
+   * Component: pstorage Variant: default Version: 3.1.0
+   * Component: nrf_drv_uart Version: 3.1.0
+   * Component: nrf_drv_twi Version: 3.1.0
+   * Component: nrf_drv_gpiote Version: 3.1.0
+   * Component: nrf_drv_common Version: 3.1.0
+   * Component: nrf_adc Version: 3.1.0
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Libraries/NordicSemiconductor.nRF_Libraries.3.1.0.pack
+                NordicSemiconductor::nRF_Libraries:app_button:3.1.0
+                Software modules for Nordic Semiconductor nRF family.
+   * Component: app_button Version: 3.1.0
+   * Component: app_error Version: 3.1.0
+   * Component: app_scheduler Variant: default Version: 3.1.0
+   * Component: nrf_assert Version: 3.1.0
+   * Component: dfu_bootloader_util Version: 3.1.0
+   * Component: app_timer_with_app_scheduler Version: 3.1.0
+   * Component: nrf_log Version: 3.1.0
+   * Component: app_mailbox Version: 3.1.0
+   * Component: retarget Version: 3.1.0
+   * Component: app_util Variant: default Version: 3.1.0
+   * Component: app_trace Variant: default Version: 3.1.0
+   * Component: nordic_common Version: 3.1.0
+   * Component: app_timer Variant: default Version: 3.1.0
+   * Component: app_uart Variant: default Version: 3.1.0
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/NordicSemiconductor.nRF_SoftDevice_Common.1.1.5.pack
+                NordicSemiconductor::nRF_SoftDevice:Internal:sd_common:default:1.1.5
+                Common components for Nordic Semiconductor nRF family SoftDevices.
+   * Component: sd_common Variant: default Version: 1.1.5
+   * Component: sd_handler_with_app_scheduler Version: 1.1.5
+   * Component: softdevice_present Version: 1.1.5
+
+Package Vendor: NordicSemiconductor
+                http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_S110/NordicSemiconductor.nRF_SoftDevice_S110.8.0.3.pack
+                NordicSemiconductor::nRF_SoftDevice:s110:default:8.0.3
+                Components for Bluetooth Low Energy (Bluetooth Smart) S110 SoftDevice for Nordic Semiconductor nRF family.
+   * Component: s110 Variant: default Version: 8.0.3
+
+<h2>Collection of Component include folders:</h2>
+  \\vmware-host\Shared Folders\SenStick\firmware\project_nrf51_s110_sd8_sdk10\RTE
+  \\vmware-host\Shared Folders\SenStick\firmware\project_nrf51_s110_sd8_sdk10\RTE\nRF_BLE\nRF51822_xxAA
+  \\vmware-host\Shared Folders\SenStick\firmware\project_nrf51_s110_sd8_sdk10\RTE\nRF_Drivers\nRF51822_xxAA
+  \\vmware-host\Shared Folders\SenStick\firmware\project_nrf51_s110_sd8_sdk10\RTE\nRF_Libraries\nRF51822_xxAA
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\ble_advertising
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\ble_db_discovery
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\ble_services\ble_bas
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\ble_services\ble_dis
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\common
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_BLE\3.1.0\device_manager
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.2.0\Device\Include
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_DeviceFamilyPack\8.9.0\Device\Include
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\clock
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\common
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\config
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\delay
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\gpiote
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\hal
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\pstorage
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\spi_master
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\twi_master
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Drivers\3.1.0\uart
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\bootloader_dfu
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\button
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\mailbox
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\scheduler
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\timer
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\trace
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\uart
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_Libraries\3.1.0\util
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_SoftDevice_Common\1.1.5\softdevice_handler
+  C:\Keil_v5\ARM\PACK\NordicSemiconductor\nRF_SoftDevice_S110\8.0.3\headers
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:4.3.0
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_db_discovery:3.1.0
+      Source file:   ble_db_discovery\ble_db_discovery.c
+      Include file:  ble_db_discovery\ble_db_discovery.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_conn_params:3.1.0
+      Source file:   common\ble_conn_params.c
+      Include file:  common\ble_conn_params.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_service_common:3.1.0
+      Source file:   common\ble_srv_common.c
+      Include file:  common\ble_srv_common.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Services:ble_bas:3.1.0
+      Source file:   ble_services\ble_bas\ble_bas.c
+      Include file:  ble_services\ble_bas\ble_bas.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:device_manager:Peripheral:3.1.0
+      Source file:   device_manager\device_manager_peripheral.c
+      Include file:  device_manager\config\device_manager_cnfg.h
+      Include file:  device_manager\device_manager.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Services:ble_dis:3.1.0
+      Source file:   ble_services\ble_dis\ble_dis.c
+      Include file:  ble_services\ble_dis\ble_dis.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_advertising:3.1.0
+      Source file:   ble_advertising\ble_advertising.c
+      Include file:  ble_advertising\ble_advertising.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_advdata:3.1.0
+      Source file:   common\ble_advdata.c
+      Include file:  common\ble_advdata.h
+
+   * Component: NordicSemiconductor::nRF_BLE:BLE_Modules:ble_common:3.1.0
+
+   * Component: NordicSemiconductor::Device:Startup:8.2.0
+      Source file:   Device\Source\arm\arm_startup_nrf51.s
+      Source file:   Device\Source\system_nrf51.c
+      Include file:  Device\Include\system_nrf51.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_delay:3.1.0
+      Source file:   delay\nrf_delay.c
+      Include file:  delay\nrf_delay.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_gpio:3.1.0
+      Include file:  hal\nrf_gpio.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_spi:3.1.0
+      Source file:   spi_master\nrf_drv_spi.c
+      Include file:  spi_master\nrf_drv_spi.h
+      Include file:  config\nrf_drv_config.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_gpiote:3.1.0
+      Include file:  hal\nrf_gpiote.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_clock:3.1.0
+      Include file:  hal\nrf_clock.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_uart:3.1.0
+      Include file:  hal\nrf_uart.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_error:default:3.1.0
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_spi:3.1.0
+      Include file:  hal\nrf_spi.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_clock:3.1.0
+      Source file:   clock\nrf_drv_clock.c
+      Include file:  clock\nrf_drv_clock.h
+      Include file:  config\nrf_drv_config.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_spim:3.1.0
+      Include file:  hal\nrf_spim.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_uarte:3.1.0
+      Include file:  hal\nrf_uarte.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_twi:3.1.0
+      Include file:  hal\nrf_twi.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:pstorage:default:3.1.0
+      Source file:   pstorage\pstorage.c
+      Include file:  pstorage\pstorage.h
+      Include file:  pstorage\config\pstorage_platform.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_uart:3.1.0
+      Source file:   uart\nrf_drv_uart.c
+      Include file:  uart\nrf_drv_uart.h
+      Include file:  config\nrf_drv_config.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_twi:3.1.0
+      Source file:   twi_master\nrf_drv_twi.c
+      Include file:  twi_master\nrf_drv_twi.h
+      Include file:  config\nrf_drv_config.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_gpiote:3.1.0
+      Source file:   gpiote\nrf_drv_gpiote.c
+      Include file:  gpiote\nrf_drv_gpiote.h
+      Include file:  config\nrf_drv_config.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_drv_common:3.1.0
+      Source file:   common\nrf_drv_common.c
+      Include file:  common\nrf_drv_common.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:nrf_adc:3.1.0
+      Source file:   hal\nrf_adc.c
+      Include file:  hal\nrf_adc.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_button:3.1.0
+      Source file:   button\app_button.c
+      Include file:  button\app_button.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_error:3.1.0
+      Source file:   util\app_error.c
+      Include file:  util\app_error.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_scheduler:default:3.1.0
+      Source file:   scheduler\app_scheduler.c
+      Include file:  scheduler\app_scheduler.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:nrf_assert:3.1.0
+      Source file:   util\nrf_assert.c
+      Include file:  util\nrf_assert.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:DFU:dfu_bootloader_util:3.1.0
+      Source file:   bootloader_dfu\bootloader_util.c
+      Include file:  bootloader_dfu\bootloader_util.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_timer_with_app_scheduler:3.1.0
+      Source file:   timer\app_timer_appsh.c
+      Include file:  timer\app_timer_appsh.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:nrf_log:3.1.0
+      Source file:   util\nrf_log.c
+      Include file:  util\nrf_log.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:Internal:app_mailbox:3.1.0
+      Source file:   mailbox\app_mailbox.c
+      Include file:  mailbox\app_mailbox.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:retarget:3.1.0
+      Source file:   uart\retarget.c
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_util:default:3.1.0
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_trace:default:3.1.0
+      Source file:   trace\app_trace.c
+      Include file:  trace\app_trace.h
+
+   * Component: NordicSemiconductor::nRF_Libraries:nordic_common:3.1.0
+
+   * Component: NordicSemiconductor::nRF_Libraries:app_timer:default:3.1.0
+      Source file:   timer\app_timer.c
+      Include file:  timer\app_timer.h
+
+   * Component: NordicSemiconductor::nRF_Drivers:app_uart:default:3.1.0
+      Source file:   uart\app_uart.c
+      Include file:  uart\app_uart.h
+
+   * Component: NordicSemiconductor::nRF_SoftDevice:Internal:sd_common:default:1.1.5
+      Source file:   softdevice_handler\softdevice_handler.c
+
+   * Component: NordicSemiconductor::nRF_SoftDevice:Internal:sd_handler_with_app_scheduler:1.1.5
+      Source file:   softdevice_handler\softdevice_handler_appsh.c
+
+   * Component: NordicSemiconductor::nRF_SoftDevice:Internal:softdevice_present:1.1.5
+
+   * Component: NordicSemiconductor::nRF_SoftDevice:s110:default:8.0.3
+      Include file:  headers\ble.h
+      Include file:  headers\ble_gatt.h
+      Include file:  headers\ble_hci.h
+      Include file:  headers\ble_types.h
+      Include file:  headers\nrf_error_soc.h
+      Include file:  headers\nrf_soc.h
+      Include file:  headers\ble_err.h
+      Include file:  headers\ble_gattc.h
+      Include file:  headers\ble_l2cap.h
+      Include file:  headers\nrf_error.h
+      Include file:  headers\nrf_mbr.h
+      Include file:  headers\nrf_svc.h
+      Include file:  headers\ble_gap.h
+      Include file:  headers\ble_gatts.h
+      Include file:  headers\ble_ranges.h
+      Include file:  headers\nrf_error_sdm.h
+      Include file:  headers\nrf_sdm.h
+      Include file:  headers\softdevice_assert.h
+      Include file:  headers\nrf_sd_def.h
+Build Time Elapsed:  00:00:41
+</pre>
+</body>
+</html>

@@ -52,29 +52,24 @@
 		F88927471CE16603001DCC44 /* senstick_data_model.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_data_model.c; sourceTree = "<group>"; };
 		F88927481CE16603001DCC44 /* senstick_data_model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_data_model.h; sourceTree = "<group>"; };
 		F8AC9D361C22375900366AEF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; lineEnding = 2; path = main.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		F8AC9D371C22377600366AEF /* senstick_io_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_io_definition.h; sourceTree = "<group>"; };
 		F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_nine_axes_sensor.c; sourceTree = "<group>"; };
 		F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_nine_axes_sensor.h; sourceTree = "<group>"; };
 		F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_parameters_config.h; sourceTree = "<group>"; };
 		F8AC9D5D1C22408E00366AEF /* senstick_ble_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_ble_definition.h; sourceTree = "<group>"; };
 		F8AC9D5E1C2240CC00366AEF /* senstick_device_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_definition.h; sourceTree = "<group>"; };
-		F8AC9D671C266F2700366AEF /* nrf_drv_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nrf_drv_config.h; sourceTree = "<group>"; };
-		F8AC9D691C28472000366AEF /* pstorage_platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pstorage_platform.h; sourceTree = "<group>"; };
 		F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = segger_rtt; sourceTree = "<group>"; };
 		F8B43EF91DAF1A94008735CD /* nrf51_s110v8_sdk10 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = nrf51_s110v8_sdk10; sourceTree = "<group>"; };
 		F8B43EFA1DAF1A94008735CD /* nrf52_s132v3_sdk12 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = nrf52_s132v3_sdk12; sourceTree = "<group>"; };
+		F8B43EFB1DB1A760008735CD /* components */ = {isa = PBXFileReference; lastKnownFileType = folder; name = components; path = ../nRF5_SDK_12/components; sourceTree = "<group>"; };
+		F8B43EFC1DB5B779008735CD /* senstick_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_util.h; sourceTree = "<group>"; };
 		F8C3F74E1CF6979100B807B5 /* gpio_button_monitoring.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_button_monitoring.c; sourceTree = "<group>"; };
 		F8C3F74F1CF6979100B807B5 /* gpio_button_monitoring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_button_monitoring.h; sourceTree = "<group>"; };
 		F8C3F7501CF6CC5400B807B5 /* senstick_log_definition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_log_definition.h; sourceTree = "<group>"; };
-		F8EB5E681C4BB32900D82482 /* device_manager_cnfg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_manager_cnfg.h; sourceTree = "<group>"; };
 		F8EB5E691C50D0BF00D82482 /* SEGGER_RTT_Conf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEGGER_RTT_Conf.h; sourceTree = "<group>"; };
-		F8FCC93E1CD10E16003BCC5A /* battery_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = battery_service.c; sourceTree = "<group>"; };
 		F8FCC93F1CD10E16003BCC5A /* battery_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = battery_service.h; sourceTree = "<group>"; };
-		F8FCC9451CD181A5003BCC5A /* senstick_device_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_device_manager.c; sourceTree = "<group>"; };
 		F8FCC9461CD181A5003BCC5A /* senstick_device_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_device_manager.h; sourceTree = "<group>"; };
 		F8FCC9471CD18209003BCC5A /* device_information_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = device_information_service.c; sourceTree = "<group>"; };
 		F8FCC9481CD18209003BCC5A /* device_information_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = device_information_service.h; sourceTree = "<group>"; };
-		F8FCC9491CD182BB003BCC5A /* ble_stack.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ble_stack.c; sourceTree = "<group>"; };
 		F8FCC94A1CD182BB003BCC5A /* ble_stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_stack.h; sourceTree = "<group>"; };
 		F8FCC94B1CD18407003BCC5A /* advertising_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = advertising_manager.c; sourceTree = "<group>"; };
 		F8FCC94C1CD18407003BCC5A /* advertising_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = advertising_manager.h; sourceTree = "<group>"; };
@@ -127,6 +122,7 @@
 		F8AC9D2F1C2236D600366AEF = {
 			isa = PBXGroup;
 			children = (
+				F8B43EFC1DB5B779008735CD /* senstick_util.h */,
 				F8AC9D361C22375900366AEF /* main.c */,
 				F86873571CE2FBA90083A635 /* senstick_types.h */,
 				F81AC9AB1CF0335000706391 /* senstick_types.c */,
@@ -146,6 +142,7 @@
 				F820A1A51CEECB6900E549D0 /* test */,
 				F8B43EF91DAF1A94008735CD /* nrf51_s110v8_sdk10 */,
 				F8B43EFA1DAF1A94008735CD /* nrf52_s132v3_sdk12 */,
+				F8B43EFB1DB1A760008735CD /* components */,
 				F8AC9D6B1C2BD3FC00366AEF /* segger_rtt */,
 			);
 			sourceTree = "<group>";
@@ -174,10 +171,7 @@
 		F8EB5E6E1C5A3D7000D82482 /* nrf5_configrations */ = {
 			isa = PBXGroup;
 			children = (
-				F8AC9D671C266F2700366AEF /* nrf_drv_config.h */,
 				F8EB5E691C50D0BF00D82482 /* SEGGER_RTT_Conf.h */,
-				F8EB5E681C4BB32900D82482 /* device_manager_cnfg.h */,
-				F8AC9D691C28472000366AEF /* pstorage_platform.h */,
 			);
 			name = nrf5_configrations;
 			sourceTree = "<group>";
@@ -188,7 +182,6 @@
 				F8AC9D5C1C223FE700366AEF /* ble_parameters_config.h */,
 				F8AC9D5E1C2240CC00366AEF /* senstick_device_definition.h */,
 				F8AC9D5D1C22408E00366AEF /* senstick_ble_definition.h */,
-				F8AC9D371C22377600366AEF /* senstick_io_definition.h */,
 				F86C46A91CD82E6100076F3E /* senstick_flash_address_definition.h */,
 				F8C3F7501CF6CC5400B807B5 /* senstick_log_definition.h */,
 			);
@@ -201,7 +194,6 @@
 				F8FCC9481CD18209003BCC5A /* device_information_service.h */,
 				F8FCC9471CD18209003BCC5A /* device_information_service.c */,
 				F8FCC93F1CD10E16003BCC5A /* battery_service.h */,
-				F8FCC93E1CD10E16003BCC5A /* battery_service.c */,
 			);
 			name = services;
 			sourceTree = "<group>";
@@ -212,11 +204,9 @@
 				F8FCC94F1CD256E4003BCC5A /* app_gap.h */,
 				F8FCC94E1CD256E4003BCC5A /* app_gap.c */,
 				F8FCC9461CD181A5003BCC5A /* senstick_device_manager.h */,
-				F8FCC9451CD181A5003BCC5A /* senstick_device_manager.c */,
 				F8FCC94C1CD18407003BCC5A /* advertising_manager.h */,
 				F8FCC94B1CD18407003BCC5A /* advertising_manager.c */,
 				F8FCC94A1CD182BB003BCC5A /* ble_stack.h */,
-				F8FCC9491CD182BB003BCC5A /* ble_stack.c */,
 			);
 			name = module;
 			sourceTree = "<group>";

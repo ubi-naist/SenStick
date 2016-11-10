@@ -1,6 +1,7 @@
 #include <nordic_common.h>
 #include <app_util_platform.h>
 #include <nrf_log.h>
+#include <nrf_sdm.h>
 
 #include "senstick_data_model.h"
 
@@ -13,10 +14,16 @@
 #include "twi_manager.h"
 #include "gpio_button_monitoring.h"
 
+#ifdef NRF52832
+// nRF51, S132, SDK12
+#else
+// nRF51, S110, SDK10
+// これらのヘッダファイルに、startDFU()メソッドが、ブートローダにDFUに入らせるための定義がある。
 #include "bootloader_types.h"
 #include "nrf51.h"
 #include "bootloader_util.h"
 #include "nrf_sdm.h"
+#endif
 
 #define ABSTRACT_TEXT_LENGTH 20
 
@@ -64,10 +71,19 @@ static void interrupts_disable(void)
         }
     }
 }
+
 static void startDFU(void)
 {
     uint32_t err_code;
-    
+
+#ifdef NRF52832
+// TBD ブートローダの開始時に、DFUが開始されるようなフラグ設定処理をここに実装すべし。
+// TBD sd_softdevice_disable()以降の処理をここに書くべし。
+// https://devzone.nordicsemi.com/question/56723/dfu-on-nrf52/
+// replace NRF_UICR->BOOTLOADERADDR with *(uint32_t *)(0x10001014).
+#else
+// SDK10のブートローダは、リセットされても内容が保持されるリテンションレジスタを使って、DFU更新をブートローダに伝える。
+// BOOTLOADER_DFU_STARTは、ブートローダの実装側が bootloader_types.h で　0xB1に定義している。
     err_code = sd_power_gpregret_set(BOOTLOADER_DFU_START);
     APP_ERROR_CHECK(err_code);
     
@@ -80,6 +96,7 @@ static void startDFU(void)
     NVIC_ClearPendingIRQ(SWI2_IRQn);
     interrupts_disable();
     bootloader_util_app_start(NRF_UICR->BOOTLOADERADDR);
+#endif
 }
 
 void senstick_setControlCommand(senstick_control_command_t command)

@@ -325,11 +325,12 @@ void initFlashMemory(void)
     
     //    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
     nrf_drv_spi_config_t config;
-    config.sck_pin      = SPI0_CONFIG_SCK_PIN;
-    config.mosi_pin     = SPI0_CONFIG_MOSI_PIN;
-    config.miso_pin     = SPI0_CONFIG_MISO_PIN;
+    config.sck_pin      = PIN_NUMBER_SPI_CLK;
+    config.mosi_pin     = PIN_NUMBER_SPI_MOSI;
+    config.miso_pin     = PIN_NUMBER_SPI_MISO;
+ 
     config.ss_pin       = NRF_DRV_SPI_PIN_NOT_USED;
-    config.irq_priority = SPI0_CONFIG_IRQ_PRIORITY;
+    config.irq_priority = APP_IRQ_PRIORITY_LOW; // SPI0_CONFIG_IRQ_PRIORITY;
     config.orc          = 0xff;
     config.frequency    = NRF_DRV_SPI_FREQ_4M;
     //    config.frequency    = NRF_DRV_SPI_FREQ_250K;

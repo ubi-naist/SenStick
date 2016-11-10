@@ -70,7 +70,7 @@ void getBrightnessData(BrightnessData_t *p_data)
     
     // データを読み出し
     uint8_t buffer[2];
-    err_code = nrf_drv_twi_rx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2, false);
+    err_code = nrf_drv_twi_rx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2);
     APP_ERROR_CHECK(err_code);
     
     *p_data = (uint16_t)buffer[1] << 8 | (uint16_t)buffer[0];

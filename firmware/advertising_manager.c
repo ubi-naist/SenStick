@@ -1,6 +1,7 @@
 #include <nrf_log.h>
 #include <app_error.h>
 
+#include "senstick_util.h"
 #include "ble_parameters_config.h"
 
 #include "advertising_manager.h"

@@ -6,6 +6,8 @@
 #include <app_util_platform.h>
 #include <app_scheduler.h>
 
+#include "senstick_util.h"
+
 #include "log_controller.h"
 
 #include "senstick_sensor_controller.h"
@@ -381,9 +383,14 @@ static void init_timer(void)
     
     err_code = sd_nvic_ClearPendingIRQ(TIMER2_IRQn);
     APP_ERROR_CHECK(err_code);
-    
+
+#ifdef NRF52
+    err_code = sd_nvic_SetPriority(TIMER2_IRQn, APP_IRQ_PRIORITY_HIGH); //APP_IRQ_PRIORITY_HIGH       // Replaces NRF_APP_PRIORITY_HIGH
+    APP_ERROR_CHECK(err_code);
+#else // NRF51
     err_code = sd_nvic_SetPriority(TIMER2_IRQn, NRF_APP_PRIORITY_HIGH);
     APP_ERROR_CHECK(err_code);
+#endif
     
     err_code = sd_nvic_EnableIRQ(TIMER2_IRQn);
     APP_ERROR_CHECK(err_code);

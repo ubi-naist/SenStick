@@ -10,7 +10,17 @@
 #include <nrf_delay.h>
 #include <nrf_assert.h>
 
+// nRF52 SDK12/nRF51 SDK10, ヘッダファイル差分
+#ifdef NRF52
+#include <nrf_nvic.h>
+#include <fstorage.h>
+#include <ble_conn_state.h>
+#include <peer_manager.h>
+#include <nrf_log_ctrl.h>
+#include "senstick_util.h"
+#else // NRF51
 #include <pstorage.h>
+#endif
 
 #include <app_scheduler.h>
 #include <app_timer_appsh.h>
@@ -49,31 +59,50 @@ static void printBLEEvent(ble_evt_t * p_ble_evt);
 #define DEAD_BEEF 0xDEADBEEF
 
 // アプリケーションエラーハンドラ
+#ifdef NRF52
+#else
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
-    NRF_LOG_PRINTF_DEBUG("\napp_error: er_code:0x%04x line:%d file:%s", error_code, line_num, p_file_name);
+    NRF_LOG_PRINTF_DEBUG("\napp_error: er_code:0x%04x line:%d file:%s", error_code, line_num, (uint32_t)p_file_name);
     nrf_delay_ms(200);
     
     sd_nvic_SystemReset();
 }
+#endif
 
 // アサーションエラーハンドラ
 void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 {
-    NRF_LOG_PRINTF_DEBUG("\nassert_nrf_callback: line:%d file:%s", line_num, p_file_name);
+    NRF_LOG_PRINTF_DEBUG("\nassert_nrf_callback: line:%d file:%s", line_num, (uint32_t)p_file_name);
     app_error_handler(DEAD_BEEF, line_num, p_file_name);
 }
 
 // システムイベントをモジュールに分配する。
 static void disposeSystemEvent(uint32_t sys_evt)
 {
+#ifdef NRF52
+    fs_sys_event_handler(sys_evt);
+#else // NRF51
     pstorage_sys_event_handler(sys_evt);
+#endif
+
     ble_advertising_on_sys_evt(sys_evt);
 }
 
 // BLEイベントを分配する。
 static void diposeBLEEvent(ble_evt_t * p_ble_evt)
 {
+#ifdef NRF52
+    // Forward BLE events to the Connection State module.
+    // This must be called before any event handler that uses this module.
+    ble_conn_state_on_ble_evt(p_ble_evt);
+    
+    // Forward BLE events to the Peer Manager
+    pm_on_ble_evt(p_ble_evt);
+#else
+//    dm_ble_evt_handler(p_ble_evt);
+#endif
+    
     app_gap_on_ble_event(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
     
@@ -83,7 +112,7 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     senstickMetaDataService_handleBLEEvent(p_ble_evt);
 
     senstickSensorController_handleBLEEvent(p_ble_evt);
-//    dm_ble_evt_handler(p_ble_evt);
+    
     printBLEEvent(p_ble_evt);
     
     switch (p_ble_evt->header.evt_id)
@@ -199,7 +228,7 @@ int main(void)
     ret_code_t err_code;
     
     // RTTログを有効に
-    NRF_LOG_INIT();
+    NRF_LOG_INIT(NULL);
     
     // タイマーモジュール、スケジューラ設定。
     APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
@@ -218,8 +247,13 @@ int main(void)
 //    do_storage_test();
     
     // pstorageを初期化。device managerを呼び出す前に、この処理を行わなくてはならない。
+#ifdef NRF52
+    err_code = fs_init();
+    APP_ERROR_CHECK(err_code);
+#else // NRF51
     err_code = pstorage_init();
     APP_ERROR_CHECK(err_code);
+#endif
     
     // スタックの初期化。GAPパラメータを設定
     init_ble_stack(disposeSystemEvent, diposeBLEEvent);

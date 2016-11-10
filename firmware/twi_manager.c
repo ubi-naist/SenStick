@@ -9,16 +9,25 @@
 #include "senstick_io_definition.h"
 #include "twi_manager.h"
 
+#ifdef NRF52
+// TWIインタフェース TWI1を使用。
+const nrf_drv_twi_t twi = NRF_DRV_TWI_INSTANCE(1);
+#else // NRF51
 nrf_drv_twi_t twi;
+#endif
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
     return nrf_drv_twi_tx(&twi, address, p_data, length, xfer_pending);
 }
 
-ret_code_t TwiSlave_RX(uint8_t address, uint8_t *p_data, uint32_t length, bool xfer_pending)
+ret_code_t TwiSlave_RX(uint8_t address, uint8_t *p_data, uint32_t length)
 {
-    return nrf_drv_twi_rx(&twi, address, p_data, length, xfer_pending);
+#ifdef NRF52
+    return nrf_drv_twi_rx(&twi, address, p_data, length);
+#else
+    return nrf_drv_twi_rx(&twi, address, p_data, length, false);
+#endif
 }
 
 
@@ -48,7 +57,11 @@ bool readFromTwiSlave(uint8_t twi_address, uint8_t target_register, uint8_t *dat
     }
     
     // データを読み出し
+#ifdef NRF52
+    err_code = nrf_drv_twi_rx(&twi, twi_address, data, length);
+#else
     err_code = nrf_drv_twi_rx(&twi, twi_address, data, length, false);
+#endif
     return (err_code == NRF_SUCCESS);
 }
 
@@ -57,9 +70,13 @@ void initTWIManager(void)
     ret_code_t err_code;
     
     // TWIインタフェース TWI1を使用。
+#ifdef NRF51
     twi.p_reg        = NRF_TWI1;
     twi.irq          = TWI1_IRQ;
     twi.instance_id  = TWI1_INSTANCE_INDEX;
+    err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
+    APP_ERROR_CHECK(err_code);
+#endif
     
     err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
     APP_ERROR_CHECK(err_code);

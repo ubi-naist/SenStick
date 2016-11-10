@@ -7,6 +7,7 @@
 
 #include <ble.h>
 #include <ble_gatts.h>
+
 #include <app_gap.h>
 
 #include <sdk_errors.h>

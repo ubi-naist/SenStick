@@ -23,12 +23,19 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
     
     // Initialize the SoftDevice handler module.
     // LFCLK crystal oscillator. 32kHz xtal外付け。
+     nrf_clock_lf_cfg_t clock_lf_cfg = {
+     .source        = NRF_CLOCK_LF_SRC_XTAL,
+     .rc_ctiv       = 0,
+     .rc_temp_ctiv  = 0,
+     .xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_20_PPM};
+    // 太陽誘電 EYSHJNZXZ ver1.1 データシートの推奨設定。
+    /*
     nrf_clock_lf_cfg_t clock_lf_cfg = {
-        .source        = NRF_CLOCK_LF_SRC_XTAL,
-        .rc_ctiv       = 0,
-        .rc_temp_ctiv  = 0,
-        .xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_20_PPM};
-
+        .source        = NRF_CLOCK_LF_SRC_RC,
+        .rc_ctiv       = 16,
+        .rc_temp_ctiv  = 2,
+        .xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_250_PPM};
+*/
     // SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
     SOFTDEVICE_HANDLER_APPSH_INIT(&clock_lf_cfg, NULL);      // BLEのスタックの処理は、スケジューラを使う。
     
@@ -42,10 +49,11 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
     // Enable BLE stack.
     // #if (NRF_SD_BLE_API_VERSION == 3)
     ble_enable_params.gatt_enable_params.att_mtu = NRF_BLE_MAX_MTU_SIZE;
-    // S110のみ有効。
-    // GATTサーバのメモリが標準量0x700では足りないので、0x680増やす。リンカでメモリスタート位置を0x20002000から0x20002680に変更している。
-    //    ble_enable_params.gatts_enable_params.attr_tab_size   = 0x680 + 0x700;
-    //    ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
+
+    // nRF52, S132。アトリビュートのテーブルサイズ。S132 v3のデフォルトサイズは0x580。
+    // 0x700増やす。メモリ位置とサイズを start 0x20002128 / size 0xDED8 から start 0x20003128 / size 0xCED8 に変更する。
+    ble_enable_params.gatts_enable_params.attr_tab_size   = 0x580 + 0x1000;
+    ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
     
     err_code = softdevice_enable(&ble_enable_params);
     APP_ERROR_CHECK(err_code);

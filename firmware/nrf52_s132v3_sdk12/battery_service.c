@@ -19,6 +19,10 @@ static ble_bas_t batter_service_context;
 //FIXME Deep sleepへの遷移、タイマーの停止と開始
 APP_TIMER_DEF(m_battery_timer_id);
 
+static void nrf_drv_saadc_event_handler(nrf_drv_saadc_evt_t const *p_event)
+{
+}
+
 static void update_battery_service_battery_value(uint8_t battery_level )
 {
     ret_code_t err_code;
@@ -53,7 +57,7 @@ void init_battery_service()
 
     // ADCの初期化
     // 設定にはNULLを指定して、sdk_config.h の定義を使う。10ビット解像度
-    err_code = nrf_drv_saadc_init(NULL, NULL);
+    err_code = nrf_drv_saadc_init(NULL, nrf_drv_saadc_event_handler);
     APP_ERROR_CHECK(err_code);
     //Initialization and enabling of channel 0 to use analog input 4.
     // NRF_SAADC_REFERENCE_INTERNAL, 0.6V。 gain = NRF_SAADC_GAIN1_6,

@@ -68,10 +68,11 @@ void init_device_manager(bool erase_bonds)
     sec_param.oob               = SEC_PARAM_OOB;
     sec_param.min_key_size      = SEC_PARAM_MIN_KEY_SIZE;
     sec_param.max_key_size      = SEC_PARAM_MAX_KEY_SIZE;
-    sec_param.kdist_own.enc     = 1;
-    sec_param.kdist_own.id      = 1;
-    sec_param.kdist_peer.enc    = 1;
-    sec_param.kdist_peer.id     = 1;
+    // ボンディングをしないため、これらのフラグは0に。
+    sec_param.kdist_own.enc     = 0;
+    sec_param.kdist_own.id      = 0;
+    sec_param.kdist_peer.enc    = 0;
+    sec_param.kdist_peer.id     = 0;
     
     err_code = pm_sec_params_set(&sec_param);
     APP_ERROR_CHECK(err_code);

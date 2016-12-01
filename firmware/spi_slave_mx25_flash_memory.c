@@ -316,12 +316,20 @@ void initFlashMemory(void)
     out_config.task_pin   = false;
     err_code = nrf_drv_gpiote_out_init(PIN_NUMBER_SPI_nCS, &out_config);
     APP_ERROR_CHECK(err_code);
-    
+
+#ifdef NRF52
+    // SPIインタフェース SPI2を使用。
+    spi.p_registers  = NRF_SPI2;
+    spi.irq          = SPI2_IRQ;
+    spi.drv_inst_idx = SPI2_INSTANCE_INDEX;
+    spi.use_easy_dma = SPI2_USE_EASY_DMA;
+#else
     // SPIインタフェース SPI0を使用。
     spi.p_registers  = NRF_SPI0;
     spi.irq          = SPI0_IRQ;
     spi.drv_inst_idx = SPI0_INSTANCE_INDEX;
     spi.use_easy_dma = SPI0_USE_EASY_DMA;
+#endif
     
     //    nrf_drv_spi_config_t config = NRF_DRV_SPI_DEFAULT_CONFIG(0);
     nrf_drv_spi_config_t config;

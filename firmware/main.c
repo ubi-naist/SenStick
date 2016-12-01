@@ -59,8 +59,7 @@ static void printBLEEvent(ble_evt_t * p_ble_evt);
 #define DEAD_BEEF 0xDEADBEEF
 
 // アプリケーションエラーハンドラ
-#ifdef NRF52
-#else
+#ifdef NRF51
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
     NRF_LOG_PRINTF_DEBUG("\napp_error: er_code:0x%04x line:%d file:%s", error_code, line_num, (uint32_t)p_file_name);

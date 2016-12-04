@@ -1,0 +1,54 @@
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
+
+// sdk_config.h に対する差分で設定をまとめる。
+// このファイルはsdk_config.hから読み込まれる。そのために、C/C++で、USE_APP_CONFIG を定義しておくこと。
+
+// IO設定を読み込む。
+#include "senstick_io_definition.h"
+
+// ====
+// BLE Services
+// battery serviceを使う。
+#define BLE_BAS_ENABLED 1
+// device information serviceを使う。
+#define BLE_DIS_ENABLED 1
+
+// ===
+// SAADC nRF52のSAADCを使用する。
+#define SAADC_ENABLED 1
+
+// ===
+// SPIを使用する。
+#define SPI_ENABLED  1
+#define SPI2_ENABLED 1
+
+// ===
+// TWI。
+#define TWI_ENABLED 1
+// 周波数。26738688=> 100k, 67108864=> 250k, 104857600=> 400k
+#define TWI_DEFAULT_CONFIG_FREQUENCY 104857600
+// TWI0および1を使用する。
+#define TWI0_ENABLED 1
+#define TWI1_ENABLED 1
+// UARTは使用しない。
+#define UART_ENABLED 0
+
+// ===
+// ライブラリ。
+#define APP_MAILBOX_ENABLED   1
+#define APP_SCHEDULER_ENABLED 1
+
+// ===
+// ログ
+#define NRF_LOG_ENABLED 1
+#define NRF_LOG_BACKEND_SERIAL_USES_UART 0
+#define NRF_LOG_BACKEND_SERIAL_USES_RTT  1
+// <0=> Off
+// <1=> Error
+// <2=> Warning
+// <3=> Info
+// <4=> Debug
+#define NRF_LOG_DEFAULT_LEVEL 4
+
+#endif // APP_CONFIG_H

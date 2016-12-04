@@ -1,3 +1,5 @@
+#include "senstick_device_manager.h"
+
 //#include <device_manager.h>
 #include <fstorage.h>
 #include <fds.h>

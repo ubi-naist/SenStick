@@ -128,7 +128,7 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
 // デバッグ用、BLEイベントをprintfします。
 static void printBLEEvent(ble_evt_t * p_ble_evt)
 {
-//    ret_code_t err_code;
+    ret_code_t err_code;
     
     switch (p_ble_evt->header.evt_id)
     {
@@ -199,12 +199,23 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
             break;
             
         case BLE_GATTS_EVT_TIMEOUT:
-//            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
+            NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
+            err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(err_code);
             break;
+        
+            //nRF52, S132v3
+#if (NRF_SD_BLE_API_VERSION == 3)
+        case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
+            // S132では、ble_gatts.hで、GATT_MTU_SIZE_DEFAULTは、23に定義されている。
+            err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle, GATT_MTU_SIZE_DEFAULT);
+            APP_ERROR_CHECK(err_code);
+            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
+#endif
             
         default:
             //No implementation needed
-//            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
+            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
             break;
     }
 }
@@ -311,6 +322,9 @@ NRF_LOG_PRINTF_DEBUG("data area: is_full:%d\n", isFull);
 
     NRF_LOG_PRINTF_DEBUG("Start....\n");
     for (;;) {
+#ifdef NRF52
+        NRF_LOG_FLUSH();
+#endif
         // アプリケーション割り込みイベント待ち (sleep状態)
         err_code = sd_app_evt_wait();
         APP_ERROR_CHECK(err_code);

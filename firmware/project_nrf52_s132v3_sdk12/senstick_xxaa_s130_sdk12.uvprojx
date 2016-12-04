@@ -2832,6 +2832,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>test</GroupName>
+          <Files>
+            <File>
+              <FileName>test_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\test_storage.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
@@ -5660,6 +5670,16 @@
               <FileName>twi_slave_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\nrf52_s132v3_sdk12\twi_slave_rtc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>test</GroupName>
+          <Files>
+            <File>
+              <FileName>test_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\test_storage.c</FilePath>
             </File>
           </Files>
         </Group>

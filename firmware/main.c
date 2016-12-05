@@ -215,7 +215,7 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
             
         default:
             //No implementation needed
-            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
+//            NRF_LOG_PRINTF_DEBUG("\nunknown event id: 0x%02x.", p_ble_evt->header.evt_id);
             break;
     }
 }
@@ -255,7 +255,7 @@ int main(void)
     initMetaDataLogController();
     
 //    do_storage_test();
-    
+
     // pstorageを初期化。device managerを呼び出す前に、この処理を行わなくてはならない。
 #ifdef NRF52
     err_code = fs_init();

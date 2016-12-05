@@ -72,7 +72,6 @@
 		F8FCC94A1CD182BB003BCC5A /* ble_stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ble_stack.h; sourceTree = "<group>"; };
 		F8FCC94B1CD18407003BCC5A /* advertising_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = advertising_manager.c; sourceTree = "<group>"; };
 		F8FCC94C1CD18407003BCC5A /* advertising_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = advertising_manager.h; sourceTree = "<group>"; };
-		F8FCC94E1CD256E4003BCC5A /* app_gap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = app_gap.c; sourceTree = "<group>"; };
 		F8FCC94F1CD256E4003BCC5A /* app_gap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app_gap.h; sourceTree = "<group>"; };
 		F8FCC9501CD2577D003BCC5A /* senstick_control_service.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_control_service.c; sourceTree = "<group>"; };
 		F8FCC9511CD2577D003BCC5A /* senstick_control_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_control_service.h; sourceTree = "<group>"; };
@@ -200,7 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				F8FCC94F1CD256E4003BCC5A /* app_gap.h */,
-				F8FCC94E1CD256E4003BCC5A /* app_gap.c */,
 				F8FCC9461CD181A5003BCC5A /* senstick_device_manager.h */,
 				F8FCC94C1CD18407003BCC5A /* advertising_manager.h */,
 				F8FCC94B1CD18407003BCC5A /* advertising_manager.c */,

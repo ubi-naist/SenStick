@@ -10,8 +10,8 @@
 #include "twi_manager.h"
 
 // twi0は9軸、twi1はその他センサーが接続するバス。
-const nrf_drv_twi_t twi0 = NRF_DRV_TWI_INSTANCE(0);
-const nrf_drv_twi_t twi  = NRF_DRV_TWI_INSTANCE(1);
+const nrf_drv_twi_t twi0 = NRF_DRV_TWI_INSTANCE(1);
+const nrf_drv_twi_t twi  = NRF_DRV_TWI_INSTANCE(0);
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
@@ -37,7 +37,7 @@ bool writeToTwiSlave(uint8_t twi_address, uint8_t target_register, const uint8_t
     memcpy(&(buffer[1]), data, length);
     
     // I2C書き込み
-    err_code = nrf_drv_twi_tx(&twi, twi_address, buffer, (length + 1), false);
+    err_code = TwiSlave_TX(twi_address, buffer, (length + 1), false);
     return (err_code == NRF_SUCCESS);
 }
 
@@ -47,13 +47,13 @@ bool readFromTwiSlave(uint8_t twi_address, uint8_t target_register, uint8_t *dat
     
     // 読み出しターゲットアドレスを設定
     uint8_t buffer0 = target_register;
-    err_code = nrf_drv_twi_tx(&twi, twi_address, &buffer0, 1, true);
+    err_code = TwiSlave_TX(twi_address, &buffer0, 1, true);
     if(err_code != NRF_SUCCESS) {
         return false;
     }
     
     // データを読み出し
-    err_code = nrf_drv_twi_rx(&twi, twi_address, data, length);
+    err_code = TwiSlave_RX(twi_address, data, length);
     
     return (err_code == NRF_SUCCESS);
 }

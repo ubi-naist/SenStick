@@ -19,10 +19,6 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
     // リプライを用意
     ble_gatts_rw_authorize_reply_params_t reply_params;
     memset(&reply_params, 0, sizeof(reply_params));
-    reply_params.type                    = BLE_GATTS_AUTHORIZE_TYPE_READ;
-    reply_params.params.read.gatt_status = BLE_GATT_STATUS_SUCCESS;
-    reply_params.params.read.offset      = 0;
-    reply_params.params.read.p_data      = buffer;
     
     // 実際の読み出し処理
     if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_READ) {
@@ -35,9 +31,13 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
             return;
         }
         // リプライ
-        reply_params.type                = BLE_GATTS_AUTHORIZE_TYPE_READ;
-        reply_params.params.read.update  = (length != 0);
-        reply_params.params.read.len     = length;
+        reply_params.type                    = BLE_GATTS_AUTHORIZE_TYPE_READ;
+        reply_params.params.read.gatt_status = BLE_GATT_STATUS_SUCCESS;
+        reply_params.params.read.update      = (length != 0);
+        reply_params.params.read.len         = length;
+        reply_params.params.read.offset      = 0;
+        reply_params.params.read.p_data      = buffer;
+        
         err_code = sd_ble_gatts_rw_authorize_reply(p_context->connection_handle, &reply_params);
         APP_ERROR_CHECK(err_code);
         
@@ -52,9 +52,14 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
             return;
         }
         // リプライ
+                // nRf51ではリプライのフィールドには、gatt_statusのみがある。SDK12 S132v3では、gatt_status, update, offset, len, p_dataの5フィールド。
         reply_params.type                      = BLE_GATTS_AUTHORIZE_TYPE_WRITE;
         // iOSアプリ側でBLEのアクセスでAUTH_ERRORがあると、一連の処理が破棄されるのか?、みたいな振る舞い。読み出せるべき値が読み出せないとか。なので、ここはスルー。
         reply_params.params.write.gatt_status = BLE_GATT_STATUS_SUCCESS;
+#ifdef NRF52
+        // このパラメータが1になっていなければ、invalid parameterでsd_ble_gatts_rw_authorize_reply()が落ちる。
+        reply_params.params.write.update = 1;
+#endif
 //        reply_params.params.read.gatt_status   = result ? BLE_GATT_STATUS_SUCCESS : BLE_GATT_STATUS_ATTERR_WRITE_NOT_PERMITTED;
         err_code = sd_ble_gatts_rw_authorize_reply(p_context->connection_handle, &reply_params);
         APP_ERROR_CHECK(err_code);

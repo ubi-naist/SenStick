@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'secure_dfu_secure_dfu_ble_s130_pca10028_debug' 
- * Target:  'nrf51422_xxac_s130' 
+ * Project: 'secure_dfu_secure_dfu_ble_s132_pca10040' 
+ * Target:  'nrf52832_xxaa_s132' 
  */
 
 #ifndef RTE_COMPONENTS_H

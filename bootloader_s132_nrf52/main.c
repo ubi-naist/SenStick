@@ -50,7 +50,7 @@ void app_error_handler_bare(uint32_t error_code)
 static void leds_init(void)
 {
     bsp_board_leds_init();
-    bsp_board_led_on(BSP_BOARD_LED_2);
+    bsp_board_led_on(BSP_BOARD_LED_0);
 }
 
 
@@ -58,8 +58,9 @@ static void leds_init(void)
  */
 static void buttons_init(void)
 {
+    // dfu/nrf_dfu.hで BSP_BUTTON_3は、BOOTLOADER_BUTTONに定義されている。
     nrf_gpio_cfg_sense_input(BOOTLOADER_BUTTON,
-                             BUTTON_PULL,
+                             NRF_GPIO_PIN_PULLUP,
                              NRF_GPIO_PIN_SENSE_LOW);
 }
 

@@ -33,7 +33,6 @@
 #include "nrf_sdm.h"
 #include "sdk_macros.h"
 #include "nrf_crypto.h"
-#include "nrf_delay.h"
 
 STATIC_ASSERT(DFU_SIGNED_COMMAND_SIZE <= INIT_COMMAND_MAX_SIZE);
 
@@ -497,12 +496,9 @@ static nrf_dfu_res_code_t nrf_dfu_postvalidate(dfu_init_command_t * p_init)
     s_dfu_settings.write_offset = 0;
 
     // Store the settings to flash and reset after that
-    while (nrf_dfu_settings_write(on_dfu_complete) == NRF_ERROR_BUSY)
-    {        
-#ifdef NRF52        
-        nrf_delay_us(100*1000);
-#endif
-        nrf_dfu_wait();
+    if( nrf_dfu_settings_write(on_dfu_complete) != NRF_SUCCESS)
+    {
+        res_code = NRF_DFU_RES_CODE_OPERATION_FAILED;
     }
 
     return res_code;
@@ -530,7 +526,10 @@ static nrf_dfu_res_code_t dfu_handle_signed_command(dfu_signed_command_t const *
 
         // This saves the init command to flash
         NRF_LOG_INFO("Saving init command...\r\n");
-        (void)nrf_dfu_settings_write(NULL);
+        if (nrf_dfu_settings_write(NULL) != NRF_SUCCESS)
+        {
+            return NRF_DFU_RES_CODE_OPERATION_FAILED;
+        }
     }
     else
     {
@@ -924,7 +923,10 @@ static nrf_dfu_res_code_t nrf_dfu_data_req(void * p_context, nrf_dfu_req_t * p_r
             s_dfu_settings.progress.data_object_size = 0;
             s_dfu_settings.progress.firmware_image_offset_last = s_dfu_settings.progress.firmware_image_offset;
             s_dfu_settings.progress.firmware_image_crc_last = s_dfu_settings.progress.firmware_image_crc;
-            (void)nrf_dfu_settings_write(NULL);
+            if (nrf_dfu_settings_write(NULL) != NRF_SUCCESS)
+            {
+                return NRF_DFU_RES_CODE_OPERATION_FAILED;
+            }
 
             if (s_dfu_settings.progress.firmware_image_offset == m_firmware_size_req)
             {

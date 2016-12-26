@@ -8,8 +8,8 @@
  * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
  * the file.
  */
-#include "sdk_config.h"
-#if BLE_RACP_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_RACP)
 #include "ble_racp.h"
 #include <stdlib.h>
 
@@ -55,4 +55,4 @@ uint8_t ble_racp_encode(const ble_racp_value_t * p_racp_val, uint8_t * p_data)
 
     return len;
 }
-#endif //BLE_RACP_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_RACP)

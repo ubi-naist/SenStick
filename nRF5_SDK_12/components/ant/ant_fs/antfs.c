@@ -5,8 +5,8 @@ Copyright © Dynastream Innovations Inc. 2012
 All rights reserved.
 */
 
-#include "sdk_config.h"
-#if ANTFS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANTFS)
 
 #include "antfs.h"
 #include <string.h>
@@ -18,7 +18,6 @@ All rights reserved.
 #include "ant_interface.h"
 #include "ant_key_manager.h"
 #include "crc.h"
-#include "app_util.h"
 
 #if ANTFS_CONFIG_DEBUG_LED_ENABLED
     #include "bsp.h"
@@ -2335,4 +2334,4 @@ void antfs_init(const antfs_params_t * const p_params,
     err_code = sd_ant_burst_handler_wait_flag_enable((uint8_t *)(&m_burst_wait));
     APP_ERROR_CHECK(err_code);
 }
-#endif // ANTFS_ENABLED
+#endif // NRF_MODULE_ENABLED(ANTFS)

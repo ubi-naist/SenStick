@@ -9,11 +9,10 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if BLE_NUS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_NUS)
 #include "ble_nus.h"
 #include "ble_srv_common.h"
-#include "sdk_common.h"
 
 #define BLE_UUID_NUS_TX_CHARACTERISTIC 0x0002                      /**< The UUID of the TX Characteristic. */
 #define BLE_UUID_NUS_RX_CHARACTERISTIC 0x0003                      /**< The UUID of the RX Characteristic. */
@@ -293,4 +292,4 @@ uint32_t ble_nus_string_send(ble_nus_t * p_nus, uint8_t * p_string, uint16_t len
     return sd_ble_gatts_hvx(p_nus->conn_handle, &hvx_params);
 }
 
-#endif //BLE_NUS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_NUS)

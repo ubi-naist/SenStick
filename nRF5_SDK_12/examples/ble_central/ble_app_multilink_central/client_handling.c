@@ -199,15 +199,13 @@ static void on_evt_hvx(ble_evt_t * p_ble_evt, client_t * p_client, uint32_t inde
         {
             if (index < LEDS_NUMBER)
             {
-                uint8_t leds[] = LEDS_LIST;
-
                 if (p_ble_evt->evt.gattc_evt.params.hvx.data[0] == 0)
                 {
-                    LEDS_OFF(1<<leds[index]);
+                    bsp_board_led_off(index);
                 }
                 else
                 {
-                    LEDS_ON(1<<leds[index]);
+                   bsp_board_led_on(index);
                 }
             }
         }
@@ -365,7 +363,6 @@ uint32_t client_handling_destroy(const dm_handle_t * p_handle)
 {
     uint32_t      err_code = NRF_SUCCESS;
     client_t    * p_client = &m_client[p_handle->connection_id];
-    uint32_t      leds[] = LEDS_LIST;
 
     if (p_client->state != IDLE)
     {
@@ -373,7 +370,7 @@ uint32_t client_handling_destroy(const dm_handle_t * p_handle)
             p_client->state = IDLE;
             if (p_handle->connection_id < LEDS_NUMBER)
             {
-                LEDS_OFF( 1 << leds[p_handle->connection_id] );
+                bsp_board_led_off(p_handle->connection_id);
             }
     }
     else

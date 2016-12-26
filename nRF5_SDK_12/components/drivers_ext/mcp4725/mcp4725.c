@@ -29,7 +29,7 @@ static const nrf_drv_twi_t m_twi = NRF_DRV_TWI_INSTANCE(TWI_INSTANCE_ID_USED);
 
 /* Twi transfer indicators. */
 volatile bool m_xfer_done = false;
-volatile bool m_read_done = false;
+volatile bool m_read_done = false; 
 
 /**
  * @brief TWI events handler.

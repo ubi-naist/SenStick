@@ -50,12 +50,22 @@ typedef struct
 } nrf_drv_lpcomp_config_t;
 
 /** @brief LPCOMP driver default configuration including the LPCOMP HAL configuration. */
-#define NRF_DRV_LPCONF_DEFAULT_CONFIG                                                                                     \
+#ifdef NRF52_SERIES
+#define NRF_DRV_LPCOMP_DEFAULT_CONFIG                                                                                     \
     {                                                                                                                     \
-        .hal                = {(nrf_lpcomp_ref_t)LPCOMP_CONFIG_REFERENCE , (nrf_lpcomp_detect_t)LPCOMP_CONFIG_DETECTION}, \
+        .hal                = {(nrf_lpcomp_ref_t)LPCOMP_CONFIG_REFERENCE , (nrf_lpcomp_detect_t)LPCOMP_CONFIG_DETECTION,  \
+                               (nrf_lpcomp_hysteresis_t)LPCOMP_CONFIG_HYST},                                              \
         .input              = (nrf_lpcomp_input_t)LPCOMP_CONFIG_INPUT,                                                    \
         .interrupt_priority = LPCOMP_CONFIG_IRQ_PRIORITY                                                                  \
     }
+#else
+#define NRF_DRV_LPCOMP_DEFAULT_CONFIG                                                                                     \
+    {                                                                                                                     \
+        .hal                = {(nrf_lpcomp_ref_t)LPCOMP_CONFIG_REFERENCE , (nrf_lpcomp_detect_t)LPCOMP_CONFIG_DETECTION},  \
+        .input              = (nrf_lpcomp_input_t)LPCOMP_CONFIG_INPUT,                                                    \
+        .interrupt_priority = LPCOMP_CONFIG_IRQ_PRIORITY                                                                  \
+    }
+#endif
 
 /**
  * @brief Function for initializing the LPCOMP driver.

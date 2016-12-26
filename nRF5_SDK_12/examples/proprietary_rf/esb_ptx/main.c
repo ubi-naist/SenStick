@@ -31,22 +31,6 @@ static nrf_esb_payload_t        tx_payload = NRF_ESB_CREATE_PAYLOAD(0, 0x01, 0x0
 
 static nrf_esb_payload_t        rx_payload;
 
-const uint8_t leds_list[LEDS_NUMBER] = LEDS_LIST;
-
-void nrf_esb_error_handler(uint32_t err_code, uint32_t line)
-{
-    NRF_LOG_ERROR("App failed at line %d with error code: 0x%08x\r\n",
-                   line, err_code);
-#if DEBUG //lint -e553
-    while (true);
-#else
-    NVIC_SystemReset();
-#endif
-
-}
-
-#define APP_ERROR_CHECK(err_code) if (err_code) nrf_esb_error_handler(err_code, __LINE__);
-
 /*lint -save -esym(40, BUTTON_1) -esym(40, BUTTON_2) -esym(40, BUTTON_3) -esym(40, BUTTON_4) -esym(40, LED_1) -esym(40, LED_2) -esym(40, LED_3) -esym(40, LED_4) */
 
 void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
@@ -89,7 +73,7 @@ void clocks_start( void )
 void gpio_init( void )
 {
     nrf_gpio_range_cfg_output(8, 15);
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 
@@ -139,7 +123,7 @@ int main(void)
     err_code = esb_init();
     APP_ERROR_CHECK(err_code);
 
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 
     NRF_LOG_DEBUG("Enhanced ShockBurst Transmitter Example running.\r\n");
 

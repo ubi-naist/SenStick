@@ -101,7 +101,7 @@ void ant_search_sharing_event_handler(ant_evt_t * p_ant_evt)
                     if (!m_rx_first_ch0)
                     {
                         m_rx_first_ch0 = true;
-                        LEDS_ON(BSP_LED_0_MASK);
+                        bsp_board_led_on(BSP_BOARD_LED_0);
                     }
                     break;
 
@@ -109,7 +109,7 @@ void ant_search_sharing_event_handler(ant_evt_t * p_ant_evt)
                     if (!m_rx_first_ch1)
                     {
                         m_rx_first_ch1 = true;
-                        LEDS_ON(BSP_LED_1_MASK);
+                        bsp_board_led_on(BSP_BOARD_LED_1);
                     }
                     break;
             }

@@ -9,9 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if MEM_MANAGER_ENABLED
 #include "sdk_common.h"
+#if NRF_MODULE_ENABLED(MEM_MANAGER)
 #include "mem_manager.h"
 #include "nrf_assert.h"
 #define NRF_LOG_MODULE_NAME "MEM_MNGR"
@@ -43,12 +42,12 @@
  *
  * @param[in] PARAM Parameter checked for NULL.
  *
- * @retval (NRF_ERROR_NULL | MEMORY_MANAGER_ERR_BASE) when @ref PARAM is NULL.
+ * @retval (NRF_ERROR_NULL | NRF_ERROR_MEMORY_MANAGER_ERR_BASE) when @ref PARAM is NULL.
  */
 #define NULL_PARAM_CHECK(PARAM)                            \
     if ((PARAM) == NULL)                                   \
     {                                                      \
-        return (NRF_ERROR_NULL | MEMORY_MANAGER_ERR_BASE); \
+        return (NRF_ERROR_NULL | NRF_ERROR_MEMORY_MANAGER_ERR_BASE); \
     }
 
 /**
@@ -67,14 +66,14 @@
  * @brief Macro for verifying module's initialization status.
  *        Returning with an appropriate error code on failure.
  *
- * @retval (NRF_ERROR_INVALID_STATE | MEMORY_MANAGER_ERR_BASE) module is uninitialized.
+ * @retval (NRF_ERROR_INVALID_STATE | NRF_ERROR_MEMORY_MANAGER_ERR_BASE) module is uninitialized.
  */
 #define VERIFY_MODULE_INITIALIZED()                                     \
     do                                                                  \
     {                                                                   \
         if (!m_module_initialized)                                      \
         {                                                               \
-            return (NRF_ERROR_INVALID_STATE | MEMORY_MANAGER_ERR_BASE); \
+            return (NRF_ERROR_INVALID_STATE | NRF_ERROR_MEMORY_MANAGER_ERR_BASE); \
         }                                                               \
     } while (0)
 
@@ -97,7 +96,7 @@
  *
  * @param[in] SIZE Requested size to be allocated.
  *
- * @retval (NRF_ERROR_INVALID_PARAM | MEMORY_MANAGER_ERR_BASE) if requested size is greater
+ * @retval (NRF_ERROR_INVALID_PARAM | NRF_ERROR_MEMORY_MANAGER_ERR_BASE) if requested size is greater
  *         than the largest block size managed by the module.
  */
 #define VERIFY_REQUESTED_SIZE(SIZE)                                     \
@@ -105,7 +104,7 @@
     {                                                                   \
         if (((SIZE) == 0) ||((SIZE) >  MAX_MEM_SIZE))                   \
         {                                                               \
-            return (NRF_ERROR_INVALID_PARAM | MEMORY_MANAGER_ERR_BASE); \
+            return (NRF_ERROR_INVALID_PARAM | NRF_ERROR_MEMORY_MANAGER_ERR_BASE); \
         }                                                               \
     } while (0)
 
@@ -644,7 +643,7 @@ uint32_t nrf_mem_reserve(uint8_t ** pp_buffer, uint32_t * p_size)
     const uint32_t block_cat    = get_block_cat(requested_size, TOTAL_BLOCK_COUNT);
     uint32_t       block_index  = m_block_start[block_cat];
     uint32_t       memory_index = m_block_mem_start[block_cat];
-    uint32_t       err_code     = (NRF_ERROR_NO_MEM | MEMORY_MANAGER_ERR_BASE);
+    uint32_t       err_code     = (NRF_ERROR_NO_MEM | NRF_ERROR_MEMORY_MANAGER_ERR_BASE);
 
     NRF_LOG_DEBUG("[MM]: Start index for the pool = 0x%08lX, total block count 0x%08X\r\n",
            block_index,
@@ -891,4 +890,4 @@ void nrf_mem_diagnose(void)
 
 #endif // MEM_MANAGER_ENABLE_DIAGNOSTICS
 /** @} */
-#endif //MEM_MANAGER_ENABLED
+#endif //NRF_MODULE_ENABLED(MEM_MANAGER)

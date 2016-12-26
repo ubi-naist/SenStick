@@ -31,8 +31,8 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 
-#define LED_MASK_OK         BSP_LED_0_MASK
-#define LED_MASK_ERROR      BSP_LED_1_MASK
+#define LED_OK         BSP_BOARD_LED_0
+#define LED_ERROR      BSP_BOARD_LED_1
 
 #define I2S_BUFFER_SIZE     1000
 static uint32_t m_buffer_rx[I2S_BUFFER_SIZE];
@@ -136,13 +136,13 @@ static void check_rx_data(uint32_t const * p_buffer, uint16_t number_of_words)
 
     if (m_error_encountered)
     {
-        LEDS_OFF(LED_MASK_OK);
-        LEDS_INVERT(LED_MASK_ERROR);
+        bsp_board_led_off(LED_OK);
+        bsp_board_led_invert(LED_ERROR);
     }
     else
     {
-        LEDS_OFF(LED_MASK_ERROR);
-        LEDS_INVERT(LED_MASK_OK);
+        bsp_board_led_off(LED_ERROR);
+        bsp_board_led_invert(LED_OK);
     }
 }
 
@@ -179,7 +179,7 @@ void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
     app_error_print(id, pc, info);
     #endif
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
     while (1);
 }
 
@@ -188,7 +188,7 @@ int main(void)
 {
     uint32_t err_code = NRF_SUCCESS;
 
-    LEDS_CONFIGURE(LED_MASK_OK | LED_MASK_ERROR);
+    bsp_board_leds_init();
 
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
@@ -224,7 +224,7 @@ int main(void)
         {}
         nrf_drv_i2s_stop();
 
-        LEDS_OFF(LED_MASK_OK | LED_MASK_ERROR);
+        bsp_board_leds_off();
         nrf_delay_ms(PAUSE_TIME);
 
         NRF_LOG_FLUSH();

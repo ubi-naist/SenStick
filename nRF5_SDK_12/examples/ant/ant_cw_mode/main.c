@@ -85,12 +85,10 @@ int main(void)
     ret_code_t err_code;
 
     // Blink LED after successful initialization.
-    LEDS_CONFIGURE(BSP_LED_0_MASK);
+    bsp_board_leds_init();
 
     softdevice_setup();
     application_initialize();
-
-    LEDS_OFF(BSP_LED_0_MASK);
 
     // Enter main loop
     for (;;)

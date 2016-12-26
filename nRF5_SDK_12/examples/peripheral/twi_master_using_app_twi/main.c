@@ -43,7 +43,7 @@
 
 // Pin number for indicating communication with sensors.
 #ifdef BSP_LED_3
-    #define READ_ALL_INDICATOR  BSP_LED_3
+    #define READ_ALL_INDICATOR  BSP_BOARD_LED_3
 #else
     #error "Please choose an output pin"
 #endif
@@ -179,7 +179,7 @@ void read_all_cb(ret_code_t result, void * p_user_data)
 static void read_all(void)
 {
     // Signal on LED that something is going on.
-    nrf_gpio_pin_toggle(READ_ALL_INDICATOR);
+    bsp_board_led_invert(READ_ALL_INDICATOR);
 
     // [these structures have to be "static" - they cannot be placed on stack
     //  since the transaction is scheduled and these structures most likely
@@ -317,7 +317,7 @@ static void twi_config(void)
        .scl                = ARDUINO_SCL_PIN,
        .sda                = ARDUINO_SDA_PIN,
        .frequency          = NRF_TWI_FREQ_100K,
-       .interrupt_priority = APP_IRQ_PRIORITY_LOW,
+       .interrupt_priority = APP_IRQ_PRIORITY_LOWEST,
        .clear_bus_init     = false
     };
 
@@ -367,8 +367,7 @@ static void lfclk_config(void)
 
 int main(void)
 {
-    LEDS_CONFIGURE(1U << READ_ALL_INDICATOR);
-    LEDS_OFF(1U << READ_ALL_INDICATOR);
+    bsp_board_leds_init();
 
     // Start internal LFCLK XTAL oscillator - it is needed by BSP to handle
     // buttons with the use of APP_TIMER and for "read_all" ticks generation

@@ -25,6 +25,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "nrf_peripherals.h"
 #include "nrf.h"
 
 #ifdef __cplusplus
@@ -364,8 +365,17 @@ __STATIC_INLINE void nrf_twi_pins_set(NRF_TWI_Type * p_reg,
                                       uint32_t scl_pin,
                                       uint32_t sda_pin)
 {
+#if defined(TWI_PSEL_SCL_CONNECT_Pos)
+    p_reg->PSEL.SCL = scl_pin;
+#else
     p_reg->PSELSCL = scl_pin;
+#endif
+
+#if defined(TWI_PSEL_SDA_CONNECT_Pos)
+    p_reg->PSEL.SDA = sda_pin;
+#else
     p_reg->PSELSDA = sda_pin;
+#endif
 }
 
 __STATIC_INLINE void nrf_twi_frequency_set(NRF_TWI_Type * p_reg,

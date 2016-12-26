@@ -42,20 +42,6 @@ static uint32_t button_state_3;
 static uint32_t button_state_4;
 static volatile bool esb_completed = false;
 
-const uint8_t leds_list[LEDS_NUMBER] = LEDS_LIST;
-
-void nrf_esb_error_handler(uint32_t err_code, uint32_t line)
-{
-#if DEBUG //lint -e553
-    while (true);
-#else
-    NVIC_SystemReset();
-#endif
-
-}
-
-#define APP_ERROR_CHECK(err_code) if (err_code) nrf_esb_error_handler(err_code, __LINE__);
-
 void system_off( void )
 {
 #ifdef NRF51
@@ -74,7 +60,7 @@ void system_off( void )
 #endif //NRF52
 
     // Turn off LEDs before sleeping to conserve energy.
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_off();
 
     // Set nRF5 into System OFF. Reading out value and looping after setting the register
     // to guarantee System OFF in nRF52.
@@ -207,7 +193,7 @@ void gpio_init( void )
     // Workaround for PAN_028 rev1.1 anomaly 22 - System: Issues with disable System OFF mechanism
     nrf_delay_ms(1);
 
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 

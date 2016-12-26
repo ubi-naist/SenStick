@@ -27,11 +27,8 @@
 
 static int ecc_rng(uint8_t *dest, unsigned size)
 {
-    uint32_t errcode;
-
-    errcode = nrf_drv_rng_block_rand(dest, (uint32_t) size);
-
-    return errcode == NRF_SUCCESS ? 1 : 0;
+    nrf_drv_rng_block_rand(dest, (uint32_t) size);
+    return 1;
 }
 
 void ecc_init(bool rng)

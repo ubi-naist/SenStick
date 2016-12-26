@@ -86,15 +86,123 @@
 #define GPIOTE_CONFIG_IRQ_PRIORITY 3
 #endif
 
+// <e> GPIOTE_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef GPIOTE_CONFIG_LOG_ENABLED
+#define GPIOTE_CONFIG_LOG_ENABLED 0
+#endif
+#if  GPIOTE_CONFIG_LOG_ENABLED
+// <o> GPIOTE_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef GPIOTE_CONFIG_LOG_LEVEL
+#define GPIOTE_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> GPIOTE_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef GPIOTE_CONFIG_INFO_COLOR
+#define GPIOTE_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> GPIOTE_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef GPIOTE_CONFIG_DEBUG_COLOR
+#define GPIOTE_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //GPIOTE_CONFIG_LOG_ENABLED
+// </e>
+
 #endif //GPIOTE_ENABLED
 // </e>
 
-// <q> PERIPHERAL_RESOURCE_SHARING_ENABLED  - nrf_drv_common - Peripheral drivers common module
- 
-
+// <e> PERIPHERAL_RESOURCE_SHARING_ENABLED - nrf_drv_common - Peripheral drivers common module
+//==========================================================
 #ifndef PERIPHERAL_RESOURCE_SHARING_ENABLED
 #define PERIPHERAL_RESOURCE_SHARING_ENABLED 0
 #endif
+#if  PERIPHERAL_RESOURCE_SHARING_ENABLED
+// <e> COMMON_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef COMMON_CONFIG_LOG_ENABLED
+#define COMMON_CONFIG_LOG_ENABLED 0
+#endif
+#if  COMMON_CONFIG_LOG_ENABLED
+// <o> COMMON_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef COMMON_CONFIG_LOG_LEVEL
+#define COMMON_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> COMMON_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef COMMON_CONFIG_INFO_COLOR
+#define COMMON_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> COMMON_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef COMMON_CONFIG_DEBUG_COLOR
+#define COMMON_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //COMMON_CONFIG_LOG_ENABLED
+// </e>
+
+#endif //PERIPHERAL_RESOURCE_SHARING_ENABLED
+// </e>
 
 // <e> SPI_ENABLED - nrf_drv_spi - SPI/SPIM peripheral driver
 //==========================================================
@@ -102,6 +210,102 @@
 #define SPI_ENABLED 1
 #endif
 #if  SPI_ENABLED
+// <o> SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+
+#ifndef SPI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define SPI_DEFAULT_CONFIG_IRQ_PRIORITY 3
+#endif
+
+// <e> SPI0_ENABLED - Enable SPI0 instance
+//==========================================================
+#ifndef SPI0_ENABLED
+#define SPI0_ENABLED 1
+#endif
+#if  SPI0_ENABLED
+// <q> SPI0_USE_EASY_DMA  - Use EasyDMA
+ 
+
+#ifndef SPI0_USE_EASY_DMA
+#define SPI0_USE_EASY_DMA 0
+#endif
+
+// <o> SPI0_DEFAULT_FREQUENCY  - SPI frequency
+ 
+// <33554432=> 125 kHz 
+// <67108864=> 250 kHz 
+// <134217728=> 500 kHz 
+// <268435456=> 1 MHz 
+// <536870912=> 2 MHz 
+// <1073741824=> 4 MHz 
+// <2147483648=> 8 MHz 
+
+#ifndef SPI0_DEFAULT_FREQUENCY
+#define SPI0_DEFAULT_FREQUENCY 1073741824
+#endif
+
+#endif //SPI0_ENABLED
+// </e>
+
+// <e> SPI1_ENABLED - Enable SPI1 instance
+//==========================================================
+#ifndef SPI1_ENABLED
+#define SPI1_ENABLED 0
+#endif
+#if  SPI1_ENABLED
+// <q> SPI1_USE_EASY_DMA  - Use EasyDMA
+ 
+
+#ifndef SPI1_USE_EASY_DMA
+#define SPI1_USE_EASY_DMA 0
+#endif
+
+// <o> SPI1_DEFAULT_FREQUENCY  - SPI frequency
+ 
+// <33554432=> 125 kHz 
+// <67108864=> 250 kHz 
+// <134217728=> 500 kHz 
+// <268435456=> 1 MHz 
+// <536870912=> 2 MHz 
+// <1073741824=> 4 MHz 
+// <2147483648=> 8 MHz 
+
+#ifndef SPI1_DEFAULT_FREQUENCY
+#define SPI1_DEFAULT_FREQUENCY 1073741824
+#endif
+
+#endif //SPI1_ENABLED
+// </e>
+
+// <e> SPI2_ENABLED - Enable SPI2 instance
+//==========================================================
+#ifndef SPI2_ENABLED
+#define SPI2_ENABLED 0
+#endif
+#if  SPI2_ENABLED
+// <q> SPI2_USE_EASY_DMA  - Use EasyDMA
+ 
+
+#ifndef SPI2_USE_EASY_DMA
+#define SPI2_USE_EASY_DMA 0
+#endif
+
+// <q> SPI2_DEFAULT_FREQUENCY  - Use EasyDMA
+ 
+
+#ifndef SPI2_DEFAULT_FREQUENCY
+#define SPI2_DEFAULT_FREQUENCY 0
+#endif
+
+#endif //SPI2_ENABLED
+// </e>
+
 // <e> SPI_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef SPI_CONFIG_LOG_ENABLED
@@ -153,67 +357,6 @@
 #endif
 
 #endif //SPI_CONFIG_LOG_ENABLED
-// </e>
-
-// <o> SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
- 
-
-// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
-// <0=> 0 (highest) 
-// <1=> 1 
-// <2=> 2 
-// <3=> 3 
-
-#ifndef SPI_DEFAULT_CONFIG_IRQ_PRIORITY
-#define SPI_DEFAULT_CONFIG_IRQ_PRIORITY 3
-#endif
-
-// <e> SPI0_ENABLED - Enable SPI0 instance
-//==========================================================
-#ifndef SPI0_ENABLED
-#define SPI0_ENABLED 1
-#endif
-#if  SPI0_ENABLED
-// <q> SPI0_USE_EASY_DMA  - Use EasyDMA
- 
-
-#ifndef SPI0_USE_EASY_DMA
-#define SPI0_USE_EASY_DMA 0
-#endif
-
-#endif //SPI0_ENABLED
-// </e>
-
-// <e> SPI1_ENABLED - Enable SPI1 instance
-//==========================================================
-#ifndef SPI1_ENABLED
-#define SPI1_ENABLED 0
-#endif
-#if  SPI1_ENABLED
-// <q> SPI1_USE_EASY_DMA  - Use EasyDMA
- 
-
-#ifndef SPI1_USE_EASY_DMA
-#define SPI1_USE_EASY_DMA 0
-#endif
-
-#endif //SPI1_ENABLED
-// </e>
-
-// <e> SPI2_ENABLED - Enable SPI2 instance
-//==========================================================
-#ifndef SPI2_ENABLED
-#define SPI2_ENABLED 0
-#endif
-#if  SPI2_ENABLED
-// <q> SPI2_USE_EASY_DMA  - Use EasyDMA
- 
-
-#ifndef SPI2_USE_EASY_DMA
-#define SPI2_USE_EASY_DMA 0
-#endif
-
-#endif //SPI2_ENABLED
 // </e>
 
 #endif //SPI_ENABLED
@@ -279,13 +422,6 @@
 #define UART_DEFAULT_CONFIG_IRQ_PRIORITY 3
 #endif
 
-// <q> UART0_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
- 
-
-#ifndef UART0_CONFIG_USE_EASY_DMA
-#define UART0_CONFIG_USE_EASY_DMA 1
-#endif
-
 // <q> UART_EASY_DMA_SUPPORT  - Driver supporting EasyDMA
  
 
@@ -299,6 +435,75 @@
 #ifndef UART_LEGACY_SUPPORT
 #define UART_LEGACY_SUPPORT 1
 #endif
+
+// <e> UART0_ENABLED - Enable UART0 instance
+//==========================================================
+#ifndef UART0_ENABLED
+#define UART0_ENABLED 1
+#endif
+#if  UART0_ENABLED
+// <q> UART0_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
+ 
+
+#ifndef UART0_CONFIG_USE_EASY_DMA
+#define UART0_CONFIG_USE_EASY_DMA 1
+#endif
+
+#endif //UART0_ENABLED
+// </e>
+
+// <e> UART_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef UART_CONFIG_LOG_ENABLED
+#define UART_CONFIG_LOG_ENABLED 0
+#endif
+#if  UART_CONFIG_LOG_ENABLED
+// <o> UART_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef UART_CONFIG_LOG_LEVEL
+#define UART_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> UART_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef UART_CONFIG_INFO_COLOR
+#define UART_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> UART_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef UART_CONFIG_DEBUG_COLOR
+#define UART_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //UART_CONFIG_LOG_ENABLED
+// </e>
 
 #endif //UART_ENABLED
 // </e>
@@ -539,11 +744,54 @@
 #endif //NRF_LOG_BACKEND_SERIAL_USES_UART
 // </e>
 
-// <q> NRF_LOG_BACKEND_SERIAL_USES_RTT  - If enabled data is printed using RTT
- 
-
+// <e> NRF_LOG_BACKEND_SERIAL_USES_RTT - If enabled data is printed using RTT
+//==========================================================
 #ifndef NRF_LOG_BACKEND_SERIAL_USES_RTT
 #define NRF_LOG_BACKEND_SERIAL_USES_RTT 0
+#endif
+#if  NRF_LOG_BACKEND_SERIAL_USES_RTT
+// <o> NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE - RTT output buffer size. 
+// <i> Should be equal or bigger than \ref NRF_LOG_BACKEND_MAX_STRING_LENGTH.
+// <i> This value is used in Segger RTT configuration to set the buffer size
+// <i> if it is bigger than default RTT buffer size.
+
+#ifndef NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE
+#define NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE 512
+#endif
+
+#endif //NRF_LOG_BACKEND_SERIAL_USES_RTT
+// </e>
+
+// </h> 
+//==========================================================
+
+// </h> 
+//==========================================================
+
+// <h> nRF_Segger_RTT 
+
+//==========================================================
+// <h> segger_rtt - SEGGER RTT
+
+//==========================================================
+// <o> SEGGER_RTT_CONFIG_BUFFER_SIZE_UP - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_BUFFER_SIZE_UP
+#define SEGGER_RTT_CONFIG_BUFFER_SIZE_UP 64
+#endif
+
+// <o> SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS
+#define SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS 2
+#endif
+
+// <o> SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN
+#define SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN 16
+#endif
+
+// <o> SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS
+#define SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS 2
 #endif
 
 // </h> 

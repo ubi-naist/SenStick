@@ -60,7 +60,7 @@ static void bsp_event_handler(bsp_event_t event)
             APP_ERROR_CHECK(err_code);
 
             // Turn off LED to indicate that the device entered System OFF mode.
-            LEDS_OFF(BSP_LED_0_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_0);
             m_system_off_mode_on = true;
             break;
         }
@@ -76,7 +76,7 @@ static void bsp_event_handler(bsp_event_t event)
  */
 static void app_tick_handler(void * p_context)
 {
-    LEDS_INVERT(BSP_LED_1_MASK);
+    bsp_board_led_invert(BSP_BOARD_LED_1);
 }
 
 
@@ -118,7 +118,7 @@ int main(void)
     utils_setup();
 
     // Turn on LED to indicate that the device entered System ON mode.
-    LEDS_ON(BSP_LED_0_MASK);
+    bsp_board_led_on(BSP_BOARD_LED_0);
 
     while (true)
     {

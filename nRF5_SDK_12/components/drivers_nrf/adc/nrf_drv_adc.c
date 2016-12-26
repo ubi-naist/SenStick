@@ -9,13 +9,26 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if ADC_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ADC)
 #include "nrf_drv_adc.h"
 #include "nrf_drv_common.h"
 #include "nrf_assert.h"
 #include "app_util_platform.h"
-#include "app_util.h"
+
+#define NRF_LOG_MODULE_NAME "ADC"
+
+#if ADC_CONFIG_LOG_ENABLED
+#define NRF_LOG_LEVEL       ADC_CONFIG_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR  ADC_CONFIG_INFO_COLOR
+#define NRF_LOG_DEBUG_COLOR ADC_CONFIG_DEBUG_COLOR
+#define EVT_TO_STR(event)   (event == NRF_ADC_EVENT_END ? "NRF_ADC_EVENT_END" : "UNKNOWN EVENT")
+#else //ADC_CONFIG_LOG_ENABLED
+#define EVT_TO_STR(event)   ""
+#define NRF_LOG_LEVEL       0
+#endif //ADC_CONFIG_LOG_ENABLED
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
 
 
 typedef struct
@@ -35,9 +48,13 @@ static const nrf_drv_adc_config_t m_default_config = NRF_DRV_ADC_DEFAULT_CONFIG;
 ret_code_t nrf_drv_adc_init(nrf_drv_adc_config_t const * p_config,
                             nrf_drv_adc_event_handler_t  event_handler)
 {
+    ret_code_t err_code;
+    
     if (m_cb.state != NRF_DRV_STATE_UNINITIALIZED)
     {
-        return NRF_ERROR_INVALID_STATE;
+        err_code = NRF_ERROR_INVALID_STATE;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 
     nrf_adc_event_clear(NRF_ADC_EVENT_END);
@@ -52,7 +69,9 @@ ret_code_t nrf_drv_adc_init(nrf_drv_adc_config_t const * p_config,
     m_cb.event_handler = event_handler;
     m_cb.state = NRF_DRV_STATE_INITIALIZED;
 
-    return NRF_SUCCESS;
+    err_code = NRF_SUCCESS;
+    NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+    return err_code;
 }
 
 void nrf_drv_adc_uninit(void)
@@ -85,6 +104,8 @@ void nrf_drv_adc_channel_enable(nrf_drv_adc_channel_t * const p_channel)
         }
         p_curr_channel->p_next = p_channel;
     }
+
+    NRF_LOG_INFO("Enabled.\r\n");
 }
 
 void nrf_drv_adc_channel_disable(nrf_drv_adc_channel_t * const p_channel)
@@ -108,6 +129,8 @@ void nrf_drv_adc_channel_disable(nrf_drv_adc_channel_t * const p_channel)
     {
         m_cb.p_head = p_curr_channel->p_next;
     }
+
+    NRF_LOG_INFO("Disabled.\r\n");
 }
 
 void nrf_drv_adc_sample(void)
@@ -120,10 +143,14 @@ void nrf_drv_adc_sample(void)
 ret_code_t nrf_drv_adc_sample_convert(nrf_drv_adc_channel_t const * const p_channel,
                                       nrf_adc_value_t * p_value)
 {
+    ret_code_t err_code;
+
     ASSERT(m_cb.state != NRF_DRV_STATE_UNINITIALIZED);
     if (m_cb.state == NRF_DRV_STATE_POWERED_ON)
     {
-        return NRF_ERROR_BUSY;
+        err_code = NRF_ERROR_BUSY;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     else
     {
@@ -148,7 +175,9 @@ ret_code_t nrf_drv_adc_sample_convert(nrf_drv_adc_channel_t const * const p_chan
             m_cb.p_buffer = NULL;
             nrf_adc_int_enable(NRF_ADC_INT_END_MASK);
         }
-        return NRF_SUCCESS;
+        err_code = NRF_SUCCESS;
+        NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 }
 
@@ -188,9 +217,16 @@ static bool adc_sample_process()
 ret_code_t nrf_drv_adc_buffer_convert(nrf_adc_value_t * buffer, uint16_t size)
 {
     ASSERT(m_cb.state != NRF_DRV_STATE_UNINITIALIZED);
+
+    ret_code_t err_code;
+
+    NRF_LOG_INFO("Number of samples requested to convert: %d.\r\n", size);
+
     if (m_cb.state == NRF_DRV_STATE_POWERED_ON)
     {
-        return NRF_ERROR_BUSY;
+        err_code = NRF_ERROR_BUSY;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     else
     {
@@ -219,7 +255,9 @@ ret_code_t nrf_drv_adc_buffer_convert(nrf_adc_value_t * buffer, uint16_t size)
                 }
             }
         }
-        return NRF_SUCCESS;
+        err_code = NRF_SUCCESS;
+        NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 }
 
@@ -234,23 +272,29 @@ void ADC_IRQHandler(void)
     if (m_cb.p_buffer == NULL)
     {
         nrf_adc_event_clear(NRF_ADC_EVENT_END);
+        NRF_LOG_DEBUG("Event: %s.\r\n", (uint32_t)EVT_TO_STR(NRF_ADC_EVENT_END));
         nrf_adc_int_disable(NRF_ADC_INT_END_MASK);
         nrf_adc_disable();
         nrf_drv_adc_evt_t evt;
         evt.type = NRF_DRV_ADC_EVT_SAMPLE;
         evt.data.sample.sample = (nrf_adc_value_t)nrf_adc_result_get();
+        NRF_LOG_DEBUG("ADC data:\r\n");
+        NRF_LOG_HEXDUMP_DEBUG((uint8_t *)(&evt.data.sample.sample), sizeof(nrf_adc_value_t));
         m_cb.state = NRF_DRV_STATE_INITIALIZED;
         m_cb.event_handler(&evt);
     }
     else if (adc_sample_process())
     {
+        NRF_LOG_DEBUG("Event: %s.\r\n", (uint32_t)EVT_TO_STR(NRF_ADC_EVENT_END));
         nrf_adc_int_disable(NRF_ADC_INT_END_MASK);
         nrf_drv_adc_evt_t evt;
         evt.type = NRF_DRV_ADC_EVT_DONE;
         evt.data.done.p_buffer = m_cb.p_buffer;
         evt.data.done.size     = m_cb.size;
         m_cb.state = NRF_DRV_STATE_INITIALIZED;
+        NRF_LOG_DEBUG("ADC data:\r\n");
+        NRF_LOG_HEXDUMP_DEBUG((uint8_t *)m_cb.p_buffer, m_cb.size * sizeof(nrf_adc_value_t));
         m_cb.event_handler(&evt);
     }
 }
-#endif //ADC_ENABLED
+#endif // NRF_MODULE_ENABLED(ADC)

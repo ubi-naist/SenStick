@@ -1,7 +1,7 @@
 /*
 This software is subject to the license described in the license.txt file included with this software distribution.
 You may not use this file except in compliance with this license.
-Copyright © Dynastream Innovations Inc. 2015
+Copyright Â© Dynastream Innovations Inc. 2015
 All rights reserved.
 */
 
@@ -42,39 +42,24 @@ static uint8_t m_tx_input_pin_state = 0xFF;                       /**< State of 
  */
 static void button_state_encode(void)
 {
-    uint32_t err_code;
-    bool     button0;
-    bool     button1;
-    bool     button2;
-    bool     button3;
-
-    err_code = bsp_button_is_pressed(0, &button0);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(1, &button1);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(2, &button2);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(3, &button3);
-    APP_ERROR_CHECK(err_code);
-
     m_tx_input_pin_state = 0xFF;
 
-    if (button0)
+    if (bsp_button_is_pressed(0))
     {
         m_tx_input_pin_state &= 0xFE;
     }
-    if (button1)
+
+    if (bsp_button_is_pressed(1))
     {
         m_tx_input_pin_state &= 0xFD;
     }
-    if (button2)
+
+    if (bsp_button_is_pressed(2))
     {
         m_tx_input_pin_state &= 0xFB;
     }
-    if (button3)
+
+    if (bsp_button_is_pressed(3))
     {
         m_tx_input_pin_state &= 0xF7;
     }
@@ -115,24 +100,24 @@ static void led_state_set()
     uint8_t led_state_field = ~m_rx_input_pin_state;
 
     if (led_state_field & 1)
-        LEDS_ON(BSP_LED_0_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_0);
     else
-        LEDS_OFF(BSP_LED_0_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_0);
 
     if (led_state_field & 2)
-        LEDS_ON(BSP_LED_1_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_1);
     else
-        LEDS_OFF(BSP_LED_1_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_1);
 
     if (led_state_field & 4)
-        LEDS_ON(BSP_LED_2_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_2);
     else
-        LEDS_OFF(BSP_LED_2_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_2);
 
     if (led_state_field & 8)
-        LEDS_ON(BSP_LED_3_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_3);
     else
-        LEDS_OFF(BSP_LED_3_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_3);
 }
 
 

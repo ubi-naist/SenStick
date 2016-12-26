@@ -31,7 +31,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>..\..\..\..\..\SVD\nrf52.xml</SFDFile>
+          <SFDFile>..\..\nRF5_SDK_12\SVD\nrf52.xml</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -334,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define> BLE_STACK_SUPPORT_REQD __HEAP_SIZE=0 SVC_INTERFACE_CALL_AS_NORMAL_FUNCTION S132 NRF_SD_BLE_API_VERSION=3 BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET SWI_DISABLE0 SOFTDEVICE_PRESENT NRF52832 NRF52 NRF_DFU_SETTINGS_VERSION=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s132_pca10040;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s132\headers;..\..\..\..\..\components\softdevice\s132\headers\nrf52;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\config</IncludePath>
+              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s132_pca10040;..\..\config;..\..\nRF5_SDK_12\components;..\..\nRF5_SDK_12\components\ble\common;..\..\nRF5_SDK_12\components\drivers_nrf\clock;..\..\nRF5_SDK_12\components\drivers_nrf\common;..\..\nRF5_SDK_12\components\drivers_nrf\delay;..\..\nRF5_SDK_12\components\drivers_nrf\hal;..\..\nRF5_SDK_12\components\drivers_nrf\rng;..\..\nRF5_SDK_12\components\libraries\bootloader;..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu;..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu\includes;..\..\nRF5_SDK_12\components\libraries\bootloader\dfu;..\..\nRF5_SDK_12\components\libraries\crc32;..\..\nRF5_SDK_12\components\libraries\crypto;..\..\nRF5_SDK_12\components\libraries\ecc;..\..\nRF5_SDK_12\components\libraries\experimental_section_vars;..\..\nRF5_SDK_12\components\libraries\fifo;..\..\nRF5_SDK_12\components\libraries\fstorage;..\..\nRF5_SDK_12\components\libraries\hci;..\..\nRF5_SDK_12\components\libraries\log;..\..\nRF5_SDK_12\components\libraries\log\src;..\..\nRF5_SDK_12\components\libraries\scheduler;..\..\nRF5_SDK_12\components\libraries\sha256;..\..\nRF5_SDK_12\components\libraries\svc;..\..\nRF5_SDK_12\components\libraries\timer;..\..\nRF5_SDK_12\components\libraries\util;..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler;..\..\nRF5_SDK_12\components\softdevice\s132\headers;..\..\nRF5_SDK_12\components\softdevice\s132\headers\nrf52;..\..\nRF5_SDK_12\components\toolchain;..\bsp;..\..;..\..\nRF5_SDK_12\external\micro-ecc\micro-ecc;..\..\nRF5_SDK_12\external\nano-pb;..\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -352,7 +352,7 @@
               <MiscControls> --cpreproc_opts=-DBLE_STACK_SUPPORT_REQD,-D__HEAP_SIZE=0,-DSVC_INTERFACE_CALL_AS_NORMAL_FUNCTION,-DS132,-DNRF_SD_BLE_API_VERSION=3,-DBOARD_PCA10040,-DNRF52_PAN_12,-DNRF52_PAN_15,-DNRF52_PAN_20,-DNRF52_PAN_30,-DNRF52_PAN_31,-DNRF52_PAN_36,-DNRF52_PAN_51,-DNRF52_PAN_53,-DNRF52_PAN_54,-DNRF52_PAN_55,-DNRF52_PAN_58,-DNRF52_PAN_62,-DNRF52_PAN_63,-DNRF52_PAN_64,-DCONFIG_GPIO_AS_PINRESET,-DSWI_DISABLE0,-DSOFTDEVICE_PRESENT,-DNRF52832,-DNRF52,-DNRF_DFU_SETTINGS_VERSION=1</MiscControls>
               <Define> BLE_STACK_SUPPORT_REQD __HEAP_SIZE=0 SVC_INTERFACE_CALL_AS_NORMAL_FUNCTION S132 NRF_SD_BLE_API_VERSION=3 BOARD_PCA10040 NRF52_PAN_12 NRF52_PAN_15 NRF52_PAN_20 NRF52_PAN_30 NRF52_PAN_31 NRF52_PAN_36 NRF52_PAN_51 NRF52_PAN_53 NRF52_PAN_54 NRF52_PAN_55 NRF52_PAN_58 NRF52_PAN_62 NRF52_PAN_63 NRF52_PAN_64 CONFIG_GPIO_AS_PINRESET SWI_DISABLE0 SOFTDEVICE_PRESENT NRF52832 NRF52 NRF_DFU_SETTINGS_VERSION=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s132_pca10040;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s132\headers;..\..\..\..\..\components\softdevice\s132\headers\nrf52;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\config</IncludePath>
+              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s132_pca10040;..\..\config;..\..\nRF5_SDK_12\components;..\..\nRF5_SDK_12\components\ble\common;..\..\nRF5_SDK_12\components\drivers_nrf\clock;..\..\nRF5_SDK_12\components\drivers_nrf\common;..\..\nRF5_SDK_12\components\drivers_nrf\delay;..\..\nRF5_SDK_12\components\drivers_nrf\hal;..\..\nRF5_SDK_12\components\drivers_nrf\rng;..\..\nRF5_SDK_12\components\libraries\bootloader;..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu;..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu\includes;..\..\nRF5_SDK_12\components\libraries\bootloader\dfu;..\..\nRF5_SDK_12\components\libraries\crc32;..\..\nRF5_SDK_12\components\libraries\crypto;..\..\nRF5_SDK_12\components\libraries\ecc;..\..\nRF5_SDK_12\components\libraries\experimental_section_vars;..\..\nRF5_SDK_12\components\libraries\fifo;..\..\nRF5_SDK_12\components\libraries\fstorage;..\..\nRF5_SDK_12\components\libraries\hci;..\..\nRF5_SDK_12\components\libraries\log;..\..\nRF5_SDK_12\components\libraries\log\src;..\..\nRF5_SDK_12\components\libraries\scheduler;..\..\nRF5_SDK_12\components\libraries\sha256;..\..\nRF5_SDK_12\components\libraries\svc;..\..\nRF5_SDK_12\components\libraries\timer;..\..\nRF5_SDK_12\components\libraries\util;..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler;..\..\nRF5_SDK_12\components\softdevice\s132\headers;..\..\nRF5_SDK_12\components\softdevice\s132\headers\nrf52;..\..\nRF5_SDK_12\components\toolchain;..\bsp;..\..;..\..\nRF5_SDK_12\external\micro-ecc\micro-ecc;..\..\nRF5_SDK_12\external\nano-pb;..\config</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -421,17 +421,17 @@
             <File>
               <FileName>ble_advdata.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\ble\common\ble_advdata.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\ble\common\ble_advdata.c</FilePath>
             </File>
             <File>
               <FileName>ble_conn_params.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\ble\common\ble_conn_params.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\ble\common\ble_conn_params.c</FilePath>
             </File>
             <File>
               <FileName>ble_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\ble\common\ble_srv_common.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\ble\common\ble_srv_common.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -441,7 +441,7 @@
             <File>
               <FileName>nrf_ble_dfu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\ble_dfu\nrf_ble_dfu.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu\nrf_ble_dfu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -451,47 +451,47 @@
             <File>
               <FileName>nrf_bootloader.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\nrf_bootloader.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\nrf_bootloader.c</FilePath>
             </File>
             <File>
               <FileName>nrf_bootloader_app_start.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\nrf_bootloader_app_start.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\nrf_bootloader_app_start.c</FilePath>
             </File>
             <File>
               <FileName>nrf_bootloader_info.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\nrf_bootloader_info.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\nrf_bootloader_info.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_flash.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_flash.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu_mbr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_mbr.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_mbr.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu_settings.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_settings.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_settings.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu_transport.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_transport.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_transport.c</FilePath>
             </File>
             <File>
               <FileName>nrf_dfu_utils.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_utils.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_utils.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -501,17 +501,17 @@
             <File>
               <FileName>nrf_drv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\drivers_nrf\common\nrf_drv_common.c</FilePath>
             </File>
             <File>
               <FileName>nrf_drv_rng.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\rng\nrf_drv_rng.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\drivers_nrf\rng\nrf_drv_rng.c</FilePath>
             </File>
             <File>
               <FileName>nrf_nvmc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\drivers_nrf\hal\nrf_nvmc.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\drivers_nrf\hal\nrf_nvmc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -521,67 +521,67 @@
             <File>
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\util\app_error_weak.c</FilePath>
             </File>
             <File>
               <FileName>app_fifo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\fifo\app_fifo.c</FilePath>
             </File>
             <File>
               <FileName>app_scheduler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\scheduler\app_scheduler.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\scheduler\app_scheduler.c</FilePath>
             </File>
             <File>
               <FileName>app_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\timer\app_timer.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\timer\app_timer.c</FilePath>
             </File>
             <File>
               <FileName>app_timer_appsh.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\timer\app_timer_appsh.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\timer\app_timer_appsh.c</FilePath>
             </File>
             <File>
               <FileName>app_util_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\app_util_platform.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\util\app_util_platform.c</FilePath>
             </File>
             <File>
               <FileName>crc32.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\crc32\crc32.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\crc32\crc32.c</FilePath>
             </File>
             <File>
               <FileName>ecc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\ecc\ecc.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\ecc\ecc.c</FilePath>
             </File>
             <File>
               <FileName>fstorage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\fstorage\fstorage.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\fstorage\fstorage.c</FilePath>
             </File>
             <File>
               <FileName>hci_mem_pool.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\hci\hci_mem_pool.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\hci\hci_mem_pool.c</FilePath>
             </File>
             <File>
               <FileName>nrf_assert.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\util\nrf_assert.c</FilePath>
             </File>
             <File>
               <FileName>nrf_crypto.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\crypto\nrf_crypto.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\crypto\nrf_crypto.c</FilePath>
             </File>
             <File>
               <FileName>sha256.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\sha256\sha256.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\libraries\sha256\sha256.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -591,12 +591,12 @@
             <File>
               <FileName>softdevice_handler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler.c</FilePath>
             </File>
             <File>
               <FileName>softdevice_handler_appsh.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -606,7 +606,7 @@
             <File>
               <FileName>micro_ecc_lib_nrf52.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>..\..\..\..\..\external\micro-ecc\nrf52_keil\armgcc\micro_ecc_lib_nrf52.lib</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\external\micro-ecc\nrf52_keil\armgcc\micro_ecc_lib_nrf52.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -616,12 +616,12 @@
             <File>
               <FileName>pb_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\external\nano-pb\pb_common.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\external\nano-pb\pb_common.c</FilePath>
             </File>
             <File>
               <FileName>pb_decode.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\external\nano-pb\pb_decode.c</FilePath>
+              <FilePath>..\..\nRF5_SDK_12\external\nano-pb\pb_decode.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -10,12 +10,11 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_SDM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_SDM)
 
 #include "ant_sdm_page_1.h"
 #include "ant_sdm_utils.h"
-#include "app_util.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_SDM_PAGE_1"
 #if ANT_SDM_PAGE_1_LOG_ENABLED
@@ -115,4 +114,4 @@ void ant_sdm_page_1_decode(uint8_t const         * p_page_buffer,
     page_1_data_log(p_page_data, p_common_data);
 }
 
-#endif // ANT_SDM_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_SDM)

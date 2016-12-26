@@ -350,9 +350,9 @@
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls>--c99</MiscControls>
-              <Define> NRF51422 BOARD_PCA10028 BSP_UART_SUPPORT BSP_SIMPLE GAZELL_PRESENT NRF51</Define>
+              <Define> NRF51422 BOARD_PCA10028 BSP_SIMPLE GAZELL_PRESENT NRF51</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config;..\..\..\..\..\..\components;..\..\..\..\..\..\components\device;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\proprietary_rf\gzll;..\..\..\..\..\..\components\toolchain;..\..\..\..\..\bsp;..\..;..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\config;..\..\..\..\..\..\components;..\..\..\..\..\..\components\boards;..\..\..\..\..\..\components\device;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\proprietary_rf\gzll;..\..\..\..\..\..\components\toolchain;..\..;..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -365,10 +365,10 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <VariousControls>
-              <MiscControls> --cpreproc_opts=-DNRF51422,-DBOARD_PCA10028,-DBSP_UART_SUPPORT,-DBSP_SIMPLE,-DGAZELL_PRESENT,-DNRF51</MiscControls>
-              <Define> NRF51422 BOARD_PCA10028 BSP_UART_SUPPORT BSP_SIMPLE GAZELL_PRESENT NRF51</Define>
+              <MiscControls> --cpreproc_opts=-DNRF51422,-DBOARD_PCA10028,-DBSP_SIMPLE,-DGAZELL_PRESENT,-DNRF51</MiscControls>
+              <Define> NRF51422 BOARD_PCA10028 BSP_SIMPLE GAZELL_PRESENT NRF51</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config;..\..\..\..\..\..\components;..\..\..\..\..\..\components\device;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\proprietary_rf\gzll;..\..\..\..\..\..\components\toolchain;..\..\..\..\..\bsp;..\..;..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\config;..\..\..\..\..\..\components;..\..\..\..\..\..\components\boards;..\..\..\..\..\..\components\device;..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\components\libraries\uart;..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\components\proprietary_rf\gzll;..\..\..\..\..\..\components\toolchain;..\..;..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -405,11 +405,20 @@
               <FileType>5</FileType>
               <FilePath>..\config\sdk_config.h</FilePath>            </File>          </Files>
         </Group>        <Group>
+          <GroupName>Board Definition</GroupName>
+          <Files>            <File>
+              <FileName>boards.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\components\boards\boards.c</FilePath>            </File>          </Files>
+        </Group>        <Group>
           <GroupName>Board Support</GroupName>
           <Files>            <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\bsp\bsp.c</FilePath>            </File>          </Files>
+              <FilePath>..\..\..\..\..\..\components\libraries\bsp\bsp.c</FilePath>            </File>            <File>
+              <FileName>bsp_nfc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\components\libraries\bsp\bsp_nfc.c</FilePath>            </File>          </Files>
         </Group>        <Group>
           <GroupName>Device</GroupName>
           <Files>            <File>
@@ -463,7 +472,10 @@
               <FilePath>..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>            </File>            <File>
               <FileName>retarget.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>            </File>          </Files>
+              <FilePath>..\..\..\..\..\..\components\libraries\uart\retarget.c</FilePath>            </File>            <File>
+              <FileName>sdk_errors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\components\libraries\util\sdk_errors.c</FilePath>            </File>          </Files>
         </Group>        <Group>
           <GroupName>nRF_Log</GroupName>
           <Files>            <File>

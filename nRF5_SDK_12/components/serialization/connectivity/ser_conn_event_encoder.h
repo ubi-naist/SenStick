@@ -13,6 +13,7 @@
 /**
  * @addtogroup ser_conn Connectivity application code
  * @ingroup ble_sdk_lib_serialization
+ * @brief @tagAPI52832 Encoders, decoders, and event handlers related to the Connectivity Chip.
  */
 
 /** @file

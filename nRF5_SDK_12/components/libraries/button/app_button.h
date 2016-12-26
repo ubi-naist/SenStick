@@ -104,12 +104,10 @@ uint32_t app_button_disable(void);
 /**@brief Function for checking if a button is currently being pushed.
  *
  * @param[in]  button_id     Button index (in the app_button_cfg_t array given to app_button_init) to be checked.
- * @param[out] p_is_pushed   Button state.
- *
- * @retval     NRF_SUCCESS               State successfully read.
- * @retval     NRF_ERROR_INVALID_PARAM   Invalid button index.
+ * 
+ * @return     Button state.
  */
-uint32_t app_button_is_pushed(uint8_t button_id, bool * p_is_pushed);
+bool app_button_is_pushed(uint8_t button_id);
 
 
 #ifdef __cplusplus

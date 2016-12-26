@@ -103,13 +103,13 @@ static void burst_data_process(uint8_t * p_burst_message)
     // If this is the first packet
     if ((p_burst_message[0] & SEQUENCE_NUMBER_MASK) == SEQUENCE_FIRST_MESSAGE)
     {
-        LEDS_ON(BSP_LED_0_MASK);  // Turn on LED 0 to indicate burst started
-        LEDS_OFF(BSP_LED_1_MASK); // Clear error indication
+        bsp_board_led_on(BSP_BOARD_LED_0);  // Turn on LED 0 to indicate burst started
+        bsp_board_led_off(BSP_BOARD_LED_1); // Clear error indication
         m_burst_rx = true;
     }
     else if ((p_burst_message[0] & SEQUENCE_LAST_MESSAGE) != 0) // If this is the last packet
     {
-        LEDS_OFF(BSP_LED_0_MASK);   // Turn off LED 0 to indicate burst ended
+        bsp_board_led_off(BSP_BOARD_LED_0);   // Turn off LED 0 to indicate burst ended
         m_burst_rx = false;
     }
     // The burst data is available in p_burst_message[1] to p_burst_message[8]
@@ -192,8 +192,8 @@ void ant_advanced_burst_event_handler(ant_evt_t * p_ant_evt)
     switch (p_ant_evt->event)
     {
         case EVENT_TRANSFER_TX_START:
-            LEDS_ON(BSP_LED_0_MASK);  // Turn on LED 0 to indicate burst started
-            LEDS_OFF(BSP_LED_1_MASK); // Clear error indication
+            bsp_board_led_on(BSP_BOARD_LED_0);  // Turn on LED 0 to indicate burst started
+            bsp_board_led_off(BSP_BOARD_LED_1); // Clear error indication
             break;
 
         case EVENT_TRANSFER_NEXT_DATA_BLOCK:
@@ -201,19 +201,19 @@ void ant_advanced_burst_event_handler(ant_evt_t * p_ant_evt)
             break;
 
         case EVENT_TRANSFER_TX_COMPLETED:
-            LEDS_OFF(BSP_LED_0_MASK); // Turn off LED 0 to indicate burst ended
+            bsp_board_led_off(BSP_BOARD_LED_0); // Turn off LED 0 to indicate burst ended
             m_bytes = 0;
             break;
 
         case EVENT_TRANSFER_TX_FAILED:
-            LEDS_OFF(BSP_LED_0_MASK); // Turn off LED 0 to indicate burst ended
-            LEDS_ON(BSP_LED_1_MASK);  // Turn on LED 1 to indicate burst failure
+            bsp_board_led_off(BSP_BOARD_LED_0); // Turn off LED 0 to indicate burst ended
+            bsp_board_led_on(BSP_BOARD_LED_1);  // Turn on LED 1 to indicate burst failure
             m_bytes = 0;
             break;
 
         case EVENT_TRANSFER_RX_FAILED:
-            LEDS_OFF(BSP_LED_0_MASK); // Turn off LED 0 to indicate burst ended
-            LEDS_ON(BSP_LED_1_MASK);  // Turn on LED 1 to indicate burst failure
+            bsp_board_led_off(BSP_BOARD_LED_0); // Turn off LED 0 to indicate burst ended
+            bsp_board_led_on(BSP_BOARD_LED_1);  // Turn on LED 1 to indicate burst failure
             m_burst_rx = false;
             break;
 

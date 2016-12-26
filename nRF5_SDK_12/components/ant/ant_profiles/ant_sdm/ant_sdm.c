@@ -10,17 +10,15 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_SDM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_SDM)
 
 #include "nrf_assert.h"
 #include "app_error.h"
 #include "ant_interface.h"
-#include "app_util.h"
 #include "ant_sdm.h"
 #include "app_error.h"
 #include "ant_sdm_utils.h"
-#include "nordic_common.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_SDM"
 #if ANT_SDM_LOG_ENABLED
@@ -371,4 +369,4 @@ void ant_sdm_disp_evt_handler(ant_sdm_profile_t * p_profile, ant_evt_t * p_ant_e
     }
 }
 
-#endif // ANT_SDM_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_SDM)

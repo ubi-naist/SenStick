@@ -90,24 +90,14 @@ int main(void)
     // Enter main loop.
     for (;;)
     {
-        bool gzll_button;
-        bool ble_button;
-
-        // Check buttons states.
-        err_code = bsp_button_is_pressed(BLE_BUTTON_ID, &ble_button);
-        APP_ERROR_CHECK(err_code);
-
-        err_code = bsp_button_is_pressed(GZLL_BUTTON_ID, &gzll_button);
-        APP_ERROR_CHECK(err_code);
-
         NRF_LOG_FLUSH();
         power_manage();
 
-        if (ble_button)
+        if (bsp_button_is_pressed(BLE_BUTTON_ID))
         {
             running_mode = BLE;
         }
-        else if (gzll_button)
+        else if (bsp_button_is_pressed(GZLL_BUTTON_ID))
         {
             running_mode = GAZELL;
         }

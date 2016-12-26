@@ -44,7 +44,7 @@
         </option>
         <option>
           <name>MemFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\debugger\NordicSemiconductor\iar_nrf52_xxaa.ddf</state>
+          <state>$TOOLKIT_DIR$\CONFIG\debugger\NordicSemiconductor\iar_nrf52832_xxaa.ddf</state>
         </option>
         <option>
           <name>RunToEnable</name>
@@ -116,7 +116,7 @@
         </option>
         <option>
           <name>FlashLoadersV3</name>
-          <state>$TOOLKIT_DIR$\config\flashloader\NordicSemiconductor\nrf52xxx_xxaa.board</state>
+          <state>$TOOLKIT_DIR$\config\flashloader\NordicSemiconductor\nrf52832_xxaa.board</state>
         </option>
         <option>
           <name>OCImagesSuppressCheck1</name>

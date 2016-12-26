@@ -89,23 +89,23 @@ typedef struct
 } nrf_drv_comp_config_t;
 
 /** @brief COMP threshold default configuration. */
-#define COMP_CONFIG_TH                               \
-{                                                    \
-    .th_down = VOLTAGE_THRESHOLD_TO_INT(0.5, 1.8),     \
-    .th_up = VOLTAGE_THRESHOLD_TO_INT(1.5, 1.8)     \
+#define COMP_CONFIG_TH                                  \
+{                                                       \
+    .th_down = VOLTAGE_THRESHOLD_TO_INT(0.5, 1.8),      \
+    .th_up = VOLTAGE_THRESHOLD_TO_INT(1.5, 1.8)         \
 }
 
 /** @brief COMP driver default configuration including the COMP HAL configuration. */
-#define NRF_DRV_COMP_CONF_DEFAULT_CONFIG(INPUT)                                        \
-{                                                                               \
-        .reference          = (nrf_comp_ref_t)COMP_CONFIG_REF,                      \
-        .main_mode          = (nrf_comp_main_mode_t)COMP_CONFIG_MAIN_MODE,          \
-    .threshold          = COMP_CONFIG_TH,                                       \
-        .speed_mode         = (nrf_comp_sp_mode_t)COMP_CONFIG_SPEED_MODE,           \
-        .hyst               = (nrf_comp_hyst_t)COMP_CONFIG_HYST,                    \
-        .isource            = (nrf_isource_t)COMP_CONFIG_ISOURCE,                   \
-        .input              = (nrf_comp_input_t)INPUT,                                \
-    .interrupt_priority = COMP_CONFIG_IRQ_PRIORITY                              \
+#define NRF_DRV_COMP_DEFAULT_CONFIG(INPUT)                                     \
+{                                                                                   \
+    .reference          = (nrf_comp_ref_t)COMP_CONFIG_REF,                          \
+    .main_mode          = (nrf_comp_main_mode_t)COMP_CONFIG_MAIN_MODE,              \
+    .threshold          = COMP_CONFIG_TH,                                           \
+    .speed_mode         = (nrf_comp_sp_mode_t)COMP_CONFIG_SPEED_MODE,               \
+    .hyst               = (nrf_comp_hyst_t)COMP_CONFIG_HYST,                        \
+    .isource            = (nrf_isource_t)COMP_CONFIG_ISOURCE,                       \
+    .input              = (nrf_comp_input_t)INPUT,                                  \
+    .interrupt_priority = COMP_CONFIG_IRQ_PRIORITY                                  \
 }
 
 /**
@@ -204,66 +204,6 @@ __STATIC_INLINE uint32_t nrf_drv_comp_event_address_get(nrf_comp_event_t comp_ev
 {
     return (uint32_t)nrf_comp_event_address_get(comp_event);
 }
-
-/**
- * @brief Function for converting a GPIO pin number to an analog COMP channel.
- *
- * @param[in]  pin                        GPIO pin number.
- *
- * @return     COMP channel. The function returns UINT8_MAX
- *             if the specified pin is not an analog input.
- */
-__STATIC_INLINE nrf_comp_input_t nrf_drv_comp_gpio_to_ain(uint8_t pin);
-
-/**
- * @brief Function for converting a COMP channel to a GPIO pin number.
- *
- * @param[in]  ain                        COMP channel.
- *
- * @return     GPIO pin number. The function returns UINT8_MAX
- *             if the specified channel is not a GPIO pin.
- */
-__STATIC_INLINE uint8_t nrf_drv_comp_ain_to_gpio(nrf_comp_input_t ain);
-
-#ifndef SUPPRESS_INLINE_IMPLEMENTATION
-
-__STATIC_INLINE nrf_comp_input_t nrf_drv_comp_gpio_to_ain(uint8_t pin)
-{
-    // AIN0 - AIN3
-    if ((pin >= 2) && (pin <= 5))
-    {
-        return (nrf_comp_input_t)(pin - 2);
-    }
-    // AIN4 - AIN7
-    else if ((pin >= 28) && (pin <= 31))
-    {
-        return (nrf_comp_input_t)(pin - 24);
-    }
-    else
-    {
-        return (nrf_comp_input_t)UINT8_MAX;
-    }
-}
-
-__STATIC_INLINE uint8_t nrf_drv_comp_ain_to_gpio(nrf_comp_input_t ain)
-{
-    // AIN0 - AIN3
-    if (ain <= 3)
-    {
-        return (uint8_t)(ain + 2);
-    }
-    // AIN4 - AIN7
-    else if ((ain >= 4) && ((uint8_t)ain <= 7))
-    {
-        return (uint8_t)(ain + 24);
-    }
-    else
-    {
-        return UINT8_MAX;
-    }
-}
-
-#endif //SUPPRESS_INLINE_IMPLEMENTATION
 
 /**
  *@}

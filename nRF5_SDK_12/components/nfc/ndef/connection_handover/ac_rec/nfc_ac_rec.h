@@ -30,6 +30,10 @@
 extern "C" {
 #endif
 
+#define AC_REC_CPS_BYTE_SIZE            1 ///< Size of the field with CPS data.
+#define AC_REC_DATA_REF_LEN_SIZE        1 ///< Size of the Data Reference Length field.
+#define AC_REC_AUX_DATA_REF_COUNT_SIZE  1 ///< Size of the Data Reference Length field.
+    
 /**
  * @brief Carrier Power State.
  *
@@ -81,7 +85,7 @@ ret_code_t nfc_ac_rec_payload_constructor(nfc_ac_rec_payload_desc_t * p_nfc_rec_
  * @brief External reference to the type field of the Alternative Carrier record, defined in the
  * file @c nfc_ac_rec.c. It is used in the @ref NFC_NDEF_AC_RECORD_DESC_DEF macro.
  */
-extern const uint8_t nfc_ac_rec_type_field[];
+extern const uint8_t nfc_ac_rec_type_field[2];
 
 /**
  * @brief Size of the type field of the Alternative Carrier record, defined in the

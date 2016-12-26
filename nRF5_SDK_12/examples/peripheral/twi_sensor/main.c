@@ -145,6 +145,7 @@ int main(void)
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 
     NRF_LOG_INFO("\r\nTWI sensor example\r\n");
+    NRF_LOG_FLUSH();
     twi_init();
     LM75B_set_mode();
 

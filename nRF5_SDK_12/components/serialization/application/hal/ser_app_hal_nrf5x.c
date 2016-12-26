@@ -61,7 +61,7 @@ void ser_app_hal_nrf_reset_pin_set()
 
 void ser_app_hal_nrf_evt_irq_priority_set()
 {
-    NVIC_SetPriority(SOFTDEVICE_EVT_IRQ, APP_IRQ_PRIORITY_LOW);
+    NVIC_SetPriority(SOFTDEVICE_EVT_IRQ, APP_IRQ_PRIORITY_LOWEST);
 }
 
 void ser_app_hal_nrf_evt_pending()

@@ -57,10 +57,10 @@ static void nfc_callback(void * p_context, nfc_t2t_event_t event, const uint8_t 
     {
         case NFC_T2T_EVENT_FIELD_ON:
             (void)led_softblink_stop();
-            nrf_gpio_pins_clear(LEDS_MASK);
+            bsp_board_leds_on();
             break;
         case NFC_T2T_EVENT_FIELD_OFF:
-            nrf_gpio_pins_set(LEDS_MASK);
+            bsp_board_leds_off();
             (void)led_softblink_start(m_active_led_mask);
             break;
         case NFC_T2T_EVENT_DATA_READ:

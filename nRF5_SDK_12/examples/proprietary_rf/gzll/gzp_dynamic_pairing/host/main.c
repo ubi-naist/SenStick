@@ -73,7 +73,7 @@ static void ui_init(void)
     NRF_LOG_INFO("Gazell dynamic pairing example. Host mode.\r\n");
     NRF_LOG_FLUSH();
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 
@@ -84,18 +84,17 @@ static void ui_init(void)
  */
 static void output_present(uint8_t val)
 {
-    uint32_t leds[] = LEDS_LIST;
     uint32_t i;
 
     for (i = 0; i < LEDS_NUMBER; i++)
     {
         if (val & (1 << i))
         {
-            LEDS_ON(1 << (leds[i]));
+            bsp_board_led_on(i);
         }
         else
         {
-            LEDS_OFF(1 << (leds[i]));
+            bsp_board_led_off(i);
         }
     }
 }

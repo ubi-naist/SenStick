@@ -13,6 +13,7 @@
 /**
  * @addtogroup ser_app Application side code
  * @ingroup ble_sdk_lib_serialization
+ * @brief @tagAPI52832 SoftDevice handler and transport on the application side.
  */
 
 /** @file

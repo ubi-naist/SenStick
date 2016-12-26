@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_KEY_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_KEY_MANAGER)
 #include <stdio.h>
 #include "ant_key_manager.h"
 #include "ant_key_manager_config.h"
@@ -37,4 +37,4 @@ uint32_t ant_fs_key_set(uint8_t network_number)
     return sd_ant_network_address_set(network_number, m_ant_fs_network_key);
 }
 
-#endif // ANT_KEY_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_KEY_MANAGER)

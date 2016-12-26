@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if HCI_TRANSPORT_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(HCI_TRANSPORT)
 #include "hci_transport.h"
 #include "hci_slip.h"
 #include "crc16.h"
@@ -18,7 +18,6 @@
 #include "app_timer.h"
 #include "app_error.h"
 #include <stdio.h>
-#include "sdk_common.h"
 
 #define PKT_HDR_SIZE                    4u                                                                 /**< Packet header size in number of bytes. */
 #define PKT_CRC_SIZE                    2u                                                                 /**< Packet CRC size in number of bytes. */
@@ -779,4 +778,4 @@ uint32_t hci_transport_rx_pkt_consume(uint8_t * p_buffer)
 {
     return (hci_mem_pool_rx_consume(p_buffer - PKT_HDR_SIZE));
 }
-#endif //HCI_TRANSPORT_ENABLED
+#endif //NRF_MODULE_ENABLED(HCI_TRANSPORT)

@@ -275,6 +275,7 @@ typedef struct
     uint8_t          racp_proc_record_ndx;                                                  /**< Current record index. */
     uint8_t          racp_proc_records_reported;                                            /**< Number of reported records. */
     uint8_t          racp_proc_records_reported_since_txcomplete;                           /**< Number of reported records since the last TX_COMPLETE event. */
+    ble_racp_value_t racp_request;
     ble_racp_value_t pending_racp_response;                                                 /**< RACP response to be sent. */
     uint8_t          pending_racp_response_operand[NRF_BLE_CGMS_RACP_PENDING_OPERANDS_MAX]; /**< Operand of the RACP response to be sent. */
 } nrf_ble_cgms_racp_t;

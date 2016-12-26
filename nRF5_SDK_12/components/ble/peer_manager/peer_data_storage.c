@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "peer_data_storage.h"
 
 #include <stdint.h>
@@ -22,7 +22,6 @@
 #include "peer_id.h"
 #include "peer_data.h"
 #include "fds.h"
-#include "sdk_common.h"
 
 
 // Macro for verifying that the peer id is within a valid range.
@@ -334,7 +333,7 @@ ret_code_t pds_init()
     ret = fds_init();
     if (ret != NRF_SUCCESS)
     {
-        return NRF_ERROR_NO_MEM;
+        return NRF_ERROR_STORAGE_FULL;
     }
 
     peer_id_init();
@@ -482,7 +481,7 @@ ret_code_t pds_space_reserve(pm_peer_data_const_t const * p_peer_data,
             return NRF_ERROR_INVALID_LENGTH;
 
         case FDS_ERR_NO_SPACE_IN_FLASH:
-            return NRF_ERROR_NO_MEM;
+            return NRF_ERROR_STORAGE_FULL;
 
         default:
             return NRF_ERROR_INTERNAL;
@@ -576,7 +575,7 @@ ret_code_t pds_peer_data_store(pm_peer_id_t                 peer_id,
             return NRF_ERROR_BUSY;
 
         case FDS_ERR_NO_SPACE_IN_FLASH:
-            return NRF_ERROR_NO_MEM;
+            return NRF_ERROR_STORAGE_FULL;
 
         default:
             return NRF_ERROR_INTERNAL;
@@ -663,4 +662,4 @@ uint32_t pds_peer_count_get(void)
     NRF_PM_DEBUG_CHECK(m_module_initialized);
     return peer_id_n_ids();
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

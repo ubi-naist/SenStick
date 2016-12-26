@@ -21,9 +21,9 @@ All rights reserved.
 #include "nrf_delay.h"
 
 // I/O configuration
-#define LED_BROADCAST                   BSP_LED_0_MASK
-#define LED_ACKNOWLEDGED                BSP_LED_1_MASK
-#define LED_BURST                       BSP_LED_2_MASK
+#define LED_BROADCAST                   BSP_BOARD_LED_0
+#define LED_ACKNOWLEDGED                BSP_BOARD_LED_1
+#define LED_BURST                       BSP_BOARD_LED_2
 
 // Channel configuration.
 #define ANT_CHANNEL_NUMBER              0x00                 /**< ANT Channel 0. */
@@ -129,7 +129,7 @@ void ant_message_types_master_event_handler(ant_evt_t * p_ant_evt)
         case EVENT_TX:                      // Intentional fall through
         case EVENT_TRANSFER_TX_COMPLETED:   // Intentional fall through
         case EVENT_TRANSFER_TX_FAILED:
-            LEDS_OFF(LEDS_MASK);
+            bsp_board_leds_off();
             m_tx_buffer[BROADCAST_DATA_BUFFER_SIZE - 1] = m_counter;
 
             if (state_message_types == BROADCAST)
@@ -176,9 +176,9 @@ void ant_message_types_master_event_handler(ant_evt_t * p_ant_evt)
                 led_output = LED_BURST;
             }
             // Activate LED for 20ms
-            LEDS_ON(led_output);
+            bsp_board_led_on(led_output);
             nrf_delay_ms(20);
-            LEDS_OFF(led_output);
+            bsp_board_led_off(led_output);
             m_counter++;
             break;
 

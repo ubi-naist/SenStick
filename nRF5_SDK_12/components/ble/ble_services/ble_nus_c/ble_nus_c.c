@@ -1,5 +1,13 @@
-#include "sdk_config.h"
-#if BLE_NUS_C_ENABLED
+/*
+ * Copyright (c) Nordic Semiconductor. All Rights Reserved.
+ *
+ * The information contained herein is confidential property of Nordic Semiconductor. The use,
+ * copying, transfer or disclosure of such information is prohibited except by express written
+ * agreement with Nordic Semiconductor.
+ *
+ */
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_NUS_C)
 #include <stdlib.h> // definition of NULL
 
 #include "ble.h"
@@ -7,7 +15,6 @@
 #include "ble_gattc.h"
 #include "ble_srv_common.h"
 #include "app_error.h"
-#include "sdk_common.h"
 
 
 void ble_nus_c_on_db_disc_evt(ble_nus_c_t * p_ble_nus_c, ble_db_discovery_evt_t * p_evt)
@@ -212,4 +219,4 @@ uint32_t ble_nus_c_handles_assign(ble_nus_c_t * p_ble_nus,
     }
     return NRF_SUCCESS;
 }
-#endif //BLE_NUS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_NUS_C)

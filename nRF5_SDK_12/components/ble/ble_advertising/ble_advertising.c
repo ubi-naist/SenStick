@@ -8,8 +8,8 @@
  * WARRANTY of ANY KIND is provided. This heading must NOT be removed from
  * the file.
  */
-#include  "sdk_config.h"
-#if BLE_ADVERTISING_ENABLED
+#include  "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_ADVERTISING)
 #include "ble_advdata.h"
 #include "ble_advertising.h"
 #include "nrf_soc.h"
@@ -687,4 +687,4 @@ uint32_t ble_advertising_restart_without_whitelist(void)
     return NRF_SUCCESS;
 }
 
-#endif //BLE_ADVERTISING_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_ADVERTISING)

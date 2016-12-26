@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "gatt_cache_manager.h"
 
 #include "ble_gap.h"
@@ -182,7 +182,7 @@ static void local_db_update_in_evt(uint16_t conn_handle)
             evt_send(&event);
             break;
 
-        case NRF_ERROR_NO_MEM:
+        case NRF_ERROR_STORAGE_FULL:
             event.evt_id = GCM_EVT_ERROR_STORAGE_FULL;
             event.params.error_no_mem.conn_handle = conn_handle;
             event.peer_id = im_peer_id_get_by_conn_handle(conn_handle);
@@ -531,4 +531,4 @@ void gcm_local_database_has_changed(void)
 
     service_changed_pending_flags_check();
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

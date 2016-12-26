@@ -10,12 +10,11 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BPWR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BPWR)
 
 #include "ant_bpwr_common_data.h"
 #include "ant_bpwr_utils.h"
-#include "nordic_common.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_BPWR_COMMON"
 #if ANT_BPWR_COMMON_LOG_ENABLED
@@ -69,4 +68,4 @@ void ant_bpwr_cadence_decode(uint8_t const         * p_page_buffer,
     cadence_data_log(p_common_data);
 }
 
-#endif // ANT_BPWR_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BPWR)

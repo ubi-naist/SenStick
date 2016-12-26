@@ -55,7 +55,7 @@ void uart_error_handle(app_uart_evt_t * p_event)
 static void show_error(void)
 {
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
     while (true)
     {
         // Do nothing.
@@ -98,9 +98,10 @@ static void uart_loopback_test()
  */
 int main(void)
 {
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
     uint32_t err_code;
+
+    bsp_board_leds_init();
+
     const app_uart_comm_params_t comm_params =
       {
           RX_PIN_NUMBER,
@@ -116,7 +117,7 @@ int main(void)
                          UART_RX_BUF_SIZE,
                          UART_TX_BUF_SIZE,
                          uart_error_handle,
-                         APP_IRQ_PRIORITY_LOW,
+                         APP_IRQ_PRIORITY_LOWEST,
                          err_code);
 
     APP_ERROR_CHECK(err_code);

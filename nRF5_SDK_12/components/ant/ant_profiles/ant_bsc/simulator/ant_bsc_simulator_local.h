@@ -15,7 +15,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "bsp.h"
 #include "ant_bsc.h"
 #include "sensorsim.h"
 

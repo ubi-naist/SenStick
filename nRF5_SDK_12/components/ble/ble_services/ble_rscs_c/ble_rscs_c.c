@@ -10,14 +10,13 @@
 /**@cond To Make Doxygen skip documentation generation for this file.
  * @{
  */
-#include "sdk_config.h"
-#if BLE_RSCS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_RSCS_C)
 #include "ble_rscs_c.h"
 #include "ble_db_discovery.h"
 #include "ble_types.h"
 #include "ble_srv_common.h"
 #include "ble_gattc.h"
-#include "sdk_common.h"
 
 #define NRF_LOG_MODULE_NAME "BLE_RSCS_C"
 #include "nrf_log.h"
@@ -358,4 +357,4 @@ uint32_t ble_rscs_c_rsc_notif_enable(ble_rscs_c_t * p_ble_rscs_c)
 /** @}
  *  @endcond
  */
-#endif //BLE_RSCS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_RSCS_C)

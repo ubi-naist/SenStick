@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if LED_SOFTBLINK_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(LED_SOFTBLINK)
 #include <string.h>
 #include "led_softblink.h"
 #include "nrf_gpio.h"
@@ -92,7 +92,7 @@ static void led_softblink_on_timeout(void * p_context)
 }
 
 
-ret_code_t led_softblink_init(led_sb_init_params_t * p_init_params)
+ret_code_t led_softblink_init(led_sb_init_params_t const * p_init_params)
 {
     ret_code_t err_code;
 
@@ -121,6 +121,7 @@ ret_code_t led_softblink_init(led_sb_init_params_t * p_init_params)
 
     m_led_sb.pwm_config.active_high         = m_led_sb.params.active_high;
     m_led_sb.pwm_config.bit_mask            = p_init_params->leds_pin_bm;
+    m_led_sb.pwm_config.p_port              = p_init_params->p_leds_port;
     m_led_sb.pwm_config.period              = PWM_PERIOD;
     m_led_sb.pwm_config.p_timer_id          = &led_softblink_timer;
 
@@ -200,4 +201,4 @@ ret_code_t led_softblink_uninit(void)
 
     return NRF_SUCCESS;
 }
-#endif //LED_SOFTBLINK_ENABLED
+#endif //NRF_MODULE_ENABLED(LED_SOFTBLINK)

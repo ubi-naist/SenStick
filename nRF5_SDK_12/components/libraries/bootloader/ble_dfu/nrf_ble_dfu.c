@@ -18,7 +18,6 @@
 #include "nrf_dfu_transport.h"
 #include "nrf_dfu_mbr.h"
 #include "nrf_bootloader_info.h"
-#include "ble_advdata.h"
 #include "ble_conn_params.h"
 #include "boards.h"
 #include "nrf_log.h"
@@ -45,6 +44,8 @@
 #define FIRST_CONN_PARAMS_UPDATE_DELAY       APP_TIMER_TICKS(100, APP_TIMER_PRESCALER)              /**< Time from the Connected event to first time sd_ble_gap_conn_param_update is called (100 milliseconds). */
 #define NEXT_CONN_PARAMS_UPDATE_DELAY        APP_TIMER_TICKS(500, APP_TIMER_PRESCALER)              /**< Time between each call to sd_ble_gap_conn_param_update after the first call (500 milliseconds). */
 #define MAX_CONN_PARAMS_UPDATE_COUNT         3                                                      /**< Number of attempts before giving up the connection parameter negotiation. */
+
+#define MAX_ADV_DATA_LENGTH                  20                                                     /**< Maximum length of advertising data. */
 
 #define APP_ADV_INTERVAL                     MSEC_TO_UNITS(25, UNIT_0_625_MS)                       /**< The advertising interval (25 ms.). */
 #define APP_ADV_TIMEOUT_IN_SECONDS           BLE_GAP_ADV_TIMEOUT_GENERAL_UNLIMITED                  /**< The advertising timeout in units of seconds. This is set to @ref BLE_GAP_ADV_TIMEOUT_GENERAL_UNLIMITED so that the advertisement is done as long as there there is a call to @ref dfu_transport_close function.*/
@@ -116,25 +117,51 @@ static uint32_t conn_params_init(void)
 /**@brief     Function for the Advertising functionality initialization.
  *
  * @details   Encodes the required advertising data and passes it to the stack.
- *            Also builds a structure to be passed to the stack when starting advertising.
+ *            The advertising data encoded here is specific for DFU. 
+ *            Setting advertising data can by done by calling @ref ble_advdata_set.
  */
 static uint32_t advertising_init(uint8_t adv_flags)
 {
-    ble_advdata_t advdata;
-    ble_uuid_t    service_uuid;
+    uint32_t    err_code;
+    uint16_t    len_advdata                 = 9;
+    uint16_t    max_device_name_length      = MAX_ADV_DATA_LENGTH - len_advdata;
+    uint16_t    actual_device_name_length   = max_device_name_length;
 
-    BLE_UUID_BLE_ASSIGN(service_uuid, BLE_DFU_SERVICE_UUID);
+    uint8_t     p_encoded_advdata[MAX_ADV_DATA_LENGTH];
+    
+    // Encode flags.
+    p_encoded_advdata[0]                    = 0x2;
+    p_encoded_advdata[1]                    = BLE_GAP_AD_TYPE_FLAGS;
+    p_encoded_advdata[2]                    = adv_flags;
+    
+    // Encode 'more available' uuid list.
+    p_encoded_advdata[3]                    = 0x3;
+    p_encoded_advdata[4]                    = BLE_GAP_AD_TYPE_16BIT_SERVICE_UUID_MORE_AVAILABLE;
+    p_encoded_advdata[5]                    = LSB_16(BLE_DFU_SERVICE_UUID);
+    p_encoded_advdata[6]                    = MSB_16(BLE_DFU_SERVICE_UUID);
 
-    // Build and set advertising data.
-    memset(&advdata, 0, sizeof(advdata));
-
-    advdata.name_type                     = BLE_ADVDATA_FULL_NAME;
-    advdata.include_appearance            = false;
-    advdata.flags                         = adv_flags;
-    advdata.uuids_more_available.uuid_cnt = 1;
-    advdata.uuids_more_available.p_uuids  = &service_uuid;
-
-    return ble_advdata_set(&advdata, NULL);
+    // Get GAP device name and length
+    err_code = sd_ble_gap_device_name_get(&p_encoded_advdata[9], &actual_device_name_length);
+    if (err_code != NRF_SUCCESS)
+    {
+        return err_code;
+    }
+    
+    // Set GAP device in advertising data.
+    if (actual_device_name_length <= max_device_name_length)
+    {
+        p_encoded_advdata[7]                = actual_device_name_length + 1; // (actual_length + ADV_AD_TYPE_FIELD_SIZE(1))
+        p_encoded_advdata[8]                = BLE_GAP_AD_TYPE_COMPLETE_LOCAL_NAME;
+        len_advdata                        += actual_device_name_length;
+    }
+    else
+    {
+        // Must use a shorter advertising name than the actual name of the device
+        p_encoded_advdata[7]                = max_device_name_length + 1; // (length + ADV_AD_TYPE_FIELD_SIZE(1))
+        p_encoded_advdata[8]                = BLE_GAP_AD_TYPE_SHORT_LOCAL_NAME;
+        len_advdata                         = MAX_ADV_DATA_LENGTH;
+    }
+    return sd_ble_gap_adv_data_set(p_encoded_advdata, len_advdata, NULL, 0);
 }
 
 

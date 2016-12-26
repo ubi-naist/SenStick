@@ -177,11 +177,11 @@ ret_code_t ant_channel_encrypt_config_perform(uint8_t                          c
  * @param[in] channel_num      ANT channel number.
  * @param[in] p_crypto_config  Pointer to the encryption configuration.
  *
- * @retval NRF_SUCCESS             If the function completed successfully.
- * @retval NRF_ERROR_INVALID_PARAM If the channel type is invalid.
- * @retval MODULE_NOT_INITIALZED   If the stack is not configured for encryption.
- * @retval Other                   Otherwise, the error value returned by the
- *                                 @ref ant_channel_encrypt_config_perform function is returned.
+ * @retval NRF_SUCCESS                      If the function completed successfully.
+ * @retval NRF_ERROR_INVALID_PARAM          If the channel type is invalid.
+ * @retval NRF_ERROR_MODULE_NOT_INITIALZED  If the stack is not configured for encryption.
+ * @retval Other                            Otherwise, the error value returned by the @ref
+ *                                          ant_channel_encrypt_config_perform function is returned.
  */
 ret_code_t ant_channel_encrypt_config(uint8_t                          channel_type,
                                       uint8_t                          channel_num,

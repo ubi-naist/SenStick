@@ -30,6 +30,7 @@
 #include "sdk_config.h"
 #include "nrf_saadc.h"
 #include "sdk_errors.h"
+#include "nrf_drv_common.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -288,35 +289,6 @@ void nrf_drv_saadc_abort(void);
  *            the handler function. Set to @ref NRF_DRV_SAADC_LIMITH_DISABLED to disable this limit.
  */
 void nrf_drv_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_high);
-
-/**
- * @brief Function for converting a GPIO pin number to an analog input pin number used in the channel
- *        configuration.
- *
- * @param[in]  pin GPIO pin.
- *
- * @return     Value representing an analog input pin. The function returns @ref NRF_SAADC_INPUT_DISABLED
- *             if the specified pin is not an analog input.
- */
-__STATIC_INLINE nrf_saadc_input_t nrf_drv_saadc_gpio_to_ain(uint32_t pin)
-{
-    // AIN0 - AIN3
-    if (pin >= 2 && pin <= 5)
-    {
-        // 0 means "not connected", hence this "+ 1"
-        return (nrf_saadc_input_t)(pin - 2 + 1);
-    }
-    // AIN4 - AIN7
-    else if (pin >= 28 && pin <= 31)
-    {
-        return (nrf_saadc_input_t)(pin - 24 + 1);
-    }
-    else
-    {
-        return NRF_SAADC_INPUT_DISABLED;
-    }
-}
-
 
 #ifdef __cplusplus
 }

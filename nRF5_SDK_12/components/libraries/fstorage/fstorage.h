@@ -160,7 +160,6 @@ fs_ret_t fs_init(void);
 
 fs_ret_t fs_fake_init(void);
 
-bool fs_check_addr(uint32_t const * const p_dest, uint32_t const * const p_src);
 
 /**@brief   Function for storing data in flash.
  *
@@ -233,6 +232,22 @@ fs_ret_t fs_erase(fs_config_t const * const p_config,
  * @retval  FS_ERR_NULL_ARG     If @p p_op_count is NULL.
  */
 fs_ret_t fs_queued_op_count_get(uint32_t * const p_op_count);
+
+
+/**@brief Function for checking if the queue for flash operations is full.
+ *
+ * @retval  true    If the queue is full. 
+ * @retval  false   If there is space for more operations in the queue.
+ */
+bool fs_queue_is_full(void);
+
+
+/**@brief Function for checking if the queue for flash operations is empty.
+ *
+ * @retval  true    If the queue is empty.
+ * @retval  false   If there are flash operations in the queue.
+ */
+bool fs_queue_is_empty(void);
 
 
 /**@brief   Function for handling system events from the SoftDevice.

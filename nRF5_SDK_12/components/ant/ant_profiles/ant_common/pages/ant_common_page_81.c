@@ -10,12 +10,10 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_COMMON_PAGE_81_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_COMMON_PAGE_81)
 
 #include "ant_common_page_81.h"
-#include "app_util.h"
-#include "nordic_common.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_COMMON_PAGE_81"
 #if ANT_COMMON_PAGE_81_LOG_ENABLED
@@ -88,4 +86,4 @@ void ant_common_page_81_decode(uint8_t const                     * p_page_buffer
     page81_data_log(p_page_data);
 }
 
-#endif // ANT_COMMON_PAGE_81_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_COMMON_PAGE_81)

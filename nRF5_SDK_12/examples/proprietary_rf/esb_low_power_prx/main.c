@@ -29,18 +29,6 @@
 #define LED_ON          0
 #define LED_OFF         1
 
-void nrf_esb_error_handler(uint32_t err_code, uint32_t line)
-{
-#if DEBUG //lint -e553
-    while (true);
-#else
-    NVIC_SystemReset();
-#endif
-
-}
-
-#define APP_ERROR_CHECK(err_code) if (err_code) nrf_esb_error_handler(err_code, __LINE__);
-
 //#define NRF_ESB_LEGACY
 
 /*lint -save -esym(40, BUTTON_1) -esym(40, BUTTON_2) -esym(40, BUTTON_3) -esym(40, BUTTON_4) -esym(40, LED_1) -esym(40, LED_2) -esym(40, LED_3) -esym(40, LED_4) */
@@ -48,7 +36,6 @@ void nrf_esb_error_handler(uint32_t err_code, uint32_t line)
 static nrf_esb_payload_t tx_payload;
 static nrf_esb_payload_t rx_payload;
 static uint8_t m_state[4];
-const uint8_t leds_list[LEDS_NUMBER] = LEDS_LIST;
 uint8_t led_nr;
 
 void nrf_esb_event_handler(nrf_esb_evt_t const * p_event)
@@ -159,7 +146,7 @@ void gpio_init( void )
     m_state[3] = LED_OFF;
 
     //nrf_gpio_range_cfg_output(8, 31);
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 
     nrf_gpio_pin_write(LED_1, m_state[0]);
     nrf_gpio_pin_write(LED_2, m_state[1]);

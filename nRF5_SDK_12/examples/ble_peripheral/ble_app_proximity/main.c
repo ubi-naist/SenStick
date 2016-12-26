@@ -77,25 +77,14 @@
 #define CENTRAL_LINK_COUNT                0                                            /**<number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT             1                                            /**<number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define SIGNAL_ALERT_BUTTON_ID            0                                            /**< Button used for send or cancel High Alert to the peer. */
-#define STOP_ALERTING_BUTTON_ID           1                                            /**< Button used for clearing the Alert LED that may be blinking or turned ON because of alerts from the central. */
-
 #define DEVICE_NAME                       "Nordic_Prox"                                /**< Name of device. Will be included in the advertising data. */
 #define APP_ADV_INTERVAL_FAST             0x0028                                       /**< Fast advertising interval (in units of 0.625 ms. This value corresponds to 25 ms.). */
 #define APP_ADV_INTERVAL_SLOW             0x0C80                                       /**< Slow advertising interval (in units of 0.625 ms. This value corresponds to 2 seconds). */
-#define APP_SLOW_ADV_TIMEOUT              180                                          /**< The duration of the slow advertising period (in seconds). */
-#define APP_FAST_ADV_TIMEOUT              30                                           /**< The duration of the fast advertising period (in seconds). */
 
 #define APP_TIMER_PRESCALER               0                                            /**< Value of the RTC1 PRESCALER register. */
 #define APP_TIMER_OP_QUEUE_SIZE           6                                            /**< Size of timer operation queues. */
 
 #define BATTERY_LEVEL_MEAS_INTERVAL       APP_TIMER_TICKS(120000, APP_TIMER_PRESCALER) /**< Battery level measurement interval (ticks). This value corresponds to 120 seconds. */
-
-#define ADV_LED_ON_TIME                   APP_TIMER_TICKS(100, APP_TIMER_PRESCALER)    /**< Advertisement LED ON period when in blinking state. */
-#define ADV_LED_OFF_TIME                  APP_TIMER_TICKS(900, APP_TIMER_PRESCALER)    /**< Advertisement LED OFF period when in blinking state. */
-
-#define MILD_ALERT_LED_ON_TIME            APP_TIMER_TICKS(100, APP_TIMER_PRESCALER)    /**< Alert LED ON period when in blinking state. */
-#define MILD_ALERT_LED_OFF_TIME           APP_TIMER_TICKS(900, APP_TIMER_PRESCALER)    /**< Alert LED OFF period when in blinking state. */
 
 #define MIN_CONN_INTERVAL                 MSEC_TO_UNITS(500, UNIT_1_25_MS)             /**< Minimum acceptable connection interval (0.5 seconds).  */
 #define MAX_CONN_INTERVAL                 MSEC_TO_UNITS(1000, UNIT_1_25_MS)            /**< Maximum acceptable connection interval (1 second). */
@@ -218,59 +207,33 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
         {
-            NRF_LOG_DEBUG("Connected to previously bonded device\r\n");
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break; // PM_EVT_CONN_SEC_START
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
-            NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                                 ble_conn_state_role(p_evt->conn_handle),
-                                 p_evt->conn_handle,
-                                 p_evt->params.conn_sec_succeeded.procedure);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // PM_EVT_CONN_SEC_SUCCEEDED
+            NRF_LOG_INFO("Connection secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break; // PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                default:
-                    break;
-            }
-        } break; // PM_EVT_CONN_SEC_FAILED
+            /* Often, when securing fails, it shouldn't be restarted, for security reasons.
+             * Other times, it can be restarted directly.
+             * Sometimes it can be restarted, but only after changing some Security Parameters.
+             * Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             * Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             * How to handle this error is highly application dependent. */
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        } break; // PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
@@ -284,54 +247,50 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
             {
                 APP_ERROR_CHECK(err_code);
             }
-        } break; // PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break; // PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break; // PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break; // PM_EVT_PEER_DATA_UPDATE_FAILED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break; // PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break; // PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             advertising_start();
-            break; // PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break; // PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -1162,7 +1121,7 @@ static void bsp_event_handler(bsp_event_t event)
     {
         case BSP_EVENT_SLEEP:
             sleep_mode_enter();
-            break; // BSP_EVENT_SLEEP
+            break;
 
         case BSP_EVENT_DISCONNECT:
             err_code = sd_ble_gap_disconnect(m_ias_c.conn_handle,
@@ -1171,7 +1130,7 @@ static void bsp_event_handler(bsp_event_t event)
             {
                 APP_ERROR_CHECK(err_code);
             }
-            break; // BSP_EVENT_DISCONNECT
+            break;
 
         case BSP_EVENT_KEY_0:
         {
@@ -1202,13 +1161,13 @@ static void bsp_event_handler(bsp_event_t event)
                     APP_ERROR_HANDLER(err_code);
                 }
             }
-        } break;              // BSP_EVENT_KEY_0
+        } break;
 
-        case BSP_EVENT_KEY_1: // STOP_ALERTING_BUTTON_ID
+        case BSP_EVENT_KEY_1:
             NRF_LOG_INFO("Alert Off.\r\n");
             err_code = bsp_indication_set(BSP_INDICATE_ALERT_OFF);
             APP_ERROR_CHECK(err_code);
-            break; // BSP_EVENT_KEY_1
+            break;
 
         default:
             break;

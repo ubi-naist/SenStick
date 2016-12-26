@@ -7,6 +7,7 @@ PROJ_DIR := ../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
   LINKER_SCRIPT  := ant_sdm_rx_gcc_nrf52.ld
+
 # Source files common to all targets
 SRC_FILES += \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_serial.c \
@@ -19,6 +20,8 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/hardfault/nrf52/handler/hardfault_handler_gcc.c \
   $(SDK_ROOT)/components/libraries/hardfault/hardfault_implementation.c \
   $(SDK_ROOT)/components/libraries/util/nrf_assert.c \
+  $(SDK_ROOT)/components/libraries/util/sdk_errors.c \
+  $(SDK_ROOT)/components/boards/boards.c \
   $(SDK_ROOT)/components/drivers_nrf/clock/nrf_drv_clock.c \
   $(SDK_ROOT)/components/drivers_nrf/common/nrf_drv_common.c \
   $(SDK_ROOT)/components/drivers_nrf/gpiote/nrf_drv_gpiote.c \
@@ -38,8 +41,9 @@ SRC_FILES += \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_sdm/pages/ant_sdm_page_3.c \
   $(SDK_ROOT)/components/ant/ant_stack_config/ant_stack_config.c \
   $(SDK_ROOT)/components/ant/ant_state_indicator/ant_state_indicator.c \
-  $(PROJ_DIR)/../../../../bsp/bsp.c \
-  $(PROJ_DIR)/../../../../bsp/bsp_btn_ant.c \
+  $(SDK_ROOT)/components/libraries/bsp/bsp.c \
+  $(SDK_ROOT)/components/libraries/bsp/bsp_btn_ant.c \
+  $(SDK_ROOT)/components/libraries/bsp/bsp_nfc.c \
   $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/external/segger_rtt/RTT_Syscalls_GCC.c \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT.c \
@@ -50,8 +54,6 @@ SRC_FILES += \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(PROJ_DIR)/config/ant_sdm_rx_d52_starterkit_s212 \
-  $(PROJ_DIR)/config \
   $(SDK_ROOT)/components/ant/ant_key_manager \
   $(SDK_ROOT)/components/libraries/hardfault/nrf52 \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/pages \
@@ -62,8 +64,8 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/drivers_nrf/uart \
   $(SDK_ROOT)/components/device \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_common/ant_request_controller \
-  $(PROJ_DIR)/../../../../bsp \
   $(SDK_ROOT)/components/ant/ant_profiles/ant_sdm \
+  $(SDK_ROOT)/components/boards \
   $(SDK_ROOT)/components/drivers_nrf/gpiote \
   $(SDK_ROOT)/components/softdevice/s212/headers \
   $(SDK_ROOT)/components/libraries/button \
@@ -71,6 +73,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/log \
   $(SDK_ROOT)/components/libraries/log/src \
   $(SDK_ROOT)/components/toolchain \
+  $(SDK_ROOT)/components/libraries/bsp \
   $(SDK_ROOT)/components/ant/ant_key_manager/config \
   $(SDK_ROOT)/components/drivers_nrf/clock \
   $(SDK_ROOT)/components/drivers_nrf/hal \
@@ -105,8 +108,6 @@ CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 # keep every function in separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin --short-enums 
-# generate dependency output file
-CFLAGS += -MP -MD
 
 # C++ flags common to all targets
 CXXFLAGS += \
@@ -131,12 +132,8 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += --specs=nano.specs -lc -lnosys
 
 
-
-
-
-
-
 .PHONY: $(TARGETS) default all clean help flash 
+
 # Default target - first one defined
 default: nrf52832_xxaa
 
@@ -148,12 +145,14 @@ help:
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
 include $(TEMPLATE_PATH)/Makefile.common
+
 $(foreach target, $(TARGETS), $(call define_target, $(target)))
--include $(foreach target, $(TARGETS), $($(target)_dependencies))
 
 # Flash the program
 flash: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
 	@echo Flashing: $<
-	nrfjprog --program $< -f nrf52 --chiperase
+	nrfjprog --program $< -f nrf52 --sectorerase
 	nrfjprog --reset -f nrf52
 
+erase:
+	nrfjprog --eraseall -f nrf52

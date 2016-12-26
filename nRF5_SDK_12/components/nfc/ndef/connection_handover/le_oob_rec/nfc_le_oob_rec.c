@@ -13,13 +13,7 @@
 #include "nfc_le_oob_rec.h"
 #include "sdk_errors.h"
 #include "ble_gap.h"
-
-/* Record Payload Type for Bluetooth Carrier Configuration LE record */
-static const uint8_t le_oob_rec_type_field[] =
-{
-    'a', 'p', 'p', 'l', 'i', 'c', 'a', 't', 'i', 'o', 'n', '/', 'v', 'n', 'd', '.',
-    'b', 'l', 'u', 'e', 't', 'o', 'o', 't', 'h', '.', 'l', 'e', '.', 'o', 'o', 'b'
-};
+#include "nfc_ble_pair_common.h"
 
 /**
  * @brief Function for validating AD structure content for a Bluetooth Carrier Configuration LE record.

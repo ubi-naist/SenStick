@@ -45,8 +45,6 @@
 
 const nrf_drv_rtc_t m_rtc = NRF_DRV_RTC_INSTANCE(1); /**< Declaring an instance of nrf_drv_rtc for RTC1. */
 
-const uint8_t m_leds_list[LEDS_NUMBER] = LEDS_LIST;
-
 static uint8_t m_led_invert_next = 0; /**< Index of the next LED to be inverted. */
 
 /**@brief Function for dispatching an ANT stack event to all modules with an ANT stack event handler.
@@ -96,11 +94,11 @@ void ant_evt_dispatch(ant_evt_t * p_ant_evt)
         {
             if ((1 << i) & led_status)
             {
-                LEDS_ON(1 << m_leds_list[i]);
+                bsp_board_led_on(i);
             }
             else
             {
-                LEDS_OFF(1 << m_leds_list[i]);
+                bsp_board_led_off(i);
             }
         }
     }
@@ -133,9 +131,9 @@ static void softdevice_setup(void)
  */
 static void led_event(void)
 {
-    uint32_t led_to_invert = (1 << m_leds_list[(m_led_invert_next++) % LEDS_NUMBER]);
+    uint32_t led_to_invert = ((m_led_invert_next++) % LEDS_NUMBER);
 
-    LEDS_INVERT(led_to_invert);
+    bsp_board_led_invert(led_to_invert);
 }
 
 
@@ -235,8 +233,7 @@ static void rtc_config(void)
 static void leds_config(void)
 {
     // Configure all LED's on board.
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 

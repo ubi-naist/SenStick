@@ -1,6 +1,6 @@
 /**
  *
- * @defgroup nfc_type_2_tag_parser_config Parser for decoding Type 2 Tag data. configuration
+ * @defgroup nfc_type_2_tag_parser_config Parser for decoding Type 2 Tag data configuration
  * @{
  * @ingroup nfc_type_2_tag_parser
  */

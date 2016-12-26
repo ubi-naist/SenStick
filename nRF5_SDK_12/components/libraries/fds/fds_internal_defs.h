@@ -50,9 +50,9 @@ extern "C" {
 #define FDS_OP_COMPLETED        (0x1D1D)
 
 // The size of a physical page, in 4-byte words.
-#if   defined(NRF51)
+#if     defined(NRF51)
     #define FDS_PHY_PAGE_SIZE   (256)
-#elif defined(NRF52)
+ #elif (defined(NRF52) || defined(NRF52840_XXAA))
     #define FDS_PHY_PAGE_SIZE   (1024)
 #endif
 

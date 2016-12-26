@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "security_dispatcher.h"
 
 #include <string.h>
@@ -580,13 +580,13 @@ ret_code_t smd_params_reply(uint16_t                 conn_handle,
                 sec_keyset.keys_own.p_enc_key  = &peer_data.p_bonding_data->own_ltk;
                 sec_keyset.keys_own.p_pk       = p_public_key;
                 sec_keyset.keys_peer.p_enc_key = &peer_data.p_bonding_data->peer_ltk;
-                sec_keyset.keys_peer.p_id_key  = &peer_data.p_bonding_data->peer_id;
+                sec_keyset.keys_peer.p_id_key  = &peer_data.p_bonding_data->peer_ble_id;
                 sec_keyset.keys_peer.p_pk      = &m_peer_pk;
 
                 // Retrieve the address the peer used during connection establishment.
                 // This address will be overwritten if ID is shared. Should not fail.
                 ret_code_t err_code_addr = im_ble_addr_get(conn_handle,
-                    &peer_data.p_bonding_data->peer_id.id_addr_info);
+                    &peer_data.p_bonding_data->peer_ble_id.id_addr_info);
                 UNUSED_VARIABLE(err_code_addr);
 
                 // Buffer is OK, reserve room in flash for the data.
@@ -865,4 +865,4 @@ void smd_ble_evt_handler(ble_evt_t * p_ble_evt)
             break;
     };
 }
-#endif //PEER_MANAGER_ENABLED
+#endif //NRF_MODULE_ENABLED(PEER_MANAGER)

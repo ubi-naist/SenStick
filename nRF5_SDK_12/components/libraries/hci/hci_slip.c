@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if HCI_SLIP_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(HCI_SLIP)
 #include "hci_slip.h"
 #include <stdlib.h>
 #include "app_uart.h"
@@ -345,7 +345,7 @@ static uint32_t slip_uart_open(void)
     err_code = app_uart_init(&comm_params,
                              NULL,
                              slip_uart_eventhandler,
-                             APP_IRQ_PRIORITY_LOW);
+                             APP_IRQ_PRIORITY_LOWEST);
 
     if (err_code == NRF_SUCCESS)
     {
@@ -426,4 +426,4 @@ uint32_t hci_slip_rx_buffer_register(uint8_t * p_buffer, uint32_t length)
     handle_rx_byte      = handle_rx_byte_wait_start;
     return NRF_SUCCESS;
 }
-#endif //HCI_SLIP_ENABLED
+#endif //NRF_MODULE_ENABLED(HCI_SLIP)

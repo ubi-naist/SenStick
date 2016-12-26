@@ -6,6 +6,37 @@
 #ifdef USE_APP_CONFIG
 #include "app_config.h"
 #endif
+// <h> Application 
+
+//==========================================================
+// <o> MAX_NDEF_RECORDS - Maximal number of NDEF records that can be stored in NDEF message descriptor. 
+#ifndef MAX_NDEF_RECORDS
+#define MAX_NDEF_RECORDS 10
+#endif
+
+// <o> MAX_TLV_BLOCKS - Maximal number of TLV blocks that can be stored in Type 2/4 Tag descriptor. 
+#ifndef MAX_TLV_BLOCKS
+#define MAX_TLV_BLOCKS 10
+#endif
+
+// <o> TAG_AFTER_READ_DELAY - Delay (in ms) after Tag read. 
+#ifndef TAG_AFTER_READ_DELAY
+#define TAG_AFTER_READ_DELAY 2000
+#endif
+
+// <o> TAG_DETECT_TIMEOUT - Timeout (in ms) for function which searches for a Tag. 
+#ifndef TAG_DETECT_TIMEOUT
+#define TAG_DETECT_TIMEOUT 5000
+#endif
+
+// <o> TAG_TYPE_2_DATA_BUFFER_SIZE - Buffer size for data from a Type 2 Tag Platform. 
+#ifndef TAG_TYPE_2_DATA_BUFFER_SIZE
+#define TAG_TYPE_2_DATA_BUFFER_SIZE 1024
+#endif
+
+// </h> 
+//==========================================================
+
 // <h> Third Parties 
 
 //==========================================================
@@ -53,6 +84,48 @@
 #define PN532_CONFIG_TWI_INSTANCE 0
 #endif
 
+// <e> ADAFRUIT_PN532_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef ADAFRUIT_PN532_LOG_ENABLED
+#define ADAFRUIT_PN532_LOG_ENABLED 0
+#endif
+#if  ADAFRUIT_PN532_LOG_ENABLED
+// <o> ADAFRUIT_PN532_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef ADAFRUIT_PN532_LOG_LEVEL
+#define ADAFRUIT_PN532_LOG_LEVEL 3
+#endif
+
+// <o> ADAFRUIT_PN532_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef ADAFRUIT_PN532_INFO_COLOR
+#define ADAFRUIT_PN532_INFO_COLOR 0
+#endif
+
+#endif //ADAFRUIT_PN532_LOG_ENABLED
+// </e>
+
+// <o> PN532_PACKBUFF_SIZE - Size of the buffer used for sending commands and storing responses. 
+#ifndef PN532_PACKBUFF_SIZE
+#define PN532_PACKBUFF_SIZE 256
+#endif
+
 #endif //ADAFRUIT_PN532_ENABLED
 // </e>
 
@@ -87,18 +160,126 @@
 // <7=> 7 
 
 #ifndef GPIOTE_CONFIG_IRQ_PRIORITY
-#define GPIOTE_CONFIG_IRQ_PRIORITY 6
+#define GPIOTE_CONFIG_IRQ_PRIORITY 7
 #endif
+
+// <e> GPIOTE_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef GPIOTE_CONFIG_LOG_ENABLED
+#define GPIOTE_CONFIG_LOG_ENABLED 0
+#endif
+#if  GPIOTE_CONFIG_LOG_ENABLED
+// <o> GPIOTE_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef GPIOTE_CONFIG_LOG_LEVEL
+#define GPIOTE_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> GPIOTE_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef GPIOTE_CONFIG_INFO_COLOR
+#define GPIOTE_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> GPIOTE_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef GPIOTE_CONFIG_DEBUG_COLOR
+#define GPIOTE_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //GPIOTE_CONFIG_LOG_ENABLED
+// </e>
 
 #endif //GPIOTE_ENABLED
 // </e>
 
-// <q> PERIPHERAL_RESOURCE_SHARING_ENABLED  - nrf_drv_common - Peripheral drivers common module
- 
-
+// <e> PERIPHERAL_RESOURCE_SHARING_ENABLED - nrf_drv_common - Peripheral drivers common module
+//==========================================================
 #ifndef PERIPHERAL_RESOURCE_SHARING_ENABLED
 #define PERIPHERAL_RESOURCE_SHARING_ENABLED 0
 #endif
+#if  PERIPHERAL_RESOURCE_SHARING_ENABLED
+// <e> COMMON_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef COMMON_CONFIG_LOG_ENABLED
+#define COMMON_CONFIG_LOG_ENABLED 0
+#endif
+#if  COMMON_CONFIG_LOG_ENABLED
+// <o> COMMON_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef COMMON_CONFIG_LOG_LEVEL
+#define COMMON_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> COMMON_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef COMMON_CONFIG_INFO_COLOR
+#define COMMON_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> COMMON_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef COMMON_CONFIG_DEBUG_COLOR
+#define COMMON_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //COMMON_CONFIG_LOG_ENABLED
+// </e>
+
+#endif //PERIPHERAL_RESOURCE_SHARING_ENABLED
+// </e>
 
 // <e> TWI_ENABLED - nrf_drv_twi - TWI/TWIM peripheral driver
 //==========================================================
@@ -144,7 +325,7 @@
 // <7=> 7 
 
 #ifndef TWI_DEFAULT_CONFIG_IRQ_PRIORITY
-#define TWI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#define TWI_DEFAULT_CONFIG_IRQ_PRIORITY 7
 #endif
 
 // <e> TWI0_ENABLED - Enable TWI0 instance
@@ -177,6 +358,59 @@
 #endif
 
 #endif //TWI1_ENABLED
+// </e>
+
+// <e> TWI_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef TWI_CONFIG_LOG_ENABLED
+#define TWI_CONFIG_LOG_ENABLED 0
+#endif
+#if  TWI_CONFIG_LOG_ENABLED
+// <o> TWI_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef TWI_CONFIG_LOG_LEVEL
+#define TWI_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> TWI_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef TWI_CONFIG_INFO_COLOR
+#define TWI_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> TWI_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef TWI_CONFIG_DEBUG_COLOR
+#define TWI_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //TWI_CONFIG_LOG_ENABLED
 // </e>
 
 #endif //TWI_ENABLED
@@ -243,14 +477,7 @@
 // <7=> 7 
 
 #ifndef UART_DEFAULT_CONFIG_IRQ_PRIORITY
-#define UART_DEFAULT_CONFIG_IRQ_PRIORITY 6
-#endif
-
-// <q> UART0_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
- 
-
-#ifndef UART0_CONFIG_USE_EASY_DMA
-#define UART0_CONFIG_USE_EASY_DMA 1
+#define UART_DEFAULT_CONFIG_IRQ_PRIORITY 7
 #endif
 
 // <q> UART_EASY_DMA_SUPPORT  - Driver supporting EasyDMA
@@ -266,6 +493,75 @@
 #ifndef UART_LEGACY_SUPPORT
 #define UART_LEGACY_SUPPORT 1
 #endif
+
+// <e> UART0_ENABLED - Enable UART0 instance
+//==========================================================
+#ifndef UART0_ENABLED
+#define UART0_ENABLED 1
+#endif
+#if  UART0_ENABLED
+// <q> UART0_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
+ 
+
+#ifndef UART0_CONFIG_USE_EASY_DMA
+#define UART0_CONFIG_USE_EASY_DMA 1
+#endif
+
+#endif //UART0_ENABLED
+// </e>
+
+// <e> UART_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef UART_CONFIG_LOG_ENABLED
+#define UART_CONFIG_LOG_ENABLED 0
+#endif
+#if  UART_CONFIG_LOG_ENABLED
+// <o> UART_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef UART_CONFIG_LOG_LEVEL
+#define UART_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> UART_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef UART_CONFIG_INFO_COLOR
+#define UART_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> UART_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef UART_CONFIG_DEBUG_COLOR
+#define UART_CONFIG_DEBUG_COLOR 0
+#endif
+
+#endif //UART_CONFIG_LOG_ENABLED
+// </e>
 
 #endif //UART_ENABLED
 // </e>
@@ -537,12 +833,23 @@
 #endif //NRF_LOG_BACKEND_SERIAL_USES_UART
 // </e>
 
-// <q> NRF_LOG_BACKEND_SERIAL_USES_RTT  - If enabled data is printed using RTT
- 
-
+// <e> NRF_LOG_BACKEND_SERIAL_USES_RTT - If enabled data is printed using RTT
+//==========================================================
 #ifndef NRF_LOG_BACKEND_SERIAL_USES_RTT
 #define NRF_LOG_BACKEND_SERIAL_USES_RTT 0
 #endif
+#if  NRF_LOG_BACKEND_SERIAL_USES_RTT
+// <o> NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE - RTT output buffer size. 
+// <i> Should be equal or bigger than \ref NRF_LOG_BACKEND_MAX_STRING_LENGTH.
+// <i> This value is used in Segger RTT configuration to set the buffer size
+// <i> if it is bigger than default RTT buffer size.
+
+#ifndef NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE
+#define NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE 512
+#endif
+
+#endif //NRF_LOG_BACKEND_SERIAL_USES_RTT
+// </e>
 
 // </h> 
 //==========================================================
@@ -553,6 +860,24 @@
 // <h> nRF_NFC 
 
 //==========================================================
+// <e> NFC_NDEF_MSG_ENABLED - nfc_ndef_msg - NFC NDEF Message generator module
+//==========================================================
+#ifndef NFC_NDEF_MSG_ENABLED
+#define NFC_NDEF_MSG_ENABLED 1
+#endif
+#if  NFC_NDEF_MSG_ENABLED
+// <o> NFC_NDEF_MSG_TAG_TYPE  - NFC Tag Type
+ 
+// <2=> Type 2 Tag 
+// <4=> Type 4 Tag 
+
+#ifndef NFC_NDEF_MSG_TAG_TYPE
+#define NFC_NDEF_MSG_TAG_TYPE 2
+#endif
+
+#endif //NFC_NDEF_MSG_ENABLED
+// </e>
+
 // <e> NFC_NDEF_MSG_PARSER_ENABLED - nfc_ndef_msg_parser - NFC NDEF message parser module
 //==========================================================
 #ifndef NFC_NDEF_MSG_PARSER_ENABLED
@@ -645,7 +970,7 @@
 #endif //NFC_NDEF_RECORD_PARSER_ENABLED
 // </e>
 
-// <e> NFC_T2T_PARSER_ENABLED - nfc_type_2_tag_parser - Parser for decoding Type 2 Tag data.
+// <e> NFC_T2T_PARSER_ENABLED - nfc_type_2_tag_parser - Parser for decoding Type 2 Tag data
 //==========================================================
 #ifndef NFC_T2T_PARSER_ENABLED
 #define NFC_T2T_PARSER_ENABLED 1
@@ -690,6 +1015,232 @@
 
 #endif //NFC_T2T_PARSER_ENABLED
 // </e>
+
+// <e> NFC_T4T_APDU_ENABLED - nfc_t4t_apdu - APDU encoder/decoder for Type 4 Tag
+//==========================================================
+#ifndef NFC_T4T_APDU_ENABLED
+#define NFC_T4T_APDU_ENABLED 1
+#endif
+#if  NFC_T4T_APDU_ENABLED
+// <e> NFC_T4T_APDU_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NFC_T4T_APDU_LOG_ENABLED
+#define NFC_T4T_APDU_LOG_ENABLED 1
+#endif
+#if  NFC_T4T_APDU_LOG_ENABLED
+// <o> NFC_T4T_APDU_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NFC_T4T_APDU_LOG_LEVEL
+#define NFC_T4T_APDU_LOG_LEVEL 3
+#endif
+
+// <o> NFC_T4T_APDU_LOG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NFC_T4T_APDU_LOG_COLOR
+#define NFC_T4T_APDU_LOG_COLOR 0
+#endif
+
+#endif //NFC_T4T_APDU_LOG_ENABLED
+// </e>
+
+#endif //NFC_T4T_APDU_ENABLED
+// </e>
+
+// <e> NFC_T4T_CC_FILE_PARSER_ENABLED - nfc_t4t_cc_file - Capability Container file for Type 4 Tag
+//==========================================================
+#ifndef NFC_T4T_CC_FILE_PARSER_ENABLED
+#define NFC_T4T_CC_FILE_PARSER_ENABLED 1
+#endif
+#if  NFC_T4T_CC_FILE_PARSER_ENABLED
+// <e> NFC_T4T_CC_FILE_PARSER_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NFC_T4T_CC_FILE_PARSER_LOG_ENABLED
+#define NFC_T4T_CC_FILE_PARSER_LOG_ENABLED 1
+#endif
+#if  NFC_T4T_CC_FILE_PARSER_LOG_ENABLED
+// <o> NFC_T4T_CC_FILE_PARSER_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NFC_T4T_CC_FILE_PARSER_LOG_LEVEL
+#define NFC_T4T_CC_FILE_PARSER_LOG_LEVEL 3
+#endif
+
+// <o> NFC_T4T_CC_FILE_PARSER_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NFC_T4T_CC_FILE_PARSER_INFO_COLOR
+#define NFC_T4T_CC_FILE_PARSER_INFO_COLOR 0
+#endif
+
+#endif //NFC_T4T_CC_FILE_PARSER_LOG_ENABLED
+// </e>
+
+#endif //NFC_T4T_CC_FILE_PARSER_ENABLED
+// </e>
+
+// <e> NFC_T4T_HL_DETECTION_PROCEDURES_ENABLED - nfc_t4t_hl_detection_procedures - NDEF Detection Procedure for Type 4 Tag
+//==========================================================
+#ifndef NFC_T4T_HL_DETECTION_PROCEDURES_ENABLED
+#define NFC_T4T_HL_DETECTION_PROCEDURES_ENABLED 1
+#endif
+#if  NFC_T4T_HL_DETECTION_PROCEDURES_ENABLED
+// <e> NFC_T4T_HL_DETECTION_PROCEDURES_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NFC_T4T_HL_DETECTION_PROCEDURES_LOG_ENABLED
+#define NFC_T4T_HL_DETECTION_PROCEDURES_LOG_ENABLED 1
+#endif
+#if  NFC_T4T_HL_DETECTION_PROCEDURES_LOG_ENABLED
+// <o> NFC_T4T_HL_DETECTION_PROCEDURES_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NFC_T4T_HL_DETECTION_PROCEDURES_LOG_LEVEL
+#define NFC_T4T_HL_DETECTION_PROCEDURES_LOG_LEVEL 3
+#endif
+
+// <o> NFC_T4T_HL_DETECTION_PROCEDURES_LOG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NFC_T4T_HL_DETECTION_PROCEDURES_LOG_COLOR
+#define NFC_T4T_HL_DETECTION_PROCEDURES_LOG_COLOR 0
+#endif
+
+#endif //NFC_T4T_HL_DETECTION_PROCEDURES_LOG_ENABLED
+// </e>
+
+// <o> APDU_BUFF_SIZE - Size (in bytes) of the buffer for APDU storage 
+#ifndef APDU_BUFF_SIZE
+#define APDU_BUFF_SIZE 250
+#endif
+
+// <o> CC_STORAGE_BUFF_SIZE - Size (in bytes) of the buffer for CC file storage 
+#ifndef CC_STORAGE_BUFF_SIZE
+#define CC_STORAGE_BUFF_SIZE 64
+#endif
+
+#endif //NFC_T4T_HL_DETECTION_PROCEDURES_ENABLED
+// </e>
+
+// <e> NFC_T4T_TLV_BLOCK_PARSER_ENABLED - nfc_t4t_tlv_block - TLV block for Type 4 Tag
+//==========================================================
+#ifndef NFC_T4T_TLV_BLOCK_PARSER_ENABLED
+#define NFC_T4T_TLV_BLOCK_PARSER_ENABLED 1
+#endif
+#if  NFC_T4T_TLV_BLOCK_PARSER_ENABLED
+// <e> NFC_T4T_TLV_BLOCK_PARSER_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NFC_T4T_TLV_BLOCK_PARSER_LOG_ENABLED
+#define NFC_T4T_TLV_BLOCK_PARSER_LOG_ENABLED 1
+#endif
+#if  NFC_T4T_TLV_BLOCK_PARSER_LOG_ENABLED
+// <o> NFC_T4T_TLV_BLOCK_PARSER_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NFC_T4T_TLV_BLOCK_PARSER_LOG_LEVEL
+#define NFC_T4T_TLV_BLOCK_PARSER_LOG_LEVEL 3
+#endif
+
+// <o> NFC_T4T_TLV_BLOCK_PARSER_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NFC_T4T_TLV_BLOCK_PARSER_INFO_COLOR
+#define NFC_T4T_TLV_BLOCK_PARSER_INFO_COLOR 0
+#endif
+
+#endif //NFC_T4T_TLV_BLOCK_PARSER_LOG_ENABLED
+// </e>
+
+#endif //NFC_T4T_TLV_BLOCK_PARSER_ENABLED
+// </e>
+
+// </h> 
+//==========================================================
+
+// <h> nRF_Segger_RTT 
+
+//==========================================================
+// <h> segger_rtt - SEGGER RTT
+
+//==========================================================
+// <o> SEGGER_RTT_CONFIG_BUFFER_SIZE_UP - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_BUFFER_SIZE_UP
+#define SEGGER_RTT_CONFIG_BUFFER_SIZE_UP 64
+#endif
+
+// <o> SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS
+#define SEGGER_RTT_CONFIG_MAX_NUM_UP_BUFFERS 2
+#endif
+
+// <o> SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN
+#define SEGGER_RTT_CONFIG_BUFFER_SIZE_DOWN 16
+#endif
+
+// <o> SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS - Size of upstream buffer. 
+#ifndef SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS
+#define SEGGER_RTT_CONFIG_MAX_NUM_DOWN_BUFFERS 2
+#endif
+
+// </h> 
+//==========================================================
 
 // </h> 
 //==========================================================

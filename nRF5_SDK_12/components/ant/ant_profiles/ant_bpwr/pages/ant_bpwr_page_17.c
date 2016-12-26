@@ -10,11 +10,10 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BPWR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BPWR)
 
 #include "ant_bpwr_page_17.h"
-#include "app_util.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_BPWR_PAGE_17"
 #if ANT_BPWR_PAGE_17_LOG_ENABLED
@@ -47,4 +46,4 @@ void ant_bpwr_page_17_decode(uint8_t const          * p_page_buffer,
     page17_data_log(p_page_data);
 }
 
-#endif // ANT_BPWR_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BPWR)

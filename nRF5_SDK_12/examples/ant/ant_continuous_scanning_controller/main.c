@@ -90,15 +90,15 @@ static void command_send(void)
     // Close scanning channel and return
     if ( device_number == 0 )
     {
-        LEDS_ON(BSP_LED_2_MASK);
-        LEDS_OFF(BSP_LED_0_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_2);
+        bsp_board_led_off(BSP_BOARD_LED_0);
         err_code = sd_ant_channel_close(ANT_SCAN_CHANNEL_NUMBER);
         APP_ERROR_CHECK(err_code);
         return;
     }
     else
     {
-        LEDS_OFF(BSP_LED_2_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_2);
     }
 
     err_code = sd_ant_channel_id_set(ANT_RESPONSE_CHANNEL_NUMBER,
@@ -165,7 +165,7 @@ static void command_sequence_start(uint8_t command)
 {
     uint32_t err_code;
 
-    LEDS_ON(BSP_LED_0_MASK);
+    bsp_board_led_on(BSP_BOARD_LED_0);
 
     for (int node = 0; node < MAX_DEVICES; node++)
     {
@@ -191,22 +191,22 @@ static void bsp_evt_handler(bsp_event_t evt)
     switch (evt)
     {
         case BSP_EVENT_KEY_0:
-            LEDS_OFF(BSP_LED_2_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_2);
             command_sequence_start(COMMAND_STATE_ON);
             break;
 
         case BSP_EVENT_KEY_1:
-            LEDS_OFF(BSP_LED_2_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_2);
             command_sequence_start(COMMAND_STATE_OFF);
             break;
 
         case BSP_EVENT_KEY_2:
-            LEDS_OFF(BSP_LED_2_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_2);
             command_sequence_start(COMMAND_STATE_ALL_ON);
             break;
 
         case BSP_EVENT_KEY_3:
-            LEDS_OFF(BSP_LED_2_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_2);
             command_sequence_start(COMMAND_STATE_ALL_OFF);
             break;
 
@@ -322,7 +322,7 @@ void continuous_scan_event_handler(ant_evt_t * p_ant_evt)
         case EVENT_RX:
             if (p_ant_message->ANT_MESSAGE_aucPayload[0] == DEVICE_STATUS_PAGE)
             {
-                LEDS_INVERT(BSP_LED_1_MASK);
+                bsp_board_led_invert(BSP_BOARD_LED_1);
                 if (p_ant_message->ANT_MESSAGE_stExtMesgBF.bANTDeviceID &&
                     p_ant_message->ANT_MESSAGE_stExtMesgBF.bANTRssi)
                 {
@@ -336,7 +336,8 @@ void continuous_scan_event_handler(ant_evt_t * p_ant_evt)
             break;
 
         case EVENT_TRANSFER_TX_COMPLETED:
-            LEDS_OFF(BSP_LED_0_MASK | BSP_LED_1_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_0);
+            bsp_board_led_off(BSP_BOARD_LED_1);
             err_code = sd_ant_channel_close(ANT_SCAN_CHANNEL_NUMBER);
             APP_ERROR_CHECK(err_code);
             break;
@@ -349,7 +350,8 @@ void continuous_scan_event_handler(ant_evt_t * p_ant_evt)
             }
             else
             {
-                LEDS_OFF(BSP_LED_0_MASK | BSP_LED_1_MASK);
+                bsp_board_led_off(BSP_BOARD_LED_0);
+                bsp_board_led_off(BSP_BOARD_LED_1);
                 err_code = sd_ant_channel_close(ANT_SCAN_CHANNEL_NUMBER);
                 APP_ERROR_CHECK(err_code);
             }

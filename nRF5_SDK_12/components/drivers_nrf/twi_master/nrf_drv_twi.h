@@ -265,12 +265,12 @@ void nrf_drv_twi_disable(nrf_drv_twi_t const * p_instance);
  *                       after the transfer has completed successfully (allowing
  *                       for a repeated start in the next transfer).
  *
- * @retval NRF_SUCCESS             If the procedure was successful.
- * @retval NRF_ERROR_BUSY          If the driver is not ready for a new transfer.
- * @retval NRF_ERROR_INTERNAL      If an error was detected by hardware.
- * @retval NRF_ERROR_INVALID_ADDR  If the EasyDMA is used and memory adress in not in RAM.
- * @retval DRV_TWI_ERR_ANACK       If NACK received after sending the address.
- * @retval DRV_TWI_ERR_DNACK       If NACK received after sending a data byte.
+ * @retval NRF_SUCCESS                  If the procedure was successful.
+ * @retval NRF_ERROR_BUSY               If the driver is not ready for a new transfer.
+ * @retval NRF_ERROR_INTERNAL           If an error was detected by hardware.
+ * @retval NRF_ERROR_INVALID_ADDR       If the EasyDMA is used and memory adress in not in RAM.
+ * @retval NRF_ERROR_DRV_TWI_ERR_ANACK  If NACK received after sending the address.
+ * @retval NRF_ERROR_DRV_TWI_ERR_DNACK  If NACK received after sending a data byte.
  */
 ret_code_t nrf_drv_twi_tx(nrf_drv_twi_t const * p_instance,
                           uint8_t               address,
@@ -289,12 +289,12 @@ ret_code_t nrf_drv_twi_tx(nrf_drv_twi_t const * p_instance,
  * @param[in] p_data     Pointer to a receive buffer.
  * @param[in] length     Number of bytes to be received.
  *
- * @retval NRF_SUCCESS             If the procedure was successful.
- * @retval NRF_ERROR_BUSY          If the driver is not ready for a new transfer.
- * @retval NRF_ERROR_INTERNAL      If an error was detected by hardware.
- * @retval DRV_TWI_ERR_OVERRUN     If the unread data was replaced by new data
- * @retval DRV_TWI_ERR_ANACK       If NACK received after sending the address.
- * @retval DRV_TWI_ERR_DNACK       If NACK received after sending a data byte.
+ * @retval NRF_SUCCESS                    If the procedure was successful.
+ * @retval NRF_ERROR_BUSY                 If the driver is not ready for a new transfer.
+ * @retval NRF_ERROR_INTERNAL             If an error was detected by hardware.
+ * @retval NRF_ERROR_DRV_TWI_ERR_OVERRUN  If the unread data was replaced by new data
+ * @retval NRF_ERROR_DRV_TWI_ERR_ANACK    If NACK received after sending the address.
+ * @retval NRF_ERROR_DRV_TWI_ERR_DNACK    If NACK received after sending a data byte.
  */
 ret_code_t nrf_drv_twi_rx(nrf_drv_twi_t const * p_instance,
                           uint8_t               address,
@@ -341,14 +341,14 @@ ret_code_t nrf_drv_twi_rx(nrf_drv_twi_t const * p_instance,
  * @param[in] p_xfer_desc       Pointer to the transfer descriptor.
  * @param[in] flags             Transfer options (0 for default settings).
  *
- * @retval NRF_SUCCESS             If the procedure was successful.
- * @retval NRF_ERROR_BUSY          If the driver is not ready for a new transfer.
- * @retval NRF_ERROR_NOT_SUPPORTED If the provided parameters are not supported.
- * @retval NRF_ERROR_INTERNAL      If an error was detected by hardware.
- * @retval NRF_ERROR_INVALID_ADDR  If the EasyDMA is used and memory adress in not in RAM
- * @retval DRV_TWI_ERR_OVERRUN     If the unread data was replaced by new data (TXRX and RX)
- * @retval DRV_TWI_ERR_ANACK       If NACK received after sending the address.
- * @retval DRV_TWI_ERR_DNACK       If NACK received after sending a data byte.
+ * @retval NRF_SUCCESS                    If the procedure was successful.
+ * @retval NRF_ERROR_BUSY                 If the driver is not ready for a new transfer.
+ * @retval NRF_ERROR_NOT_SUPPORTED        If the provided parameters are not supported.
+ * @retval NRF_ERROR_INTERNAL             If an error was detected by hardware.
+ * @retval NRF_ERROR_INVALID_ADDR         If the EasyDMA is used and memory adress in not in RAM
+ * @retval NRF_ERROR_DRV_TWI_ERR_OVERRUN  If the unread data was replaced by new data (TXRX and RX)
+ * @retval NRF_ERROR_DRV_TWI_ERR_ANACK    If NACK received after sending the address.
+ * @retval NRF_ERROR_DRV_TWI_ERR_DNACK    If NACK received after sending a data byte.
  */
 ret_code_t nrf_drv_twi_xfer(nrf_drv_twi_t           const * p_instance,
                             nrf_drv_twi_xfer_desc_t const * p_xfer_desc,

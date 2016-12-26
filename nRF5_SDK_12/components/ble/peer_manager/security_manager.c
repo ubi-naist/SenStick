@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "security_manager.h"
 
 #include <string.h>
@@ -64,11 +64,11 @@ static void flags_set_from_err_code(uint16_t conn_handle, ret_code_t err_code, b
     bool flag_value_flash_full = false;
     bool flag_value_busy       = false;
 
-    if (    (err_code == NRF_ERROR_NO_MEM)
+    if (    (err_code == NRF_ERROR_STORAGE_FULL)
          || (err_code == NRF_ERROR_BUSY)
          || (err_code == NRF_SUCCESS))
     {
-        if ((err_code == NRF_ERROR_NO_MEM))
+        if ((err_code == NRF_ERROR_STORAGE_FULL))
         {
             flag_value_busy       = false;
             flag_value_flash_full = true;
@@ -127,7 +127,7 @@ static void events_send_from_err_code(uint16_t conn_handle, ret_code_t err_code)
         {
             evt.evt_id = SM_EVT_ERROR_SMP_TIMEOUT;
         }
-        else if (err_code == NRF_ERROR_NO_MEM)
+        else if (err_code == NRF_ERROR_STORAGE_FULL)
         {
             evt.evt_id = SM_EVT_ERROR_NO_MEM;
         }
@@ -172,7 +172,7 @@ static ret_code_t link_secure(uint16_t conn_handle, bool null_params, bool force
             ble_conn_state_user_flag_set(conn_handle, m_flag_link_secure_force_repairing, force_repairing);
             err_code = NRF_SUCCESS;
             break;
-        case NRF_ERROR_NO_MEM:
+        case NRF_ERROR_STORAGE_FULL:
             ble_conn_state_user_flag_set(conn_handle, m_flag_link_secure_null_params, null_params);
             ble_conn_state_user_flag_set(conn_handle, m_flag_link_secure_force_repairing, force_repairing);
             break;
@@ -540,4 +540,4 @@ ret_code_t sm_link_secure(uint16_t conn_handle, bool force_repairing)
     ret = link_secure(conn_handle, false, force_repairing, false);
     return ret;
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_STATE_INDICATOR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_STATE_INDICATOR)
 #include "ant_parameters.h"
 #include "bsp.h"
 #include "ant_state_indicator.h"
@@ -130,4 +130,4 @@ void ant_state_indicator_sleep_mode_enter(void)
  *@}
  */
 
-#endif // ANT_STATE_INDICATOR_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_STATE_INDICATOR)

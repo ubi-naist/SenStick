@@ -100,7 +100,31 @@ typedef enum
 #define NRF_BREAKPOINT __BKPT(0)
 #endif
 
+/** @brief Macro for setting a breakpoint.
+ *
+ * If it is possible to detect debugger presence then it is set only in that case.
+ *
+ */
+#if __CORTEX_M == 0x04
+#define NRF_BREAKPOINT_COND do {                            \
+    /* C_DEBUGEN == 1 -> Debugger Connected */              \
+    if (CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)   \
+    {                                                       \
+       /* Generate breakpoint if debugger is connected */   \
+            NRF_BREAKPOINT;                                 \
+    } \
+    }while (0)
+#else
+#define NRF_BREAKPOINT_COND NRF_BREAKPOINT
+#endif // __CORTEX_M == 0x04
+
+#if defined ( __CC_ARM )
 #define PACKED(TYPE) __packed TYPE
+#define PACKED_STRUCT PACKED(struct)
+#elif defined   ( __GNUC__ )
+#define PACKED __attribute__((packed))
+#define PACKED_STRUCT struct PACKED 
+#endif
 
 void app_util_critical_region_enter (uint8_t *p_nested);
 void app_util_critical_region_exit (uint8_t nested);
@@ -167,7 +191,6 @@ void app_util_critical_region_exit (uint8_t nested);
     // No action will be taken.
     // For GCC anonymous unions are enabled by default.
 #endif
-
 
 /* Workaround for Keil 4 */
 #ifndef CONTROL_nPRIV_Msk

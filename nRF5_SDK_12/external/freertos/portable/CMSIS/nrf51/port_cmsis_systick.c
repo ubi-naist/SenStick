@@ -158,11 +158,7 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
     /* Configure CTC interrupt */
     enterTime = nrf_rtc_counter_get(portNRF_RTC_REG);
 
-    if ( eTaskConfirmSleepModeStatus() == eAbortSleep )
-    {
-        portENABLE_INTERRUPTS();
-    }
-    else
+    if ( eTaskConfirmSleepModeStatus() != eAbortSleep )
     {
         TickType_t xModifiableIdleTime;
         TickType_t wakeupTime = (enterTime + xExpectedIdleTime) & portNRF_RTC_MAXTICKS;
@@ -186,20 +182,14 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
         configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
         if ( xModifiableIdleTime > 0 )
         {
-#ifdef SOFTDEVICE_PRESENT
-            sd_app_evt_wait();
-#else
             do{
                 __WFE();
             } while (0 == (NVIC->ISPR[0]));
-#endif
         }
         configPOST_SLEEP_PROCESSING( xExpectedIdleTime );
         nrf_rtc_int_disable(portNRF_RTC_REG, NRF_RTC_INT_COMPARE0_MASK);
-        portENABLE_INTERRUPTS();
 
         /* Correct the system ticks */
-        portENTER_CRITICAL();
         {
             TickType_t diff;
             TickType_t hwTicks     = nrf_rtc_counter_get(portNRF_RTC_REG);
@@ -222,8 +212,8 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
                 vTaskStepTick(diff);
             }
         }
-        portEXIT_CRITICAL();
     }
+    portENABLE_INTERRUPTS();
 }
 
 #endif // configUSE_TICKLESS_IDLE

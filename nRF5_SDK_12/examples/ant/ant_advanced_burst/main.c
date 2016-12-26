@@ -56,7 +56,7 @@ int main(void)
     utils_setup();
 
     // Initialize LEDs
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 
     // Setup SoftDevice and events handler
     err_code = softdevice_ant_evt_handler_set(ant_advanced_burst_event_handler);

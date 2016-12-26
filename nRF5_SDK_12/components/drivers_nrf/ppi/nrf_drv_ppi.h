@@ -54,8 +54,8 @@ extern "C" {
 
 /**@brief Function for initializing PPI module.
  *
- * @retval     NRF_SUCCESS                If the module was successfully initialized.
- * @retval     MODULE_ALREADY_INITIALIZED If the module has already been initialized.
+ * @retval     NRF_SUCCESS                           If the module was successfully initialized.
+ * @retval     NRF_ERROR_MODULE_ALREADY_INITIALIZED  If the module has already been initialized.
  */
 uint32_t nrf_drv_ppi_init(void);
 

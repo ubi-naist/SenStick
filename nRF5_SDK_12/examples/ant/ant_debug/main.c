@@ -59,7 +59,7 @@ void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
                         file_name);
     #endif // DEBUG_CHANNEL_INCLUDED
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
 
     for (;;)
     {

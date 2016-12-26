@@ -361,8 +361,7 @@ int main(void)
 {
     ret_code_t err_code;
     /* Initialization of UART */
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
 

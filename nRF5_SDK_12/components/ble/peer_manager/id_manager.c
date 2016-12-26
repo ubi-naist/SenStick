@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "id_manager.h"
 
 #include <string.h>
@@ -22,7 +22,6 @@
 #include "peer_database.h"
 #include "peer_data_storage.h"
 #include "nrf_soc.h"
-#include "sdk_common.h"
 
 
 #define IM_MAX_CONN_HANDLES             (8)
@@ -261,7 +260,7 @@ void im_ble_evt_handler(ble_evt_t * ble_evt)
                 while (pds_peer_data_iterate(PM_PEER_DATA_ID_BONDING, &peer_id, &peer_data))
                 {
                     if (addr_compare(&gap_evt.params.connected.peer_addr,
-                                     &peer_data.p_bonding_data->peer_id.id_addr_info))
+                                     &peer_data.p_bonding_data->peer_ble_id.id_addr_info))
                     {
                         bonded_matching_peer_id = peer_id;
                         break;
@@ -275,7 +274,7 @@ void im_ble_evt_handler(ble_evt_t * ble_evt)
                 while (pds_peer_data_iterate(PM_PEER_DATA_ID_BONDING, &peer_id, &peer_data))
                 {
                     if (im_address_resolve(&gap_evt.params.connected.peer_addr,
-                                           &peer_data.p_bonding_data->peer_id.id_info))
+                                           &peer_data.p_bonding_data->peer_ble_id.id_info))
                     {
                         bonded_matching_peer_id = peer_id;
                         break;
@@ -321,17 +320,17 @@ bool im_is_duplicate_bonding_data(pm_peer_data_bonding_t const * p_bonding_data1
     NRF_PM_DEBUG_CHECK(p_bonding_data1 != NULL);
     NRF_PM_DEBUG_CHECK(p_bonding_data2 != NULL);
 
-    if (!is_valid_irk(&p_bonding_data1->peer_id.id_info))
+    if (!is_valid_irk(&p_bonding_data1->peer_ble_id.id_info))
     {
         return false;
     }
 
-    bool duplicate_irk = (memcmp(p_bonding_data1->peer_id.id_info.irk,
-                                 p_bonding_data2->peer_id.id_info.irk,
+    bool duplicate_irk = (memcmp(p_bonding_data1->peer_ble_id.id_info.irk,
+                                 p_bonding_data2->peer_ble_id.id_info.irk,
                                  BLE_GAP_SEC_KEY_LEN) == 0);
 
-    bool duplicate_addr = addr_compare(&p_bonding_data1->peer_id.id_addr_info,
-                                       &p_bonding_data2->peer_id.id_addr_info);
+    bool duplicate_addr = addr_compare(&p_bonding_data1->peer_ble_id.id_addr_info,
+                                       &p_bonding_data2->peer_ble_id.id_addr_info);
 
     return duplicate_irk || duplicate_addr;
 }
@@ -640,7 +639,7 @@ static ret_code_t peers_id_keys_get(pm_peer_id_t   const * p_peers,
             return NRF_ERROR_NOT_FOUND;
         }
 
-        uint8_t const addr_type = bond_data.peer_id.id_addr_info.addr_type;
+        uint8_t const addr_type = bond_data.peer_ble_id.id_addr_info.addr_type;
 
         if ((addr_type != BLE_GAP_ADDR_TYPE_PUBLIC) &&
             (addr_type != BLE_GAP_ADDR_TYPE_RANDOM_STATIC))
@@ -652,14 +651,14 @@ static ret_code_t peers_id_keys_get(pm_peer_id_t   const * p_peers,
         // Copy the GAP address.
         if (copy_addrs)
         {
-            memcpy(&p_gap_addrs[i], &bond_data.peer_id.id_addr_info, sizeof(ble_gap_addr_t));
+            memcpy(&p_gap_addrs[i], &bond_data.peer_ble_id.id_addr_info, sizeof(ble_gap_addr_t));
             (*p_addr_cnt)++;
         }
 
         // Copy the IRK.
         if (copy_irks)
         {
-            memcpy(&p_gap_irks[i], bond_data.peer_id.id_info.irk, BLE_GAP_SEC_KEY_LEN);
+            memcpy(&p_gap_irks[i], bond_data.peer_ble_id.id_info.irk, BLE_GAP_SEC_KEY_LEN);
             (*p_irk_cnt)++;
         }
     }
@@ -709,7 +708,7 @@ ret_code_t im_device_identities_list_set(pm_peer_id_t const * p_peers,
                 return NRF_ERROR_NOT_FOUND;
             }
 
-            uint8_t const addr_type = bond_data.peer_id.id_addr_info.addr_type;
+            uint8_t const addr_type = bond_data.peer_ble_id.id_addr_info.addr_type;
 
             if ((addr_type != BLE_GAP_ADDR_TYPE_PUBLIC) &&
                 (addr_type != BLE_GAP_ADDR_TYPE_RANDOM_STATIC))
@@ -719,7 +718,7 @@ ret_code_t im_device_identities_list_set(pm_peer_id_t const * p_peers,
             }
 
             // Copy data to the buffer.
-            memcpy(&keys[i], &bond_data.peer_id, sizeof(ble_gap_id_key_t));
+            memcpy(&keys[i], &bond_data.peer_ble_id, sizeof(ble_gap_id_key_t));
         }
 
         return sd_ble_gap_device_identities_set(key_ptrs, NULL, peer_cnt);
@@ -1065,4 +1064,4 @@ bool im_address_resolve(ble_gap_addr_t const * p_addr, ble_gap_irk_t const * p_i
 
     return (memcmp(hash, local_hash, IM_ADDR_CIPHERTEXT_LENGTH) == 0);
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

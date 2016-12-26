@@ -16,7 +16,7 @@
  * @{
  * @ingroup ble_sdk_lib_serialization
  *
- * @brief   HAL Transport layer for serialization.
+ * @brief   @tagAPI52832 HAL Transport layer for serialization.
  *
  * @details This section contains declarations of functions and typedefs used as API of the HAL
  *          Transport layer for serialization. This layer is fully hardware independent.
@@ -25,9 +25,9 @@
  *          or retransmission.
  *
  * \n \n
- * \image html ser_hal_transport_rx_state_machine.png "RX state machine"
+ * \image html ser_hal_transport_rx_state_machine.svg "RX state machine"
  * \n \n
- * \image html ser_hal_transport_tx_state_machine.png "TX state machine"
+ * \image html ser_hal_transport_tx_state_machine.svg "TX state machine"
  * \n
  */
 

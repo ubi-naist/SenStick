@@ -46,8 +46,6 @@
 
 const nrf_drv_rtc_t m_rtc = NRF_DRV_RTC_INSTANCE(1); /**< Declaring an instance of nrf_drv_rtc for RTC1. */
 
-const uint8_t m_leds_list[LEDS_NUMBER] = LEDS_LIST;
-
 static uint8_t m_led_status      = 0; /**< Current status of LEDs. */
 static uint8_t m_led_invert_next = 0; /**< Index of the next LED to be inverted. */
 
@@ -132,8 +130,7 @@ static void softdevice_setup(void)
  */
 static void led_event(void)
 {
-    uint32_t led_to_invert = 1 << m_leds_list[m_led_invert_next];
-    LEDS_INVERT(led_to_invert);
+    bsp_board_led_invert(m_led_invert_next);
 
     m_led_status      ^= 1 << (m_led_invert_next++); // Update current status of LEDs
     m_led_invert_next %= LEDS_NUMBER;                // Update next LED to be inverted
@@ -219,8 +216,7 @@ static void rtc_config(void)
 static void leds_config(void)
 {
     // Configure all LED's on board.
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 

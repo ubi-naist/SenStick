@@ -38,8 +38,18 @@
 extern "C" {
 #endif
 
+#ifndef UART1_ENABLED
+#define UART1_ENABLED 0
+#endif
+
+#ifndef UART0_ENABLED
+#define UART0_ENABLED 0
+#endif
+
 #define UART0_INSTANCE_INDEX 0
-#define UART_COUNT 1
+#define UART1_INSTANCE_INDEX UART0_ENABLED
+#define UART_ENABLED_COUNT UART0_ENABLED + UART1_ENABLED
+
 #if defined(UARTE_PRESENT)
     #define NRF_DRV_UART_PERIPHERAL(id)           \
         (CONCAT_3(UART, id, _CONFIG_USE_EASY_DMA) == 1 ? \

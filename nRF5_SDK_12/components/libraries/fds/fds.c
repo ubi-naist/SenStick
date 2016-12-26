@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if FDS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(FDS)
 #include "fds.h"
 #include "fds_internal_defs.h"
 
@@ -18,7 +18,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include "fstorage.h"
-#include "app_util.h"
 #include "nrf_error.h"
 
 #if defined(FDS_CRC_ENABLED)
@@ -2070,4 +2069,4 @@ ret_code_t fds_verify_crc_on_writes(bool enable)
 }
 
 #endif
-#endif //FDS_ENABLED
+#endif //NRF_MODULE_ENABLED(FDS)

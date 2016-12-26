@@ -6,15 +6,14 @@
  * agreement with Nordic Semiconductor.
  *
  */
-#include "sdk_config.h"
-#if BLE_LBS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_LBS_C)
 
 #include "ble_lbs_c.h"
 #include "ble_db_discovery.h"
 #include "ble_types.h"
 #include "ble_srv_common.h"
 #include "ble_gattc.h"
-#include "sdk_common.h"
 #define NRF_LOG_MODULE_NAME "BLE_LBS_C"
 #include "nrf_log.h"
 
@@ -359,4 +358,4 @@ uint32_t ble_lbs_c_handles_assign(ble_lbs_c_t    * p_ble_lbs_c,
     return NRF_SUCCESS;
 }
 
-#endif //BLE_LBS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_LBS_C)

@@ -6,14 +6,13 @@
  * agreement with Nordic Semiconductor.
  *
  */
-#include "sdk_config.h"
-#if BLE_BAS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_BAS_C)
 #include "ble_bas_c.h"
 #include "ble_db_discovery.h"
 #include "ble_types.h"
 #include "ble_srv_common.h"
 #include "ble_gattc.h"
-#include "sdk_common.h"
 #define NRF_LOG_MODULE_NAME "BLE_BAS_C"
 #include "nrf_log.h"
 
@@ -74,13 +73,13 @@ static void tx_buffer_process(void)
         }
         if (err_code == NRF_SUCCESS)
         {
-            NRF_LOG_INFO("SD Read/Write API returns Success..\r\n");
+            NRF_LOG_DEBUG("SD Read/Write API returns Success..\r\n");
             m_tx_index++;
             m_tx_index &= TX_BUFFER_MASK;
         }
         else
         {
-            NRF_LOG_INFO("SD Read/Write API returns error. This message sending will be "
+            NRF_LOG_DEBUG("SD Read/Write API returns error. This message sending will be "
                 "attempted again..\r\n");
         }
     }
@@ -203,7 +202,7 @@ void ble_bas_on_db_disc_evt(ble_bas_c_t * p_ble_bas_c, const ble_db_discovery_ev
             }
         }
 
-        NRF_LOG_INFO("Battery Service discovered at peer.\r\n");
+        NRF_LOG_DEBUG("Battery Service discovered at peer.\r\n");
 
         //If the instance has been assigned prior to db_discovery, assign the db_handles
         if (p_ble_bas_c->conn_handle != BLE_CONN_HANDLE_INVALID)
@@ -218,7 +217,7 @@ void ble_bas_on_db_disc_evt(ble_bas_c_t * p_ble_bas_c, const ble_db_discovery_ev
     }
     else
     {
-        NRF_LOG_INFO("Battery Service discovery failure at peer. \r\n");
+        NRF_LOG_DEBUG("Battery Service discovery failure at peer. \r\n");
     }
 }
 
@@ -227,7 +226,7 @@ void ble_bas_on_db_disc_evt(ble_bas_c_t * p_ble_bas_c, const ble_db_discovery_ev
  */
 static uint32_t cccd_configure(uint16_t conn_handle, uint16_t handle_cccd, bool notification_enable)
 {
-    NRF_LOG_INFO("Configuring CCCD. CCCD Handle = %d, Connection Handle = %d\r\n",
+    NRF_LOG_DEBUG("Configuring CCCD. CCCD Handle = %d, Connection Handle = %d\r\n",
                                                             handle_cccd,conn_handle);
 
     tx_message_t * p_msg;
@@ -369,4 +368,4 @@ uint32_t ble_bas_c_handles_assign(ble_bas_c_t *    p_ble_bas_c,
     }
     return NRF_SUCCESS;
 }
-#endif //BLE_BAS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_BAS_C)

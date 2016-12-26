@@ -14,14 +14,12 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_HTS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_HTS)
 #include "ble_hts.h"
 #include <string.h>
-#include "nordic_common.h"
 #include "ble_l2cap.h"
 #include "ble_srv_common.h"
-#include "app_util.h"
 
 
 #define OPCODE_LENGTH 1                                                    /**< Length of opcode inside Health Thermometer Measurement packet. */
@@ -432,4 +430,4 @@ uint32_t ble_hts_is_indication_enabled(ble_hts_t * p_hts, bool * p_indication_en
     }
     return err_code;
 }
-#endif //BLE_HTS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_HTS)

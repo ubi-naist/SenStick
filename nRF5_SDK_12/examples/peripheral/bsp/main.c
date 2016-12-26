@@ -37,17 +37,9 @@
 #define BUTTON_PREV_ID           0                           /**< Button used to switch the state. */
 #define BUTTON_NEXT_ID           1                           /**< Button used to switch the state. */
 
-#define UART_TX_BUF_SIZE 256                                 /**< UART TX buffer size. */
-#define UART_RX_BUF_SIZE 1                                   /**< UART RX buffer size. */
+static bsp_indication_t actual_state =  BSP_INDICATE_FIRST;         /**< Currently indicated state. */
 
-bsp_indication_t actual_state =  BSP_INDICATE_FIRST;         /**< Currently indicated state. */
-
-const char * indications_list[] = BSP_INDICATIONS_LIST;
-
-void uart_error_handle(app_uart_evt_t * p_event)
-{
-   // No implementation needed.
-}
+static const char * indications_list[] = BSP_INDICATIONS_LIST;
 
 /**@brief Function for handling bsp events.
  */
@@ -57,7 +49,6 @@ void bsp_evt_handler(bsp_event_t evt)
     switch (evt)
     {
         case BSP_EVENT_KEY_0:
-
             if (actual_state != BSP_INDICATE_FIRST)
                 actual_state--;
             else
@@ -75,8 +66,8 @@ void bsp_evt_handler(bsp_event_t evt)
         default:
             return; // no implementation needed
     }
-
-    err_code = bsp_indication_text_set(actual_state, indications_list[actual_state]);
+    err_code = bsp_indication_set(actual_state);
+    NRF_LOG_INFO("%s\r\n", (uint32_t)indications_list[actual_state]);
     APP_ERROR_CHECK(err_code);
 }
 
@@ -114,15 +105,13 @@ void bsp_configuration()
  */
 int main(void)
 {
-    uint32_t err_code = NRF_SUCCESS;
-
     clock_initialization();
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
+
+    NRF_LOG_INFO("BSP example started.\r\n");
     bsp_configuration();
 
-    err_code = bsp_indication_text_set(actual_state,indications_list[actual_state]);
-    APP_ERROR_CHECK(err_code);
     while (true)
     {
         NRF_LOG_FLUSH();

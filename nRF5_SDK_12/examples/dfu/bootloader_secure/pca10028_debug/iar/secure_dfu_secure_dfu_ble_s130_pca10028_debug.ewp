@@ -320,6 +320,7 @@
           <state>$PROJ_DIR$\..\..\config</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\ble\common</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\components\boards</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\device</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\clock</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\common</state>
@@ -328,17 +329,16 @@
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\rng</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\dfu</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\crc32</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\crypto</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\ecc</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\experimental_section_vars</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\fifo</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\fstorage</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\hci</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\log</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\log\src</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\queue</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\scheduler</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\sha256</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\svc</state>
@@ -349,7 +349,6 @@
           <state>$PROJ_DIR$\..\..\..\..\..\components\softdevice\s130\headers\nrf51</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\toolchain</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\toolchain\cmsis\include</state>
-          <state>$PROJ_DIR$\..\..\..\..\bsp</state>
           <state>$PROJ_DIR$\..\..</state>
           <state>$PROJ_DIR$\..\..\..\..\..\external\micro-ecc\micro-ecc</state>
           <state>$PROJ_DIR$\..\..\..\..\..\external\nano-pb</state>
@@ -623,6 +622,7 @@
           <state>$PROJ_DIR$\..\..\config</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\ble\common</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\components\boards</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\device</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\clock</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\common</state>
@@ -631,17 +631,16 @@
           <state>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\rng</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\dfu</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\crc32</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\crypto</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\ecc</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\experimental_section_vars</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\fifo</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\fstorage</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\hci</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\log</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\log\src</state>
+          <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\queue</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\scheduler</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\sha256</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\libraries\svc</state>
@@ -652,7 +651,6 @@
           <state>$PROJ_DIR$\..\..\..\..\..\components\softdevice\s130\headers\nrf51</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\toolchain</state>
           <state>$PROJ_DIR$\..\..\..\..\..\components\toolchain\cmsis\include</state>
-          <state>$PROJ_DIR$\..\..\..\..\bsp</state>
           <state>$PROJ_DIR$\..\..</state>
           <state>$PROJ_DIR$\..\..\..\..\..\external\micro-ecc\micro-ecc</state>
           <state>$PROJ_DIR$\..\..\..\..\..\external\nano-pb</state>
@@ -1046,7 +1044,6 @@
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\log\src\nrf_log_frontend.c</name>    </file>  </group>  <group>
   <name>nRF_Libraries</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\util\app_error_weak.c</name>    </file>    <file>
-    <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\fifo\app_fifo.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\scheduler\app_scheduler.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\timer\app_timer.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\timer\app_timer_appsh.c</name>    </file>    <file>
@@ -1057,37 +1054,41 @@
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\hci\hci_mem_pool.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\util\nrf_assert.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\crypto\nrf_crypto.c</name>    </file>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\queue\nrf_queue.c</name>    </file>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\util\sdk_errors.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\sha256\sha256.c</name>    </file>  </group>  <group>
   <name>nano-pb</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\nano-pb\pb_common.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\nano-pb\pb_decode.c</name>    </file>  </group>  <group>
   <name>nRF_micro_ecc</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\micro-ecc\nrf51_iar\armgcc\micro_ecc_lib_nrf51.a</name>    </file>  </group>  <group>
-  <name>Documentation</name>    <file>
-    <name>$PROJ_DIR$\..\..\license.txt</name>    </file>  </group>  <group>
+  <name>Board Definition</name>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\boards\boards.c</name>    </file>  </group>  <group>
   <name>nRF_Drivers</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\common\nrf_drv_common.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\rng\nrf_drv_rng.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\drivers_nrf\hal\nrf_nvmc.c</name>    </file>  </group>  <group>
-  <name>nRF_BLE_DFU</name>    <file>
-    <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu\nrf_ble_dfu.c</name>    </file>  </group>  <group>
+  <name>Device</name>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\toolchain\iar\iar_startup_nrf51.s</name>    </file>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\toolchain\system_nrf51.c</name>    </file>  </group>  <group>
   <name>Application</name>    <file>
     <name>$PROJ_DIR$\..\..\dfu-cc.pb.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\dfu_public_key.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\dfu_req_handling.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\main.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\config\sdk_config.h</name>    </file>  </group>  <group>
+  <name>nRF_BLE_DFU</name>    <file>
+    <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\bootloader\ble_dfu\nrf_ble_dfu.c</name>    </file>  </group>  <group>
   <name>nRF_Segger_RTT</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\segger_rtt\RTT_Syscalls_IAR.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\segger_rtt\SEGGER_RTT.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\external\segger_rtt\SEGGER_RTT_printf.c</name>    </file>  </group>  <group>
+  <name>Documentation</name>    <file>
+    <name>$PROJ_DIR$\..\..\license.txt</name>    </file>  </group>  <group>
   <name>nRF_BLE</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\ble\common\ble_advdata.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\ble\common\ble_conn_params.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\ble\common\ble_srv_common.c</name>    </file>  </group>  <group>
-  <name>Device</name>    <file>
-    <name>$PROJ_DIR$\..\..\..\..\..\components\toolchain\iar\iar_startup_nrf51.s</name>    </file>    <file>
-    <name>$PROJ_DIR$\..\..\..\..\..\components\toolchain\system_nrf51.c</name>    </file>  </group>  <group>
   <name>nRF_SoftDevice</name>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler.c</name>    </file>    <file>
     <name>$PROJ_DIR$\..\..\..\..\..\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</name>    </file>  </group>  <group>

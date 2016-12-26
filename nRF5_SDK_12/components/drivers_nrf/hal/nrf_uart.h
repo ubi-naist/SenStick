@@ -22,6 +22,9 @@
 extern "C" {
 #endif
 
+//Temporary defining legacy UART for instance 1
+#define NRF_UART1 (NRF_UART_Type *)NRF_UARTE1
+
 /**
  * @defgroup nrf_uart_hal UART HAL
  * @{
@@ -404,8 +407,16 @@ __STATIC_INLINE void nrf_uart_disable(NRF_UART_Type * p_reg)
 
 __STATIC_INLINE void nrf_uart_txrx_pins_set(NRF_UART_Type * p_reg, uint32_t pseltxd, uint32_t pselrxd)
 {
-    p_reg->PSELTXD = pseltxd;
+#if defined(UART_PSEL_RXD_CONNECT_Pos)
+    p_reg->PSEL.RXD = pselrxd;
+#else
     p_reg->PSELRXD = pselrxd;
+#endif
+#if defined(UART_PSEL_TXD_CONNECT_Pos)
+    p_reg->PSEL.TXD = pseltxd;
+#else
+    p_reg->PSELTXD = pseltxd;
+#endif
 }
 
 __STATIC_INLINE void nrf_uart_txrx_pins_disconnect(NRF_UART_Type * p_reg)
@@ -415,28 +426,53 @@ __STATIC_INLINE void nrf_uart_txrx_pins_disconnect(NRF_UART_Type * p_reg)
 
 __STATIC_INLINE uint32_t nrf_uart_tx_pin_get(NRF_UART_Type * p_reg)
 {
+#if defined(UART_PSEL_TXD_CONNECT_Pos)
+    return p_reg->PSEL.TXD;
+#else
     return p_reg->PSELTXD;
+#endif
 }
 
 __STATIC_INLINE uint32_t nrf_uart_rx_pin_get(NRF_UART_Type * p_reg)
 {
+#if defined(UART_PSEL_RXD_CONNECT_Pos)
+    return p_reg->PSEL.RXD;
+#else
     return p_reg->PSELRXD;
+#endif
 }
 
 __STATIC_INLINE uint32_t nrf_uart_rts_pin_get(NRF_UART_Type * p_reg)
 {
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    return p_reg->PSEL.RTS;
+#else
     return p_reg->PSELRTS;
+#endif
 }
 
 __STATIC_INLINE uint32_t nrf_uart_cts_pin_get(NRF_UART_Type * p_reg)
 {
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    return p_reg->PSEL.CTS;
+#else
     return p_reg->PSELCTS;
+#endif
 }
 
 __STATIC_INLINE void nrf_uart_hwfc_pins_set(NRF_UART_Type * p_reg, uint32_t pselrts, uint32_t pselcts)
 {
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    p_reg->PSEL.RTS = pselrts;
+#else
     p_reg->PSELRTS = pselrts;
+#endif
+
+#if defined(UART_PSEL_RTS_CONNECT_Pos)
+    p_reg->PSEL.CTS = pselcts;
+#else
     p_reg->PSELCTS = pselcts;
+#endif
 }
 
 __STATIC_INLINE void nrf_uart_hwfc_pins_disconnect(NRF_UART_Type * p_reg)

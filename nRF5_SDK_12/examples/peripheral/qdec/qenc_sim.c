@@ -45,23 +45,23 @@ static void gpiote_event_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t
 {
     if ((qenc_count > 0) && qenc_enable_flag)
     {
-      qenc_count--;
-      qenc_state = next_pos[qenc_state];
+        qenc_count--;
+        qenc_state = next_pos[qenc_state];
 
     }
     else if ((qenc_count < 0 ) && qenc_enable_flag )
     {
-      qenc_count++;
-      qenc_state = next_neg[qenc_state];
+        qenc_count++;
+        qenc_state = next_neg[qenc_state];
     }
     else if ((qenc_dbl_count > 0 ) && qenc_enable_flag)
     {
-      qenc_dbl_count--;
-      qenc_state = next_dbl[qenc_state];
+        qenc_dbl_count--;
+        qenc_state = next_dbl[qenc_state];
     }
     else
     {
-      qenc_enable_flag = false;
+        qenc_enable_flag = false;
     }
 
     if (qenc_state & 0x01)
@@ -117,9 +117,9 @@ void qenc_init(nrf_qdec_ledpol_t led_pol)
 // this function is used mainly in tests
 void qenc_pulse_dblpulse_count_set(int32_t pulse_count, uint32_t dble_pulse_count)
 {
-    qenc_count = pulse_count;
-    qenc_dbl_count = dble_pulse_count;
-    qenc_enable_flag = true;
+    qenc_count          = pulse_count;
+    qenc_dbl_count      = dble_pulse_count;
+    qenc_enable_flag    = true;
 }
 
 // this function is used mainly in a example

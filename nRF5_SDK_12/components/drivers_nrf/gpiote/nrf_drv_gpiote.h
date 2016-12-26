@@ -330,7 +330,7 @@ void nrf_drv_gpiote_out_task_force(nrf_drv_gpiote_pin_t pin, uint8_t state);
  */
 void nrf_drv_gpiote_out_task_trigger(nrf_drv_gpiote_pin_t pin);
 
-#ifdef NRF52
+#ifdef NRF52_SERIES
 /**
  * @brief Function for triggering the task SET manually.
  *

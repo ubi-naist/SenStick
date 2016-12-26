@@ -10,11 +10,10 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "peer_manager.h"
 #include <string.h>
-#include "app_util.h"
 #include "security_manager.h"
 #include "security_dispatcher.h"
 #include "gatt_cache_manager.h"
@@ -23,7 +22,6 @@
 #include "peer_data_storage.h"
 #include "id_manager.h"
 #include "ble_conn_state.h"
-#include "sdk_common.h"
 #include "peer_manager_internal.h"
 
 
@@ -909,9 +907,9 @@ ret_code_t pm_peer_new(pm_peer_id_t           * p_new_peer_id,
             return NRF_ERROR_INTERNAL;
         }
 
-        // NRF_ERROR_NO_MEM,   if no space in flash.
-        // NRF_ERROR_BUSY,     if flash filesystem was busy.
-        // NRF_ERROR_INTENRAL, on internal error.
+        // NRF_ERROR_STORAGE_FULL, if no space in flash.
+        // NRF_ERROR_BUSY,         if flash filesystem was busy.
+        // NRF_ERROR_INTENRAL,     on internal error.
         return err_code;
     }
 
@@ -1085,8 +1083,8 @@ ret_code_t pm_peer_rank_highest(pm_peer_id_t peer_id)
             {
                 m_peer_rank_token    = PM_STORE_TOKEN_INVALID;
                 m_current_highest_peer_rank -= 1;
-                if ((err_code != NRF_ERROR_BUSY) && (err_code != NRF_ERROR_NO_MEM))
                 {
+                if ((err_code != NRF_ERROR_BUSY) && (err_code != NRF_ERROR_STORAGE_FULL))
                     err_code = NRF_ERROR_INTERNAL;
                 }
             }
@@ -1094,4 +1092,4 @@ ret_code_t pm_peer_rank_highest(pm_peer_id_t peer_id)
     }
     return err_code;
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

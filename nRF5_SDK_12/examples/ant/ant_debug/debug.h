@@ -1,7 +1,7 @@
 /*
 This software is subject to the license described in the license.txt file included with this software distribution.
 You may not use this file except in compliance with this license.
-Copyright © Dynastream Innovations Inc. 2015
+Copyright ÂŠ Dynastream Innovations Inc. 2015
 All rights reserved.
 */
 
@@ -114,4 +114,3 @@ void ad_error_page_force(uint8_t error_code, uint16_t error_line, const char * p
 #endif
 
 #endif // ANT_DEBUG_H__
-

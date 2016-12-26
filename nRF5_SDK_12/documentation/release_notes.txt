@@ -1,3 +1,231 @@
+nRF5 SDK v12.2.0
+----------------
+Release Date: Week 49, 2016
+
+Highlights:
+- Added an NFC Type 4 Tag stack (experimental).
+- Replaced the existing Eddystone example with a new implementation. 
+- Added experimental support for the new nRF52840 chip. See the section 
+  "Scope for the nRF52840" for information about which SDK features are 
+  supported on the new chip.
+
+The following toolchains/devices have been used for testing and
+verification:
+- ARM: MDK-ARM version 5.18a
+- GCC: GCC ARM Embedded 4.9 2015q3
+- IAR: IAR Workbench 7.30.4
+
+Supported SoftDevices:
+- S130 v2.0.1
+- S132 v3.0.0
+- S212 v2.0.0
+- S332 v2.0.0
+ 
+Supported boards:
+- PCA10028
+- PCA10031
+- PCA10040
+- PCA10056 (limited support; see the "Scope for the nRF52840" section)
+- PCA20006 (only for beacon examples)
+- Dynastream's N5DK1 (only for ANT examples)
+ 
+For other devices and boards, see the SDK documentation, section "Using
+the SDK with other boards".
+ 
+ 
+*** Scope for the nRF52840 chip
+********************************
+Support for the new development board PCA10056 has been added.
+All examples and libraries for the new chip should be treated as 
+experimental.
+ 
+The following SDK features are supported on the new nRF52840 chip:
+  - Most BLE, hardware peripheral, and NFC examples (with some 
+    exceptions; see the available example projects for details)
+  - Peripheral HAL and drivers (both for existing and new peripherals)
+  - Library supporting CC310 CryptoCell
+  - NFC Type 2 Tag and Type 4 Tag
+
+The following SDK features are not supported on the new nRF52840 chip:
+   - ANT
+   - Secure DFU
+   - Serialization
+   - DTM
+   - ESB and Gazell
+   - RTX and FreeRTOS 
+   - Eddystone
+    
+    
+*** New features
+*****************
+ 
+** Drivers and libraries **
+- Added a SysTick driver.
+- Added a queue module (nrf_queue).
+- Added a memory block allocator module (nrf_balloc).
+- Added an atomic operations module (nrf_atomic, nRF52 Series only).
+- Added an atomic FIFO module (app_atfifo, nRF52 Series only).
+- Added a power management module (nrf_pwr_mgmt).
+- Added an asynchronous SD card driver using SPI.
+- Ported fatfs for nRF5 (external library).
+ 
+*** nRF52840 specific updates ***
+- Added a USB device stack and the following USB classes: HID, MSC,
+  CDC ACM, Audio.
+- Added a QSPI driver for external memories.
+- Added support for 2 UART instances.
+- Added support for 4 PWM instances.
+- Added support for more GPIO (48 pins).
+ 
+** BLE **
+- Integrated the Eddystone project from GitHub, replacing the existing
+  Eddystone Beacon example. The new implementation follows the 
+  specification at https://github.com/google/eddystone (commit 97225a9 
+  from Sep 28, 2016). The new Eddystone library and example supports both
+  nRF51 and nRF52 (experimental).
+- Added an example to demonstrate ATT throughput with long ATT_MTU and
+  DLE (experimental).
+- Added a GATT module that encapsulates the long ATT_MTU feature.
+- Extended the Apple Notification Center Service (ANCS) Service module
+  and example application:
+    - Added 'notification actions' that depend on the app (for example,
+      marking a new email as read or dialing up a missed call).
+    - Added functionality to retrieve app attributes, which allows to
+      get the name of the app that provided a notification.
+- Extended the Continuous Glucose Monitoring Service (CGMS) example
+  application to handle greater, lesser, or equal filtering for the
+  Record Access control point.
+- Updated the BLE examples to no longer attempt to re-initiate bonding
+  if encryption fails due to a missing or wrong key.
+ 
+** NFC **
+- Added support for NFC Type 4 Tag with both read and write NDEF
+  access (experimental).
+- Added support for raw ISO-DEP transmission protocol mode.
+- Added Type 4 Tag support to the Adafruit Tag Reader example.
+ 
+** Cryptography **
+- Added support for the ARM CryptoCell 310 hardware-accelerated
+  cryptography engine.
+- Added examples to show how to use the hardware-accelerated
+  cryptography functionality.
+
+
+*** Changes
+************
+ 
+** Overall **
+- Changed the default interrupt priorities for nRF52 to be the same as
+  the SoftDevice event priority.
+- Prefixed error codes with "NRF_".
+- Fixed a bug in the clock driver where the driver was failing to handle 
+  two requests coming from the same source.
+- Removed nRF52 support for RTX. RTX is now supported on nRF51 chips 
+  only.
+- Updated the example Secure DFU images. They are now created with the
+  debug flag enabled.
+- Modified the SoftDevice header files nrf_soc.h and nrf_nvic.h to
+  support PCA10056 (nRF52840).
+- Split up the files located in the examples\bsp folder to new locations:
+  components\libraries\bsp and components\boards.
+ 
+** Drivers and libraries **
+- Updated the RNG driver so that it supports the SoftDevice being
+  enabled and disabled. Removed the function nrf_drv_rng_pool_capacity().
+- Changed the API for function app_button_is_pushed() (located in
+  app_button.h).
+- Extended the app_gpiote API to support more than 32 pins. Removed 
+  unimplemented functions from the API.
+- Extended the nrf_gpio API to support more than 32 pins. Removed 
+  functions that referred to 8-bit ports (for example, 
+  nrf_gpio_port_read).
+- Removed the function nrf_drv_adc_gpio_to_ain() from the 
+  nrf_drv_adc API.
+- Removed the function nrf_drv_comp_gpio_to_ain() from the 
+  nrf_drv_comp API.
+- Removed the function nrf_drv_saadc_gpio_to_ain() from the 
+  nrf_drv_saadc API.
+  
+** BLE **
+- Fixed an issue that would cause some central examples to fail when
+  restarting scanning using a whitelist.
+- Updated the Peer Manager modules to return NRF_ERROR_STORAGE_FULL
+  instead of NRF_ERROR_NO_MEM.
+- The field "peer_id" in the Peer Manager structure
+  "pm_peer_data_bonding_t" has been renamed to "peer_ble_id".
+- Fixed an issue where the Database Discovery Module would not
+  re-initialize properly upon successive discoveries.
+- Fixed an issue where the Database Discovery Module would fail to
+  discover the extended properties descriptor and the characteristic
+  user description descriptors.
+- Fixed an issue where the Apple Notification Center Service (ANCS)
+  example application could crash if the connecting iPhone disconnected
+  immediately after connecting.
+ 
+** NFC **
+- Modified the Adafruit NFC Shield library to support reading Type 2 and
+  Type 4 Tags.
+- Improved performance of the Adafruit library in Type 2 Tag reader mode
+  (faster read).
+- Added LE Secure Connections OOB values encoding in ble_pair_msg.
+- Enabled dynamic update of the TK value in ble_pair_msg.
+ 
+ 
+*** Known Issues
+****************
+ 
+** Overall **
+- Updating the MDK requires to manually copy the header and linker files
+  into the SDK folder (ARM Keil uVision 4, IAR Workbench, ARMGCC).
+- When uploading an application to an nRF52 IC using nrfjprog, you must
+  provide the "--reset/-r" argument or powercycle the board.
+- RTX is not supported on nRF52 chips.
+ 
+** BLE **
+- Some examples might have excessively verbose logging.
+- In the Proximity Application, writing "High Alert" to the AlertLevel
+  characteristic of the Link Loss Service does not trigger a high alert
+  when the link is lost.
+- When an Android device is used as a peripheral, it sends slave
+  security request with the MITM bit set. The central applications in
+  the SDK will reject the security request (Pairing Failed) because
+  they do not support MITM.
+- Eddystone Beacon Application:
+   - Advertisement intervals are not verified. Clients must ensure that
+     the configured advertisement interval is within the valid range.
+     Note that EID/eTLM configurations might require advertisement
+     intervals larger than the default value.
+   - Caution: On nRF51 devices, eTLM calculation takes around 500 ms
+     and is performed once per EID slot in the same interrupt level
+     priority as the 'Unlock' functionality. Therefore, if multiple EID
+     slots and an eTLM slot are configured, the client might not be able
+     to unlock a beacon that has an eTLM slot and uses the default
+     advertisement interval. To resolve this issue, increase the
+     advertisement interval.
+- Buttonless DFU Template Application (experimental):
+   - The project setup of the example is wrong and does not fit into the
+     available space below the DFU bootloader. To fix this problem, 
+     change the IROM1 size from 0x61000 to 0x59000. In addition, comment
+     out the code section that reserves a codepage at 0x7E000 for MBR 
+     parameters. For details, see  
+     https://devzone.nordicsemi.com/question/100609/sdk-12-bootloader-erased-after-programming/
+   - To switch to DFU mode, you must write to the DFU control point. 
+     However, this characteristic is set as read only. Add the following
+     code line to enable the write property:
+       char_md.char_props.write = 1;
+     For details, see
+     https://devzone.nordicsemi.com/question/93414/sdk12-ble_app_buttonless_dfu/#95079 
+
+ 
+** NFC **
+- NFC Type 2 and Type 4 Tag HAL modules require using TIMER4 on nRF52832.
+- Type 2 Tag on nRF52840 chips might fail unpredictably.
+- Some mobile phone apps cannot write Type 4 Tag ("NFC Tool" seems to be
+  okay to use).
+
+
+========================================================================
+
 nRF5 SDK v12.1.0
 ----------------
 Release Date: Week 40, 2016

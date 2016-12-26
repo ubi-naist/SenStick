@@ -156,9 +156,9 @@ ret_code_t gcm_remote_db_retrieve(pm_peer_id_t        peer_id,
  * @retval BLE_ERROR_INVALID_CONN_HANDLE  conn_handle does not refer to an active, bonded connection.
  * @retval NRF_ERROR_DATA_SIZE            Write buffer not large enough. Call will never work with
  *                                        this GATT database.
- * @retval NRF_ERROR_NO_MEM               No room in persistent_storage. Free up space; the
+ * @retval NRF_ERROR_STORAGE_FULL         No room in persistent_storage. Free up space; the
  *                                        operation will be automatically reattempted after the
- *                                        next compression procedure
+ *                                        next FDS garbage collection procedure.
  * @retval NRF_ERROR_INVALID_STATE        Module is not initialized.
  */
 ret_code_t gcm_local_db_cache_update(uint16_t conn_handle);

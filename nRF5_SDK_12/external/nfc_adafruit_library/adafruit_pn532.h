@@ -31,18 +31,6 @@
 #ifndef ADAFRUIT_PN532__
 #define ADAFRUIT_PN532__
 
-#ifdef PN532_DEBUG
-
-#define PN532_LOG printf
-#define PN532_LOG_HEX print_hex
-
-#else
-
-#define PN532_LOG(...)
-#define PN532_LOG_HEX(...)
-
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 #include "sdk_errors.h"
@@ -72,9 +60,9 @@
  * Sizes of the header and checksum parts of the frame.
  * @{
  */
-#define HEADER_SEQUENCE_LENGTH 6
+#define HEADER_SEQUENCE_LENGTH   6
 #define CHECKSUM_SEQUENCE_LENGTH 2
-#define PN532_FRAME_OVERHEAD (HEADER_SEQUENCE_LENGTH + CHECKSUM_SEQUENCE_LENGTH)
+#define PN532_FRAME_OVERHEAD     (HEADER_SEQUENCE_LENGTH + CHECKSUM_SEQUENCE_LENGTH)
 /** @} */
 
 /**
@@ -87,23 +75,23 @@
  * @brief Start and end location of frame token identifiers.
  * @{
  */
-#define PN532_PREAMBLE                      (0x00)
-#define PN532_STARTCODE1                    (0x00)
-#define PN532_STARTCODE2                    (0xFF)
-#define PN532_POSTAMBLE                     (0x00)
+#define PN532_PREAMBLE          (0x00)
+#define PN532_STARTCODE1        (0x00)
+#define PN532_STARTCODE2        (0xFF)
+#define PN532_POSTAMBLE         (0x00)
 /**
  * @}
  *
  * @name Offsets
  * @{
  */
-#define PN532_PREAMBLE_OFFSET               0
-#define PN532_STARTCODE1_OFFSET             1
-#define PN532_STARTCODE2_OFFSET             2
-#define PN532_LENGTH_OFFSET                 3
-#define PN532_LENGTH_CS_OFFSET              4
-#define PN532_TFI_OFFSET                    5
-#define PN532_DATA_OFFSET                   6
+#define PN532_PREAMBLE_OFFSET   0
+#define PN532_STARTCODE1_OFFSET 1
+#define PN532_STARTCODE2_OFFSET 2
+#define PN532_LENGTH_OFFSET     3
+#define PN532_LENGTH_CS_OFFSET  4
+#define PN532_TFI_OFFSET        5
+#define PN532_DATA_OFFSET       6
 /**
  * @}
  * @}
@@ -117,8 +105,8 @@
  * was sent to or received from the Adafruit PN532 Shield.
  * @{
  */
-#define PN532_HOSTTOPN532                   (0xD4)
-#define PN532_PN532TOHOST                   (0xD5)
+#define PN532_HOSTTOPN532 (0xD4)
+#define PN532_PN532TOHOST (0xD5)
 /** @} */
 
 /**
@@ -169,45 +157,52 @@
  * The following Mifare command codes are available in the Adafruit PN532 Shield.
  * @{
  */
-#define MIFARE_CMD_AUTH_A                   (0x60)
-#define MIFARE_CMD_AUTH_B                   (0x61)
-#define MIFARE_CMD_READ                     (0x30)
-#define MIFARE_CMD_WRITE                    (0xA0)
-#define MIFARE_CMD_TRANSFER                 (0xB0)
-#define MIFARE_CMD_DECREMENT                (0xC0)
-#define MIFARE_CMD_INCREMENT                (0xC1)
-#define MIFARE_CMD_STORE                    (0xC2)
-#define MIFARE_ULTRALIGHT_CMD_WRITE         (0xA2)
+#define MIFARE_CMD_AUTH_A           (0x60)
+#define MIFARE_CMD_AUTH_B           (0x61)
+#define MIFARE_CMD_READ             (0x30)
+#define MIFARE_CMD_WRITE            (0xA0)
+#define MIFARE_CMD_TRANSFER         (0xB0)
+#define MIFARE_CMD_DECREMENT        (0xC0)
+#define MIFARE_CMD_INCREMENT        (0xC1)
+#define MIFARE_CMD_STORE            (0xC2)
+#define MIFARE_ULTRALIGHT_CMD_WRITE (0xA2)
 /** @} */
 
-
-/// Code identifying the baud rate for the ISO14443A card type.
-#define PN532_MIFARE_ISO14443A_BAUD         (0x00)
-
-/// Address of the I2C peripheral of the Adafruit PN532 Shield.
-#define PN532_I2C_ADDRESS                   (0x48 >> 1)
-
-/// Size of the buffer used for sending commands and storing responses.
-#define PN532_PACKBUFFSIZ                   (64)
+/**
+ * @defgroup nrf_external_adafruit_pn532_t2t Type 2 Tag specific parameters
+ * @brief Macros for Type 2 Tag specific parameters.
+ * @{
+ */
+#define T2T_MAX_DATA_EXCHANGE            16 ///< Type 2 Tag maximal command data size (in bytes).
+#define T2T_PAGE_SIZE                    4  ///< Type 2 Tag page/block size (in bytes).
+#define T2T_END_PAGE_OFFSET              3  ///< Offset of the last page/block in Type 2 Tag response payload.
+/** @} */
 
 /**
- * @brief Information about the communication between the host and the Adafruit PN532 Shield.
+ * @defgroup nrf_external_adafruit_pn532_nfc_a NFC-A initialisation response parameters.
+ * @brief Macros for NFC-A initialisation response parameters.
+ * @{
+ */
+#define SENS_RES_ANTICOLLISION_INFO_BYTE 0
+#define SENS_RES_PLATFORM_INFO_BYTE      1
+#define SENS_RES_SIZE                    2
+#define MAX_NFC_A_ID_LEN                 10
+/** @} */
+
+#define PN532_MIFARE_ISO14443A_BAUD      (0x00)      ///< Code identifying the baud rate for the ISO14443A (NFC-A) card type.
+
+#define PN532_I2C_ADDRESS                (0x48 >> 1) ///< Address of the I2C peripheral of the Adafruit PN532 Shield.
+
+/**
+ * @brief Basic information about detected NFC-A tag.
  */
 typedef struct
 {
-    uint8_t _ss;                        //!< Slave select signal for SPI.
-    uint8_t _clk;                       //!< Clock signal for SPI.
-    uint8_t _mosi;                      //!< Master output, slave input signal for SPI.
-    uint8_t _miso;                      //!< Master input, slave output signal for SPI.
-    uint8_t _irq;                       //!< Interrupt pin for Adafruit.
-    uint8_t _reset;                     //!< Reset pin for Adafruit.
-    uint8_t _uid[7];                    //!< ISO14443A UID.
-    uint8_t _uidLen;                    //!< UID length.
-    uint8_t _key[6];                    //!< Mifare Classic key.
-    uint8_t _inListedTag;               //!< Tag number of inlisted tag.
-    bool    _usingSPI;                  //!< True if using SPI, false if using I2C.
-    bool    _hardwareSPI;               //!< True if using hardware SPI, false if using software SPI.
-} adafruit_pn532;
+    uint8_t sens_res[SENS_RES_SIZE];  ///< SENS_RES response bytes.
+    uint8_t sel_res;                  ///< SEL_RES response byte.
+    uint8_t nfc_id_len;               ///< UID length.
+    uint8_t nfc_id[MAX_NFC_A_ID_LEN]; ///< NFC-A UID.
+} nfc_a_tag_info;
 
 /**
  * @name Functions used for initialization
@@ -232,7 +227,7 @@ ret_code_t adafruit_pn532_init(bool force);
  *   @retval    NRF_SUCCESS     If the object was created successfully. Otherwise,
  *                              an error code is returned.
  */
-ret_code_t adafruit_pn532_create_i2c(void);
+ret_code_t adafruit_pn532_i2c_create(void);
 /** @} */
 
 /**
@@ -273,7 +268,7 @@ ret_code_t adafruit_pn532_wake_up(void);
  *   @retval        NRF_SUCCESS     If the function completed successfully. Otherwise,
  *                                  an error code is returned.
  */
-ret_code_t adafruit_pn532_get_firmware_version(uint32_t * p_response);
+ret_code_t adafruit_pn532_firmware_version_get(uint32_t * p_response);
 
 /**  @brief Function for sending a command and waiting a specified period for the ACK.
  *
@@ -284,7 +279,7 @@ ret_code_t adafruit_pn532_get_firmware_version(uint32_t * p_response);
  *   @retval    NRF_SUCCESS            If the command was sent successfully. Otherwise,
  *                                     an error code is returned.
  */
-ret_code_t adafruit_pn532_send_cmd(uint8_t * p_cmd, uint8_t cmd_len, uint16_t timeout);
+ret_code_t adafruit_pn532_cmd_send(uint8_t * p_cmd, uint8_t cmd_len, uint16_t timeout);
 
 /**  @brief Function for enabling the PN532 RF field.
  *
@@ -306,25 +301,22 @@ ret_code_t adafruit_pn532_field_off(void);
  *
  * @{ */
 
-/**  @brief Function for detecting an ISO14443A target presence in the RF field.
+/**  @brief Function for detecting an ISO14443A (NFC-A) target presence in the RF field.
  *
- *   This function enables the RF field and scans for ISO14443A targets present
- *   in the field. The number of scan retries is set by the @ref adafruit_pn532_set_passive_activation_retries
+ *   This function enables the RF field and scans for ISO14443A (NFC-A) targets present
+ *   in the field. The number of scan retries is set by the @ref adafruit_pn532_passive_activation_retries_set
  *   function. By default, the maximum number of retries is set to unlimited, which means
  *   that the PN532 Shield scans for targets until it finds one or the scan is
  *   canceled. The @p timeout parameter specifies the time-out of the scan. If it is
  *   set to a value greater than 0, the function exits with a failure if either the maximum number
  *   of retries or the time-out has been reached. If the @p timeout parameter is set to 0,
- *   a single scan is performed. When the ISO14443A target is detected, the
- *   PN532 module initializes communication and reads the target's UID.
+ *   a single scan is performed. When the ISO14443A (NFC-A) target is detected, the
+ *   PN532 module initializes communication and reads the basic initialization information 
+ *   about NFC-A tag including SENS_RES, SEL_RES and UID. This information is retrieved by
+ *   NFC reader during Technology Detection and Collision Resolution Activities.
  *
- *   @param[in]     card_baudrate         Baud rate of the card.
- *   @param[out]    p_uid                 Pointer to the array that will be populated
- *                                        with the card's UID (up to 7 bytes).
- *   @param[in,out] p_uid_len             Pointer to the variable that stores
- *                                        the length of the p_uid buffer (as input)
- *                                        and the length of the target's UID that
- *                                        was read (as output).
+ *   @param[in,out] p_tag_info            Pointer to the structure where NFC-A Tag
+ *                                        basic initialization information will be stored.
  *   @param[in]     timeout               Time-out (in ms). 0 means that only a single
  *                                        scan is performed.
  *                                        If no tag is presented before the time-out,
@@ -333,12 +325,10 @@ ret_code_t adafruit_pn532_field_off(void);
  *   @retval        NRF_SUCCESS           If the function completed successfully. Otherwise,
  *                                        an error code is returned.
  */
-ret_code_t adafruit_pn532_read_passive_target_id(uint8_t   card_baudrate,
-                                                 uint8_t * p_uid,
-                                                 uint8_t * p_uid_len,
-                                                 uint16_t  timeout);
+ret_code_t adafruit_pn532_nfc_a_target_init(nfc_a_tag_info * p_tag_info,
+                                            uint16_t         timeout);
 
- /** @brief Function for exchanging an Application Protocol Data Unit (APDU) with the currently enlisted peer.
+/** @brief Function for exchanging an Application Protocol Data Unit (APDU) with the currently enlisted peer.
  *
  *   @param[in]     p_send                 Pointer to the data to send.
  *   @param[in]     send_len               Length of the data to send.
@@ -367,47 +357,52 @@ ret_code_t adafruit_pn532_in_data_exchange(uint8_t * p_send,
  *   @retval        NRF_SUCCESS         If MxRtyPassiveActivation was set successfully. Otherwise,
  *                                      an error code is returned.
  */
-ret_code_t adafruit_pn532_set_passive_activation_retries(uint8_t max_retries);
+ret_code_t adafruit_pn532_passive_activation_retries_set(uint8_t max_retries);
 
 /** @} */
 
 /**
- * @name NTAG2xx functions
+ * @name Type 2 Tag related functions
  *
  * @{ */
 
-/**  @brief Function for reading an entire 4-byte page at the specified address.
+/**  @brief Function for reading 4 pages/blocks within Type 2 Tag, starting with
+ *          the specified page/block number.
  *
- *   This function reads 4 bytes from the chosen page.
+ *   This function reads 4 pages/blocks within Type 2 Tag at the specified page/block
+ *   number, using Type 2 Tag READ command.
  *
- *   @param[in]     page                  The page number (0..63 in most cases).
+ *   @param[in]     start_page            The page/block number (0..63 in most cases).
  *   @param[out]    p_buffer              Pointer to the uint8_t array that will
  *                                        hold the retrieved data (if any).
  *
  *   @retval        NRF_SUCCESS           If the data was read successfully. Otherwise,
  *                                        an error code is returned.
  */
-ret_code_t adafruit_pn532_ntag2xx_read_page(uint8_t page, uint8_t * p_buffer);
+ret_code_t adafruit_pn532_tag2_read(uint8_t start_page, uint8_t * p_buffer);
 
-/**  @brief Function for writing an entire 4-byte page at the specified block address.
+/**  @brief Function for writing an entire 4-byte page/block to the Type 2 Tag at the specified 
+ *          page/block address.
  *
- *   This function writes a 4-byte sequence to the specified page.
+ *   This function writes a 4-byte sequence to the Type 2 Tag at the specified page/block, using
+ *   Type 2 Tag WRITE command.
  *
- *   @param[in]     page                The page number to write (0..63 in most cases).
+ *   @param[in]     page                The page/block number to write (0..63 in most cases).
  *   @param[in]     p_data              The uint8_t array that contains the data to write.
  *                                      The data should be exactly 4 bytes long.
  *
  *   @retval        NRF_SUCCESS         If the data was written successfully. Otherwise,
  *                                      an error code is returned.
  */
-ret_code_t adafruit_pn532_ntag2xx_write_page(uint8_t page, uint8_t * p_data);
+ret_code_t adafruit_pn532_tag2_page_write(uint8_t page, uint8_t * p_data);
 
-/**  @brief Function for writing an NDEF URI record starting at the specified page (4..nn).
+/**  @brief Function for writing an NDEF URI record to Type 2 Tag at the specified page (4..nn).
  *
- *   This function assumes that the NTAG2xx card is already formatted to work as an NFC Forum Tag.
+ *   This function writes an NDEF URI record to Type 2 Tag at the specified page (4..nn). It uses
+ *   @ref adafruit_pn532_tag2_page_write to perform atomic writes.
  *
  *   @param[in]     uri_id             The URI identifier code (0 = none, 0x01 =
- *                                      "http://www.", and so on).
+ *                                     "http://www.", and so on).
  *   @param[in]     p_url              The URI text to write (null-terminated string).
  *   @param[in]     data_len           The maximum number of bytes that can be stored in the
  *                                     target device.
@@ -415,41 +410,31 @@ ret_code_t adafruit_pn532_ntag2xx_write_page(uint8_t page, uint8_t * p_data);
  *   @retval        NRF_SUCCESS        If the record was written successfully. Otherwise,
  *                                     an error code is returned.
  */
-ret_code_t adafruit_pn532_ntag2xx_write_ndef_uri(uint8_t uri_id, char * p_url, uint8_t data_len);
+ret_code_t adafruit_pn532_ndef_uri_tag2_write(uint8_t uri_id, char * p_url, uint8_t data_len);
 
 /** @} */
 
 /**
- * @name Functions for displaying formatted text
+ * @name Printing functions.
  *
  * @{ */
 
-/**  @brief Function for printing data in hexadecimal format.
+/**  @brief Function for printing NFC-A Tag Info descriptor.
  *
- *   @param[in]  p_data    Pointer to the first byte of data to be printed.
- *   @param[in]  len       Data length in bytes.
+ *   This function prints NFC-A Tag Info descriptor.
+ *
+ *   @param[in] p_tag_info Pointer to the NFC-A Tag Info descriptor.
  */
-void print_hex(const uint8_t * p_data, const uint32_t len);
+void adafruit_pn532_tag_info_printout(nfc_a_tag_info const * const p_tag_info);
 
-/** @brief Function for printing a character in hexadecimal format.
- *
- *   This function prints a hexadecimal value along with
- *   the char equivalents in the following format:
- *
- *            00 00 00 00 00 00  ......
- *
- *   @param[in]  p_data    Pointer to the first byte of data to be printed.
- *   @param[in]  len       Data length in bytes.
- */
-void print_hex_char(const uint8_t * p_data, const uint32_t len);
 /** @} */
 
- /**
+/**
  * @name Low-level communication functions that utilize I2C and GPIO
  *
  * @{ */
 
- /**  @brief Function for checking PN532 Shield readiness.
+/**  @brief Function for checking PN532 Shield readiness.
  *
  *    @retval True        If the PN532 Shield is ready with a response.
  *    @retval False       Otherwise.
@@ -469,7 +454,7 @@ bool adafruit_pn532_waitready_ms(uint16_t timeout);
  *
  *   @retval  NRF_SUCCESS       If the ACK frame was read. Otherwise, an error code is returned.
  */
-ret_code_t adafruit_pn532_read_ack(void);
+ret_code_t adafruit_pn532_ack_read(void);
 
 /** @brief Function for reading n bytes of data from the PN532 Shield via I2C.
  *
@@ -479,7 +464,7 @@ ret_code_t adafruit_pn532_read_ack(void);
  *   @retval        NRF_SUCCESS            If the data was read successfully. Otherwise,
  *                                         an error code is returned.
  */
-ret_code_t adafruit_pn532_read_data(uint8_t * p_buff, uint8_t n);
+ret_code_t adafruit_pn532_data_read(uint8_t * p_buff, uint8_t n);
 
 /**  @brief Function for writing a command to the PN532 Shield.
  *
@@ -492,7 +477,7 @@ ret_code_t adafruit_pn532_read_data(uint8_t * p_buff, uint8_t n);
  *   @retval     NRF_SUCCESS        If the command was written successfully. Otherwise,
  *                                  an error code is returned.
  */
-ret_code_t adafruit_pn532_write_command(uint8_t * p_cmd, uint8_t cmd_len);
+ret_code_t adafruit_pn532_command_write(uint8_t * p_cmd, uint8_t cmd_len);
 /** @} */
 
 /**

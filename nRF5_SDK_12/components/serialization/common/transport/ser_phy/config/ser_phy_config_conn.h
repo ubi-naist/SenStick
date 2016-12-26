@@ -36,7 +36,7 @@ extern "C" {
 #define SER_PHY_SPI_SLAVE_SS_PIN                SER_CON_SPIS_CSN_PIN
 
 /* UART configuration */
-#define UART_IRQ_PRIORITY                       APP_IRQ_PRIORITY_LOW
+#define UART_IRQ_PRIORITY                       APP_IRQ_PRIORITY_LOWEST
 
 #define SER_PHY_UART_RX                         SER_CON_RX_PIN
 #define SER_PHY_UART_TX                         SER_CON_TX_PIN

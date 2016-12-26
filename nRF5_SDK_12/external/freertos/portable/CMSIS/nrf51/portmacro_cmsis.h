@@ -185,40 +185,21 @@ not necessary for to use this port.  They are defined so the common demo files
 __STATIC_INLINE void vPortDisableISR(void)
 {
 #ifdef SOFTDEVICE_PRESENT
-    uint32_t primask = __get_PRIMASK();
-    /* SVC cannot be called if interrupts are blocked globally */
-    if (!primask)
-    {
-        if (softdevice_handler_is_enabled())
-        {
-            if (current_int_priority_get() > APP_IRQ_PRIORITY_HIGH)
-            {
-                uint8_t dummy = 0;
-                uint32_t err_code = sd_nvic_critical_region_enter(&dummy);
-                APP_ERROR_CHECK(err_code);
-            }
-        }
-        else
-        {
-#endif
-        __disable_irq();
-#ifdef SOFTDEVICE_PRESENT
-        }
-    }
+    uint8_t dummy = 0;
+    uint32_t err_code = sd_nvic_critical_region_enter(&dummy);
+    APP_ERROR_CHECK(err_code);
+#else
+    __disable_irq();
 #endif
 }
 
 __STATIC_INLINE void vPortEnableISR(void)
 {
-    __enable_irq();
 #ifdef SOFTDEVICE_PRESENT
-    if (softdevice_handler_is_enabled())
-    {
-        if (current_int_priority_get() > APP_IRQ_PRIORITY_HIGH)
-        {
-            UNUSED_VARIABLE(sd_nvic_critical_region_exit(0));
-        }
-    }
+    uint32_t err_code = sd_nvic_critical_region_exit(0);
+    APP_ERROR_CHECK(err_code);
+#else
+    __enable_irq();
 #endif
 }
 
@@ -226,60 +207,41 @@ __STATIC_INLINE void vPortEnableISR(void)
  * It concentrates information about ISR state and internal SD state into 32 bit variable. */
 typedef union
 {
-    uint32_t u32; //< 32 bit access to the variable
-    struct
-    {
-        uint8_t sd_nested;        //< Soft device nested element
-        uint8_t primask;          //< Saved primask state
-        uint8_t sd_nested_used:1; //< Information that sd_nested needs to be restored
-        uint8_t primask_used:1;   //< Information that primask needs to be restored
-    }s;
+    uint32_t u32;        //< 32 bit access to the variable
+    uint8_t  sd_nested;  //< Soft device nested element
+    bool     irq_nested; //< Global was disabled
 }portISRState_t;
-
-/* Make sure that all elements in isr state fits in uint32_t element*/
-STATIC_ASSERT(sizeof(portISRState_t) == sizeof(uint32_t));
 
 __STATIC_INLINE uint32_t ulPortDisableISR(void)
 {
-    portISRState_t isrs = {0};
+    portISRState_t isrs    = {0};
+#ifdef SOFTDEVICE_PRESENT
+    uint32_t err_code = sd_nvic_critical_region_enter(&isrs.sd_nested);
+    APP_ERROR_CHECK(err_code);
+#else
     uint32_t primask = __get_PRIMASK();
-    /* SVC cannot be called if interrupts are blocked globally */
-    if (!primask)
+    if(primask == 0)
     {
-#ifdef SOFTDEVICE_PRESENT
-        if (softdevice_handler_is_enabled())
-        {
-            if (current_int_priority_get() > APP_IRQ_PRIORITY_HIGH)
-            {
-                uint32_t err_code = sd_nvic_critical_region_enter(&isrs.s.sd_nested);
-                APP_ERROR_CHECK(err_code);
-                isrs.s.sd_nested_used = 1;
-            }
-        }
-        else
-        {
-#endif
-            __disable_irq();
-            isrs.s.primask = primask;
-isrs.s.primask_used = 1;
-#ifdef SOFTDEVICE_PRESENT
-        }
-#endif
+        __disable_irq();
     }
+    else
+    {
+        isrs.irq_nested = true;
+    }
+#endif
     return isrs.u32;
 }
 
 __STATIC_INLINE void vPortRestoreISR(uint32_t state)
 {
     portISRState_t isrs = {state};
-    if (isrs.s.primask_used)
-    {
-        __set_PRIMASK(isrs.s.primask);
-    }
 #ifdef SOFTDEVICE_PRESENT
-    if (isrs.s.sd_nested_used)
+    uint32_t err_code = sd_nvic_critical_region_exit(isrs.sd_nested);
+    APP_ERROR_CHECK(err_code);
+#else
+    if(!isrs.irq_nested)
     {
-        UNUSED_VARIABLE(sd_nvic_critical_region_exit(isrs.s.sd_nested));
+        __enable_irq();
     }
 #endif
 }

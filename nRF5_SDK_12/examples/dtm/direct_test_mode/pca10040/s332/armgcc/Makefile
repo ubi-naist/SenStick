@@ -7,20 +7,20 @@ PROJ_DIR := ../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
   LINKER_SCRIPT  := direct_test_mode_gcc_nrf52.ld
+
 # Source files common to all targets
 SRC_FILES += \
-  $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52.S \
-  $(SDK_ROOT)/components/toolchain/system_nrf52.c \
-  $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/components/libraries/util/app_error.c \
   $(SDK_ROOT)/components/libraries/util/app_error_weak.c \
+  $(SDK_ROOT)/components/boards/boards.c \
+  $(PROJ_DIR)/main.c \
   $(SDK_ROOT)/components/ble/ble_dtm/ble_dtm.c \
   $(SDK_ROOT)/components/ble/ble_dtm/ble_dtm_hw_nrf52.c \
+  $(SDK_ROOT)/components/toolchain/gcc/gcc_startup_nrf52.S \
+  $(SDK_ROOT)/components/toolchain/system_nrf52.c \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(PROJ_DIR)/config/direct_test_mode_pca10040_s332_po \
-  $(PROJ_DIR)/config \
   $(SDK_ROOT)/components \
   $(SDK_ROOT)/components/libraries/util \
   $(SDK_ROOT)/components/toolchain/gcc \
@@ -28,9 +28,10 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/softdevice/s332/headers/nrf52 \
   $(SDK_ROOT)/components/softdevice/s332/headers \
   $(PROJ_DIR) \
-  $(PROJ_DIR)/../../bsp \
+  $(SDK_ROOT)/components/libraries/bsp \
   ../config \
   $(SDK_ROOT)/components/device \
+  $(SDK_ROOT)/components/boards \
   $(SDK_ROOT)/components/libraries/log \
   $(SDK_ROOT)/components/toolchain/cmsis/include \
   $(SDK_ROOT)/components/ble/ble_dtm \
@@ -41,28 +42,24 @@ INC_FOLDERS += \
 LIB_FILES += \
 
 # C flags common to all targets
-CFLAGS += -DNRF52
-CFLAGS += -DSOFTDEVICE_PRESENT
-CFLAGS += -DBOARD_PCA10040
-CFLAGS += -DNRF52832
 CFLAGS += -DNRF52_PAN_12
 CFLAGS += -DNRF52_PAN_15
 CFLAGS += -DNRF52_PAN_58
-CFLAGS += -DNRF52_PAN_55
+CFLAGS += -DS332
+CFLAGS += -DNRF52_PAN_20
 CFLAGS += -DNRF52_PAN_54
-CFLAGS += -DNRF52_PAN_31
-CFLAGS += -DNRF52_PAN_30
+CFLAGS += -DNRF52
 CFLAGS += -DNRF52_PAN_51
 CFLAGS += -DNRF52_PAN_36
-CFLAGS += -DNRF52_PAN_53
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
-CFLAGS += -DNRF_SD_BLE_API_VERSION=3
-CFLAGS += -DBSP_DEFINES_ONLY
-CFLAGS += -DNRF52_PAN_20
 CFLAGS += -DNRF52_PAN_64
-CFLAGS += -DS332
-CFLAGS += -DNRF52_PAN_62
-CFLAGS += -DNRF52_PAN_63
+CFLAGS += -DNRF52_PAN_55
+CFLAGS += -DNRF_SD_BLE_API_VERSION=3
+CFLAGS += -DSOFTDEVICE_PRESENT
+CFLAGS += -DBOARD_PCA10040
+CFLAGS += -DNRF52_PAN_31
+CFLAGS += -DNRF52832
+CFLAGS += -DBSP_DEFINES_ONLY
 CFLAGS += -mcpu=cortex-m4
 CFLAGS += -mthumb -mabi=aapcs
 CFLAGS +=  -Wall -Werror -O3 -g3
@@ -70,36 +67,30 @@ CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 # keep every function in separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin --short-enums 
-# generate dependency output file
-CFLAGS += -MP -MD
 
 # C++ flags common to all targets
 CXXFLAGS += \
 
 # Assembler flags common to all targets
 ASMFLAGS += -x assembler-with-cpp
-ASMFLAGS += -DNRF52
-ASMFLAGS += -DSOFTDEVICE_PRESENT
-ASMFLAGS += -DBOARD_PCA10040
-ASMFLAGS += -DNRF52832
 ASMFLAGS += -DNRF52_PAN_12
 ASMFLAGS += -DNRF52_PAN_15
 ASMFLAGS += -DNRF52_PAN_58
-ASMFLAGS += -DNRF52_PAN_55
+ASMFLAGS += -DS332
+ASMFLAGS += -DNRF52_PAN_20
 ASMFLAGS += -DNRF52_PAN_54
-ASMFLAGS += -DNRF52_PAN_31
-ASMFLAGS += -DNRF52_PAN_30
+ASMFLAGS += -DNRF52
 ASMFLAGS += -DNRF52_PAN_51
 ASMFLAGS += -DNRF52_PAN_36
-ASMFLAGS += -DNRF52_PAN_53
 ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
-ASMFLAGS += -DNRF_SD_BLE_API_VERSION=3
-ASMFLAGS += -DBSP_DEFINES_ONLY
-ASMFLAGS += -DNRF52_PAN_20
 ASMFLAGS += -DNRF52_PAN_64
-ASMFLAGS += -DS332
-ASMFLAGS += -DNRF52_PAN_62
-ASMFLAGS += -DNRF52_PAN_63
+ASMFLAGS += -DNRF52_PAN_55
+ASMFLAGS += -DNRF_SD_BLE_API_VERSION=3
+ASMFLAGS += -DSOFTDEVICE_PRESENT
+ASMFLAGS += -DBOARD_PCA10040
+ASMFLAGS += -DNRF52_PAN_31
+ASMFLAGS += -DNRF52832
+ASMFLAGS += -DBSP_DEFINES_ONLY
 
 # Linker flags
 LDFLAGS += -mthumb -mabi=aapcs -L $(TEMPLATE_PATH) -T$(LINKER_SCRIPT)
@@ -111,12 +102,8 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += --specs=nano.specs -lc -lnosys
 
 
-
-
-
-
-
 .PHONY: $(TARGETS) default all clean help flash 
+
 # Default target - first one defined
 default: nrf52832_xxaa
 
@@ -128,12 +115,14 @@ help:
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
 include $(TEMPLATE_PATH)/Makefile.common
+
 $(foreach target, $(TARGETS), $(call define_target, $(target)))
--include $(foreach target, $(TARGETS), $($(target)_dependencies))
 
 # Flash the program
 flash: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
 	@echo Flashing: $<
-	nrfjprog --program $< -f nrf52 --chiperase
+	nrfjprog --program $< -f nrf52 --sectorerase
 	nrfjprog --reset -f nrf52
 
+erase:
+	nrfjprog --eraseall -f nrf52

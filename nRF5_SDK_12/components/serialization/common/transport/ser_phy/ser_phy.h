@@ -16,7 +16,7 @@
  * @{
  * @ingroup ble_sdk_lib_serialization
  *
- * @brief   PHY layer for serialization.
+ * @brief   @tagAPI52832 PHY layer for serialization.
  *
  * @details Here you can find declarations of functions and definitions of data structures and
  *          identifiers (typedef enum) used as API of the serialization PHY layer.
@@ -56,7 +56,7 @@
  * and length of the packet are parameters of the @ref ser_phy_tx_pkt_send function. When a packet
  * has been transmitted, an event of type @ref SER_PHY_EVT_TX_PKT_SENT should be emitted.
  *
- * \image html ser_phy_transport_tx.png "TX - interlayer communication"
+ * \image html ser_phy_transport_tx.svg "TX - interlayer communication"
  *
  *
  * \par Receiving a packet
@@ -73,14 +73,14 @@
  * ensure continuous communication. After receiving has finished, an event of type
  * @ref SER_PHY_EVT_RX_PKT_DROPPED is generated.
  *
- * \image html ser_phy_transport_rx_dropped.png "RX dropping - interlayer communication"
+ * \image html ser_phy_transport_rx_dropped.svg "RX dropping - interlayer communication"
  *
  * When the @ref ser_phy_rx_buf_set function parameter is different than NULL, the packet is
  * received to a buffer pointed by it. After receiving has finished, an event of type
  * @ref SER_PHY_EVT_RX_PKT_RECEIVED is generated with event parameters defined in
  * @ref ser_phy_evt_rx_pkt_received_params_t.
  *
- * \image html ser_phy_transport_rx_received.png "RX - interlayer communication"
+ * \image html ser_phy_transport_rx_received.svg "RX - interlayer communication"
  *
  *
  * \par PHY layer errors

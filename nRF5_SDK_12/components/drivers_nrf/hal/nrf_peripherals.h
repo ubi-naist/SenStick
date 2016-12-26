@@ -49,6 +49,10 @@
 #include "nrf52832_peripherals.h"
 #endif
 
+#ifdef NRF52840_XXAA
+#include "nrf52840_peripherals.h"
+#endif
+
 
 /*lint --flb "Leave library region" */
 

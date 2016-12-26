@@ -35,8 +35,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     // Initialize LEDs
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 
     // Setup search sharing and start channels
     ant_search_sharing_setup();

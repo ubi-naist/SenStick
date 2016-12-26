@@ -38,11 +38,15 @@
 #include "nrf_drv_timer.h"
 #include "nrf_drv_common.h"
 #include "nrf_drv_ppi.h"
+#include "nrf_peripherals.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#if defined(GPIOTE_FEATURE_SET_PRESENT) && defined(GPIOTE_FEATURE_CLR_PRESENT)
+#define GPIOTE_SET_CLEAR_TASKS
+#endif
 
 #define APP_PWM_NOPIN                 0xFFFFFFFF
 
@@ -144,11 +148,11 @@ typedef struct
         app_pwm_channel_cb_t    channels_cb[APP_PWM_CHANNELS_PER_INSTANCE]; //!< Channels data
         uint32_t                period;                                     //!< Selected period in ticks
         app_pwm_callback_t      p_ready_callback;                           //!< Callback function called on PWM readiness
-#ifdef NRF51
+#ifdef GPIOTE_SET_CLEAR_TASKS
+        nrf_ppi_channel_t       ppi_channel;                               //!< PPI channel used temporary while changing duty
+#else
         nrf_ppi_channel_t       ppi_channels[2];                            //!< PPI channels used temporary while changing duty
         nrf_ppi_channel_group_t ppi_group;                                  //!< PPI group used to synchronize changes on channels
-#elif NRF52
-        nrf_ppi_channel_t       ppi_channel;                               //!< PPI channel used temporary while changing duty
 #endif
         nrf_drv_state_t         state;                                      //!< Current driver status
     } app_pwm_cb_t;

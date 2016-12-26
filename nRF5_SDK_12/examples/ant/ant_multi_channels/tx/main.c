@@ -33,7 +33,7 @@ int main(void)
     nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
 
     // Setup LEDs
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 
     // Setup SoftDevice and events handler
     err_code = softdevice_ant_evt_handler_set(ant_scaleable_event_handler);

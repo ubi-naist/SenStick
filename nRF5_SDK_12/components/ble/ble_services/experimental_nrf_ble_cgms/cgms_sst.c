@@ -55,6 +55,13 @@ void calc_sst(uint16_t offset, struct tm * p_c_time_date)
     c_time_in_sec  = mktime(p_c_time_date);
     c_time_in_sec  = c_time_in_sec - (offset * 60);
     *p_c_time_date = *(localtime(&c_time_in_sec));
+    
+    if(p_c_time_date->tm_isdst == 1)
+    {
+        // Daylight saving time is not used and must be removed. 
+        p_c_time_date->tm_hour = p_c_time_date->tm_hour - 1;
+        p_c_time_date->tm_isdst = 0;
+    }
 }
 
 

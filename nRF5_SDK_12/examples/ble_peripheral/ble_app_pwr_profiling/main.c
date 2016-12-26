@@ -719,13 +719,12 @@ int main(void)
 
     // Check button states.
     // Notification Start button.
-    err_code = bsp_button_is_pressed(NOTIF_BUTTON_ID, &(is_notification_mode));
-    APP_ERROR_CHECK(err_code);
+    is_notification_mode = bsp_button_is_pressed(NOTIF_BUTTON_ID);
+
     // Non-connectable advertisement start button.
     if (!is_notification_mode)
     {
-        err_code = bsp_button_is_pressed(NON_CONN_ADV_BUTTON_ID, &(is_non_connectable_mode));
-        APP_ERROR_CHECK(err_code);
+        is_non_connectable_mode = bsp_button_is_pressed(NON_CONN_ADV_BUTTON_ID);
     }
     // Un-configured button.
     else

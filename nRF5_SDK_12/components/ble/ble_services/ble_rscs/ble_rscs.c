@@ -14,14 +14,12 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_RSCS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_RSCS)
 #include "ble_rscs.h"
 #include <string.h>
-#include "nordic_common.h"
 #include "ble_l2cap.h"
 #include "ble_srv_common.h"
-#include "app_util.h"
 
 #define OPCODE_LENGTH 1                                                    /**< Length of opcode inside Running Speed and Cadence Measurement packet. */
 #define HANDLE_LENGTH 2                                                    /**< Length of handle inside Running Speed and Cadence Measurement packet. */
@@ -384,4 +382,4 @@ uint32_t ble_rscs_measurement_send(ble_rscs_t * p_rscs, ble_rscs_meas_t * p_meas
 
     return err_code;
 }
-#endif //BLE_RSCS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_RSCS)

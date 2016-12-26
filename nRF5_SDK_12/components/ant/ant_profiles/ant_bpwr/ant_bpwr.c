@@ -10,15 +10,13 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BPWR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BPWR)
 
 #include "nrf_assert.h"
 #include "app_error.h"
 #include "ant_interface.h"
-#include "app_util.h"
 #include "ant_bpwr.h"
-#include "app_error.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_BPWR"
 #if ANT_BPWR_LOG_ENABLED
@@ -463,4 +461,4 @@ void ant_bpwr_disp_evt_handler(ant_bpwr_profile_t * p_profile, ant_evt_t * p_ant
     }
 }
 
-#endif // ANT_BPWR_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BPWR)

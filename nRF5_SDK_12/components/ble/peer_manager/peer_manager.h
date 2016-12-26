@@ -23,6 +23,10 @@
  *
  * @details The API consists of functions for configuring the pairing and encryption behavior of the
  *          device and functions for manipulating the stored data.
+ *
+ *          This module uses Flash Data Storage (FDS) to interface with persistent storage. The
+ *          Peer Manager needs exclusive use of certain FDS file IDs and record keys. See 
+ *          @ref lib_fds_functionality_keys for more information.
  */
 
 
@@ -185,6 +189,7 @@ ret_code_t pm_init(void);
  *
  * @retval NRF_SUCCESS              If initialization was successful.
  * @retval NRF_ERROR_NULL           If @p event_handler was NULL.
+ * @retval NRF_ERROR_NO_MEM         If no more registrations can happen.
  * @retval NRF_ERROR_INVALID_STATE  If the Peer Manager is not initialized.
  */
 ret_code_t pm_register(pm_evt_handler_t event_handler);
@@ -253,7 +258,9 @@ void pm_on_ble_evt(ble_evt_t * p_ble_evt);
  *                                        operations can be performed on this link.
  * @retval BLE_ERROR_INVALID_CONN_HANDLE  If the connection handle is invalid.
  * @retval NRF_ERROR_NOT_FOUND            If the security parameters have not been set.
- * @retval NRF_ERROR_NO_MEM               If there is no more space in flash.
+ * @retval NRF_ERROR_STORAGE_FULL         If there is no more space in persistent storage.
+ * @retval NRF_ERROR_NO_MEM               If no more authentication procedures can run in parallel
+ *                                        for the given role. See @ref sd_ble_gap_authenticate.
  * @retval NRF_ERROR_INVALID_STATE        If the Peer Manager is not initialized, or the peer is
  *                                        disconnected or in the process of disconnecting.
  * @retval NRF_ERROR_INTERNAL             If an internal error occurred.
@@ -701,8 +708,8 @@ ret_code_t pm_peer_data_delete(pm_peer_id_t peer_id, pm_peer_data_id_t data_id);
  *
  * @retval NRF_SUCCESS              If the store operation for bonding data was initiated successfully.
  * @retval NRF_ERROR_NULL           If @p p_bonding_data or @p p_new_peer_id is NULL.
- * @retval NRF_ERROR_NO_MEM         If there is no more space in persistent storage, or peer IDs
- *                                  have been exhausted.
+ * @retval NRF_ERROR_STORAGE_FULL   If there is no more space in persistent storage.
+ * @retval NRF_ERROR_NO_MEM         If there are no more available peer IDs.
  * @retval NRF_ERROR_BUSY           If the underlying flash filesystem is busy with other flash
  *                                  operations. Try again after receiving a Peer Manager event.
  * @retval NRF_ERROR_INVALID_STATE  If the Peer Manager is not initialized.

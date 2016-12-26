@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if HARDFAULT_HANDLER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(HARDFAULT_HANDLER)
 #include <stdint.h>
 #include "compiler_abstraction.h"
 
@@ -66,4 +66,4 @@ __stackless void HardFault_Handler(void)
     "i"(&HardFault_c_handler)
     );
 }
-#endif //HARDFAULT_HANDLER_ENABLED
+#endif //NRF_MODULE_ENABLED(HARDFAULT_HANDLER)

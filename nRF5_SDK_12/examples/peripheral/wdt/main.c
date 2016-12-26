@@ -43,7 +43,7 @@ nrf_drv_wdt_channel_id m_channel_id;
  */
 void wdt_event_handler(void)
 {
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_off();
 
     //NOTE: The max amount of time we can spend in WDT interrupt is two cycles of 32768[Hz] clock - after that, reset occurs
 }
@@ -59,7 +59,7 @@ void wdt_event_handler(void)
  */
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_off();
     while (1);
 }
 
@@ -97,8 +97,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     //Configure all LEDs on board.
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 
     //Configure WDT.
     nrf_drv_wdt_config_t config = NRF_DRV_WDT_DEAFULT_CONFIG;
@@ -111,7 +110,7 @@ int main(void)
     //Indicate program start on LEDs.
     for (uint32_t i = 0; i < LEDS_NUMBER; i++)
     {   nrf_delay_ms(200);
-        LEDS_ON(BSP_LED_0_MASK << i);
+        bsp_board_led_on(i);
     }
      err_code = bsp_buttons_enable();
      APP_ERROR_CHECK(err_code);

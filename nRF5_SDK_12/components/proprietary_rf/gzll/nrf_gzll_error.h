@@ -28,7 +28,7 @@
         if((GZLL_RESULT) == false)                                                  \
         {                                                                           \
             nrf_gzll_error_code_t gzll_error_code = nrf_gzll_get_error_code();      \
-            ret_code_t error_code = gzll_error_code + GAZELLE_ERR_BASE;             \
+            ret_code_t error_code = gzll_error_code + NRF_ERROR_GAZELLE_ERR_BASE;   \
             APP_ERROR_HANDLER(error_code);                                          \
         }                                                                           \
     } while(0)

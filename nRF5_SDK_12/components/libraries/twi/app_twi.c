@@ -9,12 +9,11 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_TWI_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_TWI)
 #include "app_twi.h"
 #include "nrf_assert.h"
 #include "app_util_platform.h"
-#include "sdk_common.h"
 
 
 // Increase specified queue index and when it goes outside the queue move it
@@ -375,4 +374,4 @@ ret_code_t app_twi_perform(app_twi_t *                p_app_twi,
         return p_app_twi->internal_transaction_result;
     }
 }
-#endif //APP_TWI_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_TWI)

@@ -119,7 +119,7 @@ static void demo1(void)
             BSP_LED_3 | NRF_DRV_PWM_PIN_INVERTED, // channel 2
             BSP_LED_2 | NRF_DRV_PWM_PIN_INVERTED  // channel 3
         },
-        .irq_priority = APP_IRQ_PRIORITY_LOW,
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .base_clock   = NRF_PWM_CLK_1MHz,
         .count_mode   = NRF_PWM_MODE_UP,
         .top_value    = m_demo1_top,
@@ -171,7 +171,7 @@ static void demo2(void)
             BSP_LED_2 | NRF_DRV_PWM_PIN_INVERTED, // channel 2
             BSP_LED_3 | NRF_DRV_PWM_PIN_INVERTED  // channel 3
         },
-        .irq_priority = APP_IRQ_PRIORITY_LOW,
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .base_clock   = NRF_PWM_CLK_500kHz,
         .count_mode   = NRF_PWM_MODE_UP,
         .top_value    = TOP,
@@ -247,7 +247,7 @@ static void demo3(void)
             NRF_DRV_PWM_PIN_NOT_USED,             // channel 2
             NRF_DRV_PWM_PIN_NOT_USED,             // channel 3
         },
-        .irq_priority = APP_IRQ_PRIORITY_LOW,
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .base_clock   = NRF_PWM_CLK_125kHz,
         .count_mode   = NRF_PWM_MODE_UP,
         .top_value    = 25000,
@@ -303,7 +303,7 @@ static void demo4(void)
     {
         // These are the common configuration options we use for all PWM
         // instances.
-        .irq_priority = APP_IRQ_PRIORITY_LOW,
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .count_mode   = NRF_PWM_MODE_UP,
         .step_mode    = NRF_PWM_STEP_AUTO,
     };
@@ -458,7 +458,7 @@ static void demo5(void)
             BSP_LED_3 | NRF_DRV_PWM_PIN_INVERTED, // channel 2
             BSP_LED_1 | NRF_DRV_PWM_PIN_INVERTED  // channel 3
         },
-        .irq_priority = APP_IRQ_PRIORITY_LOW,
+        .irq_priority = APP_IRQ_PRIORITY_LOWEST,
         .base_clock   = NRF_PWM_CLK_125kHz,
         .count_mode   = NRF_PWM_MODE_UP,
         .top_value    = 15625,
@@ -575,7 +575,7 @@ void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
     app_error_print(id, pc, info);
     #endif
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
     app_error_save_and_stop(id, pc, info);
 }
 

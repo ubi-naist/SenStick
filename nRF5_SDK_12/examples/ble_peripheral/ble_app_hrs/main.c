@@ -42,6 +42,7 @@
 #include "peer_manager.h"
 #include "fds.h"
 #include "fstorage.h"
+#include "nrf_ble_gatt.h"
 #include "ble_conn_state.h"
 
 #define NRF_LOG_MODULE_NAME "APP"
@@ -49,13 +50,6 @@
 #include "nrf_log_ctrl.h"
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1                                           /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
-
-#if (NRF_SD_BLE_API_VERSION == 3)
-#define NRF_BLE_MAX_MTU_SIZE            GATT_MTU_SIZE_DEFAULT                        /**< MTU size used in the softdevice enabling and to reply to a BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST event. */
-#endif
-
-#define CENTRAL_LINK_COUNT               0                                           /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
-#define PERIPHERAL_LINK_COUNT            1                                           /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
 #define DEVICE_NAME                      "Nordic_HRM"                                /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME                "NordicSemiconductor"                       /**< Manufacturer. Will be passed to Device Information Service. */
@@ -109,6 +103,8 @@ static uint16_t  m_conn_handle = BLE_CONN_HANDLE_INVALID; /**< Handle of the cur
 static ble_bas_t m_bas;                                   /**< Structure used to identify the battery service. */
 static ble_hrs_t m_hrs;                                   /**< Structure used to identify the heart rate service. */
 static bool      m_rr_interval_enabled = true;            /**< Flag for enabling and disabling the registration of new RR interval measurements (the purpose of disabling this is just to test sending HRM without RR interval data. */
+
+static nrf_ble_gatt_t m_gatt;                             /**< Structure for gatt module*/
 
 static sensorsim_cfg_t   m_battery_sim_cfg;               /**< Battery Level sensor simulator configuration. */
 static sensorsim_state_t m_battery_sim_state;             /**< Battery Level sensor simulator state. */
@@ -179,114 +175,91 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     switch (p_evt->evt_id)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
-            NRF_LOG_DEBUG("Connected to previously bonded device\r\n");
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-            break; // PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break; // PM_EVT_CONN_SEC_START
+        {
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
-            NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                                 ble_conn_state_role(p_evt->conn_handle),
-                                 p_evt->conn_handle,
-                                 p_evt->params.conn_sec_succeeded.procedure);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-            break;  // PM_EVT_CONN_SEC_SUCCEEDED
+        {
+            NRF_LOG_INFO("Connection secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
-
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-            break; // PM_EVT_CONN_SEC_FAILED
+        {
+            /* Often, when securing fails, it shouldn't be restarted, for security reasons.
+             * Other times, it can be restarted directly.
+             * Sometimes it can be restarted, but only after changing some Security Parameters.
+             * Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             * Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             * How to handle this error is highly application dependent. */
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        } break; // PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
+        {
             // Run garbage collection on the flash.
             err_code = fds_gc();
-            if (err_code != NRF_ERROR_BUSY)
+            if (err_code == FDS_ERR_BUSY || err_code == FDS_ERR_NO_SPACE_IN_QUEUES)
+            {
+                // Retry.
+            }
+            else
             {
                 APP_ERROR_CHECK(err_code);
             }
-            break; // PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // A likely fatal error occurred. Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break;
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break; // PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break; // PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break; // PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break; // PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             advertising_start();
-            break; // PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break; // PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -379,6 +352,21 @@ static void rr_interval_timeout_handler(void * p_context)
     {
         uint16_t rr_interval;
 
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
         rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
                                                   &m_rr_interval_sim_cfg);
         ble_hrs_rr_interval_add(&m_hrs, rr_interval);
@@ -670,7 +658,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     switch (ble_adv_evt)
     {
         case BLE_ADV_EVT_FAST:
-            NRF_LOG_INFO("Fast Adverstising\r\n");
+            NRF_LOG_INFO("Fast Advertising\r\n");
             err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
             APP_ERROR_CHECK(err_code);
             break;
@@ -703,7 +691,8 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             break; // BLE_GAP_EVT_CONNECTED
 
         case BLE_GAP_EVT_DISCONNECTED:
-            NRF_LOG_INFO("Disconnected\r\n");
+            NRF_LOG_INFO("Disconnected, reason %d\r\n",
+                          p_ble_evt->evt.gap_evt.params.disconnected.reason);
             m_conn_handle = BLE_CONN_HANDLE_INVALID;
             break; // BLE_GAP_EVT_DISCONNECTED
 
@@ -757,13 +746,6 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             }
         } break; // BLE_GATTS_EVT_RW_AUTHORIZE_REQUEST
 
-#if (NRF_SD_BLE_API_VERSION == 3)
-        case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
-            err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle,
-                                                       NRF_BLE_MAX_MTU_SIZE);
-            APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
-#endif
 
         default:
             // No implementation needed.
@@ -789,6 +771,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     bsp_btn_ble_on_ble_evt(p_ble_evt);
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
+    nrf_ble_gatt_on_ble_evt(&m_gatt, p_ble_evt);
 }
 
 
@@ -826,17 +809,17 @@ static void ble_stack_init(void)
     SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
 
     ble_enable_params_t ble_enable_params;
-    err_code = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT,
-                                                    PERIPHERAL_LINK_COUNT,
+    err_code = softdevice_enable_get_default_config(NRF_BLE_CENTRAL_LINK_COUNT,
+                                                    NRF_BLE_PERIPHERAL_LINK_COUNT,
                                                     &ble_enable_params);
     APP_ERROR_CHECK(err_code);
 
     // Check the ram settings against the used number of links
-    CHECK_RAM_START_ADDR(CENTRAL_LINK_COUNT, PERIPHERAL_LINK_COUNT);
+    CHECK_RAM_START_ADDR(NRF_BLE_CENTRAL_LINK_COUNT, NRF_BLE_PERIPHERAL_LINK_COUNT);
 
     // Enable BLE stack.
 #if (NRF_SD_BLE_API_VERSION == 3)
-    ble_enable_params.gatt_enable_params.att_mtu = NRF_BLE_MAX_MTU_SIZE;
+    ble_enable_params.gatt_enable_params.att_mtu = NRF_BLE_GATT_MAX_MTU_SIZE;
 #endif
     err_code = softdevice_enable(&ble_enable_params);
     APP_ERROR_CHECK(err_code);
@@ -992,6 +975,20 @@ static void power_manage(void)
     APP_ERROR_CHECK(err_code);
 }
 
+/*GATT generic Event handler*/
+void gatt_evt_handler(nrf_ble_gatt_t * p_gatt, nrf_ble_gatt_evt_t * p_evt)
+{
+    ble_hrs_on_gatt_evt(&m_hrs, p_evt);
+}
+
+
+/*GATT Module init*/
+void gatt_init(void)
+{
+    ret_code_t err_code = nrf_ble_gatt_init(&m_gatt, gatt_evt_handler);
+    APP_ERROR_CHECK(err_code);
+}
+
 
 /**@brief Function for application main entry.
  */
@@ -1014,6 +1011,7 @@ int main(void)
     }
     gap_params_init();
     advertising_init();
+    gatt_init();
     services_init();
     sensor_simulator_init();
     conn_params_init();

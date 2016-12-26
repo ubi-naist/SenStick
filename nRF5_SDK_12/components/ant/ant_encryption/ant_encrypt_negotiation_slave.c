@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_ENCRYPT_NEGOTIATION_SLAVE_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_ENCRYPT_NEGOTIATION_SLAVE)
 #include <stdlib.h>
 #include <string.h>
 #include "ant_encrypt_config.h"
@@ -159,4 +159,4 @@ void ant_slave_encrypt_negotiation(ant_evt_t * p_ant_evt)
     }
 }
 
-#endif // ANT_ENCRYPT_NEGOTIATION_SLAVE_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_ENCRYPT_NEGOTIATION_SLAVE)

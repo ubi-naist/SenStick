@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if FSTORAGE_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(FSTORAGE)
 #include "fstorage.h"
 #include "fstorage_internal_defs.h"
 
@@ -519,4 +519,15 @@ void fs_sys_event_handler(uint32_t sys_evt)
     // Resume processing the queue, if necessary.
     queue_process();
 }
-#endif //FSTORAGE_ENABLED
+
+bool fs_queue_is_full(void)
+{
+    return (m_queue.count == FS_QUEUE_SIZE);
+}
+
+bool fs_queue_is_empty(void)
+{
+    return (m_queue.count == 0);
+}
+
+#endif //NRF_MODULE_ENABLED(FSTORAGE)

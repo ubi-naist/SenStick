@@ -42,7 +42,7 @@ extern nrf_dfu_settings_t s_dfu_settings;
  * @param[in]   callback    Pointer to a function that is called after completing the write operation.
  *
  * @retval      NRF_SUCCESS         If the write process was successfully initiated.
- * @retval      NRF_ERROR_BUSY      If a flash write error occurred (for example, due to full flash operation queue).
+ * @retval      NRF_ERROR_INTERNAL  If a flash error occurred.
  */
 ret_code_t nrf_dfu_settings_write(dfu_flash_callback_t callback);
 

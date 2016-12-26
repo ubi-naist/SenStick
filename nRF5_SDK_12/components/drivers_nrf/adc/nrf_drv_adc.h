@@ -32,7 +32,6 @@ extern "C" {
  * @brief Analog-to-digital converter (ADC) driver.
  */
 
-
 /**
  * @brief Driver event types.
  */
@@ -253,40 +252,11 @@ bool nrf_drv_adc_is_busy(void);
  */
 __STATIC_INLINE uint32_t nrf_drv_adc_start_task_get(void);
 
-/**
- * @brief Function for converting a GPIO pin number to an analog input pin mask to be used in
- *        the ADC channel configuration.
- *
- * @param[in]  pin GPIO pin.
- *
- * @return     Analog input pin mask. The function returns @ref NRF_ADC_CONFIG_INPUT_DISABLED
- *             if the specified pin is not an analog input.
- */
-__STATIC_INLINE nrf_adc_config_input_t nrf_drv_adc_gpio_to_ain(uint32_t pin);
-
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
 __STATIC_INLINE uint32_t nrf_drv_adc_start_task_get(void)
 {
     return nrf_adc_task_address_get(NRF_ADC_TASK_START);
-}
-
-__STATIC_INLINE nrf_adc_config_input_t nrf_drv_adc_gpio_to_ain(uint32_t pin)
-{
-    // AIN2 - AIN7
-    if (pin >= 1 && pin <= 6)
-    {
-        return (nrf_adc_config_input_t)(1 << (pin + 1));
-    }
-    // AIN0 - AIN1
-    else if (pin >= 26 && pin <= 27)
-    {
-        return (nrf_adc_config_input_t)(1 <<(pin - 26));
-    }
-    else
-    {
-        return NRF_ADC_CONFIG_INPUT_DISABLED;
-    }
 }
 
 #ifdef __cplusplus

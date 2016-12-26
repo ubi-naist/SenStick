@@ -33,6 +33,8 @@ extern "C" {
  * @{
  * @brief An internal module of @ref peer_manager. This module provides a Peer Manager-specific API
  *        to the persistent storage.
+ *
+ * @details This module uses Flash Data Storage (FDS) to interface with persistent storage.
  */
 
 #define PDS_PREPARE_TOKEN_INVALID     (0)       /**< Invalid value for prepare token. */
@@ -41,10 +43,10 @@ extern "C" {
 #define PDS_FIRST_RESERVED_RECORD_KEY (0xC000)  /**< The beginning of the range of record keys reserved for Peer Manager. */
 #define PDS_LAST_RESERVED_RECORD_KEY  (0xFFFE)  /**< The end of the range of record keys reserved for Peer Manager. */
 
-#define PEER_ID_TO_FILE_ID            ( PDS_FIRST_RESERVED_FILE_ID)
-#define FILE_ID_TO_PEER_ID            (-PDS_FIRST_RESERVED_FILE_ID)
-#define DATA_ID_TO_RECORD_KEY         ( PDS_FIRST_RESERVED_RECORD_KEY)
-#define RECORD_KEY_TO_DATA_ID         (-PDS_FIRST_RESERVED_RECORD_KEY)
+#define PEER_ID_TO_FILE_ID            ( PDS_FIRST_RESERVED_FILE_ID)    //!< Macro for converting a @ref pm_peer_id_t to an FDS file ID.
+#define FILE_ID_TO_PEER_ID            (-PDS_FIRST_RESERVED_FILE_ID)    //!< Macro for converting an FDS file ID to a @ref pm_peer_id_t.
+#define DATA_ID_TO_RECORD_KEY         ( PDS_FIRST_RESERVED_RECORD_KEY) //!< Macro for converting a @ref pm_peer_data_id_t to an FDS record ID.
+#define RECORD_KEY_TO_DATA_ID         (-PDS_FIRST_RESERVED_RECORD_KEY) //!< Macro for converting an FDS record ID to a @ref pm_peer_data_id_t.
 
 
 /**@brief The events that come from this module.
@@ -87,9 +89,9 @@ typedef void (*pds_evt_handler_t)(pds_evt_t const * p_event);
 
 /**@brief Function for initializing the module.
  *
- * @retval NRF_SUCCESS          If initialization was successful.
- * @retval NRF_ERROR_NO_MEM     If no flash pages were available for use.
- * @retval NRF_ERROR_INTERNAL   If the module couldn't register with the flash filesystem.
+ * @retval NRF_SUCCESS             If initialization was successful.
+ * @retval NRF_ERROR_STORAGE_FULL  If no flash pages were available for use.
+ * @retval NRF_ERROR_INTERNAL      If the module couldn't register with the flash filesystem.
  */
 ret_code_t pds_init(void);
 
@@ -143,7 +145,7 @@ bool pds_peer_data_iterate(pm_peer_data_id_t            data_id,
  * @retval NRF_SUCCESS               If the operation was successful.
  * @retval NRF_ERROR_INVALID_PARAM   If the data ID in @p p_peer_data is invalid.
  * @retval NRF_ERROR_INVALID_LENGTH  If data length exceeds the maximum allowed length.
- * @retval NRF_ERROR_NO_MEM          If no space is available in flash.
+ * @retval NRF_ERROR_STORAGE_FULL    If no space is available in flash.
  * @retval NRF_ERROR_INTERNAL        If an unexpected error occurred.
  */
 ret_code_t pds_space_reserve(pm_peer_data_const_t const * p_peer_data,
@@ -174,7 +176,7 @@ ret_code_t pds_space_reserve_cancel(pm_prepare_token_t prepare_token);
  *
  * @retval NRF_SUCCESS              If the operation was initiated successfully.
  * @retval NRF_ERROR_INVALID_PARAM  If @p peer_id or the data ID in @p_peer_data are invalid.
- * @retval NRF_ERROR_NO_MEM         If no space is available in flash. This can only happen if
+ * @retval NRF_ERROR_STORAGE_FULL   If no space is available in flash. This can only happen if
  *                                  @p p_prepare_token is @ref PDS_PREPARE_TOKEN_INVALID.
  * @retval NRF_ERROR_BUSY           If the flash filesystem was busy.
  * @retval NRF_ERROR_INTERNAL       If an unexpected error occurred.

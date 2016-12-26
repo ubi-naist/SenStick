@@ -30,6 +30,7 @@
 #include "app_timer.h"
 #include "nordic_common.h"
 #include "nrf_error.h"
+#include "app_error.h"
  #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -125,7 +126,8 @@ int main(void)
     radio_configure();
     NRF_RADIO->PACKETPTR = (uint32_t)&packet;
 
-    err_code = bsp_indication_text_set(BSP_INDICATE_USER_STATE_OFF, "Wait for first packet\r\n");
+    err_code = bsp_indication_set(BSP_INDICATE_USER_STATE_OFF);
+    NRF_LOG_INFO("Wait for first packet\r\n");
     APP_ERROR_CHECK(err_code);
     NRF_LOG_FLUSH();    
 
@@ -133,7 +135,8 @@ int main(void)
     {
         uint32_t received = read_packet();
 
-        err_code = bsp_indication_text_set(BSP_INDICATE_RCV_OK, "Packet was received\r\n");
+        err_code = bsp_indication_set(BSP_INDICATE_RCV_OK);
+        NRF_LOG_INFO("Packet was received\r\n");
         APP_ERROR_CHECK(err_code);
 
         NRF_LOG_INFO("The contents of the package is %u\r\n", (unsigned int)received);

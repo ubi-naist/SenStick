@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'experimental_ble_app_eddystone_pca10040_s132' 
+ * Project: 'ble_app_eddystone_pca10040_s132' 
  * Target:  'nrf52832_xxaa' 
  */
 

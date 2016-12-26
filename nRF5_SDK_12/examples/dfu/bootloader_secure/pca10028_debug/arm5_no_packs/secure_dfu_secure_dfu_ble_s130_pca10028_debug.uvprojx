@@ -12,7 +12,7 @@
       <TargetOption>
         <TargetCommonOption>          <Device>nRF51422_xxAC</Device>
           <Vendor>Nordic Semiconductor</Vendor>
-          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.9.0</PackID>
+          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.11.1</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>          <Cpu>IROM(0x00000000,0x40000) IRAM(0x20000000,0x8000) CPUTYPE("Cortex-M0") CLOCK(16000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -364,7 +364,7 @@
               <MiscControls></MiscControls>
               <Define> NRF_DFU_DEBUG_VERSION BLE_STACK_SUPPORT_REQD __HEAP_SIZE=0 SVC_INTERFACE_CALL_AS_NORMAL_FUNCTION S130 NRF_SD_BLE_API_VERSION=2 BOARD_PCA10028 SWI_DISABLE0 SOFTDEVICE_PRESENT NRF51422 NRF51 NRF_DFU_SETTINGS_VERSION=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s130_pca10028_debug;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s130\headers;..\..\..\..\..\components\softdevice\s130\headers\nrf51;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s130_pca10028_debug;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\boards;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\queue;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s130\headers;..\..\..\..\..\components\softdevice\s130\headers\nrf51;..\..\..\..\..\components\toolchain;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -381,7 +381,7 @@
               <MiscControls> --cpreproc_opts=-DNRF_DFU_DEBUG_VERSION,-DBLE_STACK_SUPPORT_REQD,-D__HEAP_SIZE=0,-DSVC_INTERFACE_CALL_AS_NORMAL_FUNCTION,-DS130,-DNRF_SD_BLE_API_VERSION=2,-DBOARD_PCA10028,-DSWI_DISABLE0,-DSOFTDEVICE_PRESENT,-DNRF51422,-DNRF51,-DNRF_DFU_SETTINGS_VERSION=1</MiscControls>
               <Define> NRF_DFU_DEBUG_VERSION BLE_STACK_SUPPORT_REQD __HEAP_SIZE=0 SVC_INTERFACE_CALL_AS_NORMAL_FUNCTION S130 NRF_SD_BLE_API_VERSION=2 BOARD_PCA10028 SWI_DISABLE0 SOFTDEVICE_PRESENT NRF51422 NRF51 NRF_DFU_SETTINGS_VERSION=1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s130_pca10028_debug;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\ble_dfu\includes;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fifo;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s130\headers;..\..\..\..\..\components\softdevice\s130\headers\nrf51;..\..\..\..\..\components\toolchain;..\..\..\..\bsp;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\config\secure_dfu_secure_dfu_ble_s130_pca10028_debug;..\..\config;..\..\..\..\..\components;..\..\..\..\..\components\ble\common;..\..\..\..\..\components\boards;..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\components\drivers_nrf\rng;..\..\..\..\..\components\libraries\bootloader;..\..\..\..\..\components\libraries\bootloader\ble_dfu;..\..\..\..\..\components\libraries\bootloader\dfu;..\..\..\..\..\components\libraries\crc32;..\..\..\..\..\components\libraries\crypto;..\..\..\..\..\components\libraries\ecc;..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\components\libraries\fstorage;..\..\..\..\..\components\libraries\hci;..\..\..\..\..\components\libraries\log;..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\components\libraries\queue;..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\components\libraries\sha256;..\..\..\..\..\components\libraries\svc;..\..\..\..\..\components\libraries\timer;..\..\..\..\..\components\libraries\util;..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\components\softdevice\s130\headers;..\..\..\..\..\components\softdevice\s130\headers\nrf51;..\..\..\..\..\components\toolchain;..\..;..\..\..\..\..\external\micro-ecc\micro-ecc;..\..\..\..\..\external\nano-pb;..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -421,6 +421,12 @@
               <FileName>sdk_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\config\sdk_config.h</FilePath>            </File>          </Files>
+        </Group>        <Group>
+          <GroupName>Board Definition</GroupName>
+          <Files>            <File>
+              <FileName>boards.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\components\boards\boards.c</FilePath>            </File>          </Files>
         </Group>        <Group>
           <GroupName>Documentation</GroupName>
           <Files>            <File>
@@ -493,9 +499,6 @@
               <FileName>app_error_weak.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\util\app_error_weak.c</FilePath>            </File>            <File>
-              <FileName>app_fifo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\components\libraries\fifo\app_fifo.c</FilePath>            </File>            <File>
               <FileName>app_scheduler.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\scheduler\app_scheduler.c</FilePath>            </File>            <File>
@@ -526,6 +529,12 @@
               <FileName>nrf_crypto.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\crypto\nrf_crypto.c</FilePath>            </File>            <File>
+              <FileName>nrf_queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\components\libraries\queue\nrf_queue.c</FilePath>            </File>            <File>
+              <FileName>sdk_errors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\components\libraries\util\sdk_errors.c</FilePath>            </File>            <File>
               <FileName>sha256.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\components\libraries\sha256\sha256.c</FilePath>            </File>          </Files>
@@ -582,7 +591,7 @@
     </filter>    <package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0">
       <targetInfos>        <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>      </targetInfos>
     </package>
-    <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.9.0">
+    <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.11.1">
       <targetInfos>        <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>      </targetInfos>
     </package>  </packages>
   <apis/>
@@ -590,8 +599,8 @@
       <package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
       <targetInfos>        <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>      </targetInfos>
     </component>
-    <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.9.0" condition="nRF5x Series CMSIS Device">
-      <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.9.0"/>
+    <component Cclass="Device" Cgroup="Startup" Cvendor="NordicSemiconductor" Cversion="8.11.1" condition="nRF5x Series CMSIS Device">
+      <package name="nRF_DeviceFamilyPack" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_DeviceFamilyPack/" vendor="NordicSemiconductor" version="8.11.1"/>
       <targetInfos>        <targetInfo name="nrf51422_xxac_s130" versionMatchMode="fixed"/>      </targetInfos>
     </component>  </components>
   <files>  </files>

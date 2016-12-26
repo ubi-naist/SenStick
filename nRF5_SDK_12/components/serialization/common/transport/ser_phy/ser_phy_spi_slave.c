@@ -546,7 +546,7 @@ uint32_t ser_phy_open(ser_phy_events_handler_t events_handler)
     spi_slave_config.bit_order        = NRF_DRV_SPIS_BIT_ORDER_LSB_FIRST;
     spi_slave_config.def              = SER_PHY_SPI_DEF_CHARACTER;
     spi_slave_config.orc              = SER_PHY_SPI_ORC_CHARACTER;
-    spi_slave_config.irq_priority     = APP_IRQ_PRIORITY_LOW;
+    spi_slave_config.irq_priority     = APP_IRQ_PRIORITY_LOWEST;
     spi_slave_config.miso_drive       = NRF_DRV_SPIS_DEFAULT_MISO_DRIVE;
     //use /CS pullup because state of the line might be undefined when master redefines PIO lines
     spi_slave_config.csn_pullup       = NRF_GPIO_PIN_PULLUP;

@@ -47,13 +47,14 @@ void timeout_handler(void * p_context);
 
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
-    LEDS_OFF(BSP_LED_0 | BSP_LED_1);
+    bsp_board_leds_off();
 
     for (;;)
     {
         nrf_delay_ms(GENERIC_DELAY_TIME);
 
-        LEDS_INVERT(BSP_LED_0 | BSP_LED_1);
+        bsp_board_led_invert(BSP_BOARD_LED_0);
+        bsp_board_led_invert(BSP_BOARD_LED_1);
     }
 }
 
@@ -67,7 +68,7 @@ static void led_and_timer_control(uint32_t led_id, app_simple_timer_mode_t timer
 {
     uint32_t err_code;
 
-    LEDS_INVERT(led_id);
+    bsp_board_led_invert(led_id);
 
     m_state_transit_counter = STATE_TRANSIT_COUNTER_INIT_VALUE;
     m_toggle_led_counter    = TOGGLE_LED_COUNTER;
@@ -84,11 +85,11 @@ static __INLINE void state_entry_action_execute(void)
     switch (m_state)
     {
         case APP_STATE_SINGLE_SHOT:
-            led_and_timer_control(BSP_LED_0_MASK, APP_SIMPLE_TIMER_MODE_SINGLE_SHOT);
+            led_and_timer_control(BSP_BOARD_LED_0, APP_SIMPLE_TIMER_MODE_SINGLE_SHOT);
             break;
 
         case APP_STATE_REPEATED:
-            led_and_timer_control(BSP_LED_1_MASK, APP_SIMPLE_TIMER_MODE_REPEATED);
+            led_and_timer_control(BSP_BOARD_LED_1, APP_SIMPLE_TIMER_MODE_REPEATED);
             break;
 
         default:
@@ -121,7 +122,7 @@ void timeout_handler(void * p_context)
                 if (--m_toggle_led_counter == 0)
                 {
                     m_toggle_led_counter = TOGGLE_LED_COUNTER;
-                    LEDS_INVERT(BSP_LED_0_MASK);
+                    bsp_board_led_invert(BSP_BOARD_LED_0);
                 }
 
                 err_code = app_simple_timer_start(APP_SIMPLE_TIMER_MODE_SINGLE_SHOT,
@@ -142,12 +143,13 @@ void timeout_handler(void * p_context)
                 if (--m_toggle_led_counter == 0)
                 {
                     m_toggle_led_counter = TOGGLE_LED_COUNTER;
-                    LEDS_INVERT(BSP_LED_1_MASK);
+                    bsp_board_led_invert(BSP_BOARD_LED_1);
                 }
             }
             else
             {
-                LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK);
+                bsp_board_led_on(BSP_BOARD_LED_0);
+                bsp_board_led_on(BSP_BOARD_LED_1);
 
                 err_code = app_simple_timer_stop();
                 APP_ERROR_CHECK(err_code);
@@ -185,8 +187,9 @@ int main(void)
     uint32_t err_code = app_simple_timer_init();
     APP_ERROR_CHECK(err_code);
 
-    LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK);
-    LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK);
+    bsp_board_leds_init();
+    bsp_board_led_on(BSP_BOARD_LED_0);
+    bsp_board_led_on(BSP_BOARD_LED_1);
 
     nrf_delay_ms(GENERIC_DELAY_TIME);
 

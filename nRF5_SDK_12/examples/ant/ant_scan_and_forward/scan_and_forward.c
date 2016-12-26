@@ -177,7 +177,7 @@ void sf_bsp_evt_handler(bsp_event_t evt)
             p_device                    = dr_device_get(m_node_address);
             p_device->application_state = STATUS_LIGHT_ON;
             p_device->last_message_sequence_received++;
-            LEDS_ON(LEDS_MASK);
+            bsp_board_leds_on();
             break;
 
         case BSP_EVENT_KEY_1: // Turn self off
@@ -185,7 +185,7 @@ void sf_bsp_evt_handler(bsp_event_t evt)
             p_device                    = dr_device_get(m_node_address);
             p_device->application_state = STATUS_LIGHT_OFF;
             p_device->last_message_sequence_received++;
-            LEDS_OFF(LEDS_MASK);
+            bsp_board_leds_off();
             break;
 
         case BSP_EVENT_KEY_2: // Turn all on
@@ -195,7 +195,7 @@ void sf_bsp_evt_handler(bsp_event_t evt)
             p_device->last_message_sequence_received++;
             // Update command buffer
             set_cmd_buffer_new(ADDRESS_ALL_NODES, COMMAND_LIGHT_ON, RESERVED, RESERVED);
-            LEDS_ON(LEDS_MASK);
+            bsp_board_leds_on();
             break;
 
         case BSP_EVENT_KEY_3: // Turn all off
@@ -205,7 +205,7 @@ void sf_bsp_evt_handler(bsp_event_t evt)
             p_device->last_message_sequence_received++;
             // Update command buffer
             set_cmd_buffer_new(ADDRESS_ALL_NODES, COMMAND_LIGHT_OFF, RESERVED, RESERVED);
-            LEDS_OFF(LEDS_MASK);
+            bsp_board_leds_off();
             break;
 
         default:
@@ -281,12 +281,12 @@ void sf_background_scanner_process(ant_evt_t * p_ant_evt)
                         {
                             case COMMAND_LIGHT_OFF:
                                 p_device->application_state = STATUS_LIGHT_OFF;
-                                LEDS_OFF(LEDS_MASK);
+                                bsp_board_leds_off();
                                 break;
 
                             case COMMAND_LIGHT_ON:
                                 p_device->application_state = STATUS_LIGHT_ON;
-                                LEDS_ON(LEDS_MASK);
+                                bsp_board_leds_on();
                                 break;
                             case COMMAND_CHG_CMD_PG_SET:
                                 if (cmd_page_interleave_pct != RESERVED)
@@ -483,7 +483,7 @@ void sf_external_received_message_process(uint8_t page, uint8_t dst, uint8_t dat
                         p_device                    = dr_device_get(m_node_address);
                         p_device->application_state = STATUS_LIGHT_ON;
                         p_device->last_message_sequence_received++;
-                        LEDS_ON(LEDS_MASK);
+                        bsp_board_leds_on();
                     }
                     break;
 
@@ -498,7 +498,7 @@ void sf_external_received_message_process(uint8_t page, uint8_t dst, uint8_t dat
                         p_device                    = dr_device_get(m_node_address);
                         p_device->application_state = STATUS_LIGHT_OFF;
                         p_device->last_message_sequence_received++;
-                        LEDS_OFF(LEDS_MASK);
+                        bsp_board_leds_off();
                     }
                     break;
 

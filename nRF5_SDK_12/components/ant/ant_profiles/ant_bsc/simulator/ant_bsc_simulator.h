@@ -29,7 +29,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "bsp.h"
 #include "ant_bsc.h"
 #include "ant_bsc_utils.h"
 #include "sensorsim.h"

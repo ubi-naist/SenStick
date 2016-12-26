@@ -33,8 +33,8 @@
 #include "sdk_errors.h"
 #include "app_error.h"
 
-#if LEDS_NUMBER <= 0
-#error "Board is not equipped with LEDs"
+#if LEDS_NUMBER <= 2
+#error "Board is not equipped with enough amount of LEDs"
 #endif
 
 #define TASK_DELAY        200           /**< Task delay. Delays a LED0 task for 200 ms */
@@ -52,7 +52,7 @@ static void led_toggle_task_function (void * pvParameter)
     UNUSED_PARAMETER(pvParameter);
     while (true)
     {
-        LEDS_INVERT(BSP_LED_0_MASK);
+        bsp_board_led_invert(BSP_BOARD_LED_0);
 
         /* Delay a task for a given number of ticks */
         vTaskDelay(TASK_DELAY);
@@ -68,9 +68,7 @@ static void led_toggle_task_function (void * pvParameter)
 static void led_toggle_timer_callback (void * pvParameter)
 {
     UNUSED_PARAMETER(pvParameter);
-#ifdef BSP_LED_1_MASK
-    LEDS_INVERT(BSP_LED_1_MASK);
-#endif
+    bsp_board_led_invert(BSP_BOARD_LED_1);
 }
 
 int main(void)
@@ -82,8 +80,8 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     /* Configure LED-pins as outputs */
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
+    bsp_board_leds_off();
 
     /* Create task for LED0 blinking with priority set to 2 */
     UNUSED_VARIABLE(xTaskCreate(led_toggle_task_function, "LED0", configMINIMAL_STACK_SIZE + 200, NULL, 2, &led_toggle_task_handle));

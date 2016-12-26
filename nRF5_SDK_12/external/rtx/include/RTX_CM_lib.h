@@ -1,12 +1,12 @@
 /*----------------------------------------------------------------------------
- *      RL-ARM - RTX
+ *      CMSIS-RTOS  -  RTX
  *----------------------------------------------------------------------------
  *      Name:    RTX_CM_LIB.H
  *      Purpose: RTX Kernel System Configuration
- *      Rev.:    V4.74
+ *      Rev.:    V4.79
  *----------------------------------------------------------------------------
  *
- * Copyright (c) 1999-2009 KEIL, 2009-2013 ARM Germany GmbH
+ * Copyright (c) 1999-2009 KEIL, 2009-2015 ARM Germany GmbH
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -15,19 +15,19 @@
  *  - Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- *  - Neither the name of ARM  nor the names of its contributors may be used
- *    to endorse or promote products derived from this software without
+ *  - Neither the name of ARM  nor the names of its contributors may be used 
+ *    to endorse or promote products derived from this software without 
  *    specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------*/
@@ -62,9 +62,10 @@ typedef uint32_t OS_RESULT;
 
 #define runtask_id()    rt_tsk_self()
 #define mutex_init(m)   rt_mut_init(m)
-#define mutex_wait(m)   os_mut_wait(m,0xFFFF)
+#define mutex_wait(m)   os_mut_wait(m,0xFFFFU)
 #define mutex_rel(m)    os_mut_release(m)
 
+extern uint8_t   os_running;
 extern OS_TID    rt_tsk_self    (void);
 extern void      rt_mut_init    (OS_ID mutex);
 extern OS_RESULT rt_mut_release (OS_ID mutex);
@@ -101,8 +102,12 @@ OS_RESULT _os_mut_wait    (uint32_t p, OS_ID mutex, uint16_t timeout) __svc_indi
 #define OS_STACK_SZ (4*(OS_PRIVSTKSIZE+OS_MAINSTKSIZE))
 #endif
 
+#ifndef OS_STKINIT
+#define OS_STKINIT  0
+#endif
+
 uint16_t const os_maxtaskrun = OS_TASK_CNT;
-uint32_t const os_stackinfo  = (OS_STKCHECK<<24)| (OS_PRIV_CNT<<16) | (OS_STKSIZE*4);
+uint32_t const os_stackinfo  = (OS_STKINIT<<28) | (OS_STKCHECK<<24) | (OS_PRIV_CNT<<16) | (OS_STKSIZE*4);
 uint32_t const os_rrobin     = (OS_ROBIN << 16) | OS_ROBINTOUT;
 uint32_t const os_tickfreq   = OS_CLOCK;
 uint16_t const os_tickus_i   = OS_CLOCK/1000000;
@@ -114,7 +119,7 @@ uint8_t  const os_flags      = OS_RUNPRIV;
 __USED uint32_t const CMSIS_RTOS_API_Version = osCMSIS;
 __USED uint32_t const CMSIS_RTOS_RTX_Version = osCMSIS_RTX;
 __USED uint32_t const os_clockrate = OS_TICK;
-__USED uint32_t const os_timernum  = 0;
+__USED uint32_t const os_timernum  = 0U;
 
 /* Memory pool for TCB allocation    */
 _declare_box  (mp_tcb, OS_TCB_SIZE, OS_TASK_CNT);
@@ -149,14 +154,14 @@ osMessageQId osMessageQId_osTimerMessageQ;
 #else
 osThreadDef_t os_thread_def_osTimerThread = { NULL };
 osThreadId osThreadId_osTimerThread;
-osMessageQDef(osTimerMessageQ, 0, void *);
+osMessageQDef(osTimerMessageQ, 0U, void *);
 osMessageQId osMessageQId_osTimerMessageQ;
 #endif
 
 /* Legacy RTX User Timers not used */
-uint32_t       os_tmr = 0;
+uint32_t       os_tmr = 0U; 
 uint32_t const *m_tmr = NULL;
-uint16_t const mp_tmr_size = 0;
+uint16_t const mp_tmr_size = 0U;
 
 #if defined (__CC_ARM) && !defined (__MICROLIB)
  /* A memory space for arm standard library. */
@@ -193,8 +198,8 @@ void *__user_perthread_libspace (void) {
   /* Provide a separate libspace for each task. */
   uint32_t idx;
 
-  idx = runtask_id ();
-  if (idx == 0) {
+  idx = (os_running != 0U) ? runtask_id () : 0U;
+  if (idx == 0U) {
     /* RTX not running yet. */
     return (&__libspace_start);
   }
@@ -220,7 +225,7 @@ int _mutex_initialize (OS_ID *mutex) {
 
 __attribute__((used)) void _mutex_acquire (OS_ID *mutex) {
   /* Acquire a system mutex, lock stdlib resources. */
-  if (runtask_id ()) {
+  if (os_running) {
     /* RTX running, acquire a mutex. */
     mutex_wait (*mutex);
   }
@@ -231,7 +236,7 @@ __attribute__((used)) void _mutex_acquire (OS_ID *mutex) {
 
 __attribute__((used)) void _mutex_release (OS_ID *mutex) {
   /* Release a system mutex, unlock stdlib resources. */
-  if (runtask_id ()) {
+  if (os_running) {
     /* RTX running, release a mutex. */
     mutex_rel (*mutex);
   }
@@ -246,7 +251,7 @@ __attribute__((used)) void _mutex_release (OS_ID *mutex) {
 
 /* Main Thread definition */
 extern int main (void);
-osThreadDef_t os_thread_def_main = {(os_pthread)main, osPriorityNormal, 1, 4*OS_MAINSTKSIZE };
+osThreadDef_t os_thread_def_main = {(os_pthread)main, osPriorityNormal, 1U, 4*OS_MAINSTKSIZE };
 
 
 #if defined (__CC_ARM)
@@ -260,19 +265,15 @@ void _main_init (void) {
   for (;;);
 }
 #else
-__asm void __rt_entry (void) {
+__asm void _platform_post_lib_init (void) {
 
-  IMPORT  __user_setup_stackheap
-  IMPORT  __rt_lib_init
   IMPORT  os_thread_def_main
   IMPORT  osKernelInitialize
   IMPORT  osKernelStart
   IMPORT  osThreadCreate
   IMPORT  exit
 
-  BL      __user_setup_stackheap
-  MOV     R1,R2
-  BL      __rt_lib_init
+  ADD     SP,#0x10
   BL      osKernelInitialize
   LDR     R0,=os_thread_def_main
   MOVS    R1,#0
@@ -321,7 +322,7 @@ __attribute ((noreturn)) void __cs3_start_c (void){
     if (src != dst)
       for (count = 0; count != limit; count += sizeof (long long))
         *dst++ = *src++;
-    else
+    else 
       dst = (long long *)((char *)dst + limit);
     limit = rptr->zero_size;
     for (count = 0; count != limit; count += sizeof (long long))
@@ -371,7 +372,7 @@ extern void exit(int arg);
 
 __noreturn __stackless void __cmain(void) {
   int a;
-
+  
   if (__low_level_init() != 0) {
     __iar_data_init3();
   }
@@ -383,8 +384,6 @@ __noreturn __stackless void __cmain(void) {
 
 #endif
 
-
 /*----------------------------------------------------------------------------
  * end of file
  *---------------------------------------------------------------------------*/
-

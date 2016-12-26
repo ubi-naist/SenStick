@@ -9,16 +9,33 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if TWIS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(TWIS)
 #define ENABLED_TWIS_COUNT (TWIS0_ENABLED+TWIS1_ENABLED)
 #if ENABLED_TWIS_COUNT
 #include "nrf_drv_twis.h"
 #include "nrf_assert.h"
-#include "nordic_common.h"
 #include "app_util_platform.h"
 #include "compiler_abstraction.h"
 
+#define NRF_LOG_MODULE_NAME "TWIS"
+
+#if TWIS_CONFIG_LOG_ENABLED
+#define NRF_LOG_LEVEL       TWIS_CONFIG_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR  TWIS_CONFIG_INFO_COLOR
+#define NRF_LOG_DEBUG_COLOR TWIS_CONFIG_DEBUG_COLOR
+#define EVT_TO_STR(event)   (event == NRF_TWIS_EVENT_STOPPED ? "NRF_TWIS_EVENT_STOPPED" :               \
+                            (event == NRF_TWIS_EVENT_ERROR ? "NRF_TWIS_EVENT_ERROR" :                   \
+                            (event == NRF_TWIS_EVENT_RXSTARTED ? "NRF_TWIS_EVENT_RXSTARTED" :           \
+                            (event == NRF_TWIS_EVENT_TXSTARTED ? "NRF_TWIS_EVENT_TXSTARTED" :           \
+                            (event == NRF_TWIS_EVENT_WRITE ? "NRF_TWIS_EVENT_WRITE" :                   \
+                            (event == NRF_TWIS_EVENT_READ ? "NRF_TWIS_EVENT_READ" : "UNKNOWN EVENT"))))))
+#else //TWIS_CONFIG_LOG_ENABLED
+#define EVT_TO_STR(event)   ""
+#define NRF_LOG_LEVEL       0
+#endif //TWIS_CONFIG_LOG_ENABLED
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
 
 /**
  * @internal
@@ -93,28 +110,28 @@ static nrf_drv_twis_var_inst_t m_var_inst[ENABLED_TWIS_COUNT] =
     #include "nrf_drv_twis_inst.def"
 };
 
-#if PERIPHERAL_RESOURCE_SHARING_ENABLED
+#if NRF_MODULE_ENABLED(PERIPHERAL_RESOURCE_SHARING)
     #define IRQ_HANDLER_NAME(n) irq_handler_for_instance_##n
     #define IRQ_HANDLER(n)      static void IRQ_HANDLER_NAME(n)(void)
 
-    #if TWIS0_ENABLED
+    #if NRF_MODULE_ENABLED(TWIS0)
         IRQ_HANDLER(0);
     #endif
-    #if TWIS1_ENABLED
+    #if NRF_MODULE_ENABLED(TWIS1)
         IRQ_HANDLER(1);
     #endif
     static nrf_drv_irq_handler_t const m_irq_handlers[ENABLED_TWIS_COUNT] = {
-    #if TWIS0_ENABLED
+    #if NRF_MODULE_ENABLED(TWIS0)
         IRQ_HANDLER_NAME(0),
     #endif
-    #if TWIS1_ENABLED
+    #if NRF_MODULE_ENABLED(TWIS1)
         IRQ_HANDLER_NAME(1),
     #endif
     };
 #else
     #define IRQ_HANDLER(n) \
         void SPIM##n##_SPIS##n##_TWIM##n##_TWIS##n##_SPI##n##_TWI##n##_IRQHandler(void)
-#endif // PERIPHERAL_RESOURCE_SHARING_ENABLED
+#endif // NRF_MODULE_ENABLED(PERIPHERAL_RESOURCE_SHARING)
 
 /**
  * @brief State processing semaphore
@@ -435,6 +452,9 @@ static void nrf_drv_twis_state_machine(uint8_t instNr)
             {
                 evdata.type = TWIS_EVT_READ_DONE;
                 evdata.data.tx_amount = nrf_twis_tx_amount_get(p_reg);
+                NRF_LOG_INFO("Transfer rx_len:%d\r\n", evdata.data.tx_amount);
+                NRF_LOG_DEBUG("Tx data:\r\n");
+                NRF_LOG_HEXDUMP_DEBUG((uint8_t *)p_reg->TXD.PTR, evdata.data.tx_amount * sizeof(p_reg->TXD.PTR));
                 nrf_drv_call_event_handler(instNr, &evdata);
                 /* Go to idle and repeat the state machine if READ or WRITE events detected.
                  * This time READ or WRITE would be started */
@@ -553,17 +573,22 @@ ret_code_t nrf_drv_twis_init(
     uint8_t instNr = p_instance->instNr;
     NRF_TWIS_Type * const p_reg = m_const_inst[instNr].p_reg;
     nrf_twis_config_addr_mask_t addr_mask = (nrf_twis_config_addr_mask_t)0;
+    ret_code_t err_code;
 
     if ( m_var_inst[instNr].state != NRF_DRV_STATE_UNINITIALIZED)
     {
-        return NRF_ERROR_INVALID_STATE;
+        err_code = NRF_ERROR_INVALID_STATE;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 
-#if PERIPHERAL_RESOURCE_SHARING_ENABLED
+#if NRF_MODULE_ENABLED(PERIPHERAL_RESOURCE_SHARING)
     if (nrf_drv_common_per_res_acquire(p_reg, m_irq_handlers[instNr]) !=
             NRF_SUCCESS)
     {
-        return NRF_ERROR_BUSY;
+        err_code = NRF_ERROR_BUSY;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 #endif
 
@@ -609,7 +634,9 @@ ret_code_t nrf_drv_twis_init(
     m_var_inst[instNr].substate   = NRF_DRV_TWIS_SUBSTATE_IDLE;
     m_var_inst[instNr].ev_handler = event_handler;
     m_var_inst[instNr].state      = NRF_DRV_STATE_INITIALIZED;
-    return NRF_SUCCESS;
+    err_code = NRF_SUCCESS;
+    NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+    return err_code;
 }
 
 
@@ -633,7 +660,7 @@ void nrf_drv_twis_uninit(nrf_drv_twis_t const * const p_instance)
         nrf_gpio_cfg_default(psel.SDA);
     }
 
-#if PERIPHERAL_RESOURCE_SHARING_ENABLED
+#if NRF_MODULE_ENABLED(PERIPHERAL_RESOURCE_SHARING)
     nrf_drv_common_per_res_release(p_reg);
 #endif
 
@@ -763,6 +790,7 @@ ret_code_t nrf_drv_twis_tx_prepare(
         void const * const p_buf,
         size_t size)
 {
+    ret_code_t err_code = NRF_SUCCESS;;
     uint8_t instNr = p_instance->instNr;
     NRF_TWIS_Type * const p_reg = m_const_inst[instNr].p_reg;
     nrf_drv_twis_var_inst_t * const p_var_inst = &m_var_inst[instNr];
@@ -770,21 +798,28 @@ ret_code_t nrf_drv_twis_tx_prepare(
     /* Check power state*/
     if (p_var_inst->state != NRF_DRV_STATE_POWERED_ON)
     {
-        return NRF_ERROR_INVALID_STATE;
+        err_code = NRF_ERROR_INVALID_STATE;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     /* Check data address */
     if (!nrf_drv_is_in_RAM(p_buf))
     {
-        return NRF_ERROR_INVALID_ADDR;
+        err_code = NRF_ERROR_INVALID_ADDR;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     /* Check data size */
     if ((size & TWIS_TXD_MAXCNT_MAXCNT_Msk) != size)
     {
-        return NRF_ERROR_INVALID_LENGTH;
+        err_code = NRF_ERROR_INVALID_LENGTH;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 
     nrf_twis_tx_prepare(p_reg, (uint8_t const *)p_buf, (nrf_twis_amount_t)size);
-    return NRF_SUCCESS;
+    NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+    return err_code;
 
 }
 
@@ -803,6 +838,7 @@ ret_code_t nrf_drv_twis_rx_prepare(
         void * const p_buf,
         size_t size)
 {
+    ret_code_t err_code;
     uint8_t instNr = p_instance->instNr;
     NRF_TWIS_Type * const p_reg = m_const_inst[instNr].p_reg;
     nrf_drv_twis_var_inst_t * const p_var_inst = &m_var_inst[instNr];
@@ -810,21 +846,29 @@ ret_code_t nrf_drv_twis_rx_prepare(
     /* Check power state*/
     if (p_var_inst->state != NRF_DRV_STATE_POWERED_ON)
     {
-        return NRF_ERROR_INVALID_STATE;
+        err_code = NRF_ERROR_INVALID_STATE;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     /* Check data address */
     if (!nrf_drv_is_in_RAM(p_buf))
     {
-        return NRF_ERROR_INVALID_ADDR;
+        err_code = NRF_ERROR_INVALID_ADDR;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
     /* Check data size */
     if ((size & TWIS_RXD_MAXCNT_MAXCNT_Msk) != size)
     {
-        return NRF_ERROR_INVALID_LENGTH;
+        err_code = NRF_ERROR_INVALID_LENGTH;
+        NRF_LOG_WARNING("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+        return err_code;
     }
 
     nrf_twis_rx_prepare(p_reg, (uint8_t *)p_buf, (nrf_twis_amount_t)size);
-    return NRF_SUCCESS;
+    err_code = NRF_SUCCESS;
+    NRF_LOG_INFO("Function: %s, error code: %s.\r\n", (uint32_t)__func__, (uint32_t)ERR_TO_STR(err_code));
+    return err_code;
 }
 
 
@@ -867,4 +911,4 @@ bool nrf_drv_twis_is_pending_rx(nrf_drv_twis_t const * const p_instance)
     return NRF_DRV_TWIS_SUBSTATE_WRITE_PENDING == m_var_inst[(p_instance->instNr)].substate;
 }
 #endif // TWIS_COUNT
-#endif // TWIS_ENABLED
+#endif // NRF_MODULE_ENABLED(TWIS)

@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "sdk_errors.h"
+#include "nrf_gpio.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,13 +42,14 @@ extern "C" {
  */
 typedef struct
 {
-    bool     active_high;      /**< Activate negative polarity. */
-    uint8_t  duty_cycle_max;   /**< Maximum impulse width. */
-    uint8_t  duty_cycle_min;   /**< Minimum impulse width. */
-    uint8_t  duty_cycle_step;  /**< Cycle step. */
-    uint32_t off_time_ticks;   /**< Ticks to stay in low impulse state. */
-    uint32_t on_time_ticks;    /**< Ticks to stay in high impulse state. */
-    uint32_t leds_pin_bm;      /**< Mask of used LEDs. */
+    bool            active_high;     /**< Activate negative polarity. */
+    uint8_t         duty_cycle_max;  /**< Maximum impulse width. */
+    uint8_t         duty_cycle_min;  /**< Minimum impulse width. */
+    uint8_t         duty_cycle_step; /**< Cycle step. */
+    uint32_t        off_time_ticks;  /**< Ticks to stay in low impulse state. */
+    uint32_t        on_time_ticks;   /**< Ticks to stay in high impulse state. */
+    uint32_t        leds_pin_bm;     /**< Mask of used LEDs. */
+    NRF_GPIO_Type * p_leds_port;     /**< Port of used LEDs mask. */
 }led_sb_init_params_t;
 
 /**
@@ -62,6 +64,7 @@ typedef struct
 #define LED_SB_INIT_PARAMS_OFF_TIME_TICKS         65536
 #define LED_SB_INIT_PARAMS_ON_TIME_TICKS          0
 #define LED_SB_INIT_PARAMS_LEDS_PIN_BM(mask)      (mask)
+#define LED_SB_INIT_PARAMS_LEDS_PORT              NRF_GPIO
 /** @} */
 
 /**
@@ -75,22 +78,23 @@ typedef struct
     .duty_cycle_step    = LED_SB_INIT_PARAMS_DUTY_CYCLE_STEP,       \
     .off_time_ticks     = LED_SB_INIT_PARAMS_OFF_TIME_TICKS,        \
     .on_time_ticks      = LED_SB_INIT_PARAMS_ON_TIME_TICKS,         \
-    .leds_pin_bm        = LED_SB_INIT_PARAMS_LEDS_PIN_BM(mask)      \
+    .leds_pin_bm        = LED_SB_INIT_PARAMS_LEDS_PIN_BM(mask),     \
+    .p_leds_port        = LED_SB_INIT_PARAMS_LEDS_PORT              \
 }
 
 /**
  * @brief Function for initializing LED softblink.
  *
- * @param[in] p_init_params          Pointer to the initialization structure.
+ * @param[in] p_init_params Pointer to the initialization structure.
  *
  * @return Values returned by @ref app_timer_create.
  */
-ret_code_t led_softblink_init(led_sb_init_params_t * p_init_params);
+ret_code_t led_softblink_init(led_sb_init_params_t const * p_init_params);
 
 /**
  * @brief Function for starting to blink LEDs.
  *
- * @param[in] leds_pin_bit_mask        Bit mask containing the pins for the LEDs to be blinked.
+ * @param[in] leds_pin_bit_mask Bit mask containing the pins for the LEDs to be blinked.
  *
  * @return Values returned by @ref app_timer_start.
  */
@@ -108,7 +112,7 @@ ret_code_t led_softblink_stop(void);
  *
  * This function configures the time that the LEDs will be off between each blink.
  *
- * @param[in] off_time_ticks              Off time in ticks.
+ * @param[in] off_time_ticks Off time in ticks.
  *
  */
 void led_softblink_off_time_set(uint32_t off_time_ticks);
@@ -118,7 +122,7 @@ void led_softblink_off_time_set(uint32_t off_time_ticks);
  *
  * This function configures the time that the LEDs will be on between each blink.
  *
- * @param[in] on_time_ticks               On time in ticks.
+ * @param[in] on_time_ticks On time in ticks.
  *
  */
 void led_softblink_on_time_set(uint32_t on_time_ticks);
@@ -126,7 +130,7 @@ void led_softblink_on_time_set(uint32_t on_time_ticks);
 /**
  * @brief Function for uninitializing LED softblink.
  *
- * @retval NRF_SUCCESS          If LED softblink was uninitialized successfully.
+ * @retval NRF_SUCCESS If LED softblink was uninitialized successfully.
  */
 ret_code_t led_softblink_uninit(void);
 

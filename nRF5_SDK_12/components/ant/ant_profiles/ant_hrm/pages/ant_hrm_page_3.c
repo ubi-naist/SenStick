@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_HRM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_HRM)
 
 #include "ant_hrm_page_3.h"
 
@@ -72,4 +72,4 @@ void ant_hrm_page_3_decode(uint8_t const        * p_page_buffer,
     page3_data_log(p_page_data);
 }
 
-#endif // ANT_HRM_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_HRM)

@@ -46,10 +46,10 @@
 
 #define APP_FEATURE_NOT_SUPPORTED       BLE_GATT_STATUS_ATTERR_APP_BEGIN + 2        /**< Reply when unsupported features are requested. */
 
-#define ADVERTISING_LED_PIN             BSP_LED_0_MASK                              /**< Is on when device is advertising. */
-#define CONNECTED_LED_PIN               BSP_LED_1_MASK                              /**< Is on when device has connected. */
+#define ADVERTISING_LED_PIN             BSP_BOARD_LED_0                             /**< Is on when device is advertising. */
+#define CONNECTED_LED_PIN               BSP_BOARD_LED_1                             /**< Is on when device has connected. */
 
-#define LEDBUTTON_LED_PIN               BSP_LED_2_MASK                              /**< LED to be toggled with the help of the LED Button Service. */
+#define LEDBUTTON_LED_PIN               BSP_BOARD_LED_2                             /**< LED to be toggled with the help of the LED Button Service. */
 #define LEDBUTTON_BUTTON_PIN            BSP_BUTTON_0                                /**< Button that will trigger the notification event with the LED Button Service */
 
 #define DEVICE_NAME                     "Nordic_Blinky"                             /**< Name of device. Will be included in the advertising data. */
@@ -101,8 +101,7 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
  */
 static void leds_init(void)
 {
-    LEDS_CONFIGURE(ADVERTISING_LED_PIN | CONNECTED_LED_PIN | LEDBUTTON_LED_PIN);
-    LEDS_OFF(ADVERTISING_LED_PIN | CONNECTED_LED_PIN | LEDBUTTON_LED_PIN);
+    bsp_board_leds_init();
 }
 
 
@@ -186,12 +185,12 @@ static void led_write_handler(ble_lbs_t * p_lbs, uint8_t led_state)
 {
     if (led_state)
     {
-        LEDS_ON(LEDBUTTON_LED_PIN);
+        bsp_board_led_on(LEDBUTTON_LED_PIN);
         NRF_LOG_INFO("Received LED ON!\r\n");
     }
     else
     {
-        LEDS_OFF(LEDBUTTON_LED_PIN);
+        bsp_board_led_off(LEDBUTTON_LED_PIN);
         NRF_LOG_INFO("Received LED OFF!\r\n");
     }
 }
@@ -285,7 +284,7 @@ static void advertising_start(void)
 
     err_code = sd_ble_gap_adv_start(&adv_params);
     APP_ERROR_CHECK(err_code);
-    LEDS_ON(ADVERTISING_LED_PIN);
+    bsp_board_led_on(ADVERTISING_LED_PIN);
 }
 
 
@@ -301,8 +300,8 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
     {
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Connected\r\n");
-            LEDS_ON(CONNECTED_LED_PIN);
-            LEDS_OFF(ADVERTISING_LED_PIN);
+            bsp_board_led_on(CONNECTED_LED_PIN);
+            bsp_board_led_off(ADVERTISING_LED_PIN);
             m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
 
             err_code = app_button_enable();
@@ -311,7 +310,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
 
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Disconnected\r\n");
-            LEDS_OFF(CONNECTED_LED_PIN);
+            bsp_board_led_off(CONNECTED_LED_PIN);
             m_conn_handle = BLE_CONN_HANDLE_INVALID;
 
             err_code = app_button_disable();

@@ -34,7 +34,18 @@
 extern "C" {
 #endif
 
-
+#ifndef PWM0_ENABLED
+#define PWM0_ENABLED 0
+#endif
+#ifndef PWM1_ENABLED
+#define PWM1_ENABLED 0
+#endif
+#ifndef PWM2_ENABLED
+#define PWM2_ENABLED 0
+#endif
+#ifndef PWM3_ENABLED
+#define PWM3_ENABLED 0
+#endif
 /**
  * @brief PWM driver instance data structure.
  */
@@ -47,6 +58,7 @@ typedef struct
 #define PWM0_INSTANCE_INDEX 0
 #define PWM1_INSTANCE_INDEX PWM0_INSTANCE_INDEX+PWM0_ENABLED
 #define PWM2_INSTANCE_INDEX PWM1_INSTANCE_INDEX+PWM1_ENABLED
+#define PWM3_INSTANCE_INDEX PWM2_INSTANCE_INDEX+PWM2_ENABLED
 
 /**
  * @brief Macro for creating a PWM driver instance.

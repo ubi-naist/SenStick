@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if BLE_CTS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_CTS_C)
 #include <string.h>
 #include "ble.h"
 #include "ble_srv_common.h"
@@ -18,7 +18,6 @@
 #include "ble_cts_c.h"
 #include "ble_date_time.h"
 #include "ble_db_discovery.h"
-#include "sdk_common.h"
 #define NRF_LOG_MODULE_NAME "BLE_CTS_C"
 #include "nrf_log.h"
 
@@ -329,4 +328,4 @@ uint32_t ble_cts_c_handles_assign(ble_cts_c_t               * p_cts,
 
     return NRF_SUCCESS;
 }
-#endif//BLE_CTS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_CTS_C)

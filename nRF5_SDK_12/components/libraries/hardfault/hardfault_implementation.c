@@ -9,13 +9,12 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if HARDFAULT_HANDLER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(HARDFAULT_HANDLER)
 #include "hardfault.h"
 #include "nrf.h"
 #include "compiler_abstraction.h"
 #include "app_util_platform.h"
-#include "nordic_common.h"
 #ifdef SOFTDEVICE_PRESENT
 #include "nrf_soc.h"
 #endif
@@ -42,6 +41,8 @@ __WEAK void HardFault_process(HardFault_stack_t * p_stack)
 
 void HardFault_c_handler(uint32_t * p_stack_address)
 {
+    NRF_LOG_ERROR("Hardfault PC:%x\r\n", ((HardFault_stack_t *)p_stack_address)->pc);
+    NRF_LOG_FINAL_FLUSH();
 #if defined(DEBUG_NRF)
     HardFault_p_stack = (HardFault_stack_t *)p_stack_address;
     (void)HardFault_p_stack;
@@ -57,8 +58,6 @@ void HardFault_c_handler(uint32_t * p_stack_address)
         }
     #endif // __CORTEX_M == 0x04
 #endif // DEBUG_NRF
-    NRF_LOG_ERROR("Hardfault PC:%x\r\n", ((HardFault_stack_t *)p_stack_address)->pc);
-    NRF_LOG_FINAL_FLUSH();
     HardFault_process((HardFault_stack_t *)p_stack_address);
 }
-#endif //HARDFAULT_HANDLER_ENABLED
+#endif //NRF_MODULE_ENABLED(HARDFAULT_HANDLER)

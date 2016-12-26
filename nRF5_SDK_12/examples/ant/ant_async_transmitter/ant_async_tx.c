@@ -155,12 +155,12 @@ void ant_async_tx_bsp_evt_handler(bsp_event_t evt)
     switch (evt)
     {
         case BSP_EVENT_KEY_0:
-            LEDS_INVERT(BSP_LED_0_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_0);
             async_command_send(COMMAND_0);
             break;
 
         case BSP_EVENT_KEY_1:
-            LEDS_INVERT(BSP_LED_0_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_0);
             async_command_send(COMMAND_1);
             break;
 

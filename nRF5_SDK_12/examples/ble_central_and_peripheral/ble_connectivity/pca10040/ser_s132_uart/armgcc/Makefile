@@ -7,6 +7,7 @@ PROJ_DIR := ../../..
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
   LINKER_SCRIPT  := ble_connectivity_gcc_nrf52.ld
+
 # Source files common to all targets
 SRC_FILES += \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_serial.c \
@@ -18,6 +19,8 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/uart/app_uart.c \
   $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
   $(SDK_ROOT)/components/libraries/util/nrf_assert.c \
+  $(SDK_ROOT)/components/libraries/util/sdk_errors.c \
+  $(SDK_ROOT)/components/boards/boards.c \
   $(SDK_ROOT)/components/serialization/connectivity/codecs/s132/serializers/ble_conn.c \
   $(SDK_ROOT)/components/serialization/connectivity/codecs/common/ble_dtm_init.c \
   $(SDK_ROOT)/components/serialization/connectivity/codecs/s132/serializers/ble_event_enc.c \
@@ -77,13 +80,12 @@ SRC_FILES += \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(PROJ_DIR)/config \
   $(SDK_ROOT)/components \
   $(SDK_ROOT)/components/serialization/connectivity/hal \
   $(SDK_ROOT)/components/serialization/common/transport/ser_phy/config \
   $(SDK_ROOT)/components/serialization/connectivity/codecs/s132/middleware \
   $(SDK_ROOT)/components/toolchain/cmsis/include \
-  $(PROJ_DIR)/../../bsp \
+  $(SDK_ROOT)/components/serialization/connectivity/codecs/common \
   $(SDK_ROOT)/components/serialization/connectivity \
   $(SDK_ROOT)/components/serialization/connectivity/codecs/s132/serializers \
   $(SDK_ROOT)/components/drivers_nrf/delay \
@@ -93,6 +95,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/util \
   $(SDK_ROOT)/components/drivers_nrf/uart \
   $(SDK_ROOT)/components/ble/common \
+  $(SDK_ROOT)/components/libraries/bsp \
   $(SDK_ROOT)/components/libraries/uart \
   $(SDK_ROOT)/components/device \
   $(SDK_ROOT)/components/libraries/log \
@@ -103,7 +106,7 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/scheduler \
   ../config \
   $(SDK_ROOT)/components/softdevice/common/softdevice_handler \
-  $(SDK_ROOT)/components/serialization/connectivity/codecs/common \
+  $(SDK_ROOT)/components/boards \
   $(SDK_ROOT)/components/drivers_nrf/hal \
   $(SDK_ROOT)/components/toolchain/gcc \
   $(SDK_ROOT)/components/toolchain \
@@ -119,31 +122,27 @@ LIB_FILES += \
 # C flags common to all targets
 CFLAGS += -D__STACK_SIZE=2048
 CFLAGS += -DNRF52
+CFLAGS += -DNRF52_PAN_64
+CFLAGS += -DSOFTDEVICE_PRESENT
 CFLAGS += -DSER_CONNECTIVITY
 CFLAGS += -DBOARD_PCA10040
 CFLAGS += -DNRF52832
 CFLAGS += -D__HEAP_SIZE=1024
-CFLAGS += -DNRF52_PAN_64
 CFLAGS += -DNRF52_PAN_12
-CFLAGS += -DNRF52_PAN_15
 CFLAGS += -DNRF52_PAN_58
 CFLAGS += -DNRF52_PAN_55
 CFLAGS += -DNRF52_PAN_54
 CFLAGS += -DNRF52_PAN_31
-CFLAGS += -DNRF52_PAN_30
 CFLAGS += -DNRF52_PAN_51
 CFLAGS += -DNRF52_PAN_36
-CFLAGS += -DNRF52_PAN_53
-CFLAGS += -DS132
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
 CFLAGS += -DBLE_STACK_SUPPORT_REQD
+CFLAGS += -DNRF52_PAN_15
 CFLAGS += -DNRF_SD_BLE_API_VERSION=3
 CFLAGS += -DBSP_DEFINES_ONLY
 CFLAGS += -DSWI_DISABLE0
 CFLAGS += -DNRF52_PAN_20
-CFLAGS += -DSOFTDEVICE_PRESENT
-CFLAGS += -DNRF52_PAN_62
-CFLAGS += -DNRF52_PAN_63
+CFLAGS += -DS132
 CFLAGS += -mcpu=cortex-m4
 CFLAGS += -mthumb -mabi=aapcs
 CFLAGS +=  -Wall -Werror -O3 -g3
@@ -151,8 +150,6 @@ CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 # keep every function in separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin --short-enums 
-# generate dependency output file
-CFLAGS += -MP -MD
 
 # C++ flags common to all targets
 CXXFLAGS += \
@@ -161,31 +158,27 @@ CXXFLAGS += \
 ASMFLAGS += -x assembler-with-cpp
 ASMFLAGS += -D__STACK_SIZE=2048
 ASMFLAGS += -DNRF52
+ASMFLAGS += -DNRF52_PAN_64
+ASMFLAGS += -DSOFTDEVICE_PRESENT
 ASMFLAGS += -DSER_CONNECTIVITY
 ASMFLAGS += -DBOARD_PCA10040
 ASMFLAGS += -DNRF52832
 ASMFLAGS += -D__HEAP_SIZE=1024
-ASMFLAGS += -DNRF52_PAN_64
 ASMFLAGS += -DNRF52_PAN_12
-ASMFLAGS += -DNRF52_PAN_15
 ASMFLAGS += -DNRF52_PAN_58
 ASMFLAGS += -DNRF52_PAN_55
 ASMFLAGS += -DNRF52_PAN_54
 ASMFLAGS += -DNRF52_PAN_31
-ASMFLAGS += -DNRF52_PAN_30
 ASMFLAGS += -DNRF52_PAN_51
 ASMFLAGS += -DNRF52_PAN_36
-ASMFLAGS += -DNRF52_PAN_53
-ASMFLAGS += -DS132
 ASMFLAGS += -DCONFIG_GPIO_AS_PINRESET
 ASMFLAGS += -DBLE_STACK_SUPPORT_REQD
+ASMFLAGS += -DNRF52_PAN_15
 ASMFLAGS += -DNRF_SD_BLE_API_VERSION=3
 ASMFLAGS += -DBSP_DEFINES_ONLY
 ASMFLAGS += -DSWI_DISABLE0
 ASMFLAGS += -DNRF52_PAN_20
-ASMFLAGS += -DSOFTDEVICE_PRESENT
-ASMFLAGS += -DNRF52_PAN_62
-ASMFLAGS += -DNRF52_PAN_63
+ASMFLAGS += -DS132
 
 # Linker flags
 LDFLAGS += -mthumb -mabi=aapcs -L $(TEMPLATE_PATH) -T$(LINKER_SCRIPT)
@@ -197,12 +190,8 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += --specs=nano.specs -lc -lnosys
 
 
+.PHONY: $(TARGETS) default all clean help flash flash_softdevice
 
-
-
-
-
-.PHONY: $(TARGETS) default all clean help flash  flash_softdevice
 # Default target - first one defined
 default: nrf52832_xxaa
 
@@ -210,22 +199,24 @@ default: nrf52832_xxaa
 help:
 	@echo following targets are available:
 	@echo 	nrf52832_xxaa
-	@echo 	flash_softdevice
 
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
 include $(TEMPLATE_PATH)/Makefile.common
+
 $(foreach target, $(TARGETS), $(call define_target, $(target)))
--include $(foreach target, $(TARGETS), $($(target)_dependencies))
 
 # Flash the program
 flash: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
 	@echo Flashing: $<
 	nrfjprog --program $< -f nrf52 --sectorerase
 	nrfjprog --reset -f nrf52
+
 # Flash softdevice
 flash_softdevice:
 	@echo Flashing: s132_nrf52_3.0.0_softdevice.hex
-	nrfjprog --program $(SDK_ROOT)/components/softdevice/s132/hex/s132_nrf52_3.0.0_softdevice.hex -f nrf52 --chiperase 
+	nrfjprog --program $(SDK_ROOT)/components/softdevice/s132/hex/s132_nrf52_3.0.0_softdevice.hex -f nrf52 --sectorerase 
 	nrfjprog --reset -f nrf52
 
+erase:
+	nrfjprog --eraseall -f nrf52

@@ -120,5 +120,17 @@
  */
 #define NRF_LOG_BACKEND_SERIAL_USES_RTT
 
+/** @brief RTT output buffer size.
+ *
+ * Should be equal or bigger than \ref NRF_LOG_BACKEND_MAX_STRING_LENGTH.
+ * This value is used in Segger RTT configuration to set the buffer size
+ * if it is bigger than default RTT buffer size.
+ *
+ *
+ * @note This is an NRF_CONFIG macro.
+ */
+#define NRF_LOG_BACKEND_RTT_OUTPUT_BUFFER_SIZE
+
+
 
 /** @} */

@@ -14,10 +14,13 @@
 #define HAL_NFC_H__
 
 /** @file
- * @defgroup hal_nfc NFC Type 2 Tag HAL
+ * @defgroup nfc_t2t_hal NFC Type 2 Tag HAL
  * @{
- * @ingroup nfc_library
+ * @ingroup nfc_t2t
  * @brief @tagAPI52 Hardware abstraction layer for the NFC Type 2 Tag library.
+ *
+ * @note Before the NFCT peripheral enters ACTIVATED state, the HFXO must be running.
+ * To fulfill this requirement and allow other software modules to also request the HFXO, the NFC Type 4 Tag HAL uses @ref nrf_drv_clock module.
  *
  */
 
@@ -26,11 +29,11 @@
 #include <sdk_errors.h>
 
 
-/** @brief Events passed to upper-layer callback function. */
+/** @brief Events passed to the upper-layer callback function. */
 typedef enum {
     HAL_NFC_EVENT_FIELD_ON,           ///< Field is detected.
     HAL_NFC_EVENT_FIELD_OFF,          ///< Field is lost.
-    HAL_NFC_EVENT_DATA_RECEIVED,      ///< Data is recived.
+    HAL_NFC_EVENT_DATA_RECEIVED,      ///< Data is received.
     HAL_NFC_EVENT_DATA_TRANSMITTED    ///< Data is Transmitted.
 } hal_nfc_event_t;
 
@@ -42,17 +45,17 @@ typedef enum {
 } hal_nfc_param_id_t;
 
 
-/** @brief Callback from HAL_NFC layer into upper layer.
+/** @brief Callback from HAL_NFC layer into the upper layer.
   *
   * If event == HAL_NFC_EVENT_DATA_RECEIVED:
-  * data points to the received packet. The memory belongs to the HAL_NFC layer and
+  * p_data points to the received packet. The memory belongs to the HAL_NFC layer and
   * is guaranteed to be valid only until the callback returns.
   *
   * If event == HAL_NFC_EVENT_DATA_TRANSMITTED:
-  * data points to the transmitted packet. The memory belongs to the application.
+  * p_data points to the transmitted packet. The memory belongs to the application.
   *
   * If event == \<Other event\>:
-  * data definition is event-specific (to be defined).
+  * p_data definition is event-specific (to be defined).
   *
   * @param[in] p_context    Context for callback execution.
   * @param[in] event        The event that occurred.
@@ -84,11 +87,11 @@ ret_code_t hal_nfc_setup(hal_nfc_callback_t callback, void * p_context);
   * This function allows to set any parameter defined as available by HAL_NFC.
   *
   * @param[in] id           ID of the parameter to set.
-  * @param[in] p_data       Pointer to a buffer containing the data to set.
+  * @param[in] p_data       Pointer to the buffer containing the data to set.
   * @param[in] data_length  Size of the buffer containing the data to set.
   *
   * @retval NRF_SUCCESS If the parameter was set successfully. If one of the arguments
-  *                     was invalid (for example, a wrong data length), an error code
+  *                     was invalid (for example, wrong data length), an error code
   *                     is returned.
   */
 ret_code_t hal_nfc_parameter_set(hal_nfc_param_id_t id, void * p_data, size_t data_length);
@@ -101,7 +104,7 @@ ret_code_t hal_nfc_parameter_set(hal_nfc_param_id_t id, void * p_data, size_t da
   *
   * @param[in]      id                ID of the parameter to query.
   * @param[in]      p_data            Pointer to a buffer receiving the queried data.
-  * @param[in, out] p_max_data_length Size of the buffer, receives needed size if buffer is too small.
+  * @param[in, out] p_max_data_length Size of the buffer. It receives the required size if buffer is too small.
   *
   * @retval NRF_SUCCESS If the parameter was received successfully. If one of the arguments
   *                     was invalid (for example, the buffer was too small), an error code

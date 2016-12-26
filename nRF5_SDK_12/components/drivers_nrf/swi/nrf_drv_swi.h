@@ -27,7 +27,7 @@
 #include <stdint.h>
 #include "app_util.h"
 #include "app_util_platform.h"
-#include "sdk_config.h"
+#include "sdk_common.h"
 #include "sdk_errors.h"
 #include "nrf_peripherals.h"
 
@@ -35,7 +35,7 @@
     #define EGU_ENABLED 0
 #endif
 
-#if EGU_ENABLED > 0
+#if NRF_MODULE_ENABLED(EGU)
 #include "nrf_egu.h"
 #endif
 
@@ -61,7 +61,7 @@ typedef uint16_t nrf_swi_flags_t;
 typedef void (* nrf_swi_handler_t)(nrf_swi_t, nrf_swi_flags_t);
 
 /**@brief Maximum numbers of SWIs. This number is fixed for a specific chip. */
-#if EGU_ENABLED > 0
+#if NRF_MODULE_ENABLED(EGU)
 #define SWI_MAX              EGU_COUNT
 #else
 #define SWI_MAX              SWI_COUNT
@@ -85,13 +85,13 @@ typedef void (* nrf_swi_handler_t)(nrf_swi_t, nrf_swi_flags_t);
 #endif
 
 /**@brief Default SWI priority. */
-#define SWI_DEFAULT_PRIORITY APP_IRQ_PRIORITY_LOW
+#define SWI_DEFAULT_PRIORITY APP_IRQ_PRIORITY_LOWEST
 
 
 /**@brief Function for initializing the SWI module.
  *
- * @retval     NRF_SUCCESS                If the module was successfully initialized.
- * @retval     MODULE_ALREADY_INITIALIZED If the module has already been initialized.
+ * @retval     NRF_SUCCESS                           If the module was successfully initialized.
+ * @retval     NRF_ERROR_MODULE_ALREADY_INITIALIZED  If the module has already been initialized.
  */
 ret_code_t nrf_drv_swi_init(void);
 
@@ -152,7 +152,7 @@ uint32_t nrf_drv_swi_task_trigger_address_get(nrf_swi_t swi, uint8_t channel);
  */
 uint32_t nrf_drv_swi_event_triggered_address_get(nrf_swi_t swi, uint8_t channel);
 
-#endif // EGU_ENABLED > 0
+#endif // NRF_MODULE_ENABLED(EGU)
 
 
 

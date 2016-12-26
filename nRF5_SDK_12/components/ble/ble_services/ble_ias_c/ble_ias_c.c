@@ -9,12 +9,11 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if BLE_IAS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_IAS_C)
 #include "ble_ias_c.h"
 
 #include <string.h>
-#include "sdk_common.h"
 #include "ble.h"
 #include "ble_srv_common.h"
 #include "ble_gattc.h"
@@ -188,4 +187,4 @@ uint32_t ble_ias_c_handles_assign(ble_ias_c_t  * p_ias_c,
     p_ias_c->alert_level_char.handle_value = alert_level_handle;
     return NRF_SUCCESS;
 }
-#endif //BLE_IAS_C_ENABLED
+#endif //NRF_MODULE_ENABLED(BLE_IAS_C)

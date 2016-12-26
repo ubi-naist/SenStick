@@ -67,13 +67,23 @@ struct nrf_drv_clock_handler_item_s
 };
 
 /**
+ * @brief Function for checking if driver is already initialized
+ *
+ * This function is used to check whatever common POWER_CLOCK common interrupt
+ * should be disabled or not if @ref nrf_drv_power tries to disable the interrupt.
+ *
+ * @retval true  Driver is initialized
+ * @retval false Driver is uninitialized
+ */
+bool nrf_drv_clock_init_check(void);
+
+/**
  * @brief Function for initializing the nrf_drv_clock module.
  *
  * After initialization, the module is in power off state (clocks are not requested).
  *
- * @retval     NRF_SUCCESS                        If the procedure was successful.
- * @retval     MODULE_ALREADY_INITIALIZED         If the driver was already initialized.
- * @retval     NRF_ERROR_SOFTDEVICE_NOT_ENABLED   If the SoftDevice was not enabled.
+ * @retval     NRF_SUCCESS                           If the procedure was successful.
+ * @retval     NRF_ERROR_MODULE_ALREADY_INITIALIZED  If the driver was already initialized.
  */
 ret_code_t nrf_drv_clock_init(void);
 

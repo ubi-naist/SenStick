@@ -34,7 +34,7 @@ int main(void)
     nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
 
     // Setup LEDs
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
     ant_scaleable_display_num_tracking_channels();
 
     // Setup SoftDevice and events handler

@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if BLE_DTM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_DTM)
 #include "ble_dtm.h"
 #include "ble_dtm_hw.h"
 #include <stdbool.h>
@@ -632,4 +632,4 @@ bool dtm_set_timer(uint32_t new_timer)
 }
 
 /// @}
-#endif //BLE_DTM_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_DTM)

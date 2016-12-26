@@ -161,9 +161,9 @@ int main(void)
         // Disabling interrupts in this way is highly not recommended. It has an impact on the work
         // of the SoftDevice and is used only to show CPU load.
         __disable_irq();
-        LEDS_OFF(BSP_LED_0_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_0);
         __WFI();
-        LEDS_ON(BSP_LED_0_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_0);
         __enable_irq();
 #else
         // Put CPU in sleep if possible.

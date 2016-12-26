@@ -305,7 +305,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     // Set application IRQ to lowest priority.
-    err_code = sd_nvic_SetPriority(SD_EVT_IRQn, APP_IRQ_PRIORITY_LOW);
+    err_code = sd_nvic_SetPriority(SD_EVT_IRQn, APP_IRQ_PRIORITY_LOWEST);
     APP_ERROR_CHECK(err_code);
 
     // Enable application IRQ (triggered from protocol).

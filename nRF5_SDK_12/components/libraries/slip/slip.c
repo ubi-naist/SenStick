@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if SLIP_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(SLIP)
 #include "slip.h"
 #include "nrf_error.h"
 
@@ -111,4 +111,4 @@ uint32_t slip_decoding_add_char(uint8_t c, buffer_t * p_buf, slip_state_t * curr
     }
     return NRF_ERROR_BUSY;
 }
-#endif //SLIP_ENABLED
+#endif //NRF_MODULE_ENABLED(SLIP)

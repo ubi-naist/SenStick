@@ -183,25 +183,12 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break; // PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                default:
-                    break;
-            }
+            /** Often, when securing fails, it shouldn't be restarted, for security reasons.
+             *  Other times, it can be restarted directly.
+             *  Sometimes it can be restarted, but only after changing some Security Parameters.
+             *  Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             *  Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             *  How to handle this error is highly application dependent. */
         } break; // PM_EVT_CONN_SEC_FAILED
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:

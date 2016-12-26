@@ -124,13 +124,13 @@ void ant_search_uplink_bsp_evt_handler(bsp_event_t evt)
         case BSP_EVENT_KEY_0:
             m_mode = MODE_SEND_UPLINK_ANY;
             uplink_message_send(WILDCARD_DEVICE_NUMBER);
-            LEDS_OFF(BSP_LED_1_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_1);
             break;
 
         case BSP_EVENT_KEY_1:
             m_mode = MODE_SEND_UPLINK_SPECIFIC;
             m_sent = false;
-            LEDS_OFF(BSP_LED_1_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_1);
             break;
 
         default:
@@ -144,7 +144,7 @@ void ant_search_uplink_event_handler(ant_evt_t * p_ant_evt)
     switch (p_ant_evt->event)
     {
         case EVENT_TX:
-            LEDS_INVERT(BSP_LED_1_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_1);
             if (m_mode == MODE_SEND_UPLINK_ANY)
             {
                 uplink_message_send(WILDCARD_DEVICE_NUMBER);
@@ -161,7 +161,7 @@ void ant_search_uplink_event_handler(ant_evt_t * p_ant_evt)
             break;
 
         case EVENT_RX:
-            LEDS_INVERT(BSP_LED_0_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_0);
             if (m_mode == MODE_SEND_UPLINK_SPECIFIC && !m_sent)
             {
                 ANT_MESSAGE * p_message = (ANT_MESSAGE *) p_ant_evt->msg.evt_buffer;

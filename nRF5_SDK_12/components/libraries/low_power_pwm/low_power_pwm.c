@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if LOW_POWER_PWM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(LOW_POWER_PWM)
 #include <string.h>
 #include "low_power_pwm.h"
 #include "nrf_gpio.h"
@@ -28,11 +28,11 @@ __STATIC_INLINE void led_on(low_power_pwm_t * p_pwm_instance)
 {
     if (p_pwm_instance->active_high)
     {
-        nrf_gpio_pins_set(p_pwm_instance->bit_mask_toggle);
+        nrf_gpio_port_out_set(p_pwm_instance->p_port, p_pwm_instance->bit_mask_toggle);
     }
     else
     {
-        nrf_gpio_pins_clear(p_pwm_instance->bit_mask_toggle);
+        nrf_gpio_port_out_clear(p_pwm_instance->p_port, p_pwm_instance->bit_mask_toggle);
     }
     p_pwm_instance->led_is_on = true;
 }
@@ -49,11 +49,11 @@ __STATIC_INLINE void led_off(low_power_pwm_t * p_pwm_instance)
 {
     if (p_pwm_instance->active_high)
     {
-        nrf_gpio_pins_clear(p_pwm_instance->bit_mask_toggle);
+        nrf_gpio_port_out_clear(p_pwm_instance->p_port, p_pwm_instance->bit_mask_toggle);
     }
     else
     {
-        nrf_gpio_pins_set(p_pwm_instance->bit_mask_toggle);
+        nrf_gpio_port_out_set(p_pwm_instance->p_port, p_pwm_instance->bit_mask_toggle);
     }
     p_pwm_instance->led_is_on = false;
 }
@@ -124,6 +124,7 @@ ret_code_t low_power_pwm_init(low_power_pwm_t * p_pwm_instance, low_power_pwm_co
 {
     ASSERT(p_pwm_instance->pwm_state == NRF_DRV_STATE_UNINITIALIZED);
     ASSERT(p_pwm_config->bit_mask != 0);
+    ASSERT(p_pwm_config->p_port != NULL);
     ASSERT(p_pwm_config->period != 0);
 
     ret_code_t err_code;
@@ -137,6 +138,7 @@ ret_code_t low_power_pwm_init(low_power_pwm_t * p_pwm_instance, low_power_pwm_co
     p_pwm_instance->active_high = p_pwm_config->active_high;
     p_pwm_instance->bit_mask = p_pwm_config->bit_mask;
     p_pwm_instance->bit_mask_toggle = p_pwm_config->bit_mask;
+    p_pwm_instance->p_port = p_pwm_config->p_port;
     p_pwm_instance->period = p_pwm_config->period;
     p_pwm_instance->p_timer_id = p_pwm_config->p_timer_id;
 
@@ -217,4 +219,4 @@ ret_code_t low_power_pwm_duty_set(low_power_pwm_t * p_pwm_instance, uint8_t duty
 
     return NRF_SUCCESS;
 }
-#endif //LOW_POWER_PWM_ENABLED
+#endif //NRF_MODULE_ENABLED(LOW_POWER_PWM)

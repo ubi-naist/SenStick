@@ -10,13 +10,12 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_ENCRYPT_CONFIG_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_ENCRYPT_CONFIG)
 #include <stdlib.h>
 #include "ant_encrypt_config.h"
 #include "ant_interface.h"
 #include "ant_parameters.h"
-#include "sdk_common.h"
 
 #ifdef ANT_ENCRYPT_NEGOTIATION_SLAVE_ENABLED
     #include "ant_encrypt_negotiation_slave.h"
@@ -123,7 +122,7 @@ ret_code_t ant_channel_encrypt_config(uint8_t                          channel_t
         // encryption of the stack should be initialized previously
         if (m_stack_encryption_configured == false)
         {
-            return MODULE_NOT_INITIALZED;
+            return NRF_ERROR_MODULE_NOT_INITIALZED;
         }
 
         switch (channel_type)
@@ -210,4 +209,4 @@ void ant_enc_event_handler_register(ant_encryp_user_handler_t user_handler_func)
     m_ant_enc_evt_handler = user_handler_func;
 }
 
-#endif // ANT_ENCRYPT_CONFIG_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_ENCRYPT_CONFIG)

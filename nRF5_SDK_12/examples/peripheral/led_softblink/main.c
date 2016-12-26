@@ -53,13 +53,13 @@ static void lfclk_init(void)
 int main(void)
 {
     ret_code_t err_code;
-
+    
     lfclk_init();
 
     // Start APP_TIMER to generate timeouts.
     APP_TIMER_INIT(APP_TIMER_PRESCALER, OP_QUEUES_SIZE, NULL);
 
-    led_sb_init_params_t led_sb_init_param = LED_SB_INIT_DEFAULT_PARAMS(LEDS_MASK);
+    const led_sb_init_params_t led_sb_init_param = LED_SB_INIT_DEFAULT_PARAMS(LEDS_MASK);
 
     err_code = led_softblink_init(&led_sb_init_param);
     APP_ERROR_CHECK(err_code);

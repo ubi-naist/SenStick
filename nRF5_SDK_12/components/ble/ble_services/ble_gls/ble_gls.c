@@ -13,8 +13,8 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_GLS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_GLS)
 #include "ble_gls.h"
 #include <string.h>
 #include "ble_srv_common.h"
@@ -1272,4 +1272,4 @@ uint32_t ble_gls_glucose_new_meas(ble_gls_t * p_gls, ble_gls_rec_t * p_rec)
     p_rec->meas.sequence_number = m_next_seq_num++;
     return ble_gls_db_record_add(p_rec);
 }
-#endif //BLE_GLS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_GLS)

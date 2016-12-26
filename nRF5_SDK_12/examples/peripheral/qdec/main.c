@@ -54,12 +54,17 @@ static volatile bool m_first_report_flag = true;
 static volatile uint32_t m_accdblread;
 static volatile int32_t m_accread;
 
+
+#if (QDEC_CONFIG_LEDPRE >= 128)
+    #warning "This example assumes that the QDEC LED changes state. Make sure that 'Sample Period' in QDEC config is less than 'LED pre-time'."
+#endif
+
 static void qdec_event_handler(nrf_drv_qdec_event_t event)
 {
     if (event.type == NRF_QDEC_EVENT_REPORTRDY)
     {
-        m_accdblread = event.data.report.accdbl;
-        m_accread = event.data.report.acc;
+        m_accdblread        = event.data.report.accdbl;
+        m_accread           = event.data.report.acc;
         m_report_ready_flag = true;
         nrf_drv_qdec_disable();
     }
@@ -95,12 +100,11 @@ void check_report(int32_t expected)
 int main(void)
 {
     uint32_t err_code;
-    bool forever = true;
-    uint32_t  number_of_pulses;
-    uint32_t  min_number_of_pulses = 2;
-    uint32_t  max_number_of_pulses = 0;
-    int32_t   pulses;
-    int32_t   sign = 1;
+    uint32_t number_of_pulses;
+    uint32_t min_number_of_pulses = 2;
+    uint32_t max_number_of_pulses = 0;
+    int32_t  pulses;
+    int32_t  sign = 1;
 
     err_code = NRF_LOG_INIT(NULL);
     APP_ERROR_CHECK(err_code);
@@ -116,27 +120,26 @@ int main(void)
 
     NRF_LOG_INFO("QDEC testing started\r\n");
 
-    while (forever)
+    while (true)
     {
       // change a number and sign of pulses produced by simulator in a loop
       for (number_of_pulses=min_number_of_pulses; number_of_pulses<= max_number_of_pulses; number_of_pulses++ )
       {
-        pulses = sign * number_of_pulses;      // pulses have sign
-        qenc_pulse_count_set(pulses);        // set pulses to be produced by encoder
-        nrf_drv_qdec_enable();               // start burst sampling clock, clock will be stopped by REPORTRDY event
-        while (! m_report_ready_flag)                         // wait for a report
+        pulses = sign * number_of_pulses;       // pulses have sign
+        qenc_pulse_count_set(pulses);           // set pulses to be produced by encoder
+        nrf_drv_qdec_enable();                  // start burst sampling clock, clock will be stopped by REPORTRDY event
+        while (! m_report_ready_flag)           // wait for a report
         {
           __WFE();
         }
         NRF_LOG_RAW_INFO("*");
         m_report_ready_flag = false;
-        check_report(pulses);                 // check if pulse count is as expected, assert otherwise
+        check_report(pulses);           // check if pulse count is as expected, assert otherwise
       }
-      min_number_of_pulses = 1;               // only first run is specific, for 1 there would be no call back...
-      sign = -sign;                           // change sign of pulses in a loop
+      min_number_of_pulses  = 1;        // only first run is specific, for 1 there would be no call back...
+      sign                  = -sign;    // change sign of pulses in a loop
       NRF_LOG_FLUSH();
     }
-    return -1;                                // this should never happen
 }
 
 /** @} */

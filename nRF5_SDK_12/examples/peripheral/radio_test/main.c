@@ -294,7 +294,7 @@ int main(void)
                          UART_RX_BUF_SIZE,
                          UART_TX_BUF_SIZE,
                          uart_error_handle,
-                         APP_IRQ_PRIORITY_LOW,
+                         APP_IRQ_PRIORITY_LOWEST,
                          err_code);
 
     APP_ERROR_CHECK(err_code);

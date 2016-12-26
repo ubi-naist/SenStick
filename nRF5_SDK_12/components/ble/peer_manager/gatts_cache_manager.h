@@ -93,9 +93,9 @@ ret_code_t gscm_init(void);
  * @retval NRF_ERROR_BUSY                 Unable to perform operation at this time. Reattempt later.
  * @retval NRF_ERROR_DATA_SIZE            Write buffer not large enough. Call will never work with
  *                                        this GATT database.
- * @retval NRF_ERROR_NO_MEM               No room in persistent_storage. Free up space; the
+ * @retval NRF_ERROR_STORAGE_FULL         No room in persistent_storage. Free up space; the
  *                                        operation will be automatically reattempted after the
- *                                        next compression procedure
+ *                                        next FDS garbage collection procedure.
  * @retval NRF_ERROR_INVALID_STATE        Module is not initialized.
  */
 ret_code_t gscm_local_db_cache_update(uint16_t conn_handle);

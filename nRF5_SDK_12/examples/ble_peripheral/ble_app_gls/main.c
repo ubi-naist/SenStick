@@ -65,10 +65,6 @@
 #define CENTRAL_LINK_COUNT              0 /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT           1 /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define UART_TX_BUF_SIZE                1024 /**< UART TX buffer size. */
-#define UART_RX_BUF_SIZE                1    /**< UART RX buffer size. */
-
-
 #define IS_SRVC_CHANGED_CHARACT_PRESENT 0                                           /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
 #define DEVICE_NAME                     "Nordic_Glucose"                            /**< Name of device. Will be included in the advertising data. */
@@ -129,7 +125,7 @@ static ble_uuid_t m_adv_uuids[] = {{BLE_UUID_GLUCOSE_SERVICE, BLE_UUID_TYPE_BLE}
                                    {BLE_UUID_BATTERY_SERVICE, BLE_UUID_TYPE_BLE},
                                    {BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}}; /**< Universally unique service identifiers. */
 
-pm_peer_id_t peer_to_be_deleted = PM_PEER_ID_INVALID;
+pm_peer_id_t m_peer_to_be_deleted = PM_PEER_ID_INVALID;
 
 static void advertising_start(void);
 
@@ -150,7 +146,6 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
     app_error_handler(DEAD_BEEF, line_num, p_file_name);
 }
 
-
 /**@brief Function for handling Peer Manager events.
  *
  * @param[in] p_evt  Peer Manager event.
@@ -163,94 +158,54 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
         {
-            NRF_LOG_DEBUG("Connected to previously bonded device\r\n");
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
             // Start Security Request timer.
             err_code = app_timer_start(m_sec_req_timer_id, SECURITY_REQUEST_DELAY, NULL);
             APP_ERROR_CHECK(err_code);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break; // PM_EVT_CONN_SEC_START
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
-            /*Check if the link is authenticated (meaning at least MITM)*/
             pm_conn_sec_status_t conn_sec_status;
+
+            // Check if the link is authenticated (meaning at least MITM).
             err_code = pm_conn_sec_status_get(p_evt->conn_handle, &conn_sec_status);
             APP_ERROR_CHECK(err_code);
-            if (!conn_sec_status.mitm_protected)
+
+            if (conn_sec_status.mitm_protected)
             {
-                NRF_LOG_DEBUG("Collector did not use MITM, disconnecting\r\n");
-                /*The peer did not use MITM, disconnect*/
-                err_code = pm_peer_id_get(m_conn_handle, &peer_to_be_deleted);
+                NRF_LOG_INFO("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                             ble_conn_state_role(p_evt->conn_handle),
+                             p_evt->conn_handle,
+                             p_evt->params.conn_sec_succeeded.procedure);
+            }
+            else
+            {
+                // The peer did not use MITM, disconnect.
+                NRF_LOG_INFO("Collector did not use MITM, disconnecting\r\n");
+                err_code = pm_peer_id_get(m_conn_handle, &m_peer_to_be_deleted);
                 APP_ERROR_CHECK(err_code);
                 err_code = sd_ble_gap_disconnect(m_conn_handle,
                                                  BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
                 APP_ERROR_CHECK(err_code);
             }
-            else
-            {
-                NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                                     ble_conn_state_role(p_evt->conn_handle),
-                                     p_evt->conn_handle,
-                                     p_evt->params.conn_sec_succeeded.procedure);
-                err_code = pm_peer_rank_highest(p_evt->peer_id);
-                if (err_code != NRF_ERROR_BUSY)
-                {
-                    APP_ERROR_CHECK(err_code);
-                }
-            }
-        } break; // PM_EVT_CONN_SEC_SUCCEEDED
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            NRF_LOG_DEBUG("link secure failed! ");
-
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    NRF_LOG_DEBUG("error: PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING");
-                    break; // PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                case PM_CONN_SEC_ERROR_MIC_FAILURE:
-                    NRF_LOG_DEBUG("error: PM_CONN_SEC_ERROR_MIC_FAILURE");
-                    break; // PM_CONN_SEC_ERROR_MIC_FAILURE
-
-                case PM_CONN_SEC_ERROR_DISCONNECT:
-                    NRF_LOG_DEBUG("error: PM_CONN_SEC_ERROR_DISCONNECT ");
-                    break; // PM_CONN_SEC_ERROR_DISCONNECT
-
-                case PM_CONN_SEC_ERROR_SMP_TIMEOUT:
-                    NRF_LOG_DEBUG("error: PM_CONN_SEC_ERROR_SMP_TIMEOUT");
-                    break; // PM_CONN_SEC_ERROR_SMP_TIMEOUT
-
-                default:
-                    NRF_LOG_DEBUG("unknown error");
-                    break;
-            }
-            NRF_LOG_DEBUG("\r\nDisconnecting\r\n");
+            NRF_LOG_INFO("Failed to secure connection. Disconnecting.\r\n");
+            m_conn_handle = BLE_CONN_HANDLE_INVALID;
             err_code = sd_ble_gap_disconnect(m_conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-            m_conn_handle = BLE_CONN_HANDLE_INVALID;
-        } break; // PM_EVT_CONN_SEC_FAILED
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        } break; // PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
@@ -264,54 +219,50 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
             {
                 APP_ERROR_CHECK(err_code);
             }
-        } break; // PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break; // PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break; // PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break; // PM_EVT_PEER_DATA_UPDATE_FAILED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break; // PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break; // PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             advertising_start();
-            break;
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break; // PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break; // PM_EVT_SERVICE_CHANGED_IND_CONFIRMED
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -704,18 +655,18 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             NRF_LOG_INFO("Disconnected\r\n");
             m_conn_handle = BLE_CONN_HANDLE_INVALID;
             /*check if the last connected peer had not used MITM, if so, delete its bond information*/
-            if (peer_to_be_deleted != PM_PEER_ID_INVALID)
+            if (m_peer_to_be_deleted != PM_PEER_ID_INVALID)
             {
-                ret_code_t ret_val = pm_peer_delete(peer_to_be_deleted);
+                ret_code_t ret_val = pm_peer_delete(m_peer_to_be_deleted);
                 APP_ERROR_CHECK(ret_val);
                 NRF_LOG_DEBUG("Collector's bond deleted\r\n");
-                peer_to_be_deleted = PM_PEER_ID_INVALID;
+                m_peer_to_be_deleted = PM_PEER_ID_INVALID;
             }
         } break; // BLE_GAP_EVT_DISCONNECTED
 
         case BLE_GAP_EVT_CONNECTED:
         {
-            peer_to_be_deleted = PM_PEER_ID_INVALID;
+            m_peer_to_be_deleted = PM_PEER_ID_INVALID;
             NRF_LOG_INFO("Connected\r\n");
             err_code           = bsp_indication_set(BSP_INDICATE_CONNECTED);
             APP_ERROR_CHECK(err_code);

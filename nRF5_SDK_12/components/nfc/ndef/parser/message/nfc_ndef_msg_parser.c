@@ -11,8 +11,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if NFC_NDEF_MSG_PARSER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(NFC_NDEF_MSG_PARSER)
 
 #include "nfc_ndef_msg_parser.h"
 #include "nrf_delay.h"
@@ -64,4 +64,4 @@ void ndef_msg_printout(nfc_ndef_msg_desc_t * const p_msg_desc)
     }
 }
 
-#endif // NFC_NDEF_MSG_PARSER_ENABLED
+#endif // NRF_MODULE_ENABLED(NFC_NDEF_MSG_PARSER)

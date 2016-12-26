@@ -55,7 +55,7 @@ loop:
     CMP SystemCoreClock, CLOCK_FREQ_16MHz
     BEQ cond
     NOP
-#ifdef NRF52
+#if defined(NRF52) || defined(NRF52840_XXAA) || defined(NRF52832)
     NOP
     NOP
     NOP
@@ -141,7 +141,7 @@ __ASM volatile (
        " CMP %[SystemCoreClock],%[clock16MHz]\n"
        " BEQ.n 2f\n"
        " NOP\n"
-#ifdef NRF52
+#if defined(NRF52) || defined(NRF52840_XXAA) || defined(NRF52832)
        " NOP\n"
        " NOP\n"
        " NOP\n"

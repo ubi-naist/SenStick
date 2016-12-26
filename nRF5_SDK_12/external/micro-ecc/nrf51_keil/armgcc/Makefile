@@ -12,7 +12,6 @@ SRC_FILES += \
 
 # Include folders common to all targets
 INC_FOLDERS += \
-  $(PROJ_DIR)/config \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -20,8 +19,8 @@ LIB_FILES += \
 # C flags common to all targets
 CFLAGS += -DuECC_ENABLE_VLI_API
 CFLAGS += -DuECC_VLI_NATIVE_LITTLE_ENDIAN=1
-CFLAGS += -DuECC_SQUARE_FUNC=1
 CFLAGS += -DuECC_SUPPORTS_secp256r1=1
+CFLAGS += -DuECC_SQUARE_FUNC=1
 CFLAGS += -DuECC_SUPPORT_COMPRESSED_POINT=0
 CFLAGS += -DuECC_OPTIMIZATION_LEVEL=3
 CFLAGS += -mcpu=cortex-m0
@@ -31,8 +30,6 @@ CFLAGS += -mfloat-abi=soft
 # keep every function in separate section, this allows linker to discard unused ones
 CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin --short-enums -fshort-wchar
-# generate dependency output file
-CFLAGS += -MP -MD
 
 # C++ flags common to all targets
 CXXFLAGS += \
@@ -41,20 +38,15 @@ CXXFLAGS += \
 ASMFLAGS += -x assembler-with-cpp
 ASMFLAGS += -DuECC_ENABLE_VLI_API
 ASMFLAGS += -DuECC_VLI_NATIVE_LITTLE_ENDIAN=1
-ASMFLAGS += -DuECC_SQUARE_FUNC=1
 ASMFLAGS += -DuECC_SUPPORTS_secp256r1=1
+ASMFLAGS += -DuECC_SQUARE_FUNC=1
 ASMFLAGS += -DuECC_SUPPORT_COMPRESSED_POINT=0
 ASMFLAGS += -DuECC_OPTIMIZATION_LEVEL=3
-
-# Linker flags
-
-
-
-
 
 
 
 .PHONY: $(TARGETS) default all clean help flash 
+
 # Default target - first one defined
 default: micro_ecc_lib
 
@@ -66,8 +58,8 @@ help:
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
 include $(TEMPLATE_PATH)/Makefile.common
-$(call define_library, $(TARGETS), micro_ecc_lib_nrf51.lib)
--include $($(strip $(TARGETS))_dependencies)
+
+$(call define_library, $(TARGETS), $(PROJ_DIR)/nrf51_keil/armgcc/micro_ecc_lib_nrf51.lib)
 
 define create_library
 @echo Creating library: $($@)
@@ -76,4 +68,3 @@ $(NO_ECHO)$(AR) $($@) $^
 endef
 micro_ecc_lib:
 	$(create_library)
-

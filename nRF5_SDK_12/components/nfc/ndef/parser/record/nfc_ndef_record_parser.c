@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if NFC_NDEF_RECORD_PARSER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(NFC_NDEF_RECORD_PARSER)
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -188,4 +188,4 @@ void ndef_record_printout(uint32_t num, nfc_ndef_record_desc_t * const p_rec_des
     NRF_LOG_INFO("\r\n\r\n");
 }
 
-#endif // NFC_NDEF_RECORD_PARSER_ENABLED
+#endif // NRF_MODULE_ENABLED(NFC_NDEF_RECORD_PARSER)

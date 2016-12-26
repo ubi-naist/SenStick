@@ -50,8 +50,7 @@ int main(void)
     // (when the CPU is in sleep mode).
     NRF_POWER->TASKS_CONSTLAT = 1;
 
-    LEDS_CONFIGURE(BSP_LED_0_MASK);
-    LEDS_OFF(BSP_LED_0_MASK);
+    bsp_board_leds_init();
 
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
     NRF_LOG_INFO("SPIS example\r\n");
@@ -78,6 +77,6 @@ int main(void)
 
         NRF_LOG_FLUSH();
 
-        LEDS_INVERT(BSP_LED_0_MASK);
+        bsp_board_led_invert(BSP_BOARD_LED_0);
     }
 }

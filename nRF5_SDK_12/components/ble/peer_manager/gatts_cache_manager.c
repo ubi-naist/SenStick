@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if PEER_MANAGER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(PEER_MANAGER)
 #include "gatts_cache_manager.h"
 
 #include <string.h>
@@ -360,4 +360,4 @@ void gscm_db_change_notification_done(pm_peer_id_t peer_id)
     (void) pdb_raw_store(peer_id, &peer_data, NULL);
     //lint -restore
 }
-#endif //PEER_MANAGER_ENABLED
+#endif // NRF_MODULE_ENABLED(PEER_MANAGER)

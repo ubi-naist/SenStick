@@ -9,12 +9,11 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_UART_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_UART)
 #include "app_uart.h"
 #include "nrf_drv_uart.h"
 #include "nrf_assert.h"
-#include "sdk_common.h"
 
 static uint8_t tx_buffer[1];
 static uint8_t rx_buffer[1];
@@ -137,4 +136,4 @@ uint32_t app_uart_close(void)
     nrf_drv_uart_uninit(&app_uart_inst);
     return NRF_SUCCESS;
 }
-#endif //APP_UART_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_UART)

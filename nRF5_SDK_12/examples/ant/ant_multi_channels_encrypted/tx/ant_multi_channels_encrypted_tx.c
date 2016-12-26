@@ -3,7 +3,7 @@ This software is subject to the license described in the license.txt file includ
 this software distribution.
 You may not use this file except in compliance with this license.
 
-Copyright © Dynastream Innovations Inc. 2015
+Copyright Â© Dynastream Innovations Inc. 2015
 All rights reserved.
 */
 
@@ -49,27 +49,24 @@ static uint8_t m_num_open_channels = 0;
  */
 static void low_nibble_on_leds_display(uint8_t byte_to_display)
 {
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_off();
 
-    uint32_t mask = 0;
     if ((byte_to_display & 0x01) == 1)
     {
-        mask = mask | BSP_LED_3_MASK;
+        bsp_board_led_on(BSP_BOARD_LED_3);
     }
     if (((byte_to_display >> 1) & 0x01) == 1)
     {
-        mask = mask | BSP_LED_2_MASK;
+        bsp_board_led_on(BSP_BOARD_LED_2);
     }
     if (((byte_to_display >> 2) & 0x01) == 1)
     {
-        mask = mask | BSP_LED_1_MASK;
+        bsp_board_led_on(BSP_BOARD_LED_1);
     }
     if (((byte_to_display >> 3) & 0x01) == 1)
     {
-        mask = mask | BSP_LED_0_MASK;
+        bsp_board_led_on(BSP_BOARD_LED_0);
     }
-
-    LEDS_ON(mask);
 }
 
 

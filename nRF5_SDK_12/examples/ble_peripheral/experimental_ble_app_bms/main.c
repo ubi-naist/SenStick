@@ -58,8 +58,6 @@
 
 #define DEVICE_NAME                     "Nordic_BMS"                                //!< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                       //!< Manufacturer. Will be passed to Device Information Service. */
-#define APP_ADV_INTERVAL                40                                          //!< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
-#define APP_ADV_TIMEOUT_IN_SECONDS      180                                         //!< The advertising timeout in units of seconds. */
 
 #define CENTRAL_LINK_COUNT              0                                           //!< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT           1                                           //!< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
@@ -79,7 +77,6 @@
 #define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(5000, APP_TIMER_PRESCALER)  //!< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
 #define MAX_CONN_PARAMS_UPDATE_COUNT    3                                           //!< Number of attempts before giving up the connection parameter negotiation. */
 
-#define SEC_PARAM_TIMEOUT               30                                          //!< Timeout for Pairing Request or Security Request (in seconds). */
 #define SEC_PARAM_BOND                  1                                           //!< Perform bonding. */
 #define SEC_PARAM_MITM                  0                                           //!< Man In The Middle protection not required. */
 #define SEC_PARAM_LESC                  0                                           //!< LE Secure Connections not enabled. */
@@ -569,6 +566,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
         {
             NRF_LOG_INFO("Disconnected\r\n");
             delete_disconnected_bonds();
+
             m_conn_handle = BLE_CONN_HANDLE_INVALID;
             err_code = app_timer_stop(m_sec_req_timer_id);
             APP_ERROR_CHECK(err_code);
@@ -724,73 +722,30 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
         {
-            NRF_LOG_DEBUG("Connected to previously bonded device\r\n");
-            m_peer_id = p_evt->peer_id;
-            // Start Security Request timer.
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                    APP_ERROR_CHECK(err_code);
-            }
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
             err_code = app_timer_start(m_sec_req_timer_id, SECURITY_REQUEST_DELAY, NULL);
             APP_ERROR_CHECK(err_code);
-        }break;//PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break;//PM_EVT_CONN_SEC_START
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
-            NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                           ble_conn_state_role(p_evt->conn_handle),
-                           p_evt->conn_handle,
-                           p_evt->params.conn_sec_succeeded.procedure);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-            m_peer_id = p_evt->peer_id;
-        }break;//PM_EVT_CONN_SEC_SUCCEEDED
+            NRF_LOG_INFO("Connection secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            NRF_LOG_DEBUG("Link secure failed!\r\n");
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    NRF_LOG_DEBUG("Error: PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING\r\n");
-                    break;//PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                case PM_CONN_SEC_ERROR_MIC_FAILURE:
-                    NRF_LOG_DEBUG("Error: PM_CONN_SEC_ERROR_MIC_FAILURE\r\n");
-                    break;//PM_CONN_SEC_ERROR_MIC_FAILURE
-
-                case PM_CONN_SEC_ERROR_DISCONNECT :
-                    NRF_LOG_DEBUG("Error: PM_CONN_SEC_ERROR_DISCONNECT\r\n");
-                    break;//PM_CONN_SEC_ERROR_DISCONNECT
-
-                case PM_CONN_SEC_ERROR_SMP_TIMEOUT:
-                    NRF_LOG_DEBUG("Error: PM_CONN_SEC_ERROR_SMP_TIMEOUT\r\n");
-                    break;//PM_CONN_SEC_ERROR_SMP_TIMEOUT
-
-                default:
-                    NRF_LOG_DEBUG("Unknown Peer Manager error\r\n");
-                    break;
-            }
-        } break; //PM_EVT_CONN_SEC_FAILED
+            NRF_LOG_INFO("Failed to secure connection.\r\n");
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        }break;//PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
@@ -804,55 +759,54 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
             {
                 APP_ERROR_CHECK(err_code);
             }
-        }break;//PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break;//PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break;//PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break;//PM_EVT_PEER_DATA_UPDATE_FAILED
+        } break;
 
         case PM_EVT_PEER_DELETE_SUCCEEDED:
-            NRF_LOG_DEBUG("Peer Manager: Bond deleted\r\n");
-            break;//PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break;//PM_EVT_PEER_DELETE_FAILED
+        {
+            NRF_LOG_INFO("Peer Manager: Bond deleted.\r\n");
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
-            NRF_LOG_DEBUG("Peer Manager: All bonds deleted\r\n");
-            break;//PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break;//PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break;//PM_EVT_LOCAL_DB_CACHE_APPLIED
+        {
+            NRF_LOG_INFO("Peer Manager: All bonds deleted.\r\n");
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break;//PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break;//PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break;//PM_EVT_SERVICE_CHANGED_IND_CONFIRMED
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -905,9 +859,9 @@ static void peer_manager_init(bool erase_bonds)
  */
 static void advertising_init(void)
 {
-    uint32_t               err_code;
-    uint8_t                adv_flags;
-    ble_advdata_t          advdata;
+    uint32_t       err_code;
+    uint8_t        adv_flags;
+    ble_advdata_t  advdata;
     ble_adv_modes_config_t options;
 
     // Build and set advertising data
@@ -999,7 +953,7 @@ int main(void)
     {
         if (NRF_LOG_PROCESS() == false)
         {
-            power_manage();
+        power_manage();
         }
     }
 }

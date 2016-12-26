@@ -10,13 +10,12 @@
  *
  */
 
-#include "sdk_config.h"
-#if NFC_T2T_PARSER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(NFC_T2T_PARSER)
 
 #include <string.h>
 #include <stdbool.h>
 #include "nrf_delay.h"
-#include "app_util.h"
 #include "nfc_t2t_parser.h"
 
 #define NRF_LOG_MODULE_NAME "NFC_T2T_PARSER"
@@ -649,4 +648,4 @@ void type_2_tag_printout(type_2_tag_t * p_type_2_tag)
     }
 }
 
-#endif // NFC_T2T_PARSER_ENABLED
+#endif // NRF_MODULE_ENABLED(NFC_T2T_PARSER)

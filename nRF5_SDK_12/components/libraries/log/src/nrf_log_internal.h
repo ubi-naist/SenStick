@@ -11,12 +11,11 @@
  */
 #ifndef NRF_LOG_INTERNAL_H__
 #define NRF_LOG_INTERNAL_H__
-#include "sdk_config.h"
+#include "sdk_common.h"
 #include "nrf.h"
 #include "nrf_error.h"
 #include "app_util.h"
-#include "nordic_common.h"
-#include <inttypes.h>
+#include <stdint.h>
 #include <stdbool.h>
 
 #ifndef NRF_LOG_DEFAULT_LEVEL
@@ -164,7 +163,7 @@
         nrf_log_frontend_hexdump(NRF_LOG_LEVEL_DEBUG, LOG_DEBUG_PREFIX "\r\n", (p_data), (len)); \
     }
 
-#if NRF_LOG_ENABLED
+#if NRF_MODULE_ENABLED(NRF_LOG)
 #define NRF_LOG_INTERNAL_GETCHAR()  nrf_log_getchar()
 #else
 #define NRF_LOG_INTERNAL_GETCHAR()  (void)

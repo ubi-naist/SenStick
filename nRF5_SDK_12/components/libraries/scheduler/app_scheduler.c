@@ -9,15 +9,14 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_SCHEDULER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_SCHEDULER)
 #include "app_scheduler.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include "nrf_soc.h"
 #include "nrf_assert.h"
-#include "app_util.h"
 #include "app_util_platform.h"
 
 /**@brief Structure for holding a scheduled event header. */
@@ -258,4 +257,4 @@ void app_sched_execute(void)
         m_queue_start_index = next_index(m_queue_start_index);
     }
 }
-#endif //APP_SCHEDULER_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_SCHEDULER)

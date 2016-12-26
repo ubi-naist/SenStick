@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- File naming: <vendor>_<part/series name>_svd.xml -->
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="CMSIS-SVD.xsd">
   <vendor>Nordic Semiconductor</vendor>
@@ -287,9 +287,14 @@
                     <value>0x2000</value>
                   </enumeratedValue>
                   <enumeratedValue>
+                    <name>CH</name>
+                    <description>CHxx - 7x8 WLCSP 56 balls</description>
+                    <value>0x2001</value>
+                  </enumeratedValue>
+                  <enumeratedValue>
                     <name>CI</name>
                     <description>CIxx - 7x8 WLCSP 56 balls</description>
-                    <value>0x2001</value>
+                    <value>0x2002</value>
                   </enumeratedValue>
                   <enumeratedValue>
                     <name>Unspecified</name>
@@ -8264,6 +8269,11 @@
                   <value>0x0075C000</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>Baud31250</name>
+                  <description>31250 baud</description>
+                  <value>0x00800000</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>Baud38400</name>
                   <description>38400 baud (actual rate: 38369)</description>
                   <value>0x009D0000</value>
@@ -9131,6 +9141,7 @@
           <description>RXD register</description>
           <addressOffset>0x518</addressOffset>
           <access>read-only</access>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>RXD</name>
@@ -9201,6 +9212,11 @@
                   <name>Baud28800</name>
                   <description>28800 baud (actual rate: 28829)</description>
                   <value>0x0075F000</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Baud31250</name>
+                  <description>31250 baud</description>
+                  <value>0x00800000</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>Baud38400</name>
@@ -11521,6 +11537,24 @@
           <modifiedWriteValues>oneToClear</modifiedWriteValues>
           <fields>
             <field>
+              <name>OVERRUN</name>
+              <description>Overrun error</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotReceived</name>
+                  <description>Error did not occur</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Received</name>
+                  <description>Error occurred</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
               <name>ANACK</name>
               <description>NACK received after sending the address (write '1' to clear)</description>
               <lsb>1</lsb>
@@ -12981,6 +13015,7 @@
           <description>RXD register</description>
           <addressOffset>0x518</addressOffset>
           <access>read-only</access>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>RXD</name>
@@ -13613,6 +13648,14 @@
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Write: clear error on writing '1'</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>ANACK</name>
@@ -13632,6 +13675,14 @@
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Write: clear error on writing '1'</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>DNACK</name>
@@ -13648,6 +13699,14 @@
                 <enumeratedValue>
                   <name>Present</name>
                   <description>Read: error present</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+              <enumeratedValues>
+                <usage>write</usage>
+                <enumeratedValue>
+                  <name>Clear</name>
+                  <description>Write: clear error on writing '1'</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -13729,6 +13788,7 @@
           <description>RXD register</description>
           <addressOffset>0x518</addressOffset>
           <access>read-only</access>
+          <readAction>modifyExternal</readAction>
           <fields>
             <field>
               <name>RXD</name>

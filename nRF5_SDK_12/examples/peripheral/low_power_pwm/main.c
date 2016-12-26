@@ -99,10 +99,11 @@ static void pwm_init(void)
     low_power_pwm_config_t low_power_pwm_config;
 
     APP_TIMER_DEF(lpp_timer_0);
-    low_power_pwm_config.active_high = false;
-    low_power_pwm_config.period = 220;
-    low_power_pwm_config.bit_mask = BSP_LED_0_MASK;
-    low_power_pwm_config.p_timer_id = &lpp_timer_0;
+    low_power_pwm_config.active_high    = false;
+    low_power_pwm_config.period         = 220;
+    low_power_pwm_config.bit_mask       = BSP_LED_0_MASK;
+    low_power_pwm_config.p_timer_id     = &lpp_timer_0;
+    low_power_pwm_config.p_port         = NRF_GPIO;
 
     err_code = low_power_pwm_init((&low_power_pwm_0), &low_power_pwm_config, pwm_handler);
     APP_ERROR_CHECK(err_code);
@@ -110,10 +111,11 @@ static void pwm_init(void)
     APP_ERROR_CHECK(err_code);
 
     APP_TIMER_DEF(lpp_timer_1);
-    low_power_pwm_config.active_high = false;
-    low_power_pwm_config.period = 200;
-    low_power_pwm_config.bit_mask = BSP_LED_1_MASK;
-    low_power_pwm_config.p_timer_id = &lpp_timer_1;
+    low_power_pwm_config.active_high    = false;
+    low_power_pwm_config.period         = 200;
+    low_power_pwm_config.bit_mask       = BSP_LED_1_MASK;
+    low_power_pwm_config.p_timer_id     = &lpp_timer_1;
+    low_power_pwm_config.p_port         = NRF_GPIO;
 
     err_code = low_power_pwm_init((&low_power_pwm_1), &low_power_pwm_config, pwm_handler);
     APP_ERROR_CHECK(err_code);
@@ -121,10 +123,11 @@ static void pwm_init(void)
     APP_ERROR_CHECK(err_code);
 
     APP_TIMER_DEF(lpp_timer_2);
-    low_power_pwm_config.active_high = false;
-    low_power_pwm_config.period = 100;
-    low_power_pwm_config.bit_mask = BSP_LED_2_MASK;
-    low_power_pwm_config.p_timer_id = &lpp_timer_2;
+    low_power_pwm_config.active_high    = false;
+    low_power_pwm_config.period         = 100;
+    low_power_pwm_config.bit_mask       = BSP_LED_2_MASK;
+    low_power_pwm_config.p_timer_id     = &lpp_timer_2;
+    low_power_pwm_config.p_port         = NRF_GPIO;
 
     err_code = low_power_pwm_init((&low_power_pwm_2), &low_power_pwm_config, pwm_handler);
     APP_ERROR_CHECK(err_code);

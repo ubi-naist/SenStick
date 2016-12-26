@@ -25,9 +25,9 @@
  * @warning  The maximum number of characteristics per service that can be discovered by this module
  *           is determined by the number of characteristics in the service structure defined in
  *           db_disc_config.h. If the peer has more than the supported number of characteristics, then
- *           the first found will be discovered and any further characteristics will be ignored. No
- *           descriptors other than Client Characteristic Configuration Descriptors will be searched
- *           for at the peer.
+ *           the first found will be discovered and any further characteristics will be ignored. Only the
+ *           following descriptors will be searched for at the peer: Client Characteristic Configuration,
+ *           Characteristic Extended Properties, Characteristic User Description, and Report Reference.
  *
  * @note     Presently only one instance of a Primary Service can be discovered by this module. If
  *           there are multiple instances of the service at the peer, only the first instance

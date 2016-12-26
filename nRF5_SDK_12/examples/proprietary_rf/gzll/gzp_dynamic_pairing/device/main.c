@@ -66,25 +66,16 @@
  */
 static uint8_t input_get(void)
 {
-    uint32_t err_code;
-    bool     button0;
-    bool     button1;
-    bool     button2;
-    bool     button3;
+    uint8_t result = 0;
+    for (uint32_t i = 0; i < BUTTONS_NUMBER; i++)
+    {
+        if (bsp_button_is_pressed(i))
+        {
+            result |= (1 << i);
+        }
+    }
 
-    err_code = bsp_button_is_pressed(0, &button0);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(1, &button1);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(2, &button2);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(3, &button3);
-    APP_ERROR_CHECK(err_code);
-
-    return ~((uint8_t)((button3 << 3) | (button2 << 2) | (button1 << 1) | button0));
+    return ~(result);
 }
 
 

@@ -117,7 +117,7 @@ static uint32_t nrf_dfu_app_continue(uint32_t               src_addr)
         }
 
         s_dfu_settings.write_offset += cur_len;
-        (void)nrf_dfu_settings_write(NULL);
+        ret_val = nrf_dfu_settings_write(NULL);
 
         target_addr += cur_len;
         src_addr += cur_len;
@@ -142,7 +142,7 @@ static uint32_t nrf_dfu_app_continue(uint32_t               src_addr)
     }
 
     nrf_dfu_invalidate_bank(&s_dfu_settings.bank_1);
-    (void)nrf_dfu_settings_write(NULL);
+    ret_val = nrf_dfu_settings_write(NULL);
 
     return ret_val;
 }
@@ -220,7 +220,7 @@ static uint32_t nrf_dfu_sd_continue_impl(uint32_t             src_addr,
 
         // Save the updated point of writes in case of power loss
         s_dfu_settings.write_offset = s_dfu_settings.sd_size - length_left;
-        (void)nrf_dfu_settings_write(NULL);
+        ret_val = nrf_dfu_settings_write(NULL);
     }
     while (length_left > 0);
 
@@ -256,7 +256,7 @@ static uint32_t nrf_dfu_sd_continue(uint32_t             src_addr,
     }
 
     nrf_dfu_invalidate_bank(p_bank);
-    (void)nrf_dfu_settings_write(NULL);
+    ret_val = nrf_dfu_settings_write(NULL);
 
     return ret_val;
 }
@@ -299,7 +299,7 @@ static uint32_t nrf_dfu_bl_continue(uint32_t src_addr, nrf_dfu_bank_t * p_bank)
 
         // Invalidate bank, marking completion
         nrf_dfu_invalidate_bank(p_bank);
-        (void)nrf_dfu_settings_write(NULL);
+        ret_val = nrf_dfu_settings_write(NULL);
     }
     else
     {

@@ -84,8 +84,8 @@
 
 /* Central related. */
 
-#define CENTRAL_SCANNING_LED        BSP_LED_0_MASK
-#define CENTRAL_CONNECTED_LED       BSP_LED_1_MASK
+#define CENTRAL_SCANNING_LED        BSP_BOARD_LED_0
+#define CENTRAL_CONNECTED_LED       BSP_BOARD_LED_1
 
 #define APP_TIMER_PRESCALER         0                                             /**< Value of the RTC1 PRESCALER register. */
 #define APP_TIMER_MAX_TIMERS        (2 + BSP_APP_TIMERS_NUMBER)                   /**< Maximum number of timers used by the application. */
@@ -163,8 +163,8 @@ static ble_db_discovery_t m_ble_db_discovery[CENTRAL_LINK_COUNT + PERIPHERAL_LIN
 
 /* Peripheral related. */
 
-#define PERIPHERAL_ADVERTISING_LED       BSP_LED_2_MASK
-#define PERIPHERAL_CONNECTED_LED         BSP_LED_3_MASK
+#define PERIPHERAL_ADVERTISING_LED       BSP_BOARD_LED_2
+#define PERIPHERAL_CONNECTED_LED         BSP_BOARD_LED_3
 
 #define DEVICE_NAME                      "RelayNordic"                                    /**< Name of device used for advertising. */
 #define MANUFACTURER_NAME                "NordicSemiconductor"                      /**< Manufacturer. Will be passed to Device Information Service. */
@@ -288,7 +288,7 @@ static void adv_scan_start(void)
         scan_start();
 
         // Turn on the LED to signal scanning.
-        LEDS_ON(CENTRAL_SCANNING_LED);
+        bsp_board_led_on(CENTRAL_SCANNING_LED);
 
         // Start advertising.
         err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
@@ -309,59 +309,33 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
         {
-            NRF_LOG_INFO("Connected to previously bonded device\r\n");
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                    APP_ERROR_CHECK(err_code);
-            }
-        }break;//PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break;//PM_EVT_CONN_SEC_START
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
             NRF_LOG_INFO("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                           ble_conn_state_role(p_evt->conn_handle),
-                           p_evt->conn_handle,
-                           p_evt->params.conn_sec_succeeded.procedure);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                    APP_ERROR_CHECK(err_code);
-            }
-        }break;//PM_EVT_CONN_SEC_SUCCEEDED
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break;//PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                default:
-                    break;
-            }
-        }break;//PM_EVT_CONN_SEC_FAILED
+            /* Often, when securing fails, it shouldn't be restarted, for security reasons.
+             * Other times, it can be restarted directly.
+             * Sometimes it can be restarted, but only after changing some Security Parameters.
+             * Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             * Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             * How to handle this error is highly application dependent. */
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        }break;//PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
@@ -375,54 +349,50 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
             {
                 APP_ERROR_CHECK(err_code);
             }
-        }break;//PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break;//PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break;//PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break;//PM_EVT_PEER_DATA_UPDATE_FAILED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break;//PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break;//PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             adv_scan_start();
-            break;//PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break;//PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break;//PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break;//PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break;//PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break;//PM_EVT_SERVICE_CHANGED_IND_CONFIRMED
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -691,15 +661,15 @@ static void on_ble_central_evt(const ble_evt_t * const p_ble_evt)
 
             /** Update LEDs status, and check if we should be looking for more
              *  peripherals to connect to. */
-            LEDS_ON(CENTRAL_CONNECTED_LED);
+            bsp_board_led_on(CENTRAL_CONNECTED_LED);
             if (ble_conn_state_n_centrals() == CENTRAL_LINK_COUNT)
             {
-                LEDS_OFF(CENTRAL_SCANNING_LED);
+                bsp_board_led_off(CENTRAL_SCANNING_LED);
             }
             else
             {
                 // Resume scanning.
-                LEDS_ON(CENTRAL_SCANNING_LED);
+                bsp_board_led_on(CENTRAL_SCANNING_LED);
                 scan_start();
             }
         } break; // BLE_GAP_EVT_CONNECTED
@@ -732,13 +702,13 @@ static void on_ble_central_evt(const ble_evt_t * const p_ble_evt)
                 scan_start();
 
                 // Update LEDs status.
-                LEDS_ON(CENTRAL_SCANNING_LED);
+                bsp_board_led_on(CENTRAL_SCANNING_LED);
             }
             n_centrals = ble_conn_state_n_centrals();
 
             if (n_centrals == 0)
             {
-                LEDS_OFF(CENTRAL_CONNECTED_LED);
+                bsp_board_led_off(CENTRAL_CONNECTED_LED);
             }
         } break; // BLE_GAP_EVT_DISCONNECTED
 
@@ -840,13 +810,13 @@ static void on_ble_peripheral_evt(ble_evt_t * p_ble_evt)
     {
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Peripheral connected\r\n");
-            LEDS_OFF(PERIPHERAL_ADVERTISING_LED);
-            LEDS_ON(PERIPHERAL_CONNECTED_LED);
+            bsp_board_led_off(PERIPHERAL_ADVERTISING_LED);
+            bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
             break; //BLE_GAP_EVT_CONNECTED
 
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Peripheral disconnected\r\n");
-            LEDS_OFF(PERIPHERAL_CONNECTED_LED);
+            bsp_board_led_off(PERIPHERAL_CONNECTED_LED);
             break;//BLE_GAP_EVT_DISCONNECTED
 
         case BLE_GATTC_EVT_TIMEOUT:
@@ -924,7 +894,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     {
         case BLE_ADV_EVT_FAST:
             NRF_LOG_INFO("Fast Advertising\r\n");
-            LEDS_ON(PERIPHERAL_ADVERTISING_LED);
+            bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
             break;//BLE_ADV_EVT_FAST
 
         case BLE_ADV_EVT_IDLE:

@@ -254,7 +254,19 @@ void os_idle_demon (void)
             expected_time = (expected_time >= prev_time)
                             ? expected_time - prev_time : TIMER_MASK - prev_time + expected_time;
         }
+        else
+        {
+            /* If sleep time is less than 2 ticks do not set timer at all. */
+            expected_time = 0;
+        }
         os_resume(expected_time);
+        if (expected_time == 0)
+        {
+            /* If timer was not set, just go to sleep and wait for the next tick. */
+            __SEV();
+            __WFE();
+            __WFE();
+        }
     }
 }
 
@@ -277,7 +289,7 @@ int os_tick_init (void)
     }
     //set the same level as svc calls
     NVIC_SetPriority(RTC1_IRQn, 2);
-
+    
     NRF_RTC1->PRESCALER   = OS_TRV;
     NRF_RTC1->INTENSET    = RTC_INTENSET_TICK_Msk;
     NRF_RTC1->TASKS_START = 1;

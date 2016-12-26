@@ -26,6 +26,7 @@
 #include <stdint.h>
 
 #include "nrf.h"
+#include "nrf_peripherals.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "bsp.h"
+#include "boards.h"
 #include "nrf_delay.h"
 #include "app_uart.h"
 #include "app_error.h"
@@ -36,29 +36,26 @@
 #include "softdevice_handler.h"
 #endif // SOFTDEVICE_PRESENT
 
-#define RANDOM_BUFF_SIZE 16                                                           /**< Random numbers buffer size. */
-
-void assert_nrf_callback(uint16_t line_num, const uint8_t *file_name)
-{
-    /* empty function - needed by softdevice handler */
-}
+#define RANDOM_BUFF_SIZE    16      /**< Random numbers buffer size. */
 
 /** @brief Function for getting vector of random numbers.
  *
- * @param[out] p_buff                               Pointer to unit8_t buffer for storing the bytes.
- * @param[in]  length                               Number of bytes to take from pool and place in p_buff.
+ * @param[out] p_buff       Pointer to unit8_t buffer for storing the bytes.
+ * @param[in]  length       Number of bytes to take from pool and place in p_buff.
  *
  * @retval     Number of bytes actually placed in p_buff.
  */
-uint8_t random_vector_generate(uint8_t * p_buff, uint8_t size)
+static uint8_t random_vector_generate(uint8_t * p_buff, uint8_t size)
 {
-    uint8_t available;
     uint32_t err_code;
-    err_code = nrf_drv_rng_bytes_available(&available);
+    uint8_t  available;
+
+    nrf_drv_rng_bytes_available(&available);
+    uint8_t length = MIN(size, available);
+
+    err_code = nrf_drv_rng_rand(p_buff, length);
     APP_ERROR_CHECK(err_code);
-    uint8_t length = (size<available) ? size : available;
-    err_code = nrf_drv_rng_rand(p_buff,length);
-    APP_ERROR_CHECK(err_code);
+
     return length;
 }
 
@@ -86,8 +83,8 @@ int main(void)
         NRF_LOG_INFO("Random Vector:\r\n");
         NRF_LOG_HEXDUMP_INFO(p_buff, length);
         NRF_LOG_INFO("\r\n");
-        nrf_delay_ms(100);
         NRF_LOG_FLUSH();
+        nrf_delay_ms(100);
     }
 }
 

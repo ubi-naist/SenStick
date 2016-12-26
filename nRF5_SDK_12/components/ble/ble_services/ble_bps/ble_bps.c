@@ -14,14 +14,13 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_BPS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_BPS)
 #include "ble_bps.h"
 #include <string.h>
 #include "nordic_common.h"
 #include "ble_l2cap.h"
 #include "ble_srv_common.h"
-#include "app_util.h"
 
 
 #define OPCODE_LENGTH 1                                                   /**< Length of opcode inside Blood Pressure Measurement packet. */
@@ -444,4 +443,4 @@ uint32_t ble_bps_is_indication_enabled(ble_bps_t * p_bps, bool * p_indication_en
     }
     return err_code;
 }
-#endif //BLE_BPS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_BPS)

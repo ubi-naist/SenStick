@@ -9,13 +9,12 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_UART_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_UART)
 #include "app_uart.h"
 #include "app_fifo.h"
 #include "nrf_drv_uart.h"
 #include "nrf_assert.h"
-#include "sdk_common.h"
 
 static nrf_drv_uart_t app_uart_inst = NRF_DRV_UART_INSTANCE(APP_UART_DRIVER_INSTANCE);
 
@@ -85,7 +84,7 @@ static void uart_event_handler(nrf_drv_uart_event_t * p_event, void* p_context)
             {
                 (void)nrf_drv_uart_tx(&app_uart_inst, tx_buffer, 1);
             }
-            if (FIFO_LENGTH(m_tx_fifo) == 0)
+            else
             {
                 // Last byte from FIFO transmitted, notify the application.
                 app_uart_event.evt_type = APP_UART_TX_EMPTY;
@@ -221,4 +220,4 @@ uint32_t app_uart_close(void)
     nrf_drv_uart_uninit(&app_uart_inst);
     return NRF_SUCCESS;
 }
-#endif //APP_UART_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_UART)

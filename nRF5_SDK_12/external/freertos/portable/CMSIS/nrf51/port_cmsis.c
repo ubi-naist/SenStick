@@ -78,6 +78,10 @@
 #include "nrf_soc.h"
 #endif
 
+/* Make sure that all elements in isr state fits in uint32_t element*/
+#include "portmacro_cmsis.h"
+STATIC_ASSERT(sizeof(portISRState_t) == sizeof(uint32_t));
+
 /* Constants used for assertion check of the selected CPU */
 #define portCORTEX_M0_r0p0_ID               ( 0x410CC200UL )
 

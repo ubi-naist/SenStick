@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include "sdk_config.h"
 #include "nordic_common.h"
 #include "compiler_abstraction.h"
 #include "sdk_os.h"

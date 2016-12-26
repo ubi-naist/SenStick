@@ -16,6 +16,7 @@
 /**
  * @addtogroup ser_codecs Serialization codecs
  * @ingroup ble_sdk_lib_serialization
+ * @brief @tagAPI52832 Application and Connectivity codecs.
  */
 
 /**

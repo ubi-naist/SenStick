@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_TIMER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_TIMER)
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
@@ -20,8 +20,6 @@
 #include <string.h>
 #include "nrf.h"
 #include "app_error.h"
-#include "app_util.h"
-#include "nordic_common.h"
 
 /* Check if RTC FreeRTOS version is used */
 #if configTICK_SOURCE != FREERTOS_USE_RTC
@@ -124,7 +122,7 @@ uint32_t app_timer_create(app_timer_id_t const *      p_timer_id,
     if (pinfo->osHandle == NULL)
     {
         /* New timer is created */
-        memset(pinfo, 0, sizeof(pinfo));
+        memset(pinfo, 0, sizeof(app_timer_info_t));
 
         if (mode == APP_TIMER_MODE_SINGLE_SHOT)
             timer_mode = pdFALSE;
@@ -229,4 +227,4 @@ uint32_t app_timer_stop(app_timer_id_t timer_id)
     pinfo->active = false;
     return NRF_SUCCESS;
 }
-#endif //APP_TIMER_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_TIMER)

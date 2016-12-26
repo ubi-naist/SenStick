@@ -41,14 +41,10 @@
 #define NRF_BLE_MAX_MTU_SIZE      GATT_MTU_SIZE_DEFAULT                    /**< MTU size used in the softdevice enabling and to reply to a BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST event. */
 #endif
 
-#define UART_TX_BUF_SIZE          256                                      /**< Size of the UART TX buffer, in bytes. Must be a power of two. */
-#define UART_RX_BUF_SIZE          1                                        /**< Size of the UART RX buffer, in bytes. Must be a power of two. */
-
-#define CENTRAL_SCANNING_LED      BSP_LED_0_MASK                           /**< Scanning LED will be on when the device is scanning. */
-#define CENTRAL_CONNECTED_LED     BSP_LED_1_MASK                           /**< Connected LED will be on when the device is connected. */
+#define CENTRAL_SCANNING_LED      BSP_BOARD_LED_0                          /**< Scanning LED will be on when the device is scanning. */
+#define CENTRAL_CONNECTED_LED     BSP_BOARD_LED_1                          /**< Connected LED will be on when the device is connected. */
 
 #define APP_TIMER_PRESCALER       0                                        /**< Value of the RTC1 PRESCALER register. */
-#define APP_TIMER_MAX_TIMERS      (2 + BSP_APP_TIMERS_NUMBER)                /**< Maximum number of timers used by the application. */
 #define APP_TIMER_OP_QUEUE_SIZE   2                                        /**< Size of timer operation queues. */
 
 #define SEC_PARAM_BOND            1                                        /**< Perform bonding. */
@@ -69,7 +65,7 @@
 
 #define UUID16_SIZE               2                                        /**< Size of a UUID, in bytes. */
 
-#define LEDBUTTON_LED             BSP_LED_2_MASK                           /**< LED to indicate a change of state of the the Button characteristic on the peer. */
+#define LEDBUTTON_LED             BSP_BOARD_LED_2                          /**< LED to indicate a change of state of the the Button characteristic on the peer. */
 #define LEDBUTTON_BUTTON_PIN      BSP_BUTTON_0                             /**< Button that will write to the LED characteristic of the peer */
 #define BUTTON_DETECTION_DELAY    APP_TIMER_TICKS(50, APP_TIMER_PRESCALER) /**< Delay from a GPIOTE event until a button is reported as pushed (in number of timer ticks). */
 
@@ -106,7 +102,7 @@ static const ble_gap_conn_params_t m_connection_param =
 {
     (uint16_t)MIN_CONNECTION_INTERVAL,
     (uint16_t)MAX_CONNECTION_INTERVAL,
-    0,
+    (uint16_t)SLAVE_LATENCY,
     (uint16_t)SUPERVISION_TIMEOUT
 };
 
@@ -137,8 +133,7 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
  */
 static void leds_init(void)
 {
-    LEDS_CONFIGURE(CENTRAL_SCANNING_LED | CENTRAL_CONNECTED_LED | LEDBUTTON_LED);
-    LEDS_OFF(CENTRAL_SCANNING_LED | CENTRAL_CONNECTED_LED | LEDBUTTON_LED);
+    bsp_board_leds_init();
 }
 
 
@@ -184,18 +179,13 @@ static void scan_start(void)
 {
     ret_code_t err_code;
 
-    err_code = sd_ble_gap_scan_stop();
-    // It is okay to ignore this error since we are stopping the scan anyway.
-    if (err_code != NRF_ERROR_INVALID_STATE)
-    {
-        APP_ERROR_CHECK(err_code);
-    }
+    (void) sd_ble_gap_scan_stop();
 
     err_code = sd_ble_gap_scan_start(&m_scan_params);
     APP_ERROR_CHECK(err_code);
 
-    LEDS_OFF(CENTRAL_CONNECTED_LED);
-    LEDS_ON(CENTRAL_SCANNING_LED);
+    bsp_board_led_off(CENTRAL_CONNECTED_LED);
+    bsp_board_led_on(CENTRAL_SCANNING_LED);
 }
 
 
@@ -212,7 +202,7 @@ static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_e
             err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c,
                                                 p_lbs_c_evt->conn_handle,
                                                 &p_lbs_c_evt->params.peer_db);
-            NRF_LOG_INFO("LED Button service discovered on conn_handle 0x%x\r\n", p_lbs_c_evt->conn_handle);
+            NRF_LOG_INFO("LED Button service discovered on conn_handle 0x%x.\r\n", p_lbs_c_evt->conn_handle);
 
             err_code = app_button_enable();
             APP_ERROR_CHECK(err_code);
@@ -224,14 +214,14 @@ static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_e
 
         case BLE_LBS_C_EVT_BUTTON_NOTIFICATION:
         {
-            NRF_LOG_INFO("Button state changed on peer to 0x%x\r\n", p_lbs_c_evt->params.button.button_state);
+            NRF_LOG_INFO("Button state changed on peer to 0x%x.\r\n", p_lbs_c_evt->params.button.button_state);
             if (p_lbs_c_evt->params.button.button_state)
             {
-                LEDS_ON(LEDBUTTON_LED);
+                bsp_board_led_on(LEDBUTTON_LED);
             }
             else
             {
-                LEDS_OFF(LEDBUTTON_LED);
+                bsp_board_led_off(LEDBUTTON_LED);
             }
         } break; // BLE_LBS_C_EVT_BUTTON_NOTIFICATION
 
@@ -340,9 +330,9 @@ static void on_ble_evt(const ble_evt_t * const p_ble_evt)
 
             // Update LEDs status, and check if we should be looking for more
             // peripherals to connect to.
-            LEDS_ON(CENTRAL_CONNECTED_LED);
-            LEDS_OFF(CENTRAL_SCANNING_LED);
-        } break; // BLE_GAP_EVT_CONNECTED
+            bsp_board_led_on(CENTRAL_CONNECTED_LED);
+            bsp_board_led_off(CENTRAL_SCANNING_LED);
+        } break;
 
         // Upon disconnection, reset the connection handle of the peer which disconnected, update
         // the LEDs status and start scanning again.
@@ -350,20 +340,21 @@ static void on_ble_evt(const ble_evt_t * const p_ble_evt)
         {
             NRF_LOG_INFO("Disconnected.\r\n");
             scan_start();
-        } break; // BLE_GAP_EVT_DISCONNECTED
+        } break;
 
         case BLE_GAP_EVT_ADV_REPORT:
+        {
             on_adv_report(p_ble_evt);
-            break;
+        } break;
 
         case BLE_GAP_EVT_TIMEOUT:
         {
             // We have not specified a timeout for scanning, so only connection attemps can timeout.
             if (p_gap_evt->params.timeout.src == BLE_GAP_TIMEOUT_SRC_CONN)
             {
-                NRF_LOG_INFO("[APP]: Connection Request timed out.\r\n");
+                NRF_LOG_DEBUG("Connection request timed out.\r\n");
             }
-        } break; // BLE_GAP_EVT_TIMEOUT
+        } break;
 
         case BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST:
         {
@@ -371,30 +362,33 @@ static void on_ble_evt(const ble_evt_t * const p_ble_evt)
             err_code = sd_ble_gap_conn_param_update(p_gap_evt->conn_handle,
                                         &p_gap_evt->params.conn_param_update_request.conn_params);
             APP_ERROR_CHECK(err_code);
-        } break; // BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST
+        } break;
 
         case BLE_GATTC_EVT_TIMEOUT:
+        {
             // Disconnect on GATT Client timeout event.
             NRF_LOG_DEBUG("GATT Client Timeout.\r\n");
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gattc_evt.conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTC_EVT_TIMEOUT
+        } break;
 
         case BLE_GATTS_EVT_TIMEOUT:
+        {
             // Disconnect on GATT Server timeout event.
             NRF_LOG_DEBUG("GATT Server Timeout.\r\n");
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_TIMEOUT
+        } break;
 
 #if (NRF_SD_BLE_API_VERSION == 3)
         case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
+        {
             err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle,
                                                        NRF_BLE_MAX_MTU_SIZE);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
+        } break;
 #endif
 
         default:
@@ -573,7 +567,7 @@ int main(void)
     NRF_LOG_INFO("\r\nBlinky Start!\r\n");
 
     // Turn on the LED to signal scanning.
-    LEDS_ON(CENTRAL_SCANNING_LED);
+    bsp_board_led_on(CENTRAL_SCANNING_LED);
 
     for (;;)
     {

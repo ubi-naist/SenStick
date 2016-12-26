@@ -175,19 +175,13 @@ int main()
     while (1)
     {
         // If BUTTON_SEND_MOUSE_DATA button is pressed.
-        bool send_mouse_data_button_pressed;
-        err_code = bsp_button_is_pressed(SEND_MOUSE_DATA_BUTTON_ID,
-                                         &(send_mouse_data_button_pressed));
-        if ( send_mouse_data_button_pressed)
+        if ( bsp_button_is_pressed(SEND_MOUSE_DATA_BUTTON_ID))
         {
             read_mouse_and_send();
         }
 
         // If BUTTON_SEND_KEYBOARD_DATA button is pressed
-        bool send_keyboard_data_button_pressed;
-        err_code = bsp_button_is_pressed(SEND_KEYBOARD_DATA_BUTTON_ID,
-                                         &(send_keyboard_data_button_pressed));
-        if (send_keyboard_data_button_pressed)
+        if (bsp_button_is_pressed(SEND_KEYBOARD_DATA_BUTTON_ID))
         {
             read_keyboard_and_send();
         }
@@ -308,14 +302,9 @@ static void read_keyboard_and_send(void)
         if (keyboard_send_ok)
         {
             // Wait until button is released.
-            bool button_pressed;
-
-            do
+            while(bsp_button_is_pressed(SEND_KEYBOARD_DATA_BUTTON_ID))
             {
-                UNUSED_VARIABLE(bsp_button_is_pressed(SEND_KEYBOARD_DATA_BUTTON_ID,
-                                                      &(button_pressed)));
             }
-            while (button_pressed);
 
             // Send empty keyboard packet to release all keys.
             keyboard_get_empty_packet(keyboard_packet);

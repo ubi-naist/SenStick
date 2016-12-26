@@ -23,8 +23,8 @@ All rights reserved.
     #define ADVERTISING_LED_PIN_NO          LED_A                                   /**< Is on when device is advertising. */
     #define CONNECTED_LED_PIN_NO            LED_B                                   /**< Is on when device has connected. */
 #else
-    #define ADVERTISING_LED_PIN_NO          BSP_LED_0                                   /**< Is on when device is advertising. */
-    #define CONNECTED_LED_PIN_NO            BSP_LED_1                                   /**< Is on when device has connected. */
+    #define ADVERTISING_LED_PIN_NO          BSP_BOARD_LED_0                         /**< Is on when device is advertising. */
+    #define CONNECTED_LED_PIN_NO            BSP_BOARD_LED_1                         /**< Is on when device has connected. */
 #endif
 
 #define DEVICE_NAME                     "LightDemo"                                  /**< Name of device. Will be included in the advertising data. */

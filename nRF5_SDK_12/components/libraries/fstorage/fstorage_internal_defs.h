@@ -103,9 +103,9 @@ typedef struct
 
 
 // Size of a flash page in bytes.
-#if   defined (NRF51)
+#if    defined (NRF51)
     #define FS_PAGE_SIZE    (1024)
-#elif defined (NRF52)
+#elif (defined (NRF52) || defined(NRF52840_XXAA))
     #define FS_PAGE_SIZE    (4096)
 #endif
 

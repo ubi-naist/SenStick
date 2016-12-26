@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_SDM_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_SDM)
 
 #include "ant_sdm_page_2.h"
 #include "ant_sdm_utils.h"
@@ -99,4 +99,4 @@ void ant_sdm_page_2_decode(uint8_t const        * p_page_buffer,
     page_2_data_log(p_page_data);
 }
 
-#endif // ANT_SDM_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_SDM)

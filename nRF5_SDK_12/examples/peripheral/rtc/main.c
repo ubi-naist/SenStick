@@ -65,8 +65,7 @@ static void rtc_handler(nrf_drv_rtc_int_type_t int_type)
  */
 static void leds_config(void)
 {
-    LEDS_CONFIGURE(((1<<COMPARE_EVENT_OUTPUT) | (1<<TICK_EVENT_OUTPUT)));
-    LEDS_OFF((1<<COMPARE_EVENT_OUTPUT) | (1<<TICK_EVENT_OUTPUT));
+    bsp_board_leds_init();
 }
 
 /** @brief Function starting the internal LFCLK XTAL oscillator.

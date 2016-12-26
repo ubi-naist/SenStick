@@ -9,15 +9,14 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if SIMPLE_TIMER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(SIMPLE_TIMER)
 #include "app_simple_timer.h"
 #include "nrf.h"
 #include "app_util_platform.h"
 #include "app_error.h"
 #include "nrf_timer.h"
 #include "nrf_drv_timer.h"
-#include "sdk_common.h"
 
 /**@brief States of simple timer state machine.
  */
@@ -161,4 +160,4 @@ uint32_t app_simple_timer_uninit(void)
 
     return err_code;
 }
-#endif //SIMPLE_TIMER_ENABLED
+#endif //NRF_MODULE_ENABLED(SIMPLE_TIMER)

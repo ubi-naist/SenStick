@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_STACK_CONFIG_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_STACK_CONFIG)
 #include "nrf_assert.h"
 #include "ant_stack_config.h"
 #include "ant_interface.h"
@@ -45,4 +45,4 @@ uint32_t ant_stack_static_config(void)
     return sd_ant_enable(&m_ant_enable_cfg);
 }
 
-#endif // ANT_STACK_CONFIG_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_STACK_CONFIG)

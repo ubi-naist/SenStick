@@ -350,9 +350,9 @@
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls>--c99</MiscControls>
-              <Define> NRF52832 S212 BOARD_D52DK1 ANT_STACK_SUPPORT_REQD NRF52 SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
+              <Define> NRF52832 NRF52 S212 BOARD_D52DK1 ANT_STACK_SUPPORT_REQD SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\config\ant_sdm_rx_d52_starterkit_s212;..\..\..\config;..\..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\..\components\ant\ant_key_manager;..\..\..\..\..\..\..\..\components\ant\ant_key_manager\config;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\ant_request_controller;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\utils;..\..\..\..\..\..\..\..\components\ant\ant_stack_config;..\..\..\..\..\..\..\..\components\ant\ant_state_indicator;..\..\..\..\..\..\..\..\components\device;..\..\..\..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\..\components\toolchain;..\..\..\..\..\..\..\bsp;..\..\..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\..\config\ant_sdm_rx_d52_starterkit_s212;..\..\..\config;..\..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\..\components\ant\ant_key_manager;..\..\..\..\..\..\..\..\components\ant\ant_key_manager\config;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\ant_request_controller;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\utils;..\..\..\..\..\..\..\..\components\ant\ant_stack_config;..\..\..\..\..\..\..\..\components\ant\ant_state_indicator;..\..\..\..\..\..\..\..\components\boards;..\..\..\..\..\..\..\..\components\device;..\..\..\..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\..\components\toolchain;..\..\..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -365,10 +365,10 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <VariousControls>
-              <MiscControls> --cpreproc_opts=-DNRF52832,-DS212,-DBOARD_D52DK1,-DANT_STACK_SUPPORT_REQD,-DNRF52,-DSOFTDEVICE_PRESENT,-DSWI_DISABLE0</MiscControls>
-              <Define> NRF52832 S212 BOARD_D52DK1 ANT_STACK_SUPPORT_REQD NRF52 SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
+              <MiscControls> --cpreproc_opts=-DNRF52832,-DNRF52,-DS212,-DBOARD_D52DK1,-DANT_STACK_SUPPORT_REQD,-DSOFTDEVICE_PRESENT,-DSWI_DISABLE0</MiscControls>
+              <Define> NRF52832 NRF52 S212 BOARD_D52DK1 ANT_STACK_SUPPORT_REQD SOFTDEVICE_PRESENT SWI_DISABLE0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\config\ant_sdm_rx_d52_starterkit_s212;..\..\..\config;..\..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\..\components\ant\ant_key_manager;..\..\..\..\..\..\..\..\components\ant\ant_key_manager\config;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\ant_request_controller;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\utils;..\..\..\..\..\..\..\..\components\ant\ant_stack_config;..\..\..\..\..\..\..\..\components\ant\ant_state_indicator;..\..\..\..\..\..\..\..\components\device;..\..\..\..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\..\components\toolchain;..\..\..\..\..\..\..\bsp;..\..\..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
+              <IncludePath>..\..\..\config\ant_sdm_rx_d52_starterkit_s212;..\..\..\config;..\..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\..\components\ant\ant_key_manager;..\..\..\..\..\..\..\..\components\ant\ant_key_manager\config;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\ant_request_controller;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_common\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\pages;..\..\..\..\..\..\..\..\components\ant\ant_profiles\ant_sdm\utils;..\..\..\..\..\..\..\..\components\ant\ant_stack_config;..\..\..\..\..\..\..\..\components\ant\ant_state_indicator;..\..\..\..\..\..\..\..\components\boards;..\..\..\..\..\..\..\..\components\device;..\..\..\..\..\..\..\..\components\drivers_nrf\clock;..\..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\..\components\libraries\log;..\..\..\..\..\..\..\..\components\libraries\log\src;..\..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\..\components\softdevice\common\softdevice_handler;..\..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\..\components\toolchain;..\..\..\..\..\..\..\..\external\segger_rtt;..\config</IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -399,14 +399,23 @@
               <FileType>5</FileType>
               <FilePath>..\config\sdk_config.h</FilePath>            </File>          </Files>
         </Group>        <Group>
+          <GroupName>Board Definition</GroupName>
+          <Files>            <File>
+              <FileName>boards.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\..\components\boards\boards.c</FilePath>            </File>          </Files>
+        </Group>        <Group>
           <GroupName>Board Support</GroupName>
           <Files>            <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\bsp\bsp.c</FilePath>            </File>            <File>
+              <FilePath>..\..\..\..\..\..\..\..\components\libraries\bsp\bsp.c</FilePath>            </File>            <File>
               <FileName>bsp_btn_ant.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\bsp\bsp_btn_ant.c</FilePath>            </File>          </Files>
+              <FilePath>..\..\..\..\..\..\..\..\components\libraries\bsp\bsp_btn_ant.c</FilePath>            </File>            <File>
+              <FileName>bsp_nfc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\..\components\libraries\bsp\bsp_nfc.c</FilePath>            </File>          </Files>
         </Group>        <Group>
           <GroupName>Device</GroupName>
           <Files>            <File>
@@ -511,7 +520,10 @@
               <FilePath>..\..\..\..\..\..\..\..\components\libraries\hardfault\hardfault_implementation.c</FilePath>            </File>            <File>
               <FileName>nrf_assert.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>            </File>          </Files>
+              <FilePath>..\..\..\..\..\..\..\..\components\libraries\util\nrf_assert.c</FilePath>            </File>            <File>
+              <FileName>sdk_errors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\..\components\libraries\util\sdk_errors.c</FilePath>            </File>          </Files>
         </Group>        <Group>
           <GroupName>nRF_Log</GroupName>
           <Files>            <File>

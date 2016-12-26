@@ -10,8 +10,8 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BSC_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BSC)
 
 #include "ant_bsc_page_3.h"
 
@@ -63,4 +63,4 @@ void ant_bsc_page_3_decode(uint8_t const * p_page_buffer, ant_bsc_page3_data_t *
     page3_data_log( p_page_data);
 }
 
-#endif // ANT_BSC_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BSC)

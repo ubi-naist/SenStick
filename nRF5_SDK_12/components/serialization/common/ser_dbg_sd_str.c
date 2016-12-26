@@ -14,9 +14,9 @@
 #include "nrf_soc.h"
 #include "nrf_log.h"
 #include <string.h>
-#include "sdk_config.h"
+#include "sdk_common.h"
 
-#if NRF_LOG_ENABLED
+#if NRF_MODULE_ENABLED(NRF_LOG)
 static const char * sd_events[] = {
     "BLE_EVT_TX_COMPLETE",                     /*0x01*/
     "BLE_EVT_USER_MEM_REQUEST",                /*0x02*/
@@ -191,7 +191,7 @@ static const char * sd_functions[] = {
 
 const char * ser_dbg_sd_call_str_get(uint8_t opcode)
 {
-#if NRF_LOG_ENABLED
+#if NRF_MODULE_ENABLED(NRF_LOG)
     const char * p_str = "SD_CALL_UNKNOWN";
     if (opcode >= BLE_SVC_BASE && opcode <= BLE_GATTS_SVC_LAST)
     {
@@ -223,7 +223,7 @@ const char * ser_dbg_sd_call_str_get(uint8_t opcode)
 
 const char * ser_dbg_sd_evt_str_get(uint16_t opcode)
 {
-#if NRF_LOG_ENABLED
+#if NRF_MODULE_ENABLED(NRF_LOG)
     const char * p_str = "SD_EVT_UNKNOWN";
     if (opcode >= BLE_EVT_BASE && opcode <= BLE_GATTS_EVT_LAST)
     {

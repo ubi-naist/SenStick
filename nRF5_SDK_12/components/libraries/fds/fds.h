@@ -29,6 +29,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "sdk_errors.h"
+#include "app_util_platform.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -203,14 +204,7 @@ typedef enum
 } fds_evt_id_t;
 
 
-#if defined(__CC_ARM)
-    #pragma push
-    #pragma anon_unions
-#elif defined(__ICCARM__)
-    #pragma language=extended
-#elif defined(__GNUC__)
-    /* anonymous unions are enabled by default */
-#endif
+ANON_UNIONS_ENABLE
 
 /**@brief   An FDS event.
  */
@@ -248,13 +242,7 @@ typedef struct
     };
 } fds_evt_t;
 
-#if defined(__CC_ARM)
-    #pragma pop
-#elif defined(__ICCARM__)
-    /* leave anonymous unions enabled */
-#elif defined(__GNUC__)
-    /* anonymous unions are enabled by default */
-#endif
+ANON_UNIONS_DISABLE
 
 
 /**@brief   File system statistics. */
@@ -328,6 +316,9 @@ ret_code_t fds_init(void);
  * the file ID or the record key. All records with the same file ID are grouped into one file.
  * If no file with the specified ID exists, it is created. There can be multiple records with the
  * same record key in a file.
+ *
+ * Some modules need exclusive use of certain file IDs and record keys. See @ref lib_fds_functionality_keys
+ * for details.
  *
  * Record data can consist of multiple chunks. The data must be aligned to a 4 byte boundary, and
  * because it is not buffered internally, it must be kept in memory until the callback for the

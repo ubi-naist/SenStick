@@ -3,7 +3,7 @@ This software is subject to the license described in the license.txt file includ
 this software distribution.
 You may not use this file except in compliance with this license.
 
-Copyright © Dynastream Innovations Inc. 2015
+Copyright Â© Dynastream Innovations Inc. 2015
 All rights reserved.
 */
 
@@ -51,7 +51,7 @@ int main(void)
 {
     uint32_t err_code;
 
-    LEDS_CONFIGURE(LEDS_MASK);
+    bsp_board_leds_init();
 
     softdevice_setup();
 

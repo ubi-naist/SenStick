@@ -14,14 +14,12 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_HIDS_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_HIDS)
 #include "ble_hids.h"
 #include <string.h>
 #include "app_error.h"
-#include "nordic_common.h"
 #include "ble_srv_common.h"
-#include "app_util.h"
 
 
 // Protocol Mode values
@@ -1379,4 +1377,4 @@ uint32_t ble_hids_outp_rep_get(ble_hids_t * p_hids,
 /**
   @}
 */
-#endif //BLE_HIDS_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_HIDS)

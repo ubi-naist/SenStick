@@ -64,7 +64,7 @@ static void lpcomp_event_handler(nrf_lpcomp_event_t event)
 {
     if (event == NRF_LPCOMP_EVENT_DOWN)
     {
-        LEDS_INVERT(BSP_LED_0_MASK); // just change state of first LED
+        bsp_board_led_invert(BSP_BOARD_LED_0); // just change state of first LED
         voltage_falls_detected++;
         voltage_falls_total++;
     }
@@ -91,7 +91,7 @@ static void lpcomp_init(void)
 {
     uint32_t                err_code;
 
-    nrf_drv_lpcomp_config_t config = NRF_DRV_LPCONF_DEFAULT_CONFIG;
+    nrf_drv_lpcomp_config_t config = NRF_DRV_LPCOMP_DEFAULT_CONFIG;
     config.input = NRF_LPCOMP_INPUT_2;
     // initialize LPCOMP driver, from this point LPCOMP will be active and provided
     // event handler will be executed when defined action is detected
@@ -103,9 +103,8 @@ static void lpcomp_init(void)
 
 int main(void)
 {
+    bsp_board_leds_init();
 
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
     nrf_gpio_cfg_output(WAVE_ON_PIN_NUMBER); // on this pin 2Hz wave will be generated
 
 #ifdef BSP_BUTTON_0
@@ -123,11 +122,11 @@ int main(void)
     while (true)
     {
         print_statistics();
-        LEDS_ON(BSP_LED_1_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_1);
         NRF_GPIO->OUTCLR = (1 << WAVE_ON_PIN_NUMBER);
         nrf_delay_ms(100); // generate 100 ms pulse on selected pin
         print_statistics();
-        LEDS_OFF(BSP_LED_1_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_1);
         NRF_GPIO->OUTSET = (1 << WAVE_ON_PIN_NUMBER);
         nrf_delay_ms(400);
         NRF_LOG_FLUSH();

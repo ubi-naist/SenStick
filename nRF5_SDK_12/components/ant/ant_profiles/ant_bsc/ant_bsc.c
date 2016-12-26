@@ -10,17 +10,15 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BSC_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BSC)
 
 #include "nrf_assert.h"
 #include "nrf_error.h"
 #include "app_error.h"
 #include "ant_interface.h"
-#include "app_util.h"
 #include "ant_bsc.h"
 #include "ant_bsc_utils.h"
-#include "app_error.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_BSC"
 #if ANT_BSC_LOG_ENABLED
@@ -103,7 +101,7 @@ ret_code_t ant_bsc_sens_init(ant_bsc_profile_t           * p_profile,
     ASSERT(p_profile != NULL);
     ASSERT(p_channel_config != NULL);
     ASSERT(p_sens_config != NULL);
-    ASSERT(p_sens_config->p_cb_buffer != NULL);
+    ASSERT(p_sens_config->p_cb != NULL);
     ASSERT(p_sens_config->evt_handler != NULL);
 
     ASSERT((p_sens_config->main_page_number == ANT_BSC_PAGE_0)
@@ -392,4 +390,4 @@ void ant_bsc_disp_evt_handler(ant_bsc_profile_t * p_profile,
     }
 }
 
-#endif // ANT_BSC_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BSC)

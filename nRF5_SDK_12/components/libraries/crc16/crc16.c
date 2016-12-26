@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if CRC16_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(CRC16)
 #include "crc16.h"
 
 #include <stdlib.h>
@@ -30,4 +30,4 @@ uint16_t crc16_compute(uint8_t const * p_data, uint32_t size, uint16_t const * p
 
     return crc;
 }
-#endif //CRC16_ENABLED
+#endif //NRF_MODULE_ENABLED(CRC16)

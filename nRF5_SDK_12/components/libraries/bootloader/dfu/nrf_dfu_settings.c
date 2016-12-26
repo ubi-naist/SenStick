@@ -15,6 +15,8 @@
 #include "nrf_log.h"
 #include "crc32.h"
 #include <string.h>
+#include "app_scheduler.h"
+#include "nrf_delay.h"
 
 /** @brief  This variable reserves a codepage for bootloader specific settings,
  *          to ensure the compiler doesn't locate any code or variables at his location.
@@ -109,6 +111,30 @@ static void dfu_settings_write_callback(fs_evt_t const * const evt, fs_ret_t res
     }
 }
 
+static void delay_operation(void)
+{
+   nrf_delay_ms(100);
+   app_sched_execute();
+}
+
+static void wait_for_pending(void)
+{
+    while (flash_operation_pending == true)
+    {
+        NRF_LOG_INFO("Waiting for other flash operation to finish.\r\n");
+        delay_operation();
+    }
+}
+
+static void wait_for_queue(void)
+{
+    while (fs_queue_is_full())
+    {
+        NRF_LOG_INFO("Waiting for available space on flash queue.\r\n");
+        delay_operation();
+    }
+}
+
 
 uint32_t nrf_dfu_settings_calculate_crc(void)
 {
@@ -142,28 +168,37 @@ void nrf_dfu_settings_init(void)
     NRF_LOG_INFO("!!!!!!!!!!!!!!! Resetting bootloader settings !!!!!!!!!!!\r\n");
     memset(&s_dfu_settings, 0x00, sizeof(nrf_dfu_settings_t));
     s_dfu_settings.settings_version = NRF_DFU_SETTINGS_VERSION;
-    (void)nrf_dfu_settings_write(NULL);
+    APP_ERROR_CHECK(nrf_dfu_settings_write(NULL));
 }
 
 
 ret_code_t nrf_dfu_settings_write(dfu_flash_callback_t callback)
 {
+    ret_code_t err_code = FS_SUCCESS;
     NRF_LOG_INFO("Erasing old settings at: 0x%08x\r\n", (uint32_t)&m_dfu_settings_buffer[0]);
 
-    if (flash_operation_pending == true)
-    {
-        NRF_LOG_INFO("Could not queue writing of DFU Settings\r\n");
-        return NRF_ERROR_BUSY;
-    }
-
+    // Wait for any ongoing operation (because of multiple calls to nrf_dfu_settings_write)
+    wait_for_pending();
+    
     flash_operation_pending = true;
     m_callback = callback;
-
-    if(nrf_dfu_flash_erase((uint32_t*)&m_dfu_settings_buffer[0], 1, NULL) != FS_SUCCESS)
+    
+    do 
     {
+        wait_for_queue();
+        
+        // Not setting the callback function because ERASE is required before STORE
+        // Only report completion on successful STORE.
+        err_code = nrf_dfu_flash_erase((uint32_t*)&m_dfu_settings_buffer[0], 1, NULL);
+        
+    } while (err_code == FS_ERR_QUEUE_FULL);
+    
+    
+    if (err_code != FS_SUCCESS)
+    {
+        NRF_LOG_ERROR("Erasing from flash memory failed.\r\n");
         flash_operation_pending = false;
-        NRF_LOG_INFO("Failed to erase bootloader settings\r\n");
-        return NRF_ERROR_BUSY;
+        return NRF_ERROR_INTERNAL;
     }
 
     s_dfu_settings.crc = nrf_dfu_settings_calculate_crc();
@@ -172,11 +207,23 @@ ret_code_t nrf_dfu_settings_write(dfu_flash_callback_t callback)
 
     static nrf_dfu_settings_t temp_dfu_settings;
     memcpy(&temp_dfu_settings, &s_dfu_settings, sizeof(nrf_dfu_settings_t));
-    if(nrf_dfu_flash_store((uint32_t*)&m_dfu_settings_buffer[0], (uint32_t*)&temp_dfu_settings, sizeof(nrf_dfu_settings_t)/4, dfu_settings_write_callback) != FS_SUCCESS)
+
+    do 
     {
+        wait_for_queue();
+        
+        err_code = nrf_dfu_flash_store((uint32_t*)&m_dfu_settings_buffer[0],
+                                       (uint32_t*)&temp_dfu_settings,
+                                       sizeof(nrf_dfu_settings_t)/4,
+                                       dfu_settings_write_callback);
+
+    } while (err_code == FS_ERR_QUEUE_FULL);
+    
+    if (err_code != FS_SUCCESS)
+    {
+        NRF_LOG_ERROR("Storing to flash memory failed.\r\n");
         flash_operation_pending = false;
-        NRF_LOG_INFO("Failed to write bootloader settings\r\n");
-        return NRF_ERROR_BUSY;
+        return NRF_ERROR_INTERNAL;
     }
 
     NRF_LOG_INFO("Writing settings...\r\n");

@@ -527,7 +527,7 @@ static void uart_init(void)
                         UART_RX_BUF_SIZE,
                         UART_TX_BUF_SIZE,
                         uart_event_handle,
-                        APP_IRQ_PRIORITY_LOW,
+                        APP_IRQ_PRIORITY_LOWEST,
                         err_code);
 
     APP_ERROR_CHECK(err_code);

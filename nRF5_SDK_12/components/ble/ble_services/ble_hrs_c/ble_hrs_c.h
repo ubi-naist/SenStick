@@ -37,10 +37,21 @@
 #include <stdint.h>
 #include "ble.h"
 #include "ble_db_discovery.h"
+#include "sdk_config.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+/** @brief  Maximum number of RR intervals to be decoded for each HRM notifications (any extra RR intervals will be ignored).
+ *
+ * This define should be defined in the sdk_config.h file to override the default.
+ */
+#ifndef BLE_HRS_C_RR_INTERVALS_MAX_CNT
+#define BLE_HRS_C_RR_INTERVALS_MAX_CNT 20
+#endif
+
 
 /**
  * @defgroup hrs_c_enums Enumerations
@@ -64,7 +75,9 @@ typedef enum
 /**@brief Structure containing the heart rate measurement received from the peer. */
 typedef struct
 {
-    uint16_t hr_value;  /**< Heart Rate Value. */
+    uint16_t hr_value;                                        /**< Heart Rate Value. */
+    uint8_t  rr_intervals_cnt;                                /**< Number of RR intervals. */
+    uint16_t rr_intervals[BLE_HRS_C_RR_INTERVALS_MAX_CNT];    /**< RR intervals. */
 } ble_hrm_t;
 
 

@@ -48,6 +48,7 @@
 #include <stdbool.h>
 #include "ble.h"
 #include "ble_srv_common.h"
+#include "nrf_ble_gatt.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -108,6 +109,7 @@ struct ble_hrs_s
     bool                         is_sensor_contact_detected;                           /**< TRUE if sensor contact has been detected. */
     uint16_t                     rr_interval[BLE_HRS_MAX_BUFFERED_RR_INTERVALS];       /**< Set of RR Interval measurements since the last Heart Rate Measurement transmission. */
     uint16_t                     rr_interval_count;                                    /**< Number of RR Interval measurements since the last Heart Rate Measurement transmission. */
+    uint8_t                      max_hrm_len;                                          /**< Current maximum HR measurement length, adjusted according to the current ATT MTU. */
 };
 
 /**@brief Function for initializing the Heart Rate Service.
@@ -120,6 +122,17 @@ struct ble_hrs_s
  * @return      NRF_SUCCESS on successful initialization of service, otherwise an error code.
  */
 uint32_t ble_hrs_init(ble_hrs_t * p_hrs, const ble_hrs_init_t * p_hrs_init);
+
+
+/**@brief Function for handling the GATT module's events.
+ *
+ * @details Handles all events from the GATT module of interest to the Heart Rate Service.
+ *
+ * @param[in]   p_hrs      Heart Rate Service structure.
+ * @param[in]   p_gatt_evt  Event received from the GATT module.
+ */
+void ble_hrs_on_gatt_evt(ble_hrs_t * p_hrs, nrf_ble_gatt_evt_t * p_gatt_evt);
+
 
 /**@brief Function for handling the Application's BLE Stack events.
  *

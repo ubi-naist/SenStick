@@ -47,8 +47,6 @@
 #define CENTRAL_LINK_COUNT        1                                  /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
 #define PERIPHERAL_LINK_COUNT     0                                  /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 
-#define BOND_DELETE_ALL_BUTTON_ID 0                                  /**< Button used for deleting all bonded centrals during startup. */
-
 #define APP_TIMER_PRESCALER       0                                  /**< Value of the RTC1 PRESCALER register. */
 #define APP_TIMER_OP_QUEUE_SIZE   2                                  /**< Size of timer operation queues. */
 
@@ -81,6 +79,7 @@
         (*(DST))  |= (SRC)[0];   \
     } while (0)
 
+
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
 {
@@ -88,20 +87,13 @@ typedef struct
     uint16_t  data_len; /**< Length of data. */
 }data_t;
 
-typedef enum
-{
-    BLE_NO_SCAN,        /**< No advertising running. */
-    BLE_WHITELIST_SCAN, /**< Advertising with whitelist. */
-    BLE_FAST_SCAN,      /**< Fast advertising running. */
-} ble_scan_mode_t;
 
 static ble_db_discovery_t    m_ble_db_discovery;                       /**< Structure used to identify the DB Discovery module. */
 static ble_rscs_c_t          m_ble_rsc_c;                              /**< Structure used to identify the Running Speed and Cadence client module. */
 static ble_gap_scan_params_t m_scan_param;                             /**< Scan parameters requested for scanning and connection. */
-static ble_scan_mode_t       m_scan_mode = BLE_FAST_SCAN;              /**< Scan mode used by application. */
 static uint16_t              m_conn_handle;                            /**< Current connection handle. */
-static volatile bool         m_whitelist_temporarily_disabled = false; /**< True if whitelist has been temporarily disabled. */
-static bool                  m_memory_access_in_progress      = false; /**< Flag to keep track of ongoing operations on persistent memory. */
+static bool                  m_whitelist_disabled;          /**< True if whitelist has been temporarily disabled. */
+static bool                  m_memory_access_in_progress;   /**< Flag to keep track of ongoing operations on persistent memory. */
 
 /**
  * @brief Connection parameters requested for connection.
@@ -161,59 +153,33 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     {
         case PM_EVT_BONDED_PEER_CONNECTED:
         {
-            NRF_LOG_DEBUG("Bonded device connected!.\r\n");
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break; // PM_EVT_CONN_SEC_START
+            NRF_LOG_INFO("Connected to a previously bonded device.\r\n");
+        } break;
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
-            NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                     ble_conn_state_role(p_evt->conn_handle),
-                     p_evt->conn_handle,
-                     p_evt->params.conn_sec_succeeded.procedure);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // PM_EVT_CONN_SEC_SUCCEEDED
+            NRF_LOG_INFO("Connection secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break; // PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                default:
-                    break;
-            }
-        } break; // PM_EVT_CONN_SEC_FAILED
+            /* Often, when securing fails, it shouldn't be restarted, for security reasons.
+             * Other times, it can be restarted directly.
+             * Sometimes it can be restarted, but only after changing some Security Parameters.
+             * Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             * Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             * How to handle this error is highly application dependent. */
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        } break; // PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
@@ -227,54 +193,50 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
             {
                 APP_ERROR_CHECK(err_code);
             }
-        } break; // PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break; // PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break; // PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break; // PM_EVT_PEER_DATA_UPDATE_FAILED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break; // PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break; // PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             scan_start();
-            break; // PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break; // PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break; // PM_EVT_SERVICE_CHANGED_IND_CONFIRMED
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -348,6 +310,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
+        {
             // Discover peer's services.
             err_code = ble_db_discovery_start(&m_ble_db_discovery,
                                               p_ble_evt->evt.gap_evt.conn_handle);
@@ -356,7 +319,11 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             err_code = bsp_indication_set(BSP_INDICATE_CONNECTED);
             APP_ERROR_CHECK(err_code);
 
-            break; // BLE_GAP_EVT_CONNECTED
+            if (ble_conn_state_n_centrals() < CENTRAL_LINK_COUNT)
+            {
+                scan_start();
+            }
+        } break;
 
         case BLE_GAP_EVT_ADV_REPORT:
         {
@@ -392,12 +359,8 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
                     if (extracted_uuid == TARGET_UUID)
                     {
                         // Stop scanning.
-                        err_code = sd_ble_gap_scan_stop();
+                        (void) sd_ble_gap_scan_stop();
 
-                        if (err_code != NRF_SUCCESS)
-                        {
-                            NRF_LOG_DEBUG("Scan stop failed, reason %d\r\n", err_code);
-                        }
                         err_code = bsp_indication_set(BSP_INDICATE_IDLE);
                         APP_ERROR_CHECK(err_code);
 
@@ -405,70 +368,80 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
                         #if (NRF_SD_BLE_API_VERSION == 2)
                             m_scan_param.selective = 0;
                         #endif
+                        #if (NRF_SD_BLE_API_VERSION == 3)
+                            m_scan_param.use_whitelist = 0;
+                        #endif
+
                         err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
                                                       &m_scan_param,
                                                       &m_connection_param);
 
-                        m_whitelist_temporarily_disabled = false;
+                        m_whitelist_disabled = false;
 
                         if (err_code != NRF_SUCCESS)
                         {
-                            NRF_LOG_DEBUG("Connection Request Failed, reason %d\r\n", err_code);
+                            NRF_LOG_DEBUG("Connection Request Failed, reason 0x%x\r\n", err_code);
                         }
                         break;
                     }
                 }
             }
-        }break; // BLE_GAP_EVT_ADV_REPORT
+        } break; // BLE_GAP_EVT_ADV_REPORT
 
         case BLE_GAP_EVT_TIMEOUT:
+        {
             if (p_gap_evt->params.timeout.src == BLE_GAP_TIMEOUT_SRC_SCAN)
             {
-                NRF_LOG_DEBUG("Scan timed out.\r\n");
+                NRF_LOG_INFO("Scan timed out.\r\n");
                 scan_start();
             }
             else if (p_gap_evt->params.timeout.src == BLE_GAP_TIMEOUT_SRC_CONN)
             {
                 NRF_LOG_DEBUG("Connection Request timed out.\r\n");
             }
-            break; // BLE_GAP_EVT_TIMEOUT
+        } break;
 
         case BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST:
+        {
             // Accepting parameters requested by peer.
             err_code = sd_ble_gap_conn_param_update(p_gap_evt->conn_handle,
                                                     &p_gap_evt->params.conn_param_update_request.conn_params);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST
+        } break;
 
         case BLE_GAP_EVT_DISCONNECTED:
-            if (ble_conn_state_n_centrals() == 0)
+        {
+            if (ble_conn_state_n_centrals() < CENTRAL_LINK_COUNT)
             {
                 scan_start();
             }
-            break; // BLE_GAP_EVT_DISCONNECTED
+        } break;
 
         case BLE_GATTC_EVT_TIMEOUT:
+        {
             // Disconnect on GATT Client timeout event.
             NRF_LOG_DEBUG("GATT Client Timeout.\r\n");
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gattc_evt.conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTC_EVT_TIMEOUT
+        } break;
 
         case BLE_GATTS_EVT_TIMEOUT:
+        {
             // Disconnect on GATT Server timeout event.
             NRF_LOG_DEBUG("GATT Server Timeout.\r\n");
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_TIMEOUT
+        } break;
 
 #if (NRF_SD_BLE_API_VERSION == 3)
         case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
+        {
             err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle,
                                                        NRF_BLE_MAX_MTU_SIZE);
             APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
+        } break;
 #endif
 
         default:
@@ -578,23 +551,13 @@ static void ble_stack_init(void)
  */
 static void whitelist_disable(void)
 {
-    uint32_t err_code;
-
-    if ((m_scan_mode == BLE_WHITELIST_SCAN) && !m_whitelist_temporarily_disabled)
+    if (!m_whitelist_disabled)
     {
-        m_whitelist_temporarily_disabled = true;
-
-        err_code = sd_ble_gap_scan_stop();
-        if (err_code == NRF_SUCCESS)
-        {
+        NRF_LOG_INFO("Whitelist temporarily disabled.\r\n");
+        m_whitelist_disabled = true;
+        (void) sd_ble_gap_scan_stop();
             scan_start();
         }
-        else if (err_code != NRF_ERROR_INVALID_STATE)
-        {
-            APP_ERROR_CHECK(err_code);
-        }
-    }
-    m_whitelist_temporarily_disabled = true;
 }
 
 
@@ -653,7 +616,7 @@ static void rscs_c_evt_handler(ble_rscs_c_t * p_rsc_c, ble_rscs_c_evt_t * p_rsc_
             err_code = ble_rscs_c_rsc_notif_enable(p_rsc_c);
             APP_ERROR_CHECK(err_code);
 
-            NRF_LOG_INFO("Running Speed and Cadence service discovered \r\n");
+            NRF_LOG_INFO("Running Speed and Cadence service discovered.\r\n");
             break;
 
         case BLE_RSCS_C_EVT_RSC_NOTIFICATION:
@@ -757,7 +720,7 @@ static void db_discovery_init(void)
 }
 
 
-/**@brief Fetch the list of peer manager peer IDs.
+/**@brief Retrive a list of peer manager peer IDs.
  *
  * @param[inout] p_peers   The buffer where to store the list of peer IDs.
  * @param[inout] p_size    In: The size of the @p p_peers buffer.
@@ -791,6 +754,7 @@ static void whitelist_load()
     memset(peers, PM_PEER_ID_INVALID, sizeof(peers));
     peer_cnt = (sizeof(peers) / sizeof(pm_peer_id_t));
 
+    // Load all peers from flash and whitelist them.
     peer_list_get(peers, &peer_cnt);
 
     ret = pm_whitelist_set(peers, peer_cnt);
@@ -849,6 +813,9 @@ static void scan_start(void)
 
     #endif
 
+    // Reload the whitelist and whitelist all peers.
+    whitelist_load();
+
     ret_code_t ret;
 
     // Get the whitelist previously set using pm_whitelist_set().
@@ -860,43 +827,36 @@ static void scan_start(void)
     m_scan_param.window   = SCAN_WINDOW;
 
     if (((addr_cnt == 0) && (irk_cnt == 0)) ||
-        (m_scan_mode != BLE_WHITELIST_SCAN) ||
-        (m_whitelist_temporarily_disabled))
+        (m_whitelist_disabled))
     {
         // Don't use whitelist.
-
-        m_scan_param.timeout  = 0x0000; // No timeout.
-
         #if (NRF_SD_BLE_API_VERSION == 2)
             m_scan_param.selective   = 0;
             m_scan_param.p_whitelist = NULL;
         #endif
-
         #if (NRF_SD_BLE_API_VERSION == 3)
             m_scan_param.use_whitelist  = 0;
             m_scan_param.adv_dir_report = 0;
         #endif
+        m_scan_param.timeout  = 0x0000; // No timeout.
     }
     else
     {
         // Use whitelist.
-
-        m_scan_param.timeout  = 0x001E; // 30 seconds.
-
         #if (NRF_SD_BLE_API_VERSION == 2)
             whitelist.addr_count     = addr_cnt;
             whitelist.irk_count      = irk_cnt;
             m_scan_param.selective   = 1;
             m_scan_param.p_whitelist = &whitelist;
         #endif
-
         #if (NRF_SD_BLE_API_VERSION == 3)
             m_scan_param.use_whitelist  = 1;
             m_scan_param.adv_dir_report = 0;
         #endif
+        m_scan_param.timeout  = 0x001E; // 30 seconds.
     }
 
-    NRF_LOG_DEBUG("Starting scan.\r\n");
+    NRF_LOG_INFO("Starting scan.\r\n");
 
     ret = sd_ble_gap_scan_start(&m_scan_param);
     APP_ERROR_CHECK(ret);
@@ -945,7 +905,7 @@ int main(void)
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
     buttons_leds_init(&erase_bonds);
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
-    NRF_LOG_INFO("Running Speed collector example\r\n");
+    NRF_LOG_INFO("Running Speed collector example.\r\n");
     ble_stack_init();
     ble_conn_state_init();
     peer_manager_init(erase_bonds);
@@ -966,5 +926,3 @@ int main(void)
         }
     }
 }
-
-

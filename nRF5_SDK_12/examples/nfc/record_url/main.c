@@ -42,11 +42,11 @@ static void nfc_callback(void * p_context, nfc_t2t_event_t event, const uint8_t 
     switch (event)
     {
         case NFC_T2T_EVENT_FIELD_ON:
-            LEDS_ON(BSP_LED_0_MASK);
+            bsp_board_led_on(BSP_BOARD_LED_0);
             break;
 
         case NFC_T2T_EVENT_FIELD_OFF:
-            LEDS_OFF(BSP_LED_0_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_0);
             break;
 
         default:
@@ -66,8 +66,7 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     /* Configure LED-pins as outputs */
-    LEDS_CONFIGURE(BSP_LED_0_MASK);
-    LEDS_OFF(BSP_LED_0_MASK);
+    bsp_board_leds_init();
 
     /* Set up NFC */
     err_code = nfc_t2t_setup(nfc_callback, NULL);

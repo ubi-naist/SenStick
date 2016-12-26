@@ -57,25 +57,16 @@ extern nrf_gzll_error_code_t nrf_gzll_error_code;                 ///< Error cod
  */
 static uint8_t input_get(void)
 {
-    uint32_t err_code;
-    bool     button0;
-    bool     button1;
-    bool     button2;
-    bool     button3;
+    uint8_t result = 0;
+    for (uint32_t i = 0; i < BUTTONS_NUMBER; i++)
+    {
+        if (bsp_button_is_pressed(i))
+        {
+            result |= (1 << i);
+        }
+    }
 
-    err_code = bsp_button_is_pressed(0, &button0);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(1, &button1);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(2, &button2);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(3, &button3);
-    APP_ERROR_CHECK(err_code);
-
-    return ~((uint8_t)((button3 << 3) | (button2 << 2) | (button1 << 1) | button0));
+    return ~(result);
 }
 
 
@@ -86,18 +77,17 @@ static uint8_t input_get(void)
  */
 static void output_present(uint8_t val)
 {
-    uint32_t leds[] = LEDS_LIST;
     uint32_t i;
 
     for (i = 0; i < LEDS_NUMBER; i++)
     {
         if (val & (1 << i))
         {
-            LEDS_ON(1 << (leds[i]));
+            bsp_board_led_on(i);
         }
         else
         {
-            LEDS_OFF(1 << (leds[i]));
+            bsp_board_led_off(i);
         }
     }
 }
@@ -124,7 +114,7 @@ static void ui_init(void)
     NRF_LOG_INFO("Gazell ACK payload example. Host mode.\r\n");
     NRF_LOG_FLUSH();
 
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_init();
 }
 
 

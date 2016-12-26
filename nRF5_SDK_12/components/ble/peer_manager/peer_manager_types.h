@@ -139,10 +139,10 @@ typedef struct
  */
 typedef struct
 {
-    uint8_t           own_role; /**< @brief The role of the local device during bonding. */
-    ble_gap_id_key_t  peer_id;  /**< @brief The peer's peer address and identity resolution key. */
-    ble_gap_enc_key_t peer_ltk; /**< @brief The peer's long-term encryption key. */
-    ble_gap_enc_key_t own_ltk;  /**< @brief Locally generated long-term encryption key, distributed to the peer. */
+    uint8_t           own_role;    /**< @brief The BLE role of the local device during bonding. See @ref BLE_GAP_ROLES. */
+    ble_gap_id_key_t  peer_ble_id; /**< @brief The peer's Bluetooth address and identity resolution key (IRK). */
+    ble_gap_enc_key_t peer_ltk;    /**< @brief The peer's long-term encryption key (LTK) and master ID. */
+    ble_gap_enc_key_t own_ltk;     /**< @brief Locally generated long-term encryption key (LTK) and master ID, distributed to the peer. */
 } pm_peer_data_bonding_t;
 
 
@@ -152,7 +152,7 @@ typedef struct
 {
     uint32_t flags;       /**< @brief Flags that describe the database attributes. */
     uint16_t len;         /**< @brief Size of the attribute array. */
-    uint8_t  data[];      /**< @brief Array to hold the database attributes. */
+    uint8_t  data[1];     /**< @brief Array to hold the database attributes. */
 } pm_peer_data_local_gatt_db_t;
 
 

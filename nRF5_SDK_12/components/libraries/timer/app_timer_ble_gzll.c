@@ -9,8 +9,8 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if APP_TIMER_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(APP_TIMER)
 #include "app_timer.h"
 #include <stdlib.h>
 #include "nrf.h"
@@ -18,10 +18,9 @@
 #include "app_error.h"
 #include "nrf_delay.h"
 #include "app_util_platform.h"
-#include "sdk_common.h"
 
-#define RTC1_IRQ_PRI            APP_IRQ_PRIORITY_LOW                        /**< Priority of the RTC1 interrupt (used for checking for timeouts and executing timeout handlers). */
-#define SWI_IRQ_PRI             APP_IRQ_PRIORITY_LOW                        /**< Priority of the SWI  interrupt (used for updating the timer list). */
+#define RTC1_IRQ_PRI            APP_IRQ_PRIORITY_LOWEST                        /**< Priority of the RTC1 interrupt (used for checking for timeouts and executing timeout handlers). */
+#define SWI_IRQ_PRI             APP_IRQ_PRIORITY_LOWEST                        /**< Priority of the SWI  interrupt (used for updating the timer list). */
 
 // The current design assumes that both interrupt handlers run at the same interrupt level.
 // If this is to be changed, protection must be added to prevent them from interrupting each other
@@ -1048,4 +1047,4 @@ uint8_t app_timer_op_queue_utilization_get(void)
     return m_max_user_op_queue_utilization;
 }
 #endif
-#endif //APP_TIMER_ENABLED
+#endif //NRF_MODULE_ENABLED(APP_TIMER)

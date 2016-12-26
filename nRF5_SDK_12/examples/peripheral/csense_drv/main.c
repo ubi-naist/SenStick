@@ -27,7 +27,7 @@
 #include "nrf_drv_clock.h"
 #include "app_timer.h"
 #include "nrf_delay.h"
-#include "app_uart.h"
+
 #define NRF_LOG_MODULE_NAME "APP"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -73,46 +73,6 @@ volatile uint32_t max_value[2];
 volatile uint32_t min_value[2];
 bool conf_mode;
 
-void uart_error_handle(app_uart_evt_t * p_event)
-{
-    if (p_event->evt_type == APP_UART_COMMUNICATION_ERROR)
-    {
-        APP_ERROR_HANDLER(p_event->data.error_communication);
-    }
-    else if (p_event->evt_type == APP_UART_FIFO_ERROR)
-    {
-        APP_ERROR_HANDLER(p_event->data.error_code);
-    }
-}
-
-/**
- * @brief Function for uart initialization.
- */
-ret_code_t uart_config(void)
-{
-    ret_code_t err_code;
-    
-    const app_uart_comm_params_t comm_params =
-    {
-        RX_PIN_NUMBER,
-        TX_PIN_NUMBER,
-        RTS_PIN_NUMBER,
-        CTS_PIN_NUMBER,
-        APP_UART_FLOW_CONTROL_ENABLED,
-        false,
-        UART_BAUDRATE_BAUDRATE_Baud115200
-    };
-
-    APP_UART_FIFO_INIT(&comm_params,
-                         UART_RX_BUF_SIZE,
-                         UART_TX_BUF_SIZE,
-                         uart_error_handle,
-                         APP_IRQ_PRIORITY_LOW,
-                         err_code);
-    APP_ERROR_CHECK(err_code);
-    
-    return err_code;
-}
 /** 
  * @brief Function for starting the internal LFCLK XTAL oscillator.
  *
@@ -158,33 +118,33 @@ void csense_handler(nrf_drv_csense_evt_t * p_event_struct)
         case AIN_2:
             if (conf_mode)
             {
-                printf("PAD1: %d.\r\n", p_event_struct->read_value);
+                NRF_LOG_INFO("PAD1: %d.\r\n", p_event_struct->read_value);
                 find_min_and_max(p_event_struct->read_value, PAD_ID_0);
                 break;
             }
             if (p_event_struct->read_value >= threshold_value_pad1)
             {
-                LEDS_ON(BSP_LED_0_MASK);
+                bsp_board_led_on(BSP_BOARD_LED_0);
             }
             else
             {
-                LEDS_OFF(BSP_LED_0_MASK);
+                bsp_board_led_off(BSP_BOARD_LED_0);
             }
             break;
         case AIN_7:
             if (conf_mode)
             {
-                printf("PAD2: %d.\r\n", p_event_struct->read_value);
+                NRF_LOG_INFO("PAD2: %d.\r\n", p_event_struct->read_value);
                 find_min_and_max(p_event_struct->read_value, PAD_ID_1);
                 break;
             }
             if (p_event_struct->read_value >= threshold_value_pad2)
             {
-                LEDS_ON(BSP_LED_2_MASK);
+                bsp_board_led_on(BSP_BOARD_LED_2);
             }
             else
             {
-                LEDS_OFF(BSP_LED_2_MASK);
+                bsp_board_led_off(BSP_BOARD_LED_2);
             }
             break;
         default:
@@ -224,7 +184,7 @@ static void csense_timeout_handler(void * p_context)
     err_code = nrf_drv_csense_sample();
     if (err_code != NRF_SUCCESS)
     {
-        printf("Busy.\r\n");
+        NRF_LOG_INFO("Busy.\r\n");
         return;
     }
 }
@@ -261,34 +221,42 @@ void configure_thresholds(void)
         min_value[i] = UINT32_MAX;
     }
     
-    printf("Touch both pads.\r\n");
+    NRF_LOG_INFO("Touch both pads.\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("3...\r\n");
+    NRF_LOG_INFO("3...\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("2...\r\n");
+    NRF_LOG_INFO("2...\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("1...\r\n");
+    NRF_LOG_INFO("1...\r\n");
+    NRF_LOG_FLUSH();
     
     err_code = nrf_drv_csense_sample();   
     if (err_code != NRF_SUCCESS)
     {
-        printf("Busy.\n");
+        NRF_LOG_INFO("Busy.\n");
         return;
     }
     while (nrf_drv_csense_is_busy());
     
-    printf("Release both pads.\r\n");
+    NRF_LOG_INFO("Release both pads.\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("3...\r\n");
+    NRF_LOG_INFO("3...\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("2...\r\n");
+    NRF_LOG_INFO("2...\r\n");
+    NRF_LOG_FLUSH();
     nrf_delay_ms(1000);
-    printf("1...\r\n");
+    NRF_LOG_INFO("1...\r\n");
+    NRF_LOG_FLUSH();
     
     err_code = nrf_drv_csense_sample();   
     if (err_code != NRF_SUCCESS)
     {
-        printf("Busy.\n");
+        NRF_LOG_INFO("Busy.\n");
         return;
     }
     while (nrf_drv_csense_is_busy());
@@ -302,7 +270,7 @@ void configure_thresholds(void)
     new_th_pad_2 /= 2;
     threshold_value_pad1 = new_th_pad_1;
     threshold_value_pad2 = new_th_pad_2;
-    printf("New thresholds, AIN1: %d, AIN7: %d.\r\n", (unsigned int)new_th_pad_1,
+    NRF_LOG_INFO("New thresholds, AIN1: %d, AIN7: %d.\r\n", (unsigned int)new_th_pad_1,
                                                       (unsigned int)new_th_pad_2);
 }
 
@@ -315,23 +283,24 @@ int main(void)
     ret_code_t err_code;
     char config;
     
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
-
-    err_code = uart_config();
-    APP_ERROR_CHECK(err_code);
-
-    APP_TIMER_INIT(APP_TIMER_PRESCALER, OP_QUEUES_SIZE, NULL);
+    APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
+    
+    bsp_board_leds_init();
 
     err_code = clock_config();
     APP_ERROR_CHECK(err_code);
+    
+    APP_TIMER_INIT(APP_TIMER_PRESCALER, OP_QUEUES_SIZE, NULL);
 
-    printf("Capacitive sensing library example.\r\n");
+    
+    NRF_LOG_INFO("Capacitive sensing driver example.\r\n");
     
     csense_initialize();    
 
-    printf("Do you want to enter configuration mode to set thresholds?(y/n)\r\n");
-    scanf("%c", &config);
+    NRF_LOG_INFO("Do you want to enter configuration mode to set thresholds?(y/n)\r\n");
+    NRF_LOG_FLUSH();
+    
+    config = NRF_LOG_GETCHAR();
     
     conf_mode = (config == 'y') ? true : false;
     
@@ -340,11 +309,14 @@ int main(void)
         configure_thresholds();
         conf_mode = false;
     }
+
+    NRF_LOG_INFO("Module ready.\r\n");
     
     start_app_timer();    
 
     while (1)
     {
+        NRF_LOG_FLUSH();
         __WFI();
     }
 }

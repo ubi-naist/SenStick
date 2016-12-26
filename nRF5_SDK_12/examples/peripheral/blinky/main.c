@@ -24,24 +24,22 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "nrf_delay.h"
-#include "bsp.h"
-
-static const uint8_t leds_list[LEDS_NUMBER] = LEDS_LIST;
+#include "boards.h"
 
 /**
  * @brief Function for application main entry.
  */
 int main(void)
 {
-    /* Configure LED-pins as outputs. */
-    LEDS_CONFIGURE(LEDS_MASK);
+    /* Configure board. */
+    bsp_board_leds_init();
 
     /* Toggle LEDs. */
     while (true)
     {
         for (int i = 0; i < LEDS_NUMBER; i++)
         {
-            LEDS_INVERT(1 << leds_list[i]);
+            bsp_board_led_invert(i);
             nrf_delay_ms(500);
         }
     }

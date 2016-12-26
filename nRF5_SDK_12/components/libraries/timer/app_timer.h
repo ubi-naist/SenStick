@@ -54,7 +54,11 @@ extern "C" {
 #define APP_TIMER_CLOCK_FREQ         32768                      /**< Clock frequency of the RTC timer used to implement the app timer module. */
 #define APP_TIMER_MIN_TIMEOUT_TICKS  5                          /**< Minimum value of the timeout_ticks parameter of app_timer_start(). */
 
+#ifdef RTX
+#define APP_TIMER_NODE_SIZE          40                         /**< Size of app_timer.timer_node_t (used to allocate data). */
+#else
 #define APP_TIMER_NODE_SIZE          32                         /**< Size of app_timer.timer_node_t (used to allocate data). */
+#endif // RTX
 #define APP_TIMER_USER_OP_SIZE       24                         /**< Size of app_timer.timer_user_op_t (only for use inside APP_TIMER_BUF_SIZE()). */
 
 /**@brief Compute number of bytes required to hold the application timer data structures.

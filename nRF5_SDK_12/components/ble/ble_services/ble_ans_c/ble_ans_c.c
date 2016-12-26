@@ -13,14 +13,13 @@
 *  To maintain compliance with Nordic Semiconductor ASA’s Bluetooth profile
 *  qualification listings, this section of source code must not be modified.
 */
-#include "sdk_config.h"
-#if BLE_ANS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_ANS_C)
 #include "ble_ans_c.h"
 #include <string.h>
 #include <stdbool.h>
 #include "ble_err.h"
 #include "ble_srv_common.h"
-#include "nordic_common.h"
 #include "nrf_assert.h"
 #include "ble_db_discovery.h"
 #define NRF_LOG_MODULE_NAME "BLE_ANS_C"
@@ -544,4 +543,4 @@ uint32_t ble_ans_c_handles_assign(ble_ans_c_t               * p_ans,
 
     return NRF_SUCCESS;
 }
-#endif //BLE_ANS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_ANS_C)

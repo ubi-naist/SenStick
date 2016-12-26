@@ -1,7 +1,7 @@
 /*
 This software is subject to the license described in the license.txt file included with this software distribution.
 You may not use this file except in compliance with this license.
-Copyright © Dynastream Innovations Inc. 2015
+Copyright Â© Dynastream Innovations Inc. 2015
 All rights reserved.
 */
 
@@ -58,24 +58,6 @@ static uint8_t m_tx_input_pin_state = 0xFF;                         /**< State o
  */
 static void button_state_encode(void)
 {
-    uint32_t err_code;
-    bool     button0;
-    bool     button1;
-    bool     button2;
-    bool     button3;
-
-    err_code = bsp_button_is_pressed(0, &button0);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(1, &button1);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(2, &button2);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_button_is_pressed(3, &button3);
-    APP_ERROR_CHECK(err_code);
-
     m_tx_input_pin_state = 0xFF;
 
     #if DEBUG_CHANNEL_INCLUDED
@@ -85,33 +67,36 @@ static void button_state_encode(void)
     }
     #endif // DEBUG_CHANNEL_INCLUDED
 
-    if (button0)
+    if (bsp_button_is_pressed(0))
     {
         m_tx_input_pin_state &= 0xFE;
-        #if DEBUG_CHANNEL_INCLUDED
+#if DEBUG_CHANNEL_INCLUDED
         ad_debug_field_set(ANT_DEBUG_FIELD_BUTTON_A_STATUS,0);
-        #endif // DEBUG_CHANNEL_INCLUDED
+#endif // DEBUG_CHANNEL_INCLUDED
     }
-    if (button1)
+
+    if (bsp_button_is_pressed(1))
     {
         m_tx_input_pin_state &= 0xFD;
-        #if DEBUG_CHANNEL_INCLUDED
+#if DEBUG_CHANNEL_INCLUDED
         ad_debug_field_set(ANT_DEBUG_FIELD_BUTTON_B_STATUS,0);
-        #endif // DEBUG_CHANNEL_INCLUDED
+#endif // DEBUG_CHANNEL_INCLUDED
     }
-    if (button2)
+
+    if (bsp_button_is_pressed(2))
     {
         m_tx_input_pin_state &= 0xFB;
-        #if DEBUG_CHANNEL_INCLUDED
+#if DEBUG_CHANNEL_INCLUDED
         ad_debug_field_set(ANT_DEBUG_FIELD_BUTTON_C_STATUS,0);
-        #endif // DEBUG_CHANNEL_INCLUDED
+#endif // DEBUG_CHANNEL_INCLUDED
     }
-    if (button3)
+
+    if (bsp_button_is_pressed(3))
     {
         m_tx_input_pin_state &= 0xF7;
-        #if DEBUG_CHANNEL_INCLUDED
-            ad_debug_field_set(ANT_DEBUG_FIELD_BUTTON_D_STATUS,0);
-        #endif // DEBUG_CHANNEL_INCLUDED
+#if DEBUG_CHANNEL_INCLUDED
+        ad_debug_field_set(ANT_DEBUG_FIELD_BUTTON_D_STATUS,0);
+#endif // DEBUG_CHANNEL_INCLUDED
     }
 }
 
@@ -151,44 +136,44 @@ static void led_state_set()
 
     if (led_state_field & 1)
     {
-        LEDS_ON(BSP_LED_0_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_0);
     }
     else
     {
-        LEDS_OFF(BSP_LED_0_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_0);
     }
 
     if (led_state_field & 2)
     {
-        LEDS_ON(BSP_LED_1_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_1);
     }
     else
     {
-        LEDS_OFF(BSP_LED_1_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_1);
     }
 
     if (led_state_field & 4)
     {
-        LEDS_ON(BSP_LED_2_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_2);
     }
     else
     {
-        LEDS_OFF(BSP_LED_2_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_2);
     }
 
     if (led_state_field & 8)
     {
-        LEDS_ON(BSP_LED_3_MASK);
+        bsp_board_led_on(BSP_BOARD_LED_3);
     }
     else
     {
-        LEDS_OFF(BSP_LED_3_MASK);
+        bsp_board_led_off(BSP_BOARD_LED_3);
     }
 
     #if DEBUG_CHANNEL_INCLUDED
     // Example use for Fast Debug Byte
     // Check the value actually written to LED A is correct by outputting to Fast Debug Byte (1 for on, 0 for off)
-    ad_fast_debug_byte_set((LED_IS_ON(BSP_LED_0_MASK) != 0) & 1UL);
+    ad_fast_debug_byte_set(bsp_board_led_state_get(BSP_BOARD_LED_0) ? 1 : 0);
     #endif // DEBUG_CHANNEL_INCLUDED
 }
 
@@ -272,11 +257,11 @@ void app_custom_debug_command_handler(uint8_t const * const p_command)
     // Do not define any custom commands which begin with the debug message indicator: 0xF9 - they will be misinterpreted as a filter message.
     if (p_command[0] == 0x42)
     {
-        LEDS_ON(LEDS_MASK);
+        bsp_board_leds_on();
     }
     else
     {
-        LEDS_OFF(LEDS_MASK);
+        bsp_board_leds_off();
     }
 }
 #endif // DEBUG_CHANNEL_INCLUDED

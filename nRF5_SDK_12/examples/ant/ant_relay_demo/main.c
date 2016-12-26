@@ -93,11 +93,11 @@ void ant_relay_main_page_handle(uint8_t* p_payload)
         uint8_t led_state = p_payload[ANT_LED_STATUS_FIELD_OFFSET];
         if (led_state == ANT_LED_STATE_ON)
         {
-            LEDS_ON(BSP_LED_0_MASK);
+            bsp_board_led_on(BSP_BOARD_LED_0);
         }
         else
         {
-            LEDS_OFF(BSP_LED_0_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_0);
         }
 
         m_led_change_counter = counter;
@@ -118,7 +118,7 @@ void ant_relay_main_message_assemble(uint8_t channel)
     uint8_t broadcast_data[ANT_STANDARD_DATA_PAYLOAD_SIZE];
     memset(broadcast_data, 0xFF, sizeof(broadcast_data));
     broadcast_data[ANT_PAGE_NUMBER_FIELD_OFFSET]  = ANT_RELAY_MAIN_PAGE;
-    broadcast_data[ANT_LED_STATUS_FIELD_OFFSET]   = ( LED_IS_ON(BSP_LED_0_MASK) )?
+    broadcast_data[ANT_LED_STATUS_FIELD_OFFSET]   = ( bsp_board_led_state_get(BSP_BOARD_LED_0) )?
                                                       ANT_LED_STATE_ON : ANT_LED_STATE_OFF;
     broadcast_data[ANT_STATE_FIELD_OFFSET]        = status & STATUS_CHANNEL_STATE_MASK;
     UNUSED_RETURN_VALUE(uint32_encode(m_led_change_counter, broadcast_data + ANT_COUNTER_FIELD_OFFSET));
@@ -177,7 +177,7 @@ void ant_relay_slave_process(ant_evt_t* p_ant_event)
 
             }
 
-            LEDS_ON(BSP_LED_1_MASK);
+            bsp_board_led_on(BSP_BOARD_LED_1);
 
             if (first_recieved)
             {
@@ -201,7 +201,7 @@ void ant_relay_slave_process(ant_evt_t* p_ant_event)
             // Re-initialize proximity search settings.
             uint32_t err_code = sd_ant_prox_search_set(ANT_RELAY_SLAVE_CHANNEL, RELAY_PROXIMITY_BIN, 0);
             APP_ERROR_CHECK(err_code);
-            LEDS_OFF(BSP_LED_1_MASK);
+            bsp_board_led_off(BSP_BOARD_LED_1);
             break;
         }
         default:
@@ -241,12 +241,12 @@ void ant_mobile_process(ant_evt_t* p_ant_event)
                     switch (p_ant_message->ANT_MESSAGE_aucPayload[2])
                     {
                         case ANT_COMMAND_ON:
-                            LEDS_ON(BSP_LED_0_MASK);
+                            bsp_board_led_on(BSP_BOARD_LED_0);
                             m_led_change_counter++;
                             break;
 
                         case ANT_COMMAND_OFF:
-                            LEDS_OFF(BSP_LED_0_MASK);
+                            bsp_board_led_off(BSP_BOARD_LED_0);
                             m_led_change_counter++;
                             break;
 
@@ -282,7 +282,7 @@ void ant_mobile_process(ant_evt_t* p_ant_event)
             uint8_t broadcast_data[ANT_STANDARD_DATA_PAYLOAD_SIZE];
             memset(broadcast_data, 0xFF, sizeof(broadcast_data));
             broadcast_data[0] = ANT_MOBILE_MAIN_PAGE;
-            broadcast_data[1] = ( LED_IS_ON(BSP_LED_0_MASK) )? ANT_LED_STATE_ON : ANT_LED_STATE_OFF;
+            broadcast_data[1] = ( bsp_board_led_state_get(BSP_BOARD_LED_0) )? ANT_LED_STATE_ON : ANT_LED_STATE_OFF;
             broadcast_data[7] = status & STATUS_CHANNEL_STATE_MASK;
             err_code          = sd_ant_broadcast_message_tx(ANT_MOBILE_CHANNEL,
                                                             ANT_STANDARD_DATA_PAYLOAD_SIZE,
@@ -335,7 +335,7 @@ void bsp_evt_handler(bsp_event_t evt)
             // Toggle the state of the LED
             m_led_change_counter++;
 
-            LEDS_INVERT(BSP_LED_0_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_0);
             break;
 
         case BSP_EVENT_KEY_1:

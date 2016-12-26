@@ -10,19 +10,19 @@
 /**@cond To Make Doxygen skip documentation generation for this file.
  * @{
  */
-#include "sdk_config.h"
-#if BLE_HRS_C_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BLE_HRS_C)
 #include "ble_hrs_c.h"
 #include "ble_db_discovery.h"
 #include "ble_types.h"
 #include "ble_srv_common.h"
 #include "ble_gattc.h"
-#include "sdk_common.h"
 
 #define NRF_LOG_MODULE_NAME "BLE_HRS_C"
 #include "nrf_log.h"
 
-#define HRM_FLAG_MASK_HR_16BIT (0x01 << 0)           /**< Bit mask used to extract the type of heart rate value. This is used to find if the received heart rate is a 16 bit value or an 8 bit value. */
+#define HRM_FLAG_MASK_HR_16BIT  (0x01 << 0)           /**< Bit mask used to extract the type of heart rate value. This is used to find if the received heart rate is a 16 bit value or an 8 bit value. */
+#define HRM_FLAG_MASK_HR_RR_INT (0x01 << 4)           /**< Bit mask used to extract the presence of RR_INTERVALS. This is used to find if the received measurement includes RR_INTERVALS. */
 
 #define TX_BUFFER_MASK         0x07                  /**< TX Buffer mask, must be a mask of continuous zeroes, followed by continuous sequence of ones: 000...111. */
 #define TX_BUFFER_SIZE         (TX_BUFFER_MASK + 1)  /**< Size of send buffer, which is 1 higher than the mask. */
@@ -129,11 +129,11 @@ static void on_hvx(ble_hrs_c_t * p_ble_hrs_c, const ble_evt_t * p_ble_evt)
     // Check if the event is on the link for this instance
     if (p_ble_hrs_c->conn_handle != p_ble_evt->evt.gattc_evt.conn_handle)
     {
-        NRF_LOG_INFO("received HVX on link 0x%x, not associated to this instance, ignore\r\n",
+        NRF_LOG_DEBUG("received HVX on link 0x%x, not associated to this instance, ignore\r\n",
             p_ble_evt->evt.gattc_evt.conn_handle);
         return;
     }
-    NRF_LOG_INFO("received HVX on handle 0x%x, hrm_handle 0x%x\r\n",
+    NRF_LOG_DEBUG("received HVX on handle 0x%x, hrm_handle 0x%x\r\n",
         p_ble_evt->evt.gattc_evt.params.hvx.handle,
         p_ble_hrs_c->peer_hrs_db.hrm_handle);
     // Check if this is a heart rate notification.
@@ -142,8 +142,9 @@ static void on_hvx(ble_hrs_c_t * p_ble_hrs_c, const ble_evt_t * p_ble_evt)
         ble_hrs_c_evt_t ble_hrs_c_evt;
         uint32_t        index = 0;
 
-        ble_hrs_c_evt.evt_type    = BLE_HRS_C_EVT_HRM_NOTIFICATION;
-        ble_hrs_c_evt.conn_handle = p_ble_hrs_c->conn_handle;
+        ble_hrs_c_evt.evt_type                    = BLE_HRS_C_EVT_HRM_NOTIFICATION;
+        ble_hrs_c_evt.conn_handle                 = p_ble_hrs_c->conn_handle;
+        ble_hrs_c_evt.params.hrm.rr_intervals_cnt = 0;
 
         if (!(p_ble_evt->evt.gattc_evt.params.hvx.data[index++] & HRM_FLAG_MASK_HR_16BIT))
         {
@@ -155,8 +156,25 @@ static void on_hvx(ble_hrs_c_t * p_ble_hrs_c, const ble_evt_t * p_ble_evt)
             // 16 bit heart rate value received.
             ble_hrs_c_evt.params.hrm.hr_value =
                 uint16_decode(&(p_ble_evt->evt.gattc_evt.params.hvx.data[index]));
+            index += sizeof(uint16_t);
         }
-
+        if ((p_ble_evt->evt.gattc_evt.params.hvx.data[0] & HRM_FLAG_MASK_HR_RR_INT))
+        {
+            uint32_t i;
+            /*lint --e{415} --e{416} --e{662} --e{661} -save suppress Warning 415: possible access out of bond */
+            for (i = 0; i < BLE_HRS_C_RR_INTERVALS_MAX_CNT; i ++)
+            {
+                if (index >= p_ble_evt->evt.gattc_evt.params.hvx.len)
+                {
+                    break;
+                }
+                ble_hrs_c_evt.params.hrm.rr_intervals[i] =
+                    uint16_decode(&(p_ble_evt->evt.gattc_evt.params.hvx.data[index]));
+                index += sizeof(uint16_t);
+            }
+            /*lint -restore*/
+            ble_hrs_c_evt.params.hrm.rr_intervals_cnt = (uint8_t)i;
+        }
         p_ble_hrs_c->evt_handler(p_ble_hrs_c, &ble_hrs_c_evt);
     }
 }
@@ -329,4 +347,4 @@ uint32_t ble_hrs_c_handles_assign(ble_hrs_c_t * p_ble_hrs_c,
 /** @}
  *  @endcond
  */
-#endif //BLE_HRS_C_ENABLED
+#endif // NRF_MODULE_ENABLED(BLE_HRS_C)

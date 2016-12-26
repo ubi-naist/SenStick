@@ -72,8 +72,7 @@ static void adc_config(void)
  */
 int main(void)
 {
-    LEDS_CONFIGURE(BSP_LED_0_MASK);
-    LEDS_OFF(BSP_LED_0_MASK);
+    bsp_board_leds_init();
 
     adc_config();
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
@@ -94,7 +93,7 @@ int main(void)
             __WFE();
 
             nrf_delay_ms(100);
-            LEDS_INVERT(BSP_LED_0_MASK);
+            bsp_board_led_invert(BSP_BOARD_LED_0);
             NRF_LOG_FLUSH();
         }
     }

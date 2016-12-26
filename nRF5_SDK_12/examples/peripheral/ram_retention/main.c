@@ -40,14 +40,14 @@
 #endif
 
 #ifdef BSP_LED_0
-    #define READY_PIN_NUMBER BSP_LED_0  /**< Pin number for output. */
+    #define READY_PIN_NUMBER BSP_BOARD_LED_0  /**< Pin number for output. */
 #endif
 #ifndef READY_PIN_NUMBER
     #error "Please indicate output pin"
 #endif
 
 #ifdef BSP_LED_1
-    #define SUCCESS_PIN_NUMBER BSP_LED_1  /**< Pin number for output. */
+    #define SUCCESS_PIN_NUMBER BSP_BOARD_LED_1  /**< Pin number for output. */
 #endif
 #ifndef SUCCESS_PIN_NUMBER
     #error "Please indicate output pin"
@@ -58,7 +58,7 @@
  */
 void HardFault_Handler()
 {
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
 
     // Loop forever.
     while (true)
@@ -72,7 +72,7 @@ void HardFault_Handler()
  */
 static void display_failure(void)
 {
-    LEDS_ON(LEDS_MASK);
+    bsp_board_leds_on();
 
     // Loop forever.
     while (true)
@@ -90,8 +90,7 @@ int main(void)
     uint32_t * volatile p_ram_test = (uint32_t *)RAM_MEMORY_TEST_ADDRESS;
     uint32_t            loop_count = 0;
 
-    LEDS_CONFIGURE(LEDS_MASK);
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_init();
 
     // This pin is used for waking up from System OFF and is active low, enabling sense capabilities.
     nrf_gpio_cfg_sense_input(PIN_GPIO_WAKEUP, BUTTON_PULL, NRF_GPIO_PIN_SENSE_LOW);
@@ -118,7 +117,7 @@ int main(void)
         {
             // clear GPREGRET register before exit.
             NRF_POWER->GPREGRET = 0;
-            LEDS_ON(1 << SUCCESS_PIN_NUMBER);
+            bsp_board_led_on(SUCCESS_PIN_NUMBER);
 
             while (true)
             {
@@ -141,16 +140,54 @@ int main(void)
     // Write the known value to the known address in RAM, enable RAM retention, set System OFF, and wait
     // for GPIO wakeup from external source.
 
-    LEDS_ON(1 << READY_PIN_NUMBER);
+    bsp_board_led_on(READY_PIN_NUMBER);
     nrf_delay_ms(1000);
 
     // Switch on both RAM banks when in System OFF mode.
+
+#if defined(NRF52832) || defined(NRF51422) || defined(NRF51822)
     NRF_POWER->RAMON |= (POWER_RAMON_OFFRAM0_RAM0On << POWER_RAMON_OFFRAM0_Pos) |
                         (POWER_RAMON_OFFRAM1_RAM1On << POWER_RAMON_OFFRAM1_Pos);
 
+#elif defined(NRF52840_XXAA)
+    NRF_POWER->RAM[0].POWERSET = (POWER_RAM_POWER_S0POWER_On << POWER_RAM_POWER_S0POWER_Pos)      |
+                            (POWER_RAM_POWER_S1POWER_On      << POWER_RAM_POWER_S1POWER_Pos)      |
+                            (POWER_RAM_POWER_S2POWER_On      << POWER_RAM_POWER_S2POWER_Pos)      |
+                            (POWER_RAM_POWER_S3POWER_On      << POWER_RAM_POWER_S3POWER_Pos)      |
+                            (POWER_RAM_POWER_S4POWER_On      << POWER_RAM_POWER_S4POWER_Pos)      |
+                            (POWER_RAM_POWER_S5POWER_On      << POWER_RAM_POWER_S5POWER_Pos)      |
+                            (POWER_RAM_POWER_S6POWER_On      << POWER_RAM_POWER_S6POWER_Pos)      |
+                            (POWER_RAM_POWER_S7POWER_On      << POWER_RAM_POWER_S7POWER_Pos)      |
+                            (POWER_RAM_POWER_S8POWER_On      << POWER_RAM_POWER_S8POWER_Pos)      |
+                            (POWER_RAM_POWER_S9POWER_On      << POWER_RAM_POWER_S9POWER_Pos)      |
+                            (POWER_RAM_POWER_S10POWER_On     << POWER_RAM_POWER_S10POWER_Pos)     |
+                            (POWER_RAM_POWER_S11POWER_On     << POWER_RAM_POWER_S11POWER_Pos)     |
+                            (POWER_RAM_POWER_S12POWER_On     << POWER_RAM_POWER_S12POWER_Pos)     |
+                            (POWER_RAM_POWER_S13POWER_On     << POWER_RAM_POWER_S13POWER_Pos)     |
+                            (POWER_RAM_POWER_S14POWER_On     << POWER_RAM_POWER_S14POWER_Pos)     |
+                            (POWER_RAM_POWER_S15POWER_On     << POWER_RAM_POWER_S15POWER_Pos)     |
+                            (POWER_RAM_POWER_S0RETENTION_On  << POWER_RAM_POWER_S0RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S1RETENTION_On  << POWER_RAM_POWER_S1RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S2RETENTION_On  << POWER_RAM_POWER_S2RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S3RETENTION_On  << POWER_RAM_POWER_S3RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S4RETENTION_On  << POWER_RAM_POWER_S4RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S5RETENTION_On  << POWER_RAM_POWER_S5RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S6RETENTION_On  << POWER_RAM_POWER_S6RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S7RETENTION_On  << POWER_RAM_POWER_S7RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S8RETENTION_On  << POWER_RAM_POWER_S8RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S9RETENTION_On  << POWER_RAM_POWER_S9RETENTION_Pos)  |
+                            (POWER_RAM_POWER_S10RETENTION_On << POWER_RAM_POWER_S10RETENTION_Pos) |
+                            (POWER_RAM_POWER_S11RETENTION_On << POWER_RAM_POWER_S11RETENTION_Pos) |
+                            (POWER_RAM_POWER_S12RETENTION_On << POWER_RAM_POWER_S12RETENTION_Pos) |
+                            (POWER_RAM_POWER_S13RETENTION_On << POWER_RAM_POWER_S13RETENTION_Pos) |
+                            (POWER_RAM_POWER_S14RETENTION_On << POWER_RAM_POWER_S14RETENTION_Pos) |
+                            (POWER_RAM_POWER_S15RETENTION_On << POWER_RAM_POWER_S15RETENTION_Pos);
+#else
+#error 'Unsupported MCU'
+#endif
     // Write test word to RAM memory.
     *p_ram_test = RAM_MEMORY_TEST_WORD;
-    LEDS_OFF(LEDS_MASK);
+    bsp_board_leds_off();
     // Enter System OFF and wait for wake up from GPIO detect signal.
     NRF_POWER->SYSTEMOFF = 0x1;
     // Use data synchronization barrier and a delay to ensure that no failure

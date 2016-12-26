@@ -72,6 +72,13 @@
 #include "task.h"
 #include "app_util.h"
 
+#ifdef SOFTDEVICE_PRESENT
+#include "nrf_soc.h"
+#include "softdevice_handler.h"
+#include "app_error.h"
+#include "app_util_platform.h"
+#endif
+
 /*-----------------------------------------------------------
  * Implementation of functions defined in portable.h for the ARM CM4F port.
  * CMSIS compatible layer to menage SysTick ticking source.
@@ -79,9 +86,6 @@
 
 #if configTICK_SOURCE == FREERTOS_USE_SYSTICK
 
-#ifdef SOFTDEVICE_PRESENT
-#include "nrf_soc.h"
-#endif
 
 #ifndef configSYSTICK_CLOCK_HZ
     #define configSYSTICK_CLOCK_HZ configCPU_CLOCK_HZ
@@ -212,16 +216,20 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
     {
         xExpectedIdleTime = portNRF_RTC_MAXTICKS - configEXPECTED_IDLE_TIME_BEFORE_SLEEP;
     }
-    /* Block the scheduler now */
-    portDISABLE_INTERRUPTS();
+    /* Block all the interrupts globally */
+#ifdef SOFTDEVICE_PRESENT
+    do{
+        uint8_t dummy = 0;
+        uint32_t err_code = sd_nvic_critical_region_enter(&dummy);
+        APP_ERROR_CHECK(err_code);
+    }while(0);
+#else
+    __disable_irq();
+#endif
 
     enterTime = nrf_rtc_counter_get(portNRF_RTC_REG);
 
-    if ( eTaskConfirmSleepModeStatus() == eAbortSleep )
-    {
-        portENABLE_INTERRUPTS();
-    }
-    else
+    if ( eTaskConfirmSleepModeStatus() != eAbortSleep )
     {
         TickType_t xModifiableIdleTime;
         TickType_t wakeupTime = (enterTime + xExpectedIdleTime) & portNRF_RTC_MAXTICKS;
@@ -230,7 +238,6 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
         nrf_rtc_int_disable(portNRF_RTC_REG, NRF_RTC_INT_TICK_MASK);
 
         /* Configure CTC interrupt */
-        NVIC_DisableIRQ(portNRF_RTC_IRQn);
         nrf_rtc_cc_set(portNRF_RTC_REG, 0, wakeupTime);
         nrf_rtc_event_clear(portNRF_RTC_REG, NRF_RTC_EVENT_COMPARE_0);
         nrf_rtc_int_enable(portNRF_RTC_REG, NRF_RTC_INT_COMPARE0_MASK);
@@ -246,30 +253,14 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
         configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
         if ( xModifiableIdleTime > 0 )
         {
-#ifdef SOFTDEVICE_PRESENT
-            /* With SD there is no problem with possibility of interrupt lost.
-             * every interrupt is counted and the counter is processed inside
-             * sd_app_evt_wait function. */
-            portENABLE_INTERRUPTS();
-            sd_app_evt_wait();
-#else
-            /* No SD -  we would just block interrupts globally.
-             * BASEPRI cannot be used for that because it would prevent WFE from wake up.
-             */
-            __disable_irq();
-            portENABLE_INTERRUPTS();
             do{
                 __WFE();
             } while (0 == (NVIC->ISPR[0] | NVIC->ISPR[1]));
-            __enable_irq();
-#endif
         }
         configPOST_SLEEP_PROCESSING( xExpectedIdleTime );
         nrf_rtc_int_disable(portNRF_RTC_REG, NRF_RTC_INT_COMPARE0_MASK);
-        NVIC_EnableIRQ(portNRF_RTC_IRQn);
 
         /* Correct the system ticks */
-        portENTER_CRITICAL();
         {
             TickType_t diff;
             TickType_t hwTicks     = nrf_rtc_counter_get(portNRF_RTC_REG);
@@ -293,8 +284,13 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
                 vTaskStepTick(diff);
             }
         }
-        portEXIT_CRITICAL();
     }
+#ifdef SOFTDEVICE_PRESENT
+    uint32_t err_code = sd_nvic_critical_region_exit(0);
+    APP_ERROR_CHECK(err_code);
+#else
+    __enable_irq();
+#endif
 }
 
 #endif // configUSE_TICKLESS_IDLE

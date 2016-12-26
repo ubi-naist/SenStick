@@ -22,14 +22,14 @@
 #ifndef ANT_STACK_HANDLER_TYPES_H__
 #define ANT_STACK_HANDLER_TYPES_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef ANT_STACK_SUPPORT_REQD
 
 #include <stdlib.h>
 #include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #define ANT_STACK_EVT_MSG_BUF_SIZE      32                                                /**< Size of ANT event message buffer. This will be provided to the SoftDevice while fetching an event. */
 #define ANT_STACK_EVT_STRUCT_SIZE       (sizeof(ant_evt_t))                               /**< Size of the @ref ant_evt_t structure. This will be used by the @ref softdevice_handler to internal event buffer size needed. */

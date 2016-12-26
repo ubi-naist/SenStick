@@ -289,10 +289,8 @@ __STATIC_INLINE nrf_pdm_freq_t nrf_pdm_clock_get(void)
  */
 __STATIC_INLINE void nrf_pdm_psel_connect(uint32_t psel_clk, uint32_t psel_din)
 {
-    NRF_PDM->PSEL.CLK = ((psel_clk << PDM_PSEL_CLK_PIN_Pos) & PDM_PSEL_CLK_PIN_Msk)
-            | ((PDM_PSEL_CLK_CONNECT_Connected << PDM_PSEL_CLK_CONNECT_Pos) & PDM_PSEL_CLK_CONNECT_Msk);
-    NRF_PDM->PSEL.DIN = ((psel_din << PDM_PSEL_DIN_PIN_Pos) & PDM_PSEL_DIN_PIN_Msk)
-            | ((PDM_PSEL_DIN_CONNECT_Connected << PDM_PSEL_CLK_CONNECT_Pos) & PDM_PSEL_DIN_CONNECT_Msk);
+    NRF_PDM->PSEL.CLK = psel_clk;
+    NRF_PDM->PSEL.DIN = psel_din;
 }
 
 /**

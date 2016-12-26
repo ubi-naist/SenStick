@@ -10,14 +10,12 @@
  *
  */
 
-#include "sdk_config.h"
-#if ANT_BPWR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(ANT_BPWR)
 
 #include <stdio.h>
 #include "ant_bpwr_page_torque.h"
 #include "ant_bpwr_utils.h"
-#include "app_util.h"
-#include "nordic_common.h"
 
 #define NRF_LOG_MODULE_NAME "ANT_BPWR_PAGE_TORQUE"
 #if ANT_BPWR_PAGE_TORQUE_LOG_ENABLED
@@ -84,4 +82,4 @@ void ant_bpwr_page_torque_decode(uint8_t const               * p_page_buffer,
     p_page_data->accumulated_torque    = uint16_decode(p_incoming_data->accumulated_torque);
 }
 
-#endif // ANT_BPWR_ENABLED
+#endif // NRF_MODULE_ENABLED(ANT_BPWR)

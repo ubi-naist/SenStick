@@ -249,9 +249,6 @@ extern "C" {
 /** @} */
 
 
-//lint -restore Illegal character (0x24)
-
-
 #ifdef __cplusplus
 }
 #endif

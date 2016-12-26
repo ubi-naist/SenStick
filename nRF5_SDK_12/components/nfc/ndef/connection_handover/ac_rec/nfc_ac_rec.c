@@ -19,7 +19,7 @@
 #define AC_REC_DATA_REF_LEN_SIZE        1 ///< Size of the Data Reference Length field.
 #define AC_REC_AUX_DATA_REF_COUNT_SIZE  1 ///< Size of the Data Reference Length field.
 
-const uint8_t nfc_ac_rec_type_field[] = {'a', 'c'}; ///< Alternative Carrier Record type.
+const uint8_t nfc_ac_rec_type_field[2] = {'a', 'c'}; ///< Alternative Carrier Record type.
 
 /**
  * @brief Function for calculating the payload length of the NFC NDEF Alternative Carrier record.

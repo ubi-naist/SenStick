@@ -9,15 +9,12 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if NRF_BLE_QWR_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(NRF_BLE_QWR)
 #include <stdlib.h>
 #include "nrf_ble_qwr.h"
-#include "nordic_common.h"
 #include "ble.h"
 #include "ble_srv_common.h"
-#include "app_util.h"
-#include "sdk_common.h"
 
 #define NRF_BLE_QWR_INITIALIZED 0xDE // Non-zero value used to make sure the given structure has been initialized by the module.
 #define MODULE_INITIALIZED      (p_qwr->initialized == NRF_BLE_QWR_INITIALIZED)
@@ -377,4 +374,4 @@ void nrf_ble_qwr_on_ble_evt(nrf_ble_qwr_t * p_qwr,
     }
 
 }
-#endif //NRF_BLE_QWR_ENABLED
+#endif // NRF_MODULE_ENABLED(NRF_BLE_QWR)

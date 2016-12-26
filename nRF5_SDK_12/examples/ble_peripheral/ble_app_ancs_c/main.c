@@ -14,14 +14,14 @@
  * @defgroup ble_sdk_apple_notification_main main.c
  * @{
  * @ingroup ble_sdk_app_apple_notification
- * @brief Apple Notification Client Sample Application main file. Disclaimer:
- * This client implementation of the Apple Notification Center Service can and
+ * @brief Apple Notification Client Sample Application main file. Disclaimer: 
+ * This client implementation of the Apple Notification Center Service can and 
  * will be changed at any time by Nordic Semiconductor ASA.
  *
- * Server implementations such as the ones found in iOS can be changed at any
+ * Server implementations such as the ones found in iOS can be changed at any 
  * time by Apple and may cause this client implementation to stop working.
  *
- * This file contains the source code for a sample application using the Apple
+ * This file contains the source code for a sample application using the Apple 
  * Notification Center Service Client.
  */
 
@@ -30,7 +30,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "ble_ancs_c.h"
+#include "nrf_ble_ancs_c.h"
 #include "ble_db_discovery.h"
 #include "nordic_common.h"
 #include "nrf.h"
@@ -111,14 +111,15 @@
 #define SCHED_MAX_EVENT_DATA_SIZE      MAX(APP_TIMER_SCHED_EVT_SIZE, \
                                            BLE_STACK_HANDLER_SCHED_EVT_SIZE)       /**< Maximum size of scheduler events. */
 #ifdef SVCALL_AS_NORMAL_FUNCTION
-#define SCHED_QUEUE_SIZE                 20                                        /**< Maximum number of events in the scheduler queue. More is needed in case of Serialization. */
+#define SCHED_QUEUE_SIZE               20                                          /**< Maximum number of events in the scheduler queue. More is needed in case of Serialization. */
 #else
-#define SCHED_QUEUE_SIZE                 10                                        /**< Maximum number of events in the scheduler queue. */
+#define SCHED_QUEUE_SIZE               10                                          /**< Maximum number of events in the scheduler queue. */
 #endif
 
 static pm_peer_id_t   m_whitelist_peers[BLE_GAP_WHITELIST_ADDR_MAX_COUNT];  /**< List of peers currently in the whitelist. */
 static uint32_t       m_whitelist_peer_cnt;                                 /**< Number of peers currently in the whitelist. */
 static bool           m_is_wl_changed;                                      /**< Indicates if the whitelist has been changed since last time it has been updated in the Peer Manager. */
+
 
 /**@brief String literals for the iOS notification categories. used then printing to UART. */
 static const char * lit_catid[BLE_ANCS_NB_OF_CATEGORY_ID] =
@@ -137,7 +138,8 @@ static const char * lit_catid[BLE_ANCS_NB_OF_CATEGORY_ID] =
     "Entertainment"
 };
 
-/**@brief String literals for the iOS notification event types. used then printing to UART. */
+
+/**@brief String literals for the iOS notification event types. Used then printing to UART. */
 static const char * lit_eventid[BLE_ANCS_NB_OF_EVT_ID] =
 {
     "Added",
@@ -145,8 +147,9 @@ static const char * lit_eventid[BLE_ANCS_NB_OF_EVT_ID] =
     "Removed"
 };
 
-/**@brief String literals for the iOS notification attribute types. used then printing to UART. */
-static const char * lit_attrid[BLE_ANCS_NB_OF_ATTRS] =
+
+/**@brief String literals for the iOS notification attribute types. Used when printing to UART. */
+static const char * lit_attrid[BLE_ANCS_NB_OF_NOTIF_ATTR] =
 {
     "App Identifier",
     "Title",
@@ -158,29 +161,42 @@ static const char * lit_attrid[BLE_ANCS_NB_OF_ATTRS] =
     "Negative Action Label"
 };
 
-static ble_ancs_c_t       m_ancs_c;                                                 /**< Structure used to identify the Apple Notification Service Client. */
-static ble_db_discovery_t m_ble_db_discovery;                                       /**< Structure used to identify the DB Discovery module. */
-static pm_peer_id_t       m_peer_id;                                                /**< Device reference handle to the current bonded central. */
-static uint16_t           m_cur_conn_handle = BLE_CONN_HANDLE_INVALID;              /**< Handle of the current connection. */
 
-APP_TIMER_DEF(m_sec_req_timer_id);                                                  /**< Security request timer. The timer lets us start pairing request if one does not arrive from the Central. */
+/**@brief String literals for the iOS notification attribute types. Used When printing to UART. */
+static const char * lit_appid[BLE_ANCS_NB_OF_APP_ATTR] =
+{
+    "Display Name"
+};
 
-static ble_ancs_c_evt_notif_t m_notification_latest;                                /**< Local copy to keep track of the newest arriving notifications. */
 
-static uint8_t m_attr_title[ATTR_DATA_SIZE];                                        /**< Buffer to store attribute data. */
-static uint8_t m_attr_subtitle[ATTR_DATA_SIZE];                                     /**< Buffer to store attribute data. */
-static uint8_t m_attr_message[ATTR_DATA_SIZE];                                      /**< Buffer to store attribute data. */
-static uint8_t m_attr_message_size[ATTR_DATA_SIZE];                                 /**< Buffer to store attribute data. */
-static uint8_t m_attr_date[ATTR_DATA_SIZE];                                         /**< Buffer to store attribute data. */
-static uint8_t m_attr_posaction[ATTR_DATA_SIZE];                                    /**< Buffer to store attribute data. */
-static uint8_t m_attr_negaction[ATTR_DATA_SIZE];                                    /**< Buffer to store attribute data. */
+static ble_ancs_c_t       m_ancs_c;                                    /**< Structure used to identify the Apple Notification Service Client. */
+static ble_db_discovery_t m_ble_db_discovery;                          /**< Structure used to identify the DB Discovery module. */
+static pm_peer_id_t       m_peer_id;                                   /**< Device reference handle to the current bonded central. */
+static uint16_t           m_cur_conn_handle = BLE_CONN_HANDLE_INVALID; /**< Handle of the current connection. */
 
+APP_TIMER_DEF(m_sec_req_timer_id);                                     /**< Security request timer. The timer lets us start pairing request if one does not arrive from the Central. */
+
+static ble_ancs_c_evt_notif_t m_notification_latest;                   /**< Local copy to keep track of the newest arriving notifications. */
+static ble_ancs_c_attr_t      m_notif_attr_latest;                     /**< Local copy of the newest notification attribute. */
+static ble_ancs_c_attr_t      m_notif_attr_app_id_latest;              /**< Local copy of the newest app attribute. */
+
+static uint8_t m_attr_appid[ATTR_DATA_SIZE];                           /**< Buffer to store attribute data. */
+
+static uint8_t m_attr_title[ATTR_DATA_SIZE];                           /**< Buffer to store attribute data. */
+static uint8_t m_attr_subtitle[ATTR_DATA_SIZE];                        /**< Buffer to store attribute data. */
+static uint8_t m_attr_message[ATTR_DATA_SIZE];                         /**< Buffer to store attribute data. */
+static uint8_t m_attr_message_size[ATTR_DATA_SIZE];                    /**< Buffer to store attribute data. */
+static uint8_t m_attr_date[ATTR_DATA_SIZE];                            /**< Buffer to store attribute data. */
+static uint8_t m_attr_posaction[ATTR_DATA_SIZE];                       /**< Buffer to store attribute data. */
+static uint8_t m_attr_negaction[ATTR_DATA_SIZE];                       /**< Buffer to store attribute data. */
+
+static uint8_t m_attr_disp_name[ATTR_DATA_SIZE];                       /**< Buffer to store attribute data. */
 
 /**@brief Callback function for handling asserts in the SoftDevice.
  *
  * @details This function is called in case of an assert in the SoftDevice.
  *
- * @warning This handler is an example only and does not fit a final product.
+ * @warning This handler is an example only and does not fit a final product. 
  *          You must analyze how your product should react to asserts.
  * @warning On assert from the SoftDevice, the system can recover only on reset.
  *
@@ -253,7 +269,7 @@ static void advertising_start(void)
  */
 static void pm_evt_handler(pm_evt_t const * p_evt)
 {
-    ret_code_t err_code;
+    ret_code_t ret;
 
     switch (p_evt->evt_id)
     {
@@ -261,137 +277,110 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
         {
             NRF_LOG_DEBUG("Connected to previously bonded device\r\n");
             m_peer_id = p_evt->peer_id;
-            err_code  = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
         } break; // PM_EVT_BONDED_PEER_CONNECTED
-
-        case PM_EVT_CONN_SEC_START:
-            break; // PM_EVT_CONN_SEC_START
 
         case PM_EVT_CONN_SEC_SUCCEEDED:
         {
-            NRF_LOG_DEBUG("Link secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
-                                 ble_conn_state_role(p_evt->conn_handle),
-                                 p_evt->conn_handle,
-                                 p_evt->params.conn_sec_succeeded.procedure);
+            NRF_LOG_INFO("Connection secured. Role: %d. conn_handle: %d, Procedure: %d\r\n",
+                         ble_conn_state_role(p_evt->conn_handle),
+                         p_evt->conn_handle,
+                         p_evt->params.conn_sec_succeeded.procedure);
+
             m_peer_id = p_evt->peer_id;
-            err_code  = ble_db_discovery_start(&m_ble_db_discovery, p_evt->conn_handle);
-            APP_ERROR_CHECK(err_code);
-            err_code = pm_peer_rank_highest(p_evt->peer_id);
-            if (err_code != NRF_ERROR_BUSY)
-            {
-                APP_ERROR_CHECK(err_code);
-            }
+
+
+            // Note: You should check on what kind of white list policy your application should use.
             if (p_evt->params.conn_sec_succeeded.procedure == PM_LINK_SECURED_PROCEDURE_BONDING)
             {
                 NRF_LOG_DEBUG("New Bond, add the peer to the whitelist if possible\r\n");
                 NRF_LOG_DEBUG("\tm_whitelist_peer_cnt %d, MAX_PEERS_WLIST %d\r\n",
                                m_whitelist_peer_cnt + 1,
                                BLE_GAP_WHITELIST_ADDR_MAX_COUNT);
+
                 if (m_whitelist_peer_cnt < BLE_GAP_WHITELIST_ADDR_MAX_COUNT)
                 {
-                    //bonded to a new peer, add it to the whitelist.
+                    // Bonded to a new peer, add it to the whitelist.
                     m_whitelist_peers[m_whitelist_peer_cnt++] = m_peer_id;
                     m_is_wl_changed = true;
                 }
-                //Note: This code will use the older bonded device in the white list and not add any newer bonded to it
-                //      You should check on what kind of white list policy your application should use.
             }
-        } break; // PM_EVT_CONN_SEC_SUCCEEDED
+            ret  = ble_db_discovery_start(&m_ble_db_discovery, p_evt->conn_handle);
+            APP_ERROR_CHECK(ret);
+        } break;
 
         case PM_EVT_CONN_SEC_FAILED:
         {
-            /** In some cases, when securing fails, it can be restarted directly. Sometimes it can
-             *  be restarted, but only after changing some Security Parameters. Sometimes, it cannot
-             *  be restarted until the link is disconnected and reconnected. Sometimes it is
-             *  impossible, to secure the link, or the peer device does not support it. How to
-             *  handle this error is highly application dependent. */
-            switch (p_evt->params.conn_sec_failed.error)
-            {
-                case PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING:
-                    // Rebond if one party has lost its keys.
-                    err_code = pm_conn_secure(p_evt->conn_handle, true);
-                    if (err_code != NRF_ERROR_INVALID_STATE)
-                    {
-                        APP_ERROR_CHECK(err_code);
-                    }
-                    break; // PM_CONN_SEC_ERROR_PIN_OR_KEY_MISSING
-
-                default:
-                    break;
-            }
-        } break; // PM_EVT_CONN_SEC_FAILED
+            /* Often, when securing fails, it shouldn't be restarted, for security reasons.
+             * Other times, it can be restarted directly.
+             * Sometimes it can be restarted, but only after changing some Security Parameters.
+             * Sometimes, it cannot be restarted until the link is disconnected and reconnected.
+             * Sometimes it is impossible, to secure the link, or the peer device does not support it.
+             * How to handle this error is highly application dependent. */
+        } break;
 
         case PM_EVT_CONN_SEC_CONFIG_REQ:
         {
             // Reject pairing request from an already bonded peer.
             pm_conn_sec_config_t conn_sec_config = {.allow_repairing = false};
             pm_conn_sec_config_reply(p_evt->conn_handle, &conn_sec_config);
-        } break; // PM_EVT_CONN_SEC_CONFIG_REQ
+        } break;
 
         case PM_EVT_STORAGE_FULL:
         {
             // Run garbage collection on the flash.
-            err_code = fds_gc();
-            if (err_code == FDS_ERR_BUSY || err_code == FDS_ERR_NO_SPACE_IN_QUEUES)
+            ret = fds_gc();
+            if (ret == FDS_ERR_BUSY || ret == FDS_ERR_NO_SPACE_IN_QUEUES)
             {
                 // Retry.
             }
             else
             {
-                APP_ERROR_CHECK(err_code);
+                APP_ERROR_CHECK(ret);
             }
-        } break; // PM_EVT_STORAGE_FULL
-
-        case PM_EVT_ERROR_UNEXPECTED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
-            break; // PM_EVT_ERROR_UNEXPECTED
-
-        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-            break; // PM_EVT_PEER_DATA_UPDATE_SUCCEEDED
-
-        case PM_EVT_PEER_DATA_UPDATE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK_BOOL(false);
-            break; // PM_EVT_PEER_DATA_UPDATE_FAILED
-
-        case PM_EVT_PEER_DELETE_SUCCEEDED:
-            break; // PM_EVT_PEER_DELETE_SUCCEEDED
-
-        case PM_EVT_PEER_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
-            break; // PM_EVT_PEER_DELETE_FAILED
+        } break;
 
         case PM_EVT_PEERS_DELETE_SUCCEEDED:
+        {
             advertising_start();
-            break; // PM_EVT_PEERS_DELETE_SUCCEEDED
-
-        case PM_EVT_PEERS_DELETE_FAILED:
-            // Assert.
-            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
-            break; // PM_EVT_PEERS_DELETE_FAILED
-
-        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLIED
+        } break;
 
         case PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED:
+        {
             // The local database has likely changed, send service changed indications.
             pm_local_database_has_changed();
-            break; // PM_EVT_LOCAL_DB_CACHE_APPLY_FAILED
+        } break;
 
+        case PM_EVT_PEER_DATA_UPDATE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_data_update_failed.error);
+        } break;
+
+        case PM_EVT_PEER_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peer_delete_failed.error);
+        } break;
+
+        case PM_EVT_PEERS_DELETE_FAILED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.peers_delete_failed_evt.error);
+        } break;
+
+        case PM_EVT_ERROR_UNEXPECTED:
+        {
+            // Assert.
+            APP_ERROR_CHECK(p_evt->params.error_unexpected.error);
+        } break;
+
+        case PM_EVT_CONN_SEC_START:
+        case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+        case PM_EVT_PEER_DELETE_SUCCEEDED:
+        case PM_EVT_LOCAL_DB_CACHE_APPLIED:
         case PM_EVT_SERVICE_CHANGED_IND_SENT:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         case PM_EVT_SERVICE_CHANGED_IND_CONFIRMED:
-            break; // PM_EVT_SERVICE_CHANGED_IND_SENT
-
         default:
-            // No implementation needed.
             break;
     }
 }
@@ -406,19 +395,22 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
  */
 static void sec_req_timeout_handler(void * p_context)
 {
-    uint32_t             err_code;
+    ret_code_t           ret;
     pm_conn_sec_status_t status;
 
     if (m_cur_conn_handle != BLE_CONN_HANDLE_INVALID)
     {
-        err_code = pm_conn_sec_status_get(m_cur_conn_handle, &status);
-        APP_ERROR_CHECK(err_code);
+        ret = pm_conn_sec_status_get(m_cur_conn_handle, &status);
+        APP_ERROR_CHECK(ret);
 
         // If the link is still not secured by the peer, initiate security procedure.
         if (!status.encrypted)
         {
-            err_code = pm_conn_secure(m_cur_conn_handle, false);
-            APP_ERROR_CHECK(err_code);
+            ret = pm_conn_secure(m_cur_conn_handle, false);
+            if (ret != NRF_ERROR_INVALID_STATE)
+            {
+                APP_ERROR_CHECK(ret);
+            }
         }
     }
 }
@@ -430,15 +422,15 @@ static void sec_req_timeout_handler(void * p_context)
  */
 static void apple_notification_setup(void)
 {
-    uint32_t err_code;
+    ret_code_t ret;
 
     nrf_delay_ms(100); // Delay because we cannot add a CCCD to close to starting encryption. iOS specific.
 
-    err_code = ble_ancs_c_notif_source_notif_enable(&m_ancs_c);
-    APP_ERROR_CHECK(err_code);
+    ret = ble_ancs_c_notif_source_notif_enable(&m_ancs_c);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_data_source_notif_enable(&m_ancs_c);
-    APP_ERROR_CHECK(err_code);
+    ret = ble_ancs_c_data_source_notif_enable(&m_ancs_c);
+    APP_ERROR_CHECK(ret);
 
     NRF_LOG_DEBUG("Notifications Enabled.\r\n");
 }
@@ -457,36 +449,34 @@ static void notif_print(ble_ancs_c_evt_notif_t * p_notif)
     NRF_LOG_INFO("UID:         %u\r\n", (unsigned int) p_notif->notif_uid);
 
     NRF_LOG_INFO("Flags:\r\n");
-    if (p_notif->evt_flags.silent == 1)
+    if(p_notif->evt_flags.silent == 1)
     {
         NRF_LOG_INFO(" Silent\r\n");
     }
-    if (p_notif->evt_flags.important == 1)
+    if(p_notif->evt_flags.important == 1)
     {
         NRF_LOG_INFO(" Important\r\n");
     }
-    if (p_notif->evt_flags.pre_existing == 1)
+    if(p_notif->evt_flags.pre_existing == 1)
     {
         NRF_LOG_INFO(" Pre-existing\r\n");
     }
-    if (p_notif->evt_flags.positive_action == 1)
+    if(p_notif->evt_flags.positive_action == 1)
     {
         NRF_LOG_INFO(" Positive Action\r\n");
     }
-    if (p_notif->evt_flags.negative_action == 1)
+    if(p_notif->evt_flags.negative_action == 1)
     {
-        NRF_LOG_INFO(" Positive Action\r\n");
+        NRF_LOG_INFO(" Negative Action\r\n");
     }
 }
 
 
 /**@brief Function for printing iOS notification attribute data.
  *
- * @param[in] p_attr           Pointer to an iOS notification attribute.
- * @param[in] p_ancs_attr_list Pointer to a list of attributes. Each entry in the list stores
-                               a pointer to its attribute data, which is to be printed.
+ * @param[in] p_attr Pointer to an iOS notification attribute.
  */
-static void notif_attr_print(ble_ancs_c_evt_notif_attr_t * p_attr)
+static void notif_attr_print(ble_ancs_c_attr_t * p_attr)
 {
     if (p_attr->attr_len != 0)
     {
@@ -499,20 +489,65 @@ static void notif_attr_print(ble_ancs_c_evt_notif_attr_t * p_attr)
 }
 
 
+/**@brief Function for printing iOS notification attribute data.
+ *
+ * @param[in] p_attr Pointer to an iOS App attribute.
+ */
+static void app_attr_print(ble_ancs_c_attr_t * p_attr)
+{
+    if (p_attr->attr_len != 0)
+    {
+        NRF_LOG_INFO("%s: %s\r\n", (uint32_t)lit_appid[p_attr->attr_id], (uint32_t)p_attr->p_attr_data);
+    }
+    else if (p_attr->attr_len == 0)
+    {
+        NRF_LOG_INFO("%s: (N/A)\r\n", (uint32_t) lit_appid[p_attr->attr_id]);
+    }
+}
+
+
+/**@brief Function for printing out errors that originated from the Notification Provider (iOS).
+ *
+ * @param[in] err_code_np Error code received from NP.
+ */
+static void err_code_print(uint16_t err_code_np)
+{
+    switch (err_code_np)
+    {
+        case BLE_ANCS_NP_UNKNOWN_COMMAND:
+            NRF_LOG_INFO("Error: Command ID was not recognized by the Notification Provider. \r\n");
+            break;
+
+        case BLE_ANCS_NP_INVALID_COMMAND:
+            NRF_LOG_INFO("Error: Command failed to be parsed on the Notification Provider. \r\n");
+            break;
+
+        case BLE_ANCS_NP_INVALID_PARAMETER:
+            NRF_LOG_INFO("Error: Parameter does not refer to an existing object on the Notification Provider. \r\n");
+            break;
+
+        case BLE_ANCS_NP_ACTION_FAILED:
+            NRF_LOG_INFO("Error: Perform Notification Action Failed on the Notification Provider. \r\n");
+            break;
+
+        default:
+            break;
+    }
+}
 /**@brief Function for initializing the timer module.
  */
 static void timers_init(void)
 {
-    uint32_t err_code;
+    ret_code_t ret;
 
     // Initialize timer module, making it use the scheduler.
     APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
 
     // Create security request timer.
-    err_code = app_timer_create(&m_sec_req_timer_id,
-                                APP_TIMER_MODE_SINGLE_SHOT,
-                                sec_req_timeout_handler);
-    APP_ERROR_CHECK(err_code);
+    ret = app_timer_create(&m_sec_req_timer_id,
+                           APP_TIMER_MODE_SINGLE_SHOT,
+                           sec_req_timeout_handler);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -525,14 +560,14 @@ static void timers_init(void)
  */
 static void on_ancs_c_evt(ble_ancs_c_evt_t * p_evt)
 {
-    uint32_t err_code = NRF_SUCCESS;
+    ret_code_t ret = NRF_SUCCESS;
 
     switch (p_evt->evt_type)
     {
         case BLE_ANCS_C_EVT_DISCOVERY_COMPLETE:
-            NRF_LOG_DEBUG("Apple Notification Service discovered on the server.\r\n");
-            err_code = ble_ancs_c_handles_assign(&m_ancs_c, p_evt->conn_handle, &p_evt->service);
-            APP_ERROR_CHECK(err_code);
+            NRF_LOG_DEBUG("Apple Notification Center Service discovered on the server.\r\n");
+            ret = nrf_ble_ancs_c_handles_assign(&m_ancs_c, p_evt->conn_handle, &p_evt->service);
+            APP_ERROR_CHECK(ret);
             apple_notification_setup();
             break;
 
@@ -542,13 +577,23 @@ static void on_ancs_c_evt(ble_ancs_c_evt_t * p_evt)
             break;
 
         case BLE_ANCS_C_EVT_NOTIF_ATTRIBUTE:
-            notif_attr_print(&p_evt->attr);
+            m_notif_attr_latest = p_evt->attr;
+            notif_attr_print(&m_notif_attr_latest);
+            if(p_evt->attr.attr_id == BLE_ANCS_NOTIF_ATTR_ID_APP_IDENTIFIER)
+            {
+                m_notif_attr_app_id_latest = p_evt->attr;
+            }
             break;
-
         case BLE_ANCS_C_EVT_DISCOVERY_FAILED:
-            NRF_LOG_DEBUG("Apple Notification Service not discovered on the server.\r\n");
+            NRF_LOG_DEBUG("Apple Notification Center Service not discovered on the server.\r\n");
             break;
 
+        case BLE_ANCS_C_EVT_APP_ATTRIBUTE:
+            app_attr_print(&p_evt->attr);
+            break;
+        case BLE_ANCS_C_EVT_NP_ERROR:
+            err_code_print(p_evt->err_code_np);
+            break;
         default:
             // No implementation needed.
             break;
@@ -563,16 +608,16 @@ static void on_ancs_c_evt(ble_ancs_c_evt_t * p_evt)
  */
 static void gap_params_init(void)
 {
-    uint32_t                err_code;
+    ret_code_t              ret;
     ble_gap_conn_params_t   gap_conn_params;
     ble_gap_conn_sec_mode_t sec_mode;
 
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
 
-    err_code = sd_ble_gap_device_name_set(&sec_mode,
+    ret = sd_ble_gap_device_name_set(&sec_mode,
                                           (const uint8_t *)DEVICE_NAME,
                                           strlen(DEVICE_NAME));
-    APP_ERROR_CHECK(err_code);
+    APP_ERROR_CHECK(ret);
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
 
@@ -581,8 +626,8 @@ static void gap_params_init(void)
     gap_conn_params.slave_latency     = SLAVE_LATENCY;
     gap_conn_params.conn_sup_timeout  = CONN_SUP_TIMEOUT;
 
-    err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
-    APP_ERROR_CHECK(err_code);
+    ret = sd_ble_gap_ppcp_set(&gap_conn_params);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -610,7 +655,7 @@ static void conn_params_error_handler(uint32_t nrf_error)
  */
 static void conn_params_init(void)
 {
-    uint32_t               err_code;
+    ret_code_t             ret;
     ble_conn_params_init_t cp_init;
 
     memset(&cp_init, 0, sizeof(cp_init));
@@ -624,8 +669,8 @@ static void conn_params_init(void)
     cp_init.evt_handler                    = NULL;
     cp_init.error_handler                  = conn_params_error_handler;
 
-    err_code = ble_conn_params_init(&cp_init);
-    APP_ERROR_CHECK(err_code);
+    ret = ble_conn_params_init(&cp_init);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -651,15 +696,15 @@ static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
 static void peer_manager_init(bool erase_bonds)
 {
     ble_gap_sec_params_t sec_param;
-    ret_code_t           err_code;
+    ret_code_t           ret;
 
-    err_code = pm_init();
-    APP_ERROR_CHECK(err_code);
+    ret = pm_init();
+    APP_ERROR_CHECK(ret);
 
     if (erase_bonds)
     {
-        err_code = pm_peers_delete();
-        APP_ERROR_CHECK(err_code);
+        ret = pm_peers_delete();
+        APP_ERROR_CHECK(ret);
     }
 
     memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
@@ -677,12 +722,12 @@ static void peer_manager_init(bool erase_bonds)
     sec_param.kdist_own.id   = 1;
     sec_param.kdist_peer.enc = 1;
     sec_param.kdist_peer.id  = 1;
+    
+    ret = pm_sec_params_set(&sec_param);
+    APP_ERROR_CHECK(ret);
 
-    err_code = pm_sec_params_set(&sec_param);
-    APP_ERROR_CHECK(err_code);
-
-    err_code = pm_register(pm_evt_handler);
-    APP_ERROR_CHECK(err_code);
+    ret = pm_register(pm_evt_handler);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -692,17 +737,16 @@ static void peer_manager_init(bool erase_bonds)
  */
 static void sleep_mode_enter(void)
 {
-    uint32_t err_code = bsp_indication_set(BSP_INDICATE_IDLE);
-
-    APP_ERROR_CHECK(err_code);
+    uint32_t ret = bsp_indication_set(BSP_INDICATE_IDLE);
+    APP_ERROR_CHECK(ret);
 
     // Prepare wakeup buttons.
-    err_code = bsp_btn_ble_sleep_mode_prepare();
-    APP_ERROR_CHECK(err_code);
+    ret = bsp_btn_ble_sleep_mode_prepare();
+    APP_ERROR_CHECK(ret);
 
     // Go to system-off mode (this function will not return; wakeup will cause a reset).
-    err_code = sd_power_system_off();
-    APP_ERROR_CHECK(err_code);
+    ret = sd_power_system_off();
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -714,26 +758,26 @@ static void sleep_mode_enter(void)
  */
 static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
 {
-    uint32_t err_code;
+    ret_code_t ret;
 
     switch (ble_adv_evt)
     {
         case BLE_ADV_EVT_FAST:
             NRF_LOG_INFO("Fast advertising\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
-            APP_ERROR_CHECK(err_code);
+            ret = bsp_indication_set(BSP_INDICATE_ADVERTISING);
+            APP_ERROR_CHECK(ret);
             break;
 
         case BLE_ADV_EVT_SLOW:
             NRF_LOG_INFO("Slow advertising\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING_SLOW);
-            APP_ERROR_CHECK(err_code);
+            ret = bsp_indication_set(BSP_INDICATE_ADVERTISING_SLOW);
+            APP_ERROR_CHECK(ret);
             break;
 
         case BLE_ADV_EVT_FAST_WHITELIST:
             NRF_LOG_INFO("Fast advertising with Whitelist\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING_WHITELIST);
-            APP_ERROR_CHECK(err_code);
+            ret = bsp_indication_set(BSP_INDICATE_ADVERTISING_WHITELIST);
+            APP_ERROR_CHECK(ret);
             break;
 
         case BLE_ADV_EVT_IDLE:
@@ -747,17 +791,18 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
             uint32_t       addr_cnt = BLE_GAP_WHITELIST_ADDR_MAX_COUNT;
             uint32_t       irk_cnt  = BLE_GAP_WHITELIST_ADDR_MAX_COUNT;
 
-            err_code = pm_whitelist_get(whitelist_addrs, &addr_cnt,
-                                        whitelist_irks,  &irk_cnt);
-            APP_ERROR_CHECK(err_code);
+            ret = pm_whitelist_get(whitelist_addrs, &addr_cnt, whitelist_irks, &irk_cnt);
+            APP_ERROR_CHECK(ret);
             NRF_LOG_DEBUG("pm_whitelist_get returns %d addr in whitelist and %d irk whitelist\r\n",
                            addr_cnt,
                            irk_cnt);
 
             // Apply the whitelist.
-            err_code = ble_advertising_whitelist_reply(whitelist_addrs, addr_cnt,
-                                                       whitelist_irks,  irk_cnt);
-            APP_ERROR_CHECK(err_code);
+            ret = ble_advertising_whitelist_reply(whitelist_addrs,
+                                                  addr_cnt,
+                                                  whitelist_irks,
+                                                  irk_cnt);
+            APP_ERROR_CHECK(ret);
         }
         break;
 
@@ -773,22 +818,26 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
  */
 static void on_ble_evt(ble_evt_t * p_ble_evt)
 {
-    uint32_t err_code = NRF_SUCCESS;
+    ret_code_t ret = NRF_SUCCESS;
 
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Connected.\r\n");
-            err_code = bsp_indication_set(BSP_INDICATE_CONNECTED);
-            APP_ERROR_CHECK(err_code);
+            ret = bsp_indication_set(BSP_INDICATE_CONNECTED);
+            APP_ERROR_CHECK(ret);
+
             m_cur_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
-            err_code = app_timer_start(m_sec_req_timer_id, SECURITY_REQUEST_DELAY, NULL);
-            APP_ERROR_CHECK(err_code);
+            ret               = app_timer_start(m_sec_req_timer_id, SECURITY_REQUEST_DELAY, NULL);
+            APP_ERROR_CHECK(ret);
             break; // BLE_GAP_EVT_CONNECTED
 
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Disconnected.\r\n");
             m_cur_conn_handle = BLE_CONN_HANDLE_INVALID;
+            ret               = app_timer_stop(m_sec_req_timer_id);
+            APP_ERROR_CHECK(ret);
+
             if (p_ble_evt->evt.gap_evt.conn_handle == m_ancs_c.conn_handle)
             {
                 m_ancs_c.conn_handle = BLE_CONN_HANDLE_INVALID;
@@ -796,13 +845,13 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             if (m_is_wl_changed)
             {
                 // The whitelist has been modified, update it in the Peer Manager.
-                err_code = pm_whitelist_set(m_whitelist_peers, m_whitelist_peer_cnt);
-                APP_ERROR_CHECK(err_code);
+                ret = pm_whitelist_set(m_whitelist_peers, m_whitelist_peer_cnt);
+                APP_ERROR_CHECK(ret);
 
-                err_code = pm_device_identities_list_set(m_whitelist_peers, m_whitelist_peer_cnt);
-                if (err_code != NRF_ERROR_NOT_SUPPORTED)
+                ret = pm_device_identities_list_set(m_whitelist_peers, m_whitelist_peer_cnt);
+                if (ret != NRF_ERROR_NOT_SUPPORTED)
                 {
-                    APP_ERROR_CHECK(err_code);
+                    APP_ERROR_CHECK(ret);
                 }
 
                 m_is_wl_changed = false;
@@ -812,24 +861,24 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
         case BLE_GATTC_EVT_TIMEOUT:
             // Disconnect on GATT Client timeout event.
             NRF_LOG_DEBUG("GATT Client Timeout.\r\n");
-            err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gattc_evt.conn_handle,
-                                             BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
-            APP_ERROR_CHECK(err_code);
+            ret = sd_ble_gap_disconnect(p_ble_evt->evt.gattc_evt.conn_handle,
+                                        BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(ret);
             break; // BLE_GATTC_EVT_TIMEOUT
 
         case BLE_GATTS_EVT_TIMEOUT:
             // Disconnect on GATT Server timeout event.
             NRF_LOG_DEBUG("GATT Server Timeout.\r\n");
-            err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle,
-                                             BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
-            APP_ERROR_CHECK(err_code);
+            ret = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle,
+                                        BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(ret);
             break; // BLE_GATTS_EVT_TIMEOUT
 
 #if (NRF_SD_BLE_API_VERSION == 3)
         case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
-            err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle,
-                                                       NRF_BLE_MAX_MTU_SIZE);
-            APP_ERROR_CHECK(err_code);
+            ret = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle,
+                                                  NRF_BLE_MAX_MTU_SIZE);
+            APP_ERROR_CHECK(ret);
             break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
 #endif
 
@@ -837,7 +886,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             // No implementation needed.
             break;
     }
-    APP_ERROR_CHECK(err_code);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -847,7 +896,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
  */
 static void bsp_event_handler(bsp_event_t event)
 {
-    uint32_t err_code;
+    ret_code_t ret;
 
     switch (event)
     {
@@ -856,28 +905,62 @@ static void bsp_event_handler(bsp_event_t event)
             break;
 
         case BSP_EVENT_DISCONNECT:
-            err_code = sd_ble_gap_disconnect(m_cur_conn_handle,
-                                             BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
-            if (err_code != NRF_ERROR_INVALID_STATE)
+            ret = sd_ble_gap_disconnect(m_cur_conn_handle,
+                                        BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            if (ret != NRF_ERROR_INVALID_STATE)
             {
-                APP_ERROR_CHECK(err_code);
+                APP_ERROR_CHECK(ret);
             }
             break;
 
         case BSP_EVENT_WHITELIST_OFF:
             if (m_ancs_c.conn_handle == BLE_CONN_HANDLE_INVALID)
             {
-                err_code = ble_advertising_restart_without_whitelist();
-                if (err_code != NRF_ERROR_INVALID_STATE)
+                ret = ble_advertising_restart_without_whitelist();
+                if (ret != NRF_ERROR_INVALID_STATE)
                 {
-                    APP_ERROR_CHECK(err_code);
+                    APP_ERROR_CHECK(ret);
                 }
             }
             break;
 
+        case BSP_EVENT_KEY_0:
+            ret = nrf_ble_ancs_c_request_attrs(&m_ancs_c, &m_notification_latest);
+            APP_ERROR_CHECK(ret);
+            break;
+
         case BSP_EVENT_KEY_1:
-            err_code = ble_ancs_c_request_attrs(&m_ancs_c, &m_notification_latest);
-            APP_ERROR_CHECK(err_code);
+            if(m_notif_attr_app_id_latest.attr_id == BLE_ANCS_NOTIF_ATTR_ID_APP_IDENTIFIER
+                && m_notif_attr_app_id_latest.attr_len != 0)
+            {
+                NRF_LOG_INFO("Request for %s: \r\n", (uint32_t)m_notif_attr_app_id_latest.p_attr_data);
+                ret = nrf_ble_ancs_c_app_attr_request(&m_ancs_c,
+                                                      m_notif_attr_app_id_latest.p_attr_data,
+                                                      m_notif_attr_app_id_latest.attr_len);
+                APP_ERROR_CHECK(ret);
+            }
+            break;
+
+        case BSP_EVENT_KEY_2:
+            if(m_notification_latest.evt_flags.positive_action == true)
+            {
+                NRF_LOG_INFO("Performing Positive Action.\r\n");
+                ret = nrf_ancs_perform_notif_action(&m_ancs_c,
+                                                    m_notification_latest.notif_uid,
+                                                    ACTION_ID_POSITIVE);
+                APP_ERROR_CHECK(ret);
+            }
+            break;
+
+        case BSP_EVENT_KEY_3:
+            if(m_notification_latest.evt_flags.negative_action == true)
+            {
+                NRF_LOG_INFO("Performing Negative Action.\r\n");
+                ret = nrf_ancs_perform_notif_action(&m_ancs_c,
+                                                    m_notification_latest.notif_uid,
+                                                    ACTION_ID_NEGATIVE);
+                APP_ERROR_CHECK(ret);
+            }
             break;
 
         default:
@@ -934,38 +1017,38 @@ static void sys_evt_dispatch(uint32_t sys_evt)
  */
 static void ble_stack_init(void)
 {
-    uint32_t err_code;
+    ret_code_t ret;
 
     nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
-
+    
     // Initialize the SoftDevice handler module.
     SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
-
+    
     ble_enable_params_t ble_enable_params;
-    err_code = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT,
-                                                    PERIPHERAL_LINK_COUNT,
-                                                    &ble_enable_params);
-    APP_ERROR_CHECK(err_code);
+    ret = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT,
+                                               PERIPHERAL_LINK_COUNT,
+                                               &ble_enable_params);
+    APP_ERROR_CHECK(ret);
 
     ble_enable_params.common_enable_params.vs_uuid_count = VENDOR_SPECIFIC_UUID_COUNT;
 
     // Check the ram settings against the used number of links
     CHECK_RAM_START_ADDR(CENTRAL_LINK_COUNT, PERIPHERAL_LINK_COUNT);
-
+    
     // Enable BLE stack.
 #if (NRF_SD_BLE_API_VERSION == 3)
     ble_enable_params.gatt_enable_params.att_mtu = NRF_BLE_MAX_MTU_SIZE;
 #endif
-    err_code = softdevice_enable(&ble_enable_params);
-    APP_ERROR_CHECK(err_code);
+    ret = softdevice_enable(&ble_enable_params);
+    APP_ERROR_CHECK(ret);
 
     // Register with the SoftDevice handler module for BLE events.
-    err_code = softdevice_ble_evt_handler_set(ble_evt_dispatch);
-    APP_ERROR_CHECK(err_code);
+    ret = softdevice_ble_evt_handler_set(ble_evt_dispatch);
+    APP_ERROR_CHECK(ret);
 
     // Register with the SoftDevice handler module for System events.
-    err_code = softdevice_sys_evt_handler_set(sys_evt_dispatch);
-    APP_ERROR_CHECK(err_code);
+    ret = softdevice_sys_evt_handler_set(sys_evt_dispatch);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -974,57 +1057,69 @@ static void ble_stack_init(void)
 static void services_init(void)
 {
     ble_ancs_c_init_t ancs_init_obj;
-    uint32_t          err_code;
+    ret_code_t        ret;
 
     memset(&ancs_init_obj, 0, sizeof(ancs_init_obj));
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_TITLE,
-                                   m_attr_title,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_APP_IDENTIFIER,
+                                  m_attr_appid,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
+    
+    ret = nrf_ble_ancs_c_app_attr_add(&m_ancs_c,
+                                      BLE_ANCS_APP_ATTR_ID_DISPLAY_NAME,
+                                      m_attr_disp_name,
+                                      sizeof(m_attr_disp_name));
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_SUBTITLE,
-                                   m_attr_subtitle,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_TITLE,
+                                  m_attr_title,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_MESSAGE,
-                                   m_attr_message,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_MESSAGE,
+                                  m_attr_message,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_MESSAGE_SIZE,
-                                   m_attr_message_size,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_SUBTITLE,
+                                  m_attr_subtitle,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_DATE,
-                                   m_attr_date,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_MESSAGE_SIZE,
+                                  m_attr_message_size,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_POSITIVE_ACTION_LABEL,
-                                   m_attr_posaction,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_DATE,
+                                  m_attr_date,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
-    err_code = ble_ancs_c_attr_add(&m_ancs_c,
-                                   BLE_ANCS_NOTIF_ATTR_ID_NEGATIVE_ACTION_LABEL,
-                                   m_attr_negaction,
-                                   ATTR_DATA_SIZE);
-    APP_ERROR_CHECK(err_code);
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_POSITIVE_ACTION_LABEL,
+                                  m_attr_posaction,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
+
+    ret = nrf_ble_ancs_c_attr_add(&m_ancs_c,
+                                  BLE_ANCS_NOTIF_ATTR_ID_NEGATIVE_ACTION_LABEL,
+                                  m_attr_negaction,
+                                  ATTR_DATA_SIZE);
+    APP_ERROR_CHECK(ret);
 
     ancs_init_obj.evt_handler   = on_ancs_c_evt;
     ancs_init_obj.error_handler = apple_notification_error_handler;
 
-    err_code = ble_ancs_c_init(&m_ancs_c, &ancs_init_obj);
-    APP_ERROR_CHECK(err_code);
+    ret = ble_ancs_c_init(&m_ancs_c, &ancs_init_obj);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -1032,7 +1127,7 @@ static void services_init(void)
  */
 static void advertising_init(void)
 {
-    uint32_t               err_code;
+    ret_code_t             ret;
     ble_advdata_t          advdata;
     ble_adv_modes_config_t options;
 
@@ -1061,8 +1156,8 @@ static void advertising_init(void)
     options.ble_adv_slow_interval     = APP_ADV_SLOW_INTERVAL;
     options.ble_adv_slow_timeout      = APP_ADV_SLOW_TIMEOUT;
 
-    err_code = ble_advertising_init(&advdata, NULL, &options, on_adv_evt, NULL);
-    APP_ERROR_CHECK(err_code);
+    ret = ble_advertising_init(&advdata, NULL, &options, on_adv_evt, NULL);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -1074,14 +1169,13 @@ static void buttons_leds_init(bool * p_erase_bonds)
 {
     bsp_event_t startup_event;
 
-    uint32_t err_code = bsp_init(BSP_INIT_LED | BSP_INIT_BUTTONS,
-                                 APP_TIMER_TICKS(100, APP_TIMER_PRESCALER),
-                                 bsp_event_handler);
+    uint32_t ret = bsp_init(BSP_INIT_LED | BSP_INIT_BUTTONS,
+                            APP_TIMER_TICKS(100, APP_TIMER_PRESCALER),
+                            bsp_event_handler);
+    APP_ERROR_CHECK(ret);
 
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_btn_ble_init(NULL, &startup_event);
-    APP_ERROR_CHECK(err_code);
+    ret = bsp_btn_ble_init(NULL, &startup_event);
+    APP_ERROR_CHECK(ret);
 
     *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
 }
@@ -1099,9 +1193,8 @@ static void scheduler_init(void)
  */
 static void db_discovery_init(void)
 {
-    uint32_t err_code = ble_db_discovery_init(db_disc_handler);
-
-    APP_ERROR_CHECK(err_code);
+    ret_code_t ret = ble_db_discovery_init(db_disc_handler);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -1109,9 +1202,8 @@ static void db_discovery_init(void)
  */
 static void log_init(void)
 {
-    ret_code_t err_code = NRF_LOG_INIT(NULL);
-
-    APP_ERROR_CHECK(err_code);
+    ret_code_t ret = NRF_LOG_INIT(NULL);
+    APP_ERROR_CHECK(ret);
 }
 
 
@@ -1119,9 +1211,8 @@ static void log_init(void)
  */
 static void power_manage(void)
 {
-    uint32_t err_code = sd_app_evt_wait();
-
-    APP_ERROR_CHECK(err_code);
+    ret_code_t ret = sd_app_evt_wait();
+    APP_ERROR_CHECK(ret);
 }
 
 

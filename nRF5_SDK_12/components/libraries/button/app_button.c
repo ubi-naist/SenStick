@@ -9,14 +9,13 @@
  * the file.
  *
  */
-#include "sdk_config.h"
-#if BUTTON_ENABLED
+#include "sdk_common.h"
+#if NRF_MODULE_ENABLED(BUTTON)
 #include "app_button.h"
 #include "app_timer.h"
 #include "app_error.h"
 #include "nrf_drv_gpiote.h"
 #include "nrf_assert.h"
-#include "sdk_common.h"
 
 
 static app_button_cfg_t const *       mp_buttons = NULL;           /**< Button configuration. */
@@ -179,7 +178,7 @@ uint32_t app_button_disable(void)
 }
 
 
-uint32_t app_button_is_pushed(uint8_t button_id, bool * p_is_pushed)
+bool app_button_is_pushed(uint8_t button_id)
 {
     ASSERT(button_id <= m_button_count);
     ASSERT(mp_buttons != NULL);
@@ -187,8 +186,6 @@ uint32_t app_button_is_pushed(uint8_t button_id, bool * p_is_pushed)
     app_button_cfg_t const * p_btn = &mp_buttons[button_id];
     bool is_set = nrf_drv_gpiote_in_is_set(p_btn->pin_no);
 
-    *p_is_pushed = !(is_set^(p_btn->active_state == APP_BUTTON_ACTIVE_HIGH));
-
-    return NRF_SUCCESS;
+    return !(is_set ^ (p_btn->active_state == APP_BUTTON_ACTIVE_HIGH));
 }
-#endif //BUTTON_ENABLED
+#endif //NRF_MODULE_ENABLED(BUTTON)

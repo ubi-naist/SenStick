@@ -75,7 +75,7 @@ int main(void)
 
     APP_ERROR_CHECK(NRF_LOG_INIT(NULL));
     NRF_LOG_INFO("TWI scanner.\r\n");
-
+    NRF_LOG_FLUSH();
     twi_init();
 
     for (address = 1; address <= TWI_ADDRESSES; address++)

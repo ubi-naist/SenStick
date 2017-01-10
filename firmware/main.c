@@ -12,6 +12,7 @@
 
 // nRF52 SDK12/nRF51 SDK10, ヘッダファイル差分
 #ifdef NRF52
+#include <nrf_dfu_settings.h>
 #include <nrf_nvic.h>
 #include <fstorage.h>
 #include <ble_conn_state.h>
@@ -63,6 +64,15 @@ static void printBLEEvent(ble_evt_t * p_ble_evt);
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
     NRF_LOG_PRINTF_DEBUG("\napp_error: er_code:0x%04x line:%d file:%s", error_code, line_num, (uint32_t)p_file_name);
+    nrf_delay_ms(200);
+    
+    sd_nvic_SystemReset();
+}
+#else
+// nRF52
+void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
+{
+    NRF_LOG_PRINTF_DEBUG("\napp_error: id:0x%08x pc:0x%08x info:0x%08x.", id, pc, info);
     nrf_delay_ms(200);
     
     sd_nvic_SystemReset();
@@ -133,12 +143,12 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
-            senstick_setIsConnected(true);
+            senstick_setIsConnected(true, p_ble_evt->evt.gatts_evt.conn_handle);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONNECTED");
             break;
             
         case BLE_GAP_EVT_DISCONNECTED:
-            senstick_setIsConnected(false);
+            senstick_setIsConnected(false, p_ble_evt->evt.gatts_evt.conn_handle);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_DISCONNECTED");
             break;
             
@@ -260,6 +270,9 @@ int main(void)
 #ifdef NRF52
     err_code = fs_init();
     APP_ERROR_CHECK(err_code);
+
+    // DFUの設定情報をフラッシュ/メモリに保存するユーティリティ。
+    nrf_dfu_settings_init();
 #else // NRF51
     err_code = pstorage_init();
     APP_ERROR_CHECK(err_code);

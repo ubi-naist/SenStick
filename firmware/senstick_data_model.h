@@ -40,5 +40,5 @@ ButtonStatus_t senstick_getButtonStatus(void);
 void senstick_setButtonStatus(ButtonStatus_t status);
 
 bool senstick_isConnected(void);
-void senstick_setIsConnected(bool value);
+void senstick_setIsConnected(bool value, uint16_t conn_handle);
 #endif /* senstick_data_model_h */

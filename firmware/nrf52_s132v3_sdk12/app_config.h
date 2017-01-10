@@ -7,6 +7,10 @@
 // IO設定を読み込む。
 #include "senstick_io_definition.h"
 
+#define CRC32_ENABLED       1
+#define FSTORAGE_ENABLED    1
+#define NRF_QUEUE_ENABLED   1
+
 // ====
 // BLE Services
 // battery serviceを使う。
@@ -42,6 +46,7 @@
 // ===
 // ログ
 #define NRF_LOG_ENABLED 1
+#define NRF_LOG_DEFERRED 0
 #define NRF_LOG_BACKEND_SERIAL_USES_UART 0
 #define NRF_LOG_BACKEND_SERIAL_USES_RTT  1
 // <0=> Off

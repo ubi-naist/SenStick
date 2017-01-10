@@ -452,7 +452,7 @@
             <File>
               <FileName>nrf_ble_dfu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\nRF5_SDK_12\components\libraries\bootloader\ble_dfu\nrf_ble_dfu.c</FilePath>
+              <FilePath>..\nrf_ble_dfu.c</FilePath>
             </File>
           </Files>
         </Group>

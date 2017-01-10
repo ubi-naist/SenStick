@@ -100,6 +100,7 @@
         <tRSysVw>1</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
+        <bEvRecOn>1</bEvRecOn>
         <nTsel>6</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
@@ -114,6 +115,11 @@
         <pMon>Segger\JL2CM3.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
+        <SetRegEntry>
+          <Number>0</Number>
+          <Key>DLGUARM</Key>
+          <Name>/</Name>
+        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
@@ -144,18 +150,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>63</LineNumber>
+          <LineNumber>78</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>132982</Address>
+          <Address>135878</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>\\vmware-host\Shared Folders\vmware-host\Shared Folders\SenStick\firmware\nRF5_SDK_12\components\libraries\util\app_error.c</Filename>
+          <Filename>\vmware-host\Shared Folders\SenStick\firmware\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\nrf52832_xxaa\../nRF5_SDK_12/components/libraries/util/app_error.c\63</Expression>
+          <Expression>\\nrf52832_xxaa\../main.c\78</Expression>
         </Bp>
       </Breakpoint>
       <Tracepoint>
@@ -193,6 +199,8 @@
       <Lin2Executable></Lin2Executable>
       <Lin2ConfigFile></Lin2ConfigFile>
       <bLin2Auto>0</bLin2Auto>
+      <bAutoGenD>0</bAutoGenD>
+      <bAuto2GenD>0</bAuto2GenD>
     </TargetOption>
   </Target>
 
@@ -275,6 +283,7 @@
         <tRSysVw>1</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
+        <bEvRecOn>1</bEvRecOn>
         <nTsel>7</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
@@ -336,12 +345,14 @@
       <Lin2Executable></Lin2Executable>
       <Lin2ConfigFile></Lin2ConfigFile>
       <bLin2Auto>0</bLin2Auto>
+      <bAutoGenD>0</bAutoGenD>
+      <bAuto2GenD>0</bAuto2GenD>
     </TargetOption>
   </Target>
 
   <Group>
     <GroupName>nRF_BLE</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -352,7 +363,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\common\ble_advdata.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\common\ble_advdata.c</PathWithFileName>
       <FilenameWithoutPath>ble_advdata.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -364,7 +375,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\ble_advertising\ble_advertising.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\ble_advertising\ble_advertising.c</PathWithFileName>
       <FilenameWithoutPath>ble_advertising.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -376,7 +387,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\common\ble_conn_params.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\common\ble_conn_params.c</PathWithFileName>
       <FilenameWithoutPath>ble_conn_params.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -388,7 +399,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\common\ble_conn_state.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\common\ble_conn_state.c</PathWithFileName>
       <FilenameWithoutPath>ble_conn_state.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -400,7 +411,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\common\ble_srv_common.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\common\ble_srv_common.c</PathWithFileName>
       <FilenameWithoutPath>ble_srv_common.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -412,7 +423,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\gatt_cache_manager.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\gatt_cache_manager.c</PathWithFileName>
       <FilenameWithoutPath>gatt_cache_manager.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -424,7 +435,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\gatts_cache_manager.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\gatts_cache_manager.c</PathWithFileName>
       <FilenameWithoutPath>gatts_cache_manager.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -436,7 +447,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\id_manager.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\id_manager.c</PathWithFileName>
       <FilenameWithoutPath>id_manager.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -448,7 +459,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\peer_data.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\peer_data.c</PathWithFileName>
       <FilenameWithoutPath>peer_data.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -460,7 +471,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\peer_data_storage.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\peer_data_storage.c</PathWithFileName>
       <FilenameWithoutPath>peer_data_storage.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -472,7 +483,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\peer_database.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\peer_database.c</PathWithFileName>
       <FilenameWithoutPath>peer_database.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -484,7 +495,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\peer_id.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\peer_id.c</PathWithFileName>
       <FilenameWithoutPath>peer_id.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -496,7 +507,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\peer_manager.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\peer_manager.c</PathWithFileName>
       <FilenameWithoutPath>peer_manager.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -508,7 +519,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\pm_buffer.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\pm_buffer.c</PathWithFileName>
       <FilenameWithoutPath>pm_buffer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -520,7 +531,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\pm_mutex.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\pm_mutex.c</PathWithFileName>
       <FilenameWithoutPath>pm_mutex.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -532,7 +543,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\security_dispatcher.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\security_dispatcher.c</PathWithFileName>
       <FilenameWithoutPath>security_dispatcher.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -544,7 +555,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\peer_manager\security_manager.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\peer_manager\security_manager.c</PathWithFileName>
       <FilenameWithoutPath>security_manager.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -553,7 +564,7 @@
 
   <Group>
     <GroupName>nRF_Drivers</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -564,7 +575,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\clock\nrf_drv_clock.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\clock\nrf_drv_clock.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_clock.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -576,7 +587,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\common\nrf_drv_common.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\common\nrf_drv_common.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_common.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -588,7 +599,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\gpiote\nrf_drv_gpiote.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_gpiote.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -600,7 +611,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\uart\nrf_drv_uart.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\uart\nrf_drv_uart.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_uart.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -612,7 +623,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\saadc\nrf_drv_saadc.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\saadc\nrf_drv_saadc.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_saadc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -624,7 +635,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\spi_master\nrf_drv_spi.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\spi_master\nrf_drv_spi.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -636,7 +647,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\twi_master\nrf_drv_twi.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\twi_master\nrf_drv_twi.c</PathWithFileName>
       <FilenameWithoutPath>nrf_drv_twi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -648,8 +659,44 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\drivers_nrf\hal\nrf_saadc.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\hal\nrf_saadc.c</PathWithFileName>
       <FilenameWithoutPath>nrf_saadc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>26</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_settings.c</PathWithFileName>
+      <FilenameWithoutPath>nrf_dfu_settings.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>27</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\bootloader\dfu\nrf_dfu_flash.c</PathWithFileName>
+      <FilenameWithoutPath>nrf_dfu_flash.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>28</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\drivers_nrf\hal\nrf_nvmc.c</PathWithFileName>
+      <FilenameWithoutPath>nrf_nvmc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -657,46 +704,10 @@
 
   <Group>
     <GroupName>nRF_Libraries</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>26</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\button\app_button.c</PathWithFileName>
-      <FilenameWithoutPath>app_button.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>27</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\util\app_error.c</PathWithFileName>
-      <FilenameWithoutPath>app_error.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>28</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\util\app_error_weak.c</PathWithFileName>
-      <FilenameWithoutPath>app_error_weak.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
     <File>
       <GroupNumber>3</GroupNumber>
       <FileNumber>29</FileNumber>
@@ -704,8 +715,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\fifo\app_fifo.c</PathWithFileName>
-      <FilenameWithoutPath>app_fifo.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\button\app_button.c</PathWithFileName>
+      <FilenameWithoutPath>app_button.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -716,8 +727,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\timer\app_timer_appsh.c</PathWithFileName>
-      <FilenameWithoutPath>app_timer_appsh.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\util\app_error.c</PathWithFileName>
+      <FilenameWithoutPath>app_error.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -728,8 +739,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\util\app_util_platform.c</PathWithFileName>
-      <FilenameWithoutPath>app_util_platform.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\util\app_error_weak.c</PathWithFileName>
+      <FilenameWithoutPath>app_error_weak.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -740,8 +751,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\crc16\crc16.c</PathWithFileName>
-      <FilenameWithoutPath>crc16.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\fifo\app_fifo.c</PathWithFileName>
+      <FilenameWithoutPath>app_fifo.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -752,8 +763,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\fstorage\fstorage.c</PathWithFileName>
-      <FilenameWithoutPath>fstorage.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\timer\app_timer_appsh.c</PathWithFileName>
+      <FilenameWithoutPath>app_timer_appsh.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -764,8 +775,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\hardfault\hardfault_implementation.c</PathWithFileName>
-      <FilenameWithoutPath>hardfault_implementation.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\util\app_util_platform.c</PathWithFileName>
+      <FilenameWithoutPath>app_util_platform.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -776,8 +787,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\util\nrf_assert.c</PathWithFileName>
-      <FilenameWithoutPath>nrf_assert.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\crc16\crc16.c</PathWithFileName>
+      <FilenameWithoutPath>crc16.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -788,8 +799,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\util\sdk_mapped_flags.c</PathWithFileName>
-      <FilenameWithoutPath>sdk_mapped_flags.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\hardfault\hardfault_implementation.c</PathWithFileName>
+      <FilenameWithoutPath>hardfault_implementation.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -800,8 +811,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\sensorsim\sensorsim.c</PathWithFileName>
-      <FilenameWithoutPath>sensorsim.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\util\nrf_assert.c</PathWithFileName>
+      <FilenameWithoutPath>nrf_assert.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -812,8 +823,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\mailbox\app_mailbox.c</PathWithFileName>
-      <FilenameWithoutPath>app_mailbox.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\util\sdk_mapped_flags.c</PathWithFileName>
+      <FilenameWithoutPath>sdk_mapped_flags.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -824,8 +835,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\scheduler\app_scheduler.c</PathWithFileName>
-      <FilenameWithoutPath>app_scheduler.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\sensorsim\sensorsim.c</PathWithFileName>
+      <FilenameWithoutPath>sensorsim.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -836,8 +847,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\fds\fds.c</PathWithFileName>
-      <FilenameWithoutPath>fds.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\mailbox\app_mailbox.c</PathWithFileName>
+      <FilenameWithoutPath>app_mailbox.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -848,8 +859,56 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\timer\app_timer.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\scheduler\app_scheduler.c</PathWithFileName>
+      <FilenameWithoutPath>app_scheduler.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>42</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\fds\fds.c</PathWithFileName>
+      <FilenameWithoutPath>fds.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>43</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\timer\app_timer.c</PathWithFileName>
       <FilenameWithoutPath>app_timer.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>44</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\crc32\crc32.c</PathWithFileName>
+      <FilenameWithoutPath>crc32.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>45</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\fstorage\fstorage.c</PathWithFileName>
+      <FilenameWithoutPath>fstorage.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -857,30 +916,30 @@
 
   <Group>
     <GroupName>nRF_Log</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>42</FileNumber>
+      <FileNumber>46</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\log\src\nrf_log_backend_serial.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\log\src\nrf_log_backend_serial.c</PathWithFileName>
       <FilenameWithoutPath>nrf_log_backend_serial.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>43</FileNumber>
+      <FileNumber>47</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\libraries\log\src\nrf_log_frontend.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\libraries\log\src\nrf_log_frontend.c</PathWithFileName>
       <FilenameWithoutPath>nrf_log_frontend.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -895,36 +954,36 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>5</GroupNumber>
-      <FileNumber>44</FileNumber>
+      <FileNumber>48</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\external\segger_rtt\RTT_Syscalls_KEIL.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\external\segger_rtt\RTT_Syscalls_KEIL.c</PathWithFileName>
       <FilenameWithoutPath>RTT_Syscalls_KEIL.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
-      <FileNumber>45</FileNumber>
+      <FileNumber>49</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\external\segger_rtt\SEGGER_RTT.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\external\segger_rtt\SEGGER_RTT.c</PathWithFileName>
       <FilenameWithoutPath>SEGGER_RTT.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>5</GroupNumber>
-      <FileNumber>46</FileNumber>
+      <FileNumber>50</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\external\segger_rtt\SEGGER_RTT_printf.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\external\segger_rtt\SEGGER_RTT_printf.c</PathWithFileName>
       <FilenameWithoutPath>SEGGER_RTT_printf.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -939,12 +998,12 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>6</GroupNumber>
-      <FileNumber>47</FileNumber>
+      <FileNumber>51</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler.c</PathWithFileName>
       <FilenameWithoutPath>softdevice_handler.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -953,13 +1012,13 @@
 
   <Group>
     <GroupName>senstick</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>48</FileNumber>
+      <FileNumber>52</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -971,7 +1030,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>49</FileNumber>
+      <FileNumber>53</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -991,7 +1050,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>50</FileNumber>
+      <FileNumber>54</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1011,7 +1070,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>51</FileNumber>
+      <FileNumber>55</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1023,7 +1082,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>52</FileNumber>
+      <FileNumber>56</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1043,7 +1102,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>53</FileNumber>
+      <FileNumber>57</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1063,7 +1122,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>54</FileNumber>
+      <FileNumber>58</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1075,24 +1134,24 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>55</FileNumber>
+      <FileNumber>59</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\ble_services\ble_bas\ble_bas.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\ble_services\ble_bas\ble_bas.c</PathWithFileName>
       <FilenameWithoutPath>ble_bas.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>56</FileNumber>
+      <FileNumber>60</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\nRF5_SDK_12\components\ble\ble_services\ble_dis\ble_dis.c</PathWithFileName>
+      <PathWithFileName>..\..\nRF5_SDK_12\components\ble\ble_services\ble_dis\ble_dis.c</PathWithFileName>
       <FilenameWithoutPath>ble_dis.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -1107,7 +1166,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>57</FileNumber>
+      <FileNumber>61</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1119,7 +1178,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>58</FileNumber>
+      <FileNumber>62</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1131,7 +1190,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>59</FileNumber>
+      <FileNumber>63</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1151,7 +1210,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>60</FileNumber>
+      <FileNumber>64</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1163,7 +1222,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>61</FileNumber>
+      <FileNumber>65</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1175,7 +1234,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>62</FileNumber>
+      <FileNumber>66</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1187,7 +1246,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>63</FileNumber>
+      <FileNumber>67</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1199,7 +1258,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>64</FileNumber>
+      <FileNumber>68</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1211,7 +1270,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>65</FileNumber>
+      <FileNumber>69</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1223,7 +1282,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>66</FileNumber>
+      <FileNumber>70</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1235,7 +1294,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>67</FileNumber>
+      <FileNumber>71</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1247,7 +1306,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>68</FileNumber>
+      <FileNumber>72</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1259,7 +1318,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>69</FileNumber>
+      <FileNumber>73</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1271,7 +1330,7 @@
     </File>
     <File>
       <GroupNumber>13</GroupNumber>
-      <FileNumber>70</FileNumber>
+      <FileNumber>74</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1291,7 +1350,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>71</FileNumber>
+      <FileNumber>75</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1303,7 +1362,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>72</FileNumber>
+      <FileNumber>76</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1315,7 +1374,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>73</FileNumber>
+      <FileNumber>77</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1327,7 +1386,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>74</FileNumber>
+      <FileNumber>78</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1339,7 +1398,7 @@
     </File>
     <File>
       <GroupNumber>14</GroupNumber>
-      <FileNumber>75</FileNumber>
+      <FileNumber>79</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1359,7 +1418,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>15</GroupNumber>
-      <FileNumber>76</FileNumber>
+      <FileNumber>80</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1379,7 +1438,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>77</FileNumber>
+      <FileNumber>81</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1391,7 +1450,7 @@
     </File>
     <File>
       <GroupNumber>16</GroupNumber>
-      <FileNumber>78</FileNumber>
+      <FileNumber>82</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1405,13 +1464,13 @@
 
   <Group>
     <GroupName>nrf52_s132v3_sdk12</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>79</FileNumber>
+      <FileNumber>83</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1423,7 +1482,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>80</FileNumber>
+      <FileNumber>84</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1435,7 +1494,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>81</FileNumber>
+      <FileNumber>85</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1447,7 +1506,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>82</FileNumber>
+      <FileNumber>86</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1459,7 +1518,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>83</FileNumber>
+      <FileNumber>87</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1471,7 +1530,7 @@
     </File>
     <File>
       <GroupNumber>17</GroupNumber>
-      <FileNumber>84</FileNumber>
+      <FileNumber>88</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1491,7 +1550,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>18</GroupNumber>
-      <FileNumber>85</FileNumber>
+      <FileNumber>89</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

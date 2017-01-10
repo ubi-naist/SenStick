@@ -31,6 +31,8 @@
 #include "app_error_weak.h"
 #include "nrf_bootloader_info.h"
 
+#define BOOTLOADER_DFU_START 0xB1
+
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
     NRF_LOG_ERROR("received a fault! id: 0x%08x, pc: 0x&08x\r\n", id, pc);
@@ -64,6 +66,27 @@ static void buttons_init(void)
                              NRF_GPIO_PIN_SENSE_LOW);
 }
 
+/*
+__WEAK bool nrf_dfu_enter_check(void)
+{
+    if (nrf_gpio_pin_read(BOOTLOADER_BUTTON) == 0)
+    {
+        return true;
+    }
+    
+    if (s_dfu_settings.enter_buttonless_dfu == 1)
+    {
+        s_dfu_settings.enter_buttonless_dfu = 0;
+        APP_ERROR_CHECK(nrf_dfu_settings_write(NULL));
+        return true;
+    }
+    return false;
+}
+*/
+bool nrf_dfu_enter_check(void)
+{
+    return (NRF_POWER->GPREGRET == BOOTLOADER_DFU_START);
+}
 
 /**@brief Function for application main entry.
  */

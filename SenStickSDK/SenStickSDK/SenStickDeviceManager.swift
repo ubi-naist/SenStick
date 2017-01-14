@@ -9,6 +9,22 @@
 import Foundation
 import CoreBluetooth
 
+// SenStickDeviceManagerクラスは、BLEデバイスの発見と、デバイスリストの管理を行うクラスです。シングルトンです。
+//
+// シングルトン
+// このクラスはシングルトンです。sharedInstanceプロパティを通じてのみ、このクラスのインスタンスにアクセスできます。
+// このクラスがシングルトンになっているのは、BLE接続管理は、アプリケーションで1つのCBCentralManagerクラスのインスタンスでまとめられるべきだからです。
+// シングルトンにするために、init()メソッドはプライベートになっています。
+// 
+// デバイスの発見
+// デバイスを発見するにはスキャンをします。scan()メソッドでスキャンが開始されます。1秒ごとに引数で渡したブロックが呼び出されます。
+// スキャンを中止するにはcancelScan()メソッドを呼び出します。
+// スキャンの状況は、isScanningプロパティで取得できます。
+//
+// デバイスのリスト管理
+// デバイスが発見されるたびに、devicesプロパティが更新されます。devicesプロパティの更新はKVO(Key Value Observation)で取得できます。
+//
+
 open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
 {
     let queue: DispatchQueue
@@ -108,6 +124,7 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     }
     
     // MARK: Private methods
+    
     func addPeripheral(_ peripheral: CBPeripheral, name: String?)
     {
         //すでに配列にあるかどうか探す, なければ追加。KVOを活かすため、配列それ自体を代入する
@@ -121,6 +138,7 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     }
     
     // MARK: CBCentralManagerDelegate
+    
     open func centralManagerDidUpdateState(_ central: CBCentralManager)
     {
         // BLEの処理は独立したキューで走っているので、KVOを活かすためにメインキューで代入する

@@ -10,6 +10,7 @@
 
 #include <pstorage.h>
 
+#include "senstick_util.h"
 #include "app_gap.h"
 
 #include "ble_parameters_config.h"

@@ -210,8 +210,10 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
             
         case BLE_GATTS_EVT_TIMEOUT:
             NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
+#ifdef NRF52
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
+#endif
             break;
         
             //nRF52, S132v3
@@ -248,7 +250,11 @@ int main(void)
     ret_code_t err_code;
     
     // RTTログを有効に
+#ifdef NRF51
+    NRF_LOG_INIT();
+#else // nRF52
     NRF_LOG_INIT(NULL);
+#endif
     
     // タイマーモジュール、スケジューラ設定。
     APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);

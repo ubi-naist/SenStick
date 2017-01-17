@@ -11,6 +11,7 @@
 #include "twi_manager.h"
 #include "twi_slave_nine_axes_sensor.h"
 
+#include "senstick_util.h"
 #include "senstick_sensor_base_data.h"
 #include "senstick_io_definition.h"
 
@@ -329,4 +330,6 @@ void getMagneticFieldData(uint8_t *p_data)
     p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
     p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
     p_magneticField->z = readInt16AsLittleEndian(&(buffer[4]));
+    
+//    NRF_LOG_PRINTF_DEBUG("\nmag x:%d y:%d z:%d.", p_magneticField->x, p_magneticField->y, p_magneticField->z);
 }

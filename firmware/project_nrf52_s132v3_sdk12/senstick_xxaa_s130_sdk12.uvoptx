@@ -159,7 +159,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>\vmware-host\Shared Folders\SenStick\firmware\main.c</Filename>
+          <Filename>\\vmware-host\Shared Folders\vmware-host\Shared Folders\SenStick\firmware\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\nrf52832_xxaa\../main.c\78</Expression>
         </Bp>

@@ -41,9 +41,9 @@
 #include "senstick_control_service.h"
 #include "senstick_meta_data_service.h"
 #include "senstick_sensor_controller.h"
+#include "senstick_rtc.h"
 
 #include "twi_manager.h"
-#include "twi_slave_rtc.h"
 #include "gpio_led_driver.h"
 #include "gpio_button_monitoring.h"
 
@@ -259,10 +259,12 @@ int main(void)
     // タイマーモジュール、スケジューラ設定。
     APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
     APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
+
+    // カレンダー
+    initSenstickRTC();
     
     // IO
     initTWIManager();
-    initRTC();
     initLEDDriver();
     initButtonMonitoring();
     initFlashMemory();

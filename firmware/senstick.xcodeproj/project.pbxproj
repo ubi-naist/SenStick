@@ -10,7 +10,6 @@
 		F81AC9AB1CF0335000706391 /* senstick_types.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_types.c; sourceTree = "<group>"; };
 		F820A1A61CEECB8F00E549D0 /* test_storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_storage.h; sourceTree = "<group>"; };
 		F820A1A71CEECB9C00E549D0 /* test_storage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_storage.c; sourceTree = "<group>"; };
-		F84B633D1CEDBC9C0097C1EC /* twi_slave_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_rtc.h; sourceTree = "<group>"; };
 		F84B633F1CEDD04B0097C1EC /* gpio_led_driver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpio_led_driver.h; sourceTree = "<group>"; };
 		F84B63401CEDD0550097C1EC /* gpio_led_driver.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gpio_led_driver.c; sourceTree = "<group>"; };
 		F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_manager.h; sourceTree = "<group>"; };
@@ -42,6 +41,8 @@
 		F86B0CD61CF2FFCF00AA8D66 /* uv_sensor_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uv_sensor_base.h; sourceTree = "<group>"; };
 		F86B0CD71CF301FD00AA8D66 /* twi_slave_humidity_sensor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twi_slave_humidity_sensor.c; sourceTree = "<group>"; };
 		F86B0CD81CF301FD00AA8D66 /* twi_slave_humidity_sensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twi_slave_humidity_sensor.h; sourceTree = "<group>"; };
+		F86B463C1E2F91950050F9AB /* senstick_rtc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = senstick_rtc.c; sourceTree = "<group>"; };
+		F86B463D1E2F91950050F9AB /* senstick_rtc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = senstick_rtc.h; sourceTree = "<group>"; };
 		F86C469F1CD4F7C200076F3E /* service_util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = service_util.c; sourceTree = "<group>"; };
 		F86C46A01CD4F7C200076F3E /* service_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service_util.h; sourceTree = "<group>"; };
 		F86C46A61CD7764D00076F3E /* log_controller.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = log_controller.c; sourceTree = "<group>"; };
@@ -119,6 +120,8 @@
 		F8AC9D2F1C2236D600366AEF = {
 			isa = PBXGroup;
 			children = (
+				F86B463D1E2F91950050F9AB /* senstick_rtc.h */,
+				F86B463C1E2F91950050F9AB /* senstick_rtc.c */,
 				F8B43EFC1DB5B779008735CD /* senstick_util.h */,
 				F8AC9D361C22375900366AEF /* main.c */,
 				F86873571CE2FBA90083A635 /* senstick_types.h */,
@@ -148,7 +151,6 @@
 			isa = PBXGroup;
 			children = (
 				F850DFAD1CE713AF00B8F9B9 /* twi_manager.h */,
-				F84B633D1CEDBC9C0097C1EC /* twi_slave_rtc.h */,
 				F8AC9D431C223A4A00366AEF /* twi_slave_nine_axes_sensor.h */,
 				F8AC9D421C223A4A00366AEF /* twi_slave_nine_axes_sensor.c */,
 				F86B0CD21CF2E7F400AA8D66 /* twi_slave_brightness_sensor.h */,

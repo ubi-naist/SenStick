@@ -9,7 +9,8 @@
 #include "senstick_sensor_controller.h"
 #include "metadata_log_controller.h"
 
-#include "twi_slave_rtc.h"
+#include "senstick_rtc.h"
+
 #include "gpio_led_driver.h"
 #include "twi_manager.h"
 #include "gpio_button_monitoring.h"
@@ -248,15 +249,11 @@ void senstick_setDiskFull(bool flag)
 // 現在の時刻
 void senstick_getCurrentDateTime(ble_date_time_t *p_datetime)
 {
-    CRITICAL_REGION_ENTER();
-    getTWIRTCDateTime(p_datetime);
-    CRITICAL_REGION_EXIT();
+    getSenstickRTCDateTime(p_datetime);
 }
 void senstick_setCurrentDateTime(ble_date_time_t *p_datetime)
 {
-    CRITICAL_REGION_ENTER();
-    setTWIRTCDateTime(p_datetime);
-    CRITICAL_REGION_EXIT();
+    setSenstickRTCDateTime(p_datetime);
 }
 
 // 現在のログテキスト概要

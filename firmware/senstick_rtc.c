@@ -10,14 +10,12 @@
 #include <sdk_errors.h>
 #include <sdk_config.h>
 
-#include "value_types.h"
-#include "twi_manager.h"
-#include "twi_slave_rtc.h"
+#include "senstick_rtc.h"
 
+#include "value_types.h"
 #include "senstick_util.h"
 #include "senstick_sensor_base_data.h"
 #include "senstick_ble_definition.h"
-#include "senstick_io_definition.h"
 
 /**
  * Definitions
@@ -43,14 +41,14 @@ void updateCurrentTime(void)
     if(_rtcContext.current_time == 0) {
         return;
     }
-        
+    
     // RTCを読み出し、前回との差分を計算する。RTC1カウンタ(24ビット)がラウンドアップしているかもしれないので、1<<24を足して剰余を求め、常に正の差分とする。
     int rtc_value = app_timer_cnt_get();
     int duration  = (rtc_value - _rtcContext.previous_rtc_value + (1 << 24)) % (1 << 24);
     
     // 秒数を追加
     _rtcContext.current_time += duration / APP_TIMER_CLOCK_FREQ;
-
+    
     // 読み出しRTCの値を更新。
     _rtcContext.previous_rtc_value = rtc_value;
 }
@@ -88,10 +86,10 @@ void convertCTimeToBLEDateTime(const struct tm * p_c_time_date, ble_date_time_t 
 /**
  * Public methods
  */
-void initRTC(void)
+void initSenstickRTC(void)
 {
     ret_code_t err_code;
-
+    
     // 変数初期化
     memset(&_rtcContext, 0, sizeof(_rtcContext));
     
@@ -104,7 +102,7 @@ void initRTC(void)
     APP_ERROR_CHECK(err_code);
 }
 
-void setTWIRTCDateTime(ble_date_time_t *p_date)
+void setSenstickRTCDateTime(ble_date_time_t *p_date)
 {
     // ctimeに変換。
     struct tm c_time_date;
@@ -115,7 +113,7 @@ void setTWIRTCDateTime(ble_date_time_t *p_date)
     _rtcContext.previous_rtc_value = app_timer_cnt_get();
 }
 
-void getTWIRTCDateTime(ble_date_time_t *p_date)
+void getSenstickRTCDateTime(ble_date_time_t *p_date)
 {
     // RTCを読み出し、現在時間を更新
     updateCurrentTime();
@@ -125,6 +123,6 @@ void getTWIRTCDateTime(ble_date_time_t *p_date)
     // ctimeをble_date_time_t に変換。
     convertCTimeToBLEDateTime(&ctime, p_date);
     
-    NRF_LOG_PRINTF_DEBUG("\ngetTWIRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
+    NRF_LOG_PRINTF_DEBUG("\ngetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
 }
 

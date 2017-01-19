@@ -188,7 +188,7 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
         case formattingStorage:
             metaLogFormatStorage();
             break;
-        case enterDeepSleep:
+        case shouldDeviceSleep:
             break;
         case enterDFUmode:
             break;

@@ -46,7 +46,7 @@ static void battery_timer_handler(void *p_arg)
 #else
     // 電池がなければ、スリープに遷移する
     if( battery_level == 0 ) {
-        senstick_setControlCommand(enterDeepSleep);
+        senstick_setControlCommand(shouldDeviceSleep);
     }
 #endif
 }

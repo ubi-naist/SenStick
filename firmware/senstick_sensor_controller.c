@@ -687,7 +687,7 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
             senstickSensorControllerFormatStorage();
             formatSensorSetting();
             break;
-        case enterDeepSleep:
+        case shouldDeviceSleep:
         case enterDFUmode:
             setSensorShoudlWork(false, new_log_id);
             // センサ設定情報の永続化処理

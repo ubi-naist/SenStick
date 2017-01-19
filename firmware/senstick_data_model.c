@@ -155,7 +155,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
     if(   command != sensorShouldSleep
        && command != sensorShouldWork
        && command != formattingStorage
-       && command != enterDeepSleep
+       && command != shouldDeviceSleep
        && command != enterDFUmode) {
 //       NRF_LOG_PRINTF_DEBUG("_setControlCommand, unexpected command: %d.\n", command);
         return;
@@ -208,7 +208,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
             // フォーマット状態からの自動復帰
             senstick_setControlCommand(sensorShouldSleep);
             break;
-        case enterDeepSleep:
+        case shouldDeviceSleep:
             // ボタンで起動するように設定。
             enableAwakeByButton();
             // パワーを落とします。
@@ -298,7 +298,7 @@ void senstick_setButtonStatus(ButtonStatus_t status)
         case BUTTON_LONG_PUSH: break;
         case BUTTON_LONG_PUSH_RELEASED:
             // 長押しでDeepSleep
-            senstick_setControlCommand(enterDeepSleep);
+            senstick_setControlCommand(shouldDeviceSleep);
             break;            
         case BUTTON_VERY_LONG_PUSH: break;
         case BUTTON_VERY_LONG_PUSH_RELEASED:

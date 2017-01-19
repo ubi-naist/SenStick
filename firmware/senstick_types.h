@@ -13,7 +13,7 @@ typedef enum {
     sensorShouldSleep = 0x00,
     sensorShouldWork  = 0x01,
     formattingStorage = 0x10,
-    enterDeepSleep    = 0x20,
+    shouldDeviceSleep    = 0x20,
     enterDFUmode      = 0x40,
     
     shouldReset       = 0xff

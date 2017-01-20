@@ -6,24 +6,37 @@
 #include <sdk_errors.h>
 #include <app_error.h>
 
+#include "senstick_util.h"
 #include "senstick_io_definition.h"
 #include "twi_manager.h"
 
-// twi0は9軸、twi1はその他センサーが接続するバス。
-const nrf_drv_twi_t twi0 = NRF_DRV_TWI_INSTANCE(1);
-const nrf_drv_twi_t twi  = NRF_DRV_TWI_INSTANCE(0);
+// twi0は9軸、twiはその他センサーが接続するバス。
+const nrf_drv_twi_t twi0 = NRF_DRV_TWI_INSTANCE(0);
+const nrf_drv_twi_t twi  = NRF_DRV_TWI_INSTANCE(1);
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
-    // TWI_MPU9250_ADDRESS, TWI_AK8963_ADDRESS はtwi0, その他はtwi1
+    // TWI_MPU9250_ADDRESS, TWI_AK8963_ADDRESS はtwi0, その他はtwi
     const nrf_drv_twi_t *p_twi = (address == TWI_MPU9250_ADDRESS || address == TWI_AK8963_ADDRESS) ? &twi0 : &twi;
-    return nrf_drv_twi_tx(p_twi, address, p_data, length, xfer_pending);
+    ret_code_t err_code = nrf_drv_twi_tx(p_twi, address, p_data, length, xfer_pending);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_TX(), err:0x%08x address:0x%02x.", err_code, address);
+    } else {
+//        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_TX(), address:0x%02x.", address);
+    }
+    return err_code;
 }
 
 ret_code_t TwiSlave_RX(uint8_t address, uint8_t *p_data, uint32_t length)
 {
     const nrf_drv_twi_t *p_twi = (address == TWI_MPU9250_ADDRESS || address == TWI_AK8963_ADDRESS) ? &twi0 : &twi;
-    return nrf_drv_twi_rx(p_twi, address, p_data, length);
+    ret_code_t err_code = nrf_drv_twi_rx(p_twi, address, p_data, length);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_RX(), err:0x%08x address:0x%02x.", err_code, address);
+    } else {
+//        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_RX(), address:0x%02x.", address);
+    }
+    return err_code;
 }
 
 
@@ -63,7 +76,6 @@ void initTWIManager(void)
     ret_code_t err_code;
     
     nrf_drv_twi_config_t config = NRF_DRV_TWI_DEFAULT_CONFIG;
-    config.frequency = NRF_TWI_FREQ_400K;
     
     // TWIインタフェース TWI0および1を使用。
     config.scl = PIN_NUMBER_TWI1_SCL;

@@ -51,6 +51,15 @@ bool initBrightnessSensor(void)
     return result;
 }
 
+void triggerBrightnessData(void)
+{
+    // 読み出しレジスタのアドレスを設定
+    ret_code_t err_code;
+    uint8_t data = 0x80 | (uint8_t)DataLow; // 1000_1100
+    err_code = nrf_drv_twi_tx(&twi, TWI_BH1780GLI_ADDRESS, &data, 1, false);
+    APP_ERROR_CHECK(err_code);
+}
+
 void getBrightnessData(BrightnessData_t *p_data)
 {
     /*
@@ -60,6 +69,7 @@ void getBrightnessData(BrightnessData_t *p_data)
     
     *p_data = (uint16_t)buff[1] << 8 | (uint16_t)buff[0];
      */
+    /*
     // 読み出しレジスタのアドレスを設定
     ret_code_t err_code;
     uint8_t data = 0x80 | (uint8_t)DataLow; // 1000_1100
@@ -67,8 +77,9 @@ void getBrightnessData(BrightnessData_t *p_data)
     APP_ERROR_CHECK(err_code);
     
     nrf_delay_ms(150); // 150ミリ秒待つ
-    
+    */
     // データを読み出し
+    ret_code_t err_code;
     uint8_t buffer[2];
 #ifdef NRF51
     err_code = nrf_drv_twi_rx(&twi, TWI_BH1780GLI_ADDRESS, buffer, 2, false);

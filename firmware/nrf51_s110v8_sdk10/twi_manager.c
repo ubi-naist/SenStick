@@ -13,12 +13,20 @@ nrf_drv_twi_t twi;
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
-    return nrf_drv_twi_tx(&twi, address, p_data, length, xfer_pending);
+    ret_code_t err_code = nrf_drv_twi_tx(&twi, address, p_data, length, xfer_pending);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_TX(), err:%d address:0x%0x.", err_code, address);
+    }
+    return err_code;
 }
 
 ret_code_t TwiSlave_RX(uint8_t address, uint8_t *p_data, uint32_t length)
 {
-    return nrf_drv_twi_rx(&twi, address, p_data, length, false);
+    ret_code_t err_code = nrf_drv_twi_rx(&twi, address, p_data, length, false);
+    if(err_code != NRF_SUCCESS) {
+        NRF_LOG_PRINTF_DEBUG("\nTwiSlave_RX(), err:%d address:0x%0x.", err_code, address);
+    }
+    return err_code;
 }
 
 

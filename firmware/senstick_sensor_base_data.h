@@ -22,7 +22,7 @@ typedef enum {
 } sensor_service_command_t;
 
 // センサーのサンプリング周期
-typedef uint16_t samplingDurationType;
+typedef int16_t samplingDurationType;
 
 // 設定キャラクタリスティクスのデータモデル
 typedef struct {

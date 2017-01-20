@@ -34,7 +34,11 @@
 #define TWI_DEFAULT_CONFIG_FREQUENCY 104857600
 // TWI0および1を使用する。
 #define TWI0_ENABLED 1
+//#define TWI0_USE_EASY_DMA 1
 #define TWI1_ENABLED 1
+//#define TWI1_USE_EASY_DMA 1
+//#define TWI_CONFIG_LOG_ENABLED 1
+
 // UARTは使用しない。
 #define UART_ENABLED 0
 

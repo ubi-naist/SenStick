@@ -278,9 +278,6 @@ int main(void)
 #ifdef NRF52
     err_code = fs_init();
     APP_ERROR_CHECK(err_code);
-
-    // DFUの設定情報をフラッシュ/メモリに保存するユーティリティ。
-    nrf_dfu_settings_init();
 #else // NRF51
     err_code = pstorage_init();
     APP_ERROR_CHECK(err_code);

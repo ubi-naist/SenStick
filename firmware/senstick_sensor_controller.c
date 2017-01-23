@@ -393,6 +393,8 @@ static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id)
         // ログを閉じる
         flash_mailbox();
         stopLogging();
+        // センサ設定情報の永続化処理
+        saveSensorSetting();
         // センサーの電源を落とす
         setSensorPower(false);
     }
@@ -698,8 +700,6 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
         case shouldDeviceSleep:
         case enterDFUmode:
             setSensorShoudlWork(false, new_log_id);
-            // センサ設定情報の永続化処理
-            saveSensorSetting();
             break;
         default:
             break;

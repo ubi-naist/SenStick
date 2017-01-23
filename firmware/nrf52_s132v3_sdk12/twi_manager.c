@@ -110,5 +110,10 @@ void initTWIManager(void)
 void twiPowerDown(void)
 {
     nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+    
+    nrf_drv_twi_disable(&twi0);
+    nrf_drv_twi_uninit(&twi0);
+    nrf_drv_twi_disable(&twi);
+    nrf_drv_twi_uninit(&twi);
 }
 

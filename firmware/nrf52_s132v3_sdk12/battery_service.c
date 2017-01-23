@@ -110,6 +110,10 @@ uint8_t getBatteryLevel(void)
     nrf_saadc_value_t value;
     ret_code_t err_code;
     err_code = nrf_drv_saadc_sample_convert(0, &value);
+    if(err_code != NRF_SUCCESS) {
+        return 50; // FIXME 仮の値を返しておく。
+    }
+    
     voltage = (int32_t)value;
     
     // 4.2V - 3.2V 電圧範囲で、残量は電圧にリニアで換算

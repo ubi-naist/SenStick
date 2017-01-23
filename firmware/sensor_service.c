@@ -42,9 +42,8 @@ static void onRWAuthReq(sensor_service_t *p_context, ble_evt_t *p_ble_evt)
         APP_ERROR_CHECK(err_code);
         
     } else if(p_auth_req->type == BLE_GATTS_AUTHORIZE_TYPE_WRITE) {
-        bool result = true;
         if( p_auth_req->request.write.handle == p_context->sensor_setting_char_handle.value_handle){
-            result = senstickSensorControllerWriteSetting(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
+            senstickSensorControllerWriteSetting(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
         } else if( p_auth_req->request.write.handle == p_context->sensor_logid_char_handle.value_handle) {
             senstickSensorControllerWriteLogID(p_context->device_type, p_auth_req->request.write.data, p_auth_req->request.write.len);
         } else {

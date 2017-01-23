@@ -14,6 +14,8 @@
 // 初期化関数。
 void initFlashMemory(void);
 
+bool isFlashBusy(void);
+
 void writeFlash(uint32_t address, uint8_t *data, uint8_t data_length);
 void readFlash(uint32_t address,  uint8_t *data, uint8_t data_length);
 

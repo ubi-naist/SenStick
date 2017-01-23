@@ -30,7 +30,7 @@ static void update_battery_service_battery_value(uint8_t battery_level )
     if(err_code != NRF_SUCCESS &&
        err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
        err_code != NRF_ERROR_INVALID_STATE) {
-        APP_ERROR_CHECK(err_code);
+//        APP_ERROR_CHECK(err_code);
     }
 }
 

@@ -18,6 +18,9 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
+    // 最初の読み出しデータがゼロになるので、開始前に空読み出しする。
+    AirPressureData_t data;
+    getPressureData(&data);
 }
 
 // センサーの値を読み込みます。

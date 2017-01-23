@@ -8,7 +8,9 @@
 #include <nrf_drv_spi.h>
 #include <app_util_platform.h>
 #include <app_error.h>
+#include <app_timer.h>
 
+#include "senstick_util.h"
 #include "senstick_io_definition.h"
 #include "spi_slave_mx25_flash_memory.h"
 
@@ -204,32 +206,19 @@ static void readDeviceID(flash_memory_context_t *p_context, uint32_t *p_data)
     *p_data = ((uint32_t)buffer[0] << 16) |  ((uint32_t)buffer[1] << 8) | ((uint32_t)buffer[2] << 0);
 }*/
 
-static bool IsFlashBusy(void)
-{
-    uint8_t status = 0;
-    readStatusRegister(&status);
-    return ((status & STATUS_REGISTER_WIP) != 0);
-}
-
 static void waitFlashReady(void)
 {
-    const int TIMEOUT_LOOP = 50; // 5 * 50 = 250msec
+    const int TIMEOUT_LOOP = 500; // 0.5 * 500 = 250msec
     
     int cnt = 0;
-    while( IsFlashBusy() ) {
-        nrf_delay_ms(5);
+    while( isFlashBusy() ) {
+        nrf_delay_us(500);
         cnt++;
         if(cnt > TIMEOUT_LOOP) {
             APP_ERROR_CHECK(NRF_ERROR_TIMEOUT);
             break;
         }
     }
-/*
-    static int max_count = 0;    
-    if(cnt > max_count) {
-        max_count = cnt;
-        NRF_LOG_PRINTF_DEBUG("waitFlashReady: %d.\n", max_count);
-    }*/
 }
 
 static void writeCommandWriteEnable(void)
@@ -240,7 +229,7 @@ static void writeCommandWriteEnable(void)
 static void writeStatusConfigrationRegister(flash_memory_context_t *p_context, uint8_t status, uint8_t config)
 {
     // Write in progressフラグをチェック
-    if( IsFlashBusy(p_context) ) {
+    if( isFlashBusy(p_context) ) {
         APP_ERROR_CHECK(NRF_ERROR_BUSY);
     }
     
@@ -278,23 +267,23 @@ static void rawWriteFlash(uint32_t address,  uint8_t *data, uint8_t data_length)
 {
     // アドレスチェック
     ASSERT(address < MX25L25635F_FLASH_SIZE);
-    ASSERT( ! IsFlashBusy() );
     
+    // フラッシュの準備待ち。
+    waitFlashReady();
     // weビットを立てる。
     writeCommandWriteEnable();
-    
     // 書き込み。32-bitアドレスモード。
     writeToSPISlaveWithAddress(FLASH_CMD_PP4B, address, data, data_length);
-    
-    waitFlashReady();
 }
 
 static void rawReadFlash(uint32_t address, uint8_t *data, uint8_t data_length)
 {
     // アドレスチェック
     ASSERT(address < MX25L25635F_FLASH_SIZE);
-    ASSERT( ! IsFlashBusy() );
-    
+
+    // フラッシュの準備待ち。
+    waitFlashReady();
+    // 読み込む。
     readFromSPISlaveWithAddress(FLASH_CMD_READ4B, address, data, data_length);
 }
 
@@ -352,14 +341,19 @@ void initFlashMemory(void)
     enableAddress4ByteMode();
 }
 
+bool isFlashBusy(void)
+{
+    uint8_t status = 0;
+    readStatusRegister(&status);
+    return ((status & STATUS_REGISTER_WIP) != 0);
+}
+
 void writeFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
 {
     // 末尾がフラッシュの領域を超える場合は、書き込み失敗
     ASSERT((address + size) < FLASH_BYTE_SIZE);
 
 //    NRF_LOG_PRINTF_DEBUG("writeFlash:0x%04x, %d\n", address, size);
-    
-    waitFlashReady();
     
     uint32_t index = 0;
     uint32_t write_address = address;
@@ -369,7 +363,7 @@ void writeFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
         int remainingSize  = (size - index);
         int page_size      = 256 - (write_address % 256);
         uint8_t write_size = (uint8_t) MIN(255, MIN(page_size, remainingSize));
-        // 書き込む
+        // 書き込む。
         rawWriteFlash(write_address, &(p_buffer[index]), write_size);
         // 書き込み位置を更新、全て書き終わるまで繰り返す
         index += write_size;
@@ -392,8 +386,6 @@ void readFlash(uint32_t address, uint8_t *p_buffer, uint8_t size)
     if(size == 0) {
         return ;
     }
-    
-    waitFlashReady();
     
     uint32_t index = 0;
     uint32_t read_address = address;
@@ -420,9 +412,7 @@ void erase4kSector(uint32_t address)
     // アドレスチェック
     ASSERT(address < MX25L25635F_FLASH_SIZE);
     
-//    NRF_LOG_PRINTF_DEBUG("erase4kSector:0x%04x\n",address);
-    
-    ASSERT( ! IsFlashBusy() );
+    waitFlashReady();
     
     // weビットを立てる。
     writeCommandWriteEnable();
@@ -431,10 +421,7 @@ void erase4kSector(uint32_t address)
     uint32ToByteArray(buffer, address);
     writeToSPISlave( FLASH_CMD_SE4B, buffer, sizeof(buffer));
     
-    waitFlashReady();
-    
-    // ワーストケース(120ミリ秒)をシミュレートするための、遅延。素の遅延30ミリ秒を引いて。
-//    nrf_delay_ms(90);
+//    NRF_LOG_PRINTF_DEBUG("erase4kSector:0x%04x\n",address);
 }
 
 void formatFlash(uint32_t address, int size)

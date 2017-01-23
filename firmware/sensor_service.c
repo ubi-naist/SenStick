@@ -222,10 +222,10 @@ void sensorService_handleBLEEvent(sensor_service_t *p_context, ble_evt_t * p_ble
     }
 }
 
-void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length)
+bool sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_data, uint16_t length)
 {
     if( ! p_context->is_sensor_realtime_data_notifying) {
-        return;
+        return false;
     }
 
     ble_gatts_hvx_params_t hvx_params;
@@ -238,8 +238,9 @@ void sensorServiceNotifyRealtimeData(sensor_service_t *p_context, uint8_t *p_dat
     hvx_params.p_len  = &length;
     hvx_params.p_data = p_data;
     
-//    ret_code_t err_code =
-    sd_ble_gatts_hvx(p_context->connection_handle, &hvx_params);
+    ret_code_t err_code;
+    err_code = sd_ble_gatts_hvx(p_context->connection_handle, &hvx_params);
+    return (err_code == NRF_SUCCESS);
 }
 
 // ログデータをNotifyします。失敗したらfalseを返します。

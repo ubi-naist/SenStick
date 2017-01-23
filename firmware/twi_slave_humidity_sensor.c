@@ -95,7 +95,6 @@ void triggerHumidityMeasurement(void)
     uint8_t data = TriggerRHMeasurement;
     err_code = TwiSlave_TX(TWI_SHT20_ADDRESS, &data, 1, false);
     APP_ERROR_CHECK(err_code);
-//    TriggerTempMeasurement  = 0xf3, //1111_0011, no master hold
 }
 
 // 計測時間中はI2Cバスを離さない。
@@ -119,21 +118,6 @@ void getHumidityData(HumidityData_t *p_data)
     // データをデコードする
     *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]); // & 0x07ff;
 //NRF_LOG_PRINTF_DEBUG("getHumidityData() 0x%04x\n", *p_data);
-    /*
-    ret_code_t err_code;
-    
-    // 読み出しターゲットアドレスを設定
-    buffer[0] = TriggerRHMeasurementHoldMaster;
-    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 1, true);
-    APP_ERROR_CHECK(err_code);
-    
-    // データを読み出し
-//    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 3, false);
-        err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 3, false);
-    APP_ERROR_CHECK(err_code);
-    
-//    *p_data = (uint16_t)(buffer[1] & 0x3f) << 8 | (uint16_t)buffer[0];
-     */
 }
 
 void triggerTemperatureMeasurement(void)
@@ -154,12 +138,5 @@ void getTemperatureData(TemperatureData_t *p_data)
     } else {
         NRF_LOG_PRINTF_DEBUG("\ngetHumidityData() err_code:0x%04x.", err_code);
     }
-    /*
-    uint8_t buffer[3];
-    readFromSHT20( TriggerTempMeasurementHoldMaster, buffer, 3);
-    
-    // データをデコードする
-    *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]); // & 0x07ff;
-     */
 //NRF_LOG_PRINTF_DEBUG("getTemperatureData() 0x%04x\n", *p_data);
 }

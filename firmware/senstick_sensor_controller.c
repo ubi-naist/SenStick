@@ -34,7 +34,7 @@
 #define MAILBOX_QUEUE_SIZE 45
 #else // NRF52
 // 消去max. 120ミリ秒 x 3センサー分、つまり360ミリ秒のうちに、3センサーx10ミリ秒サンプリング = 3 * 36 = 108
-#define MAILBOX_QUEUE_SIZE 250
+#define MAILBOX_QUEUE_SIZE 255
 #endif
 
 // TIMER割り込みプリスケーラ。16MHz / 2^4 = 1MHz。
@@ -210,21 +210,23 @@ static bool notifyLogDataOfDevice(sensor_device_t device_type)
     return didNotified;
 }
 
-static void sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_data, uint8_t data_length)
+static bool sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_data, uint8_t data_length)
 {
     // BLEで送るシリアライズされたデータに変換
     uint8_t buffer[GATT_MAX_DATA_LENGTH];
     const senstick_sensor_base_t *ptr = m_p_sensor_bases[deviceType];
     uint8_t length = (ptr->getBLEDataHandler)(buffer, p_raw_data);
     // 通知
-    sensorServiceNotifyRealtimeData(&(context.services[deviceType]), buffer, length);
+    return sensorServiceNotifyRealtimeData(&(context.services[deviceType]), buffer, length);
 }
 
 static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id);
-static void flash_mailbox()
+static void flash_mailbox(void)
 {
     ret_code_t err_code;
     uint8_t buffer[MAILBOX_ITEM_SIZE];
+
+//    uint32_t prev_time = app_timer_cnt_get();
     
     while(true) {
         // キューの深さ表示
@@ -263,6 +265,15 @@ static void flash_mailbox()
             }
         }
     }
+
+    // 処理時間表示
+    /*
+    uint32_t now_time = app_timer_cnt_get();
+    uint32_t dur;
+    app_timer_cnt_diff_compute(now_time, prev_time, &dur);
+    prev_time = now_time;
+    NRF_LOG_PRINTF_DEBUG("\n  takes: %d.", dur);
+    */
     
     // タスクフラグをクリア
     CRITICAL_REGION_ENTER();
@@ -562,53 +573,6 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
     if( ! isValidSensorServiceCommand((uint8_t)setting.command)) {
         return false;
     }
-    /*
-    // サンプリング周期、レンジ設定の正当性確認(センサーごとの)
-    // 本来はここにベタ書きするものではない。本来はセンサごとに処理を委譲すべき。
-    // I2Cバスを共有している都合、センサー単体で値の領域判定ができない部分があるので、それはここで処理する。
-    switch(device_type) {
-        case AccelerationSensor:  // I2Cバスを330マイクロ秒使う。
-        case GyroSensor:          // I2Cバスを330マイクロ秒使う。
-        case MagneticFieldSensor: // I2Cバスを360マイクロ秒使う。
-            // これらのセンサーは20ミリ秒以上の周期。
-            if( setting.samplingDuration < 20) {
-                return false;
-            }
-            // ただし、UV,気圧、気圧および湿度が有効になっている場合は、200ミリ秒以下の周期はうけつけない
-            if( setting.samplingDuration < 200 &&
-               (context.sensorSetting[UltraVioletSensor].command != sensorServiceCommand_stop ||
-                context.sensorSetting[AirPressureSensor].command != sensorServiceCommand_stop ||
-                context.sensorSetting[BrightnessSensor].command  != sensorServiceCommand_stop ||
-                context.sensorSetting[HumidityAndTemperatureSensor].command != sensorServiceCommand_stop
-               )
-              ) {
-                return false;
-            }
-            break;
-        case UltraVioletSensor:            // I2Cバスを170マイクロ秒使う。
-        case AirPressureSensor:            // I2Cバスを500マイクロ秒使う。
-        case BrightnessSensor:             // 150ミリ秒 I2Cバスを専有する
-        case HumidityAndTemperatureSensor: // 21ミリ秒 I2Cバスを専有する
-            // 周期は200ミリ秒以上
-            if( setting.samplingDuration < 200 ) {
-                return false;
-            }
-            // 他のセンサーに、有効で200ミリ秒以下のものがいたら、センサーは有効にはできない
-            if((setting.command != sensorServiceCommand_stop) &&
-               ((context.sensorSetting[AccelerationSensor].command  != sensorServiceCommand_stop && context.sensorSetting[AccelerationSensor].samplingDuration  < 200 ) ||
-                (context.sensorSetting[GyroSensor].command          != sensorServiceCommand_stop && context.sensorSetting[GyroSensor].samplingDuration          < 200 ) ||
-                (context.sensorSetting[MagneticFieldSensor].command != sensorServiceCommand_stop && context.sensorSetting[MagneticFieldSensor].samplingDuration < 200 )
-               )
-              ) {
-                return false;
-            }
-            break;
-
-        default:
-            // 未知のデバイスタイプは除外
-            return false;
-    }
-     */
     
     // センササンプリング周期の制約条件。
     // 本来はここにベタ書きするものではない。本来はセンサごとに処理を委譲すべき。

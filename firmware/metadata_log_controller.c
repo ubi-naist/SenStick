@@ -16,6 +16,8 @@
 #include "senstick_device_definition.h"
 #include "senstick_log_definition.h"
 
+#include "senstick_util.h"
+#include "senstick_rtc.h"
 #include "senstick_data_model.h"
 
 // 領域フォーマット済を示すint32のマジックワード, ファームウェアのリビジョンで変化する。
@@ -39,6 +41,9 @@ static void metaDataLogRead(uint8_t logid, meta_log_content_t *p_content)
     const uint32_t target_address = getTargetAddress(logid);
     readFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogRead:hours:%d minutes:%d\n", p_content->date.hours,p_content->date.minutes);
+//    NRF_LOG_PRINTF_DEBUG("\nmetaDataLogRead().");
+//    debugPrintRTCDateTime(&p_content->date);
+    
 }
 
 static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content)
@@ -66,6 +71,9 @@ static void metaDataLogWrite(bool is_closed, uint8_t logid, ble_date_time_t *p_d
     strncpy(content.text, text, sizeof(content.text));
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogWrite: sizeof(content.text) %d\n", sizeof(content.text));
     metaDataLogWriteContext(logid, &content);
+
+//    NRF_LOG_PRINTF_DEBUG("\nmetaDataLogWrite().");
+//    debugPrintRTCDateTime(&content.date);
 }
 
 static void closeLog(uint8_t logid)

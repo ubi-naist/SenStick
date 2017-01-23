@@ -102,7 +102,7 @@ void initSenstickRTC(void)
     APP_ERROR_CHECK(err_code);
 }
 
-void setSenstickRTCDateTime(ble_date_time_t *p_date)
+void setSenstickRTCDateTime(const ble_date_time_t *p_date)
 {
     // ctimeに変換。
     struct tm c_time_date;
@@ -111,6 +111,8 @@ void setSenstickRTCDateTime(ble_date_time_t *p_date)
     _rtcContext.current_time       = mktime(&c_time_date);
     // 現在のRTC1の値を基準とする。
     _rtcContext.previous_rtc_value = app_timer_cnt_get();
+    
+//    NRF_LOG_PRINTF_DEBUG("\nsetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
 }
 
 void getSenstickRTCDateTime(ble_date_time_t *p_date)
@@ -123,6 +125,11 @@ void getSenstickRTCDateTime(ble_date_time_t *p_date)
     // ctimeをble_date_time_t に変換。
     convertCTimeToBLEDateTime(&ctime, p_date);
     
-    NRF_LOG_PRINTF_DEBUG("\ngetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
+//    NRF_LOG_PRINTF_DEBUG("\ngetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
 }
 
+// 時刻をデバッグ出力します。
+void debugPrintRTCDateTime(const ble_date_time_t *p_date)
+{
+    NRF_LOG_PRINTF_DEBUG("\nble_date_time: y:%d m:%d d:%d h:%d m:%d.", p_date->year, p_date->month, p_date->day, p_date->hours, p_date->minutes);
+}

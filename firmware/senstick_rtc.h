@@ -10,8 +10,11 @@
 // 時間計測の初期処理。
 void initSenstickRTC(void);
 
-// 時計時刻を設定/取得します。
-void setSenstickRTCDateTime(ble_date_time_t *p_date);
+// 時計時刻を設定します。
+void setSenstickRTCDateTime(const ble_date_time_t *p_date);
+// 時計時刻を取得します。
 void getSenstickRTCDateTime(ble_date_time_t *p_date);
+// 時刻をデバッグ出力します。
+void debugPrintRTCDateTime(const ble_date_time_t *p_date);
 
 #endif /* senstick_rtc_h */

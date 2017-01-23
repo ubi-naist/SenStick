@@ -13,6 +13,9 @@
 #include <sdk_errors.h>
 #include <app_error.h>
 
+#include "senstick_rtc.h"
+#include "senstick_util.h"
+
 #include "senstick_control_service.h"
 #include "senstick_data_model.h"
 
@@ -83,6 +86,10 @@ static uint8_t onRWAuthReq_rtc_char(uint8_t *p_buffer, uint16_t length)
 
     ble_date_time_t date_time;
     senstick_getCurrentDateTime(&date_time);
+    
+//    NRF_LOG_PRINTF_DEBUG("\nonRWAuthReq_rtc_char().");
+//    debugPrintRTCDateTime(&date_time);
+    
     return ble_date_time_encode(&date_time, p_buffer);
 }
 

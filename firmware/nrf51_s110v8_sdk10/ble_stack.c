@@ -8,7 +8,7 @@
 #include "ble_stack.h"
 
 // Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device
-#define IS_SRVC_CHANGED_CHARACT_PRESENT  0
+#define IS_SRVC_CHANGED_CHARACT_PRESENT 1
 
 void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandler)
 {

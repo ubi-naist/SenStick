@@ -85,7 +85,9 @@ __WEAK bool nrf_dfu_enter_check(void)
 */
 bool nrf_dfu_enter_check(void)
 {
-    return (NRF_POWER->GPREGRET == BOOTLOADER_DFU_START);
+    bool shouldEnterDFU = (NRF_POWER->GPREGRET == BOOTLOADER_DFU_START);
+    NRF_POWER->GPREGRET = 0; // マジックワードを消してDFUに入らないようにする。
+    return shouldEnterDFU;
 }
 
 /**@brief Function for application main entry.

@@ -13,6 +13,7 @@
 
 #include "twi_slave_humidity_sensor.h"
 
+#include "senstick_util.h"
 #include "senstick_sensor_base_data.h"
 #include "senstick_io_definition.h"
 
@@ -24,8 +25,8 @@
 typedef enum {
     TriggerTempMeasurementHoldMaster  = 0xe3, //1110_0011
     TriggerRHMeasurementHoldMaster    = 0xe5, //1110_0101
-    TriggerTempMeasurement  = 0xf3, //1111_0011
-    TriggerRHMeasurement    = 0xf5, //1111_0101
+    TriggerTempMeasurement  = 0xf3, //1111_0011, no master hold
+    TriggerRHMeasurement    = 0xf5, //1111_0101, no master hold
     WriteUserRegister       = 0xe6, //1110_0110
     ReadUserRegister        = 0xe7, //1110_0111
     SoftReset               = 0xfe, //1111_1110
@@ -87,40 +88,55 @@ bool initHumiditySensor(void)
     return result;
 }
 
+// 湿度及び温度の測定トリガ。
+void triggerHumidityMeasurement(void)
+{
+    ret_code_t err_code;
+    uint8_t data = TriggerRHMeasurement;
+    err_code = TwiSlave_TX(TWI_SHT20_ADDRESS, &data, 1, false);
+    APP_ERROR_CHECK(err_code);
+}
+
 // 計測時間中はI2Cバスを離さない。
 // 相対湿度計測 12-bit精度 typ 22ミリ秒 max 30ミリ秒
 // 温度計測 14-bit精度 typ 66ミリ秒 max 85ミリ秒
 void getHumidityData(HumidityData_t *p_data)
 {
+    ret_code_t err_code;
+    uint8_t buffer[3];
+    err_code = TwiSlave_RX(TWI_SHT20_ADDRESS, buffer, 3);
+    if(err_code == NRF_SUCCESS) {
+        *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]);
+    } else {
+        NRF_LOG_PRINTF_DEBUG("\ngetHumidityData() err_code:0x%04x.", err_code);
+    }
+    /*
     uint8_t buffer[3];
     readFromSHT20(TriggerRHMeasurementHoldMaster, buffer, 3);
+    */
     
     // データをデコードする
     *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]); // & 0x07ff;
 //NRF_LOG_PRINTF_DEBUG("getHumidityData() 0x%04x\n", *p_data);
-    /*
+}
+
+void triggerTemperatureMeasurement(void)
+{
     ret_code_t err_code;
-    
-    // 読み出しターゲットアドレスを設定
-    buffer[0] = TriggerRHMeasurementHoldMaster;
-    err_code = nrf_drv_twi_tx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 1, true);
+    uint8_t data = TriggerTempMeasurement;
+    err_code = TwiSlave_TX(TWI_SHT20_ADDRESS, &data, 1, false);
     APP_ERROR_CHECK(err_code);
-    
-    // データを読み出し
-//    err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 3, false);
-        err_code = nrf_drv_twi_rx(p_context->p_twi, TWI_SHT20_ADDRESS, buffer, 3, false);
-    APP_ERROR_CHECK(err_code);
-    
-//    *p_data = (uint16_t)(buffer[1] & 0x3f) << 8 | (uint16_t)buffer[0];
-     */
 }
 
 void getTemperatureData(TemperatureData_t *p_data)
 {
+    ret_code_t err_code;
     uint8_t buffer[3];
-    readFromSHT20( TriggerTempMeasurementHoldMaster, buffer, 3);
-    
-    // データをデコードする
-    *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]); // & 0x07ff;
+    err_code = TwiSlave_RX(TWI_SHT20_ADDRESS, buffer, 3);
+    if(err_code == NRF_SUCCESS) {
+        *p_data = (((uint16_t)buffer[0] << 8) | (uint16_t)buffer[1]);
+    } else {
+        NRF_LOG_PRINTF_DEBUG("\ngetHumidityData() err_code:0x%04x.", err_code);
+    }
 //NRF_LOG_PRINTF_DEBUG("getTemperatureData() 0x%04x\n", *p_data);
 }

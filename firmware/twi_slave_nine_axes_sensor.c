@@ -11,6 +11,7 @@
 #include "twi_manager.h"
 #include "twi_slave_nine_axes_sensor.h"
 
+#include "senstick_util.h"
 #include "senstick_sensor_base_data.h"
 #include "senstick_io_definition.h"
 
@@ -52,6 +53,7 @@ typedef enum {
 /**
  * private methods
  */
+static bool _isActive;
 
 // MPU9250に書き込みます。
 // TWI_MPU9250_ADDRESS は senstick_io_definitions.h で定義されているI2Cバスのアドレスです。
@@ -83,6 +85,7 @@ static void readFromAK8963(AK8963Register_t target_register, uint8_t *data, uint
 
 bool initNineAxesSensor(void)
 {
+    _isActive = false;
     
     // PWR_MGMT_1
     // D7: H_RESET          1   1- 内部レジスタをリセットしてデフォルト値にする。
@@ -141,6 +144,11 @@ bool initNineAxesSensor(void)
 
 void sleepNineAxesSensor(void)
 {
+    if( ! _isActive ) {
+        return;
+    }
+    _isActive = false;
+    
     // PWR_MGMT_2
     // D7: -
     // D6: -
@@ -180,6 +188,11 @@ void sleepNineAxesSensor(void)
 
 void awakeNineAxesSensor(void)
 {
+    if( _isActive ) {
+        return;
+    }
+    _isActive = true;
+    
     // PWR_MGMT_1
     // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
     // D6: SLEEP            0   セットすれば、チップはスリープモードに入る。
@@ -329,4 +342,6 @@ void getMagneticFieldData(uint8_t *p_data)
     p_magneticField->x = readInt16AsLittleEndian(&(buffer[0]));
     p_magneticField->y = readInt16AsLittleEndian(&(buffer[2]));
     p_magneticField->z = readInt16AsLittleEndian(&(buffer[4]));
+    
+//    NRF_LOG_PRINTF_DEBUG("\nmag x:%d y:%d z:%d.", p_magneticField->x, p_magneticField->y, p_magneticField->z);
 }

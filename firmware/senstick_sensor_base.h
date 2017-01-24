@@ -14,7 +14,10 @@ typedef bool (* initSensorHandlerType)(void);
 // センサーのwakeup/sleepを指定します
 typedef void (* setSensorWakeupHandlerType)(bool shouldWakeUp, const sensor_service_setting_t *p_setting);
 // センサーの値を読み込みます。
-typedef uint8_t (* getSensorDataHandlerType)(uint8_t *p_buffer);
+// duration_msはセンサ開始からの経過時間をミリ秒で、0カラスタートしてタイマ割り込み周期刻みで与えます。
+// 返り値は、有効なデータ長を示します。センサの値読み込み処理が継続中であれば、0を返します。
+// 呼び出し側は、時間をおいて、0以外の値が返ってくるまで、このメソッドを呼び出し続けます。
+typedef uint8_t (* getSensorDataHandlerType)(uint8_t *p_buffer, samplingDurationType duration_ms);
 // srcとdstのセンサデータの最大値/最小値をp_srcに入れます。p_srcは破壊されます。
 typedef void (* getMaxMinValueHandlerType)(bool isMax, uint8_t *p_src, uint8_t *p_dst);
 // センサ構造体データをBLEのシリアライズしたバイナリ配列に変換します。

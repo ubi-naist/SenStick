@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>revision</key>
+	<key>nrf51_revision</key>
 	<string>rev 1.04</string>
-	<key>filename</key>
+	<key>nrf51_firmware</key>
 	<string>senstick_xxaa_s110_release_rev104.zip</string>
+	<key>nrf52_revision</key>
+	<string>rev 1.06</string>
+	<key>nrf52_filename</key>
+	<string>senstick_xxaa_s132_release_rev106.zip</string>
 </dict>
 </plist>

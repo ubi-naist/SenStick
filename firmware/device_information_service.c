@@ -1,7 +1,11 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifdef NRF52
+#else // NRF51
 #include <nrf51.h>
+#endif
+
 #include <ble_dis.h>
 #include <app_error.h>
 #include <sdk_errors.h>

@@ -32,6 +32,7 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
     var dfuController: DFUServiceController?
     var didEnterDFUmode             = false
     var didStartingFirmwareUpdating = false
+    var dfuAdvertisingName: String = ""
     
     // View controller life cycle
     
@@ -47,12 +48,20 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
         self.progressTextLabel.text   = ""
         self.dfuMessageTextLabel.text = ""
         
-        // plistを開いて更新ファーム情報を読み取る
+        // plistを開いて更新ファーム情報を読み取る。
         if let path = Bundle.main.path(forResource: "firmwareInfo", ofType: "plist") {
             let dict = NSDictionary(contentsOfFile: path)
-            firmwareRevision = dict!.value(forKey: "revision")! as! String
-            let resourcePath = Bundle.main.resourcePath! as NSString
-            firmwareFilePath = resourcePath.appendingPathComponent( dict!.value(forKey: "filename") as! String)
+            if (self.device?.deviceInformationService?.hardwareRevision.hasPrefix("rev 1"))! { // nRF51
+                dfuAdvertisingName = "ActDfu"
+                firmwareRevision = dict!.value(forKey: "nrf51_revision")! as! String
+                let resourcePath = Bundle.main.resourcePath! as NSString
+                firmwareFilePath = resourcePath.appendingPathComponent( dict!.value(forKey: "nrf51_filename") as! String)
+            } else { // nRF52
+                dfuAdvertisingName = "ACT-DFU2"
+                firmwareRevision = dict!.value(forKey: "nrf52_revision")! as! String
+                let resourcePath = Bundle.main.resourcePath! as NSString
+                firmwareFilePath = resourcePath.appendingPathComponent( dict!.value(forKey: "nrf52_filename") as! String)
+            }
         }
         
         // ファームの番号確認。最新でなければ、更新ボタンを有効に
@@ -89,9 +98,8 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
     {
         didStartingFirmwareUpdating = true
         
-        let firmware = DFUFirmware(urlToZipFile: URL(fileURLWithPath: self.firmwareFilePath))
-        let initiator = DFUServiceInitiator(centralManager: self.device!.manager, target: peripheral)
-        _ = initiator.withFirmwareFile(firmware!)
+        let firmware  = DFUFirmware(urlToZipFile: URL(fileURLWithPath: self.firmwareFilePath))
+        let initiator = DFUServiceInitiator(centralManager: self.device!.manager, target: peripheral).with(firmware: firmware!)
         initiator.logger           = self
         initiator.delegate         = self
         initiator.progressDelegate = self
@@ -119,7 +127,7 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
         
         // 切断処理、デリゲートを設定
         self.device!.manager.delegate = self
-        self.device!.cancelConnection()
+//        self.device!.cancelConnection() // 自分から切断せず、デバイス側からの切断(DFUモードに入る)を待つ。
 
         // この後のDFU更新処理は、BLEデバイスの切断イベントの中で継続する
 
@@ -150,7 +158,8 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
     {
         // MAGIC WORD, DFUのアドバタイジング時のローカルネームで判定
       if let localName = advertisementData[CBAdvertisementDataLocalNameKey] {
-        if localName as! String == "ActDfu" {
+        debugPrint("localName \(localName) peripheral:\(peripheral)")
+        if localName as! String == dfuAdvertisingName {
             self.device!.manager.stopScan()
             performDfu(peripheral)
         }
@@ -168,7 +177,7 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
     }
     
     // DFUServiceDelegate
-    func didStateChangedTo(_ state:DFUState) {
+    func dfuStateDidChange(to state: DFUState) {
         switch state {
             case .connecting: break
             case .starting: break
@@ -182,24 +191,17 @@ class DeviceInformationViewController : UIViewController, LoggerDelegate, DFUSer
                 showDialogAndDismiss("完了", message: "ファームウェア更新完了")
             case .aborted:
                 showDialogAndDismiss("エラー", message: "アボート")
-            case .signatureMismatch:
-                showDialogAndDismiss("エラー", message: "署名の不一致")
-            case .operationNotPermitted:
-                showDialogAndDismiss("エラー", message: "操作の許可がありません")
-            case .failed:
-                showDialogAndDismiss("エラー", message: "失敗")
         }
     }
 
-    func didErrorOccur(_ error:DFUError, withMessage message:String)
+    func dfuError(_ error: DFUError, didOccurWithMessage message: String)
     {
         debugPrint("\(#function) \(message)")
         showDialogAndDismiss("エラー", message: message)
     }
     
     // DFUProgressDelegate
-    func onUploadProgress(_ part:Int, totalParts:Int, progress:Int, currentSpeedBytesPerSecond:Double, avgSpeedBytesPerSecond:Double)
-    {
+    func dfuProgressDidChange(for part: Int, outOf totalParts: Int, to progress: Int, currentSpeedBytesPerSecond: Double, avgSpeedBytesPerSecond: Double) {
         self.progressTextLabel.text = "\(progress)%"
         self.progressBar.progress = Float(progress) / Float(100)
     }

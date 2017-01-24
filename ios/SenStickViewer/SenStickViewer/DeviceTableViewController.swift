@@ -16,6 +16,7 @@ import SenStickSDK
 class DeviceListTableViewController: UITableViewController, SenStickDeviceDelegate {
     
     var detailViewController: DetailViewController? = nil
+    var selectedDevice: SenStickDevice?
     
     // MARK: - View life cycle
     override func viewDidLoad() {
@@ -59,8 +60,7 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dataview = segue.destination as? SensorDataViewController {
-            let indexPath = self.tableView.indexPathForSelectedRow!
-            dataview.device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
+            dataview.device = self.selectedDevice!
         }
     }
     
@@ -96,10 +96,10 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let device = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
-
+        self.selectedDevice = SenStickDeviceManager.sharedInstance.devices[indexPath.row]
+        
         // 接続していれば画面遷移
-        if device.isConnected {
+        if self.selectedDevice!.isConnected {
             performSegue(withIdentifier: "dataView", sender: self)
         } else {
             // 今のVCを半透明、操作無効
@@ -107,12 +107,12 @@ class DeviceListTableViewController: UITableViewController, SenStickDeviceDelega
             self.tableView.isUserInteractionEnabled = false
             self.refreshControl?.endRefreshing()
             
-            device.delegate = self
-            device.connect()
+            self.selectedDevice!.delegate = self
+            self.selectedDevice!.connect()
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(5 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
-                if !device.isConnected {
-                    device.cancelConnection()
+                if !self.selectedDevice!.isConnected {
+                    self.selectedDevice!.cancelConnection()
                     self.showAlert()
                 }
             })

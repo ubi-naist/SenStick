@@ -21,47 +21,41 @@
 */
 
 class LoggerHelper {
-    fileprivate var logger:LoggerDelegate?
+    private var logger: LoggerDelegate?
     
-    init(_ logger:LoggerDelegate?) {
+    init(_ logger: LoggerDelegate?) {
         self.logger = logger
     }
     
-    func d(_ message:String) {
-        log(withLevel: .debug, andMessage: message)
+    func d(_ message: String) {
+        logger?.logWith(.debug, message: message)
     }
     
-    func v(_ message:String) {
-        log(withLevel: .verbose, andMessage: message)
+    func v(_ message: String) {
+        logger?.logWith(.verbose, message: message)
     }
     
-    func i(_ message:String) {
-        log(withLevel: .info, andMessage: message)
+    func i(_ message: String) {
+        logger?.logWith(.info, message: message)
     }
     
-    func a(_ message:String) {
-        log(withLevel: .application, andMessage: message)
+    func a(_ message: String) {
+        logger?.logWith(.application, message: message)
     }
     
-    func w(_ message:String) {
-        log(withLevel: .warning, andMessage: message)
+    func w(_ message: String) {
+        logger?.logWith(.warning, message: message)
     }
     
-    func e(_ message:String) {
-        log(withLevel: .error, andMessage: message)
+    func e(_ message: String) {
+        logger?.logWith(.error, message: message)
     }
     
-    func w(_ error:Error) {
-        log(withLevel: .warning, andMessage: "Error \((error as NSError).code): \(error.localizedDescription)")
+    func w(_ error: Error) {
+        logger?.logWith(.warning, message: "Error \((error as NSError).code): \(error.localizedDescription)")
     }
     
-    func e(_ error:Error) {
-        log(withLevel: .error, andMessage: "Error \((error as NSError).code): \(error.localizedDescription)")
-    }
-    
-    fileprivate func log(withLevel aLevel: LogLevel, andMessage aMessage: String) {
-        if self.logger != nil {
-            logger!.logWith(aLevel, message: aMessage)
-        }
+    func e(_ error: Error) {
+        logger?.logWith(.error, message: "Error \((error as NSError).code): \(error.localizedDescription)")
     }
 }

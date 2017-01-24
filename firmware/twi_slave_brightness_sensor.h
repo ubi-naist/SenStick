@@ -15,6 +15,7 @@ bool initBrightnessSensor(void);
 
 // 単位 lx
 // 変換時間約150ミリ秒
+void triggerBrightnessData(void);
 void getBrightnessData(BrightnessData_t *p_data);
 
 #endif /* twi_slave_brightness_sensor_h */

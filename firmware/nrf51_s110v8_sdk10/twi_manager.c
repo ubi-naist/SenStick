@@ -6,6 +6,7 @@
 #include <sdk_errors.h>
 #include <app_error.h>
 
+#include "senstick_util.h"
 #include "senstick_io_definition.h"
 #include "twi_manager.h"
 

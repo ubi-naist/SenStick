@@ -9,7 +9,10 @@
 #ifndef senstick_util_h
 #define senstick_util_h
 
+#ifdef NRF52
 #include <sdk_config.h>
+#endif
+
 #include <nrf_log.h>
 
 #ifdef DEBUG

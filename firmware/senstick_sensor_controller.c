@@ -31,7 +31,7 @@
 #define MAILBOX_ITEM_SIZE  (MAX_SENSOR_RAW_DATA_SIZE +2)
 
 #ifdef NRF51
-#define MAILBOX_QUEUE_SIZE 45
+#define MAILBOX_QUEUE_SIZE 40
 #else // NRF52
 // 消去max. 120ミリ秒 x 3センサー分、つまり360ミリ秒のうちに、3センサーx10ミリ秒サンプリング = 3 * 36 = 108
 #define MAILBOX_QUEUE_SIZE 255
@@ -230,14 +230,14 @@ static void flash_mailbox(void)
     
     while(true) {
         // キューの深さ表示
-        /*
+
         static uint32_t queue_length = 1;
         uint32_t length = app_mailbox_length_get (&m_mailbox);
         if( length > queue_length ) {
             queue_length = length;
             NRF_LOG_PRINTF_DEBUG("queue: %d.\n", queue_length);
         }
-         */
+
         // デキュー
         err_code = app_mailbox_get(&m_mailbox, buffer);
         if(err_code == NRF_ERROR_NO_MEM) {
@@ -583,10 +583,19 @@ bool senstickSensorControllerWriteSetting(sensor_device_t device_type, uint8_t *
         case AccelerationSensor:  // I2Cバスを330マイクロ秒使う。
         case GyroSensor:          // I2Cバスを330マイクロ秒使う。
         case MagneticFieldSensor: // I2Cバスを360マイクロ秒使う。
+#ifdef NRF52
             // これらのセンサーは10ミリ秒以上の周期。
             if( setting.samplingDuration < 10) {
                 return false;
             }
+#else // NRF51, 16kB
+            // フラッシュのセクタ消去Typ.30ミリ秒の条件で、30ミリ秒サンプリングでメールボックスの深さは10に達する。
+            // ワースト120ミリ秒、またメールボックスは40までなので、サンプリング周期の上限は30ミリ秒が限度。
+            if( setting.samplingDuration < 30) {
+                return false;
+            }
+            
+#endif
             break;
 
         case UltraVioletSensor:            // I2Cバスを170マイクロ秒使う。

@@ -8,7 +8,6 @@
 #include <app_error.h>
 #include <app_timer.h>
 #include <sdk_errors.h>
-#include <sdk_config.h>
 
 #include "senstick_rtc.h"
 
@@ -43,7 +42,12 @@ void updateCurrentTime(void)
     }
     
     // RTCを読み出し、前回との差分を計算する。RTC1カウンタ(24ビット)がラウンドアップしているかもしれないので、1<<24を足して剰余を求め、常に正の差分とする。
-    int rtc_value = app_timer_cnt_get();
+    uint32_t rtc_value;
+#ifdef NRF52
+    rtc_value = app_timer_cnt_get();
+#else // NRF51, SDK10
+    app_timer_cnt_get(&rtc_value);
+#endif
     int duration  = (rtc_value - _rtcContext.previous_rtc_value + (1 << 24)) % (1 << 24);
     
     // 秒数を追加
@@ -110,8 +114,11 @@ void setSenstickRTCDateTime(const ble_date_time_t *p_date)
     // 秒数に変換
     _rtcContext.current_time       = mktime(&c_time_date);
     // 現在のRTC1の値を基準とする。
+#ifdef NRF52
     _rtcContext.previous_rtc_value = app_timer_cnt_get();
-    
+#else // NRF51, SDK10
+    app_timer_cnt_get((uint32_t *)&_rtcContext.previous_rtc_value);
+#endif
 //    NRF_LOG_PRINTF_DEBUG("\nsetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
 }
 

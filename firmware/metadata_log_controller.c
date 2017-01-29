@@ -170,13 +170,13 @@ uint8_t metaDataLogReadAbstractText(uint8_t logid, char *text, uint8_t length)
     return MIN(length, strlen(content.text));
 }
 
-void metaDatalog_observeControlCommand(senstick_control_command_t old_command, senstick_control_command_t new_command, uint8_t new_log_id)
+void metaDatalog_observeControlCommand(senstick_control_command_t old_command, senstick_control_command_t new_command, bool shouldLogging, uint8_t new_log_id)
 {
     ble_date_time_t datetime;
     char txt[21];
 
     // ログ終了時にclosedフラグを落とす
-    if(old_command == sensorShouldWork) {
+    if(shouldLogging && (old_command == sensorShouldWork)) {
         closeLog(new_log_id -1); // log id は+1されているので、閉じる対象ログIDは -1 したもの。
         // 記録終了時にログヘッダの最大値を確認する, disk full
         if( new_log_id >= MAX_NUM_OF_LOG ) {
@@ -188,9 +188,11 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
         case sensorShouldSleep:
             break;
         case sensorShouldWork:
-            senstick_getCurrentDateTime(&datetime);
-            senstick_getCurrentLogAbstractText(txt, sizeof(txt));
-            metaDataLogWrite(false, new_log_id, &datetime, txt);
+            if(shouldLogging) {
+                senstick_getCurrentDateTime(&datetime);
+                senstick_getCurrentLogAbstractText(txt, sizeof(txt));
+                metaDataLogWrite(false, new_log_id, &datetime, txt);
+            }
 //            NRF_LOG_PRINTF_DEBUG("metaDatalog_observeControlCommand:hour:%d min:%d\n", datetime.hours, datetime.minutes);
             break;
         case formattingStorage:

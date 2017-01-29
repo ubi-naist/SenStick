@@ -18,6 +18,7 @@ typedef enum {
 typedef enum {
     sensorServiceCommand_stop                = 0x00,
     sensorServiceCommand_sensing             = 0x01,
+    sensorServiceCommand_logging             = 0x02,
     sensorServiceCommand_sensing_and_logging = 0x03,
 } sensor_service_command_t;
 

@@ -171,11 +171,15 @@ void senstick_setControlCommand(senstick_control_command_t command)
         return;
     }
     
-    // ログ取得できるセンサーがない場合(センサーがハードウェア無効、ログ/リアルタイム動作にない)、動作開始させません。
-    uint8_t numOfWillLoggingSensors = senstickSensorControllerGetNumOfLoggingReadySensor();
-    if(command == sensorShouldWork && numOfWillLoggingSensors == 0) {
+    // 動作するセンサーがない場合は、動作開始させません。
+    uint8_t numOfActiveSensors = senstickSensorControllerGetNumOfActiveSensor();
+    if(command == sensorShouldWork && numOfActiveSensors == 0) {
         return;
     }
+    
+    // ログ取得するセンサ数を取得する。
+    uint8_t numOfLoggingSensors = senstickSensorControllerGetNumOfLoggingReadySensor();
+    bool shouldStartLogging = (numOfLoggingSensors > 0);
     
     // コマンドの実行
     // 新旧コマンドを保存
@@ -188,8 +192,8 @@ void senstick_setControlCommand(senstick_control_command_t command)
     const uint8_t new_log_id = senstick_getCurrentLogCount();
     
     senstickControlService_observeControlCommand(new_command);
-    senstickSensorController_observeControlCommand(new_command, new_log_id);
-    metaDatalog_observeControlCommand(old_command, new_command, new_log_id);
+    senstickSensorController_observeControlCommand(new_command, shouldStartLogging, new_log_id);
+    metaDatalog_observeControlCommand(old_command, new_command, shouldStartLogging, new_log_id);
     ledDriver_observeControlCommand(new_command);
 
     // 本当はモデルに書くべきではないけど、コントローラの機能をここに直書き。
@@ -197,8 +201,10 @@ void senstick_setControlCommand(senstick_control_command_t command)
         case sensorShouldSleep:
             break;
         case sensorShouldWork:
-            // ログカウントを更新
-            senstick_setCurrentLogCount( context.logCount + 1);
+            // ログ取得するならば、ログカウントを更新
+            if( shouldStartLogging) {
+                senstick_setCurrentLogCount( context.logCount + 1);
+            }
             break;
         case formattingStorage:
             // フォーマットの実行, 実際のフォーマット処理は、上記のオブザーバで処理されているはず

@@ -220,7 +220,7 @@ static bool sensor_notify_raw_data(sensor_device_t deviceType, uint8_t *p_raw_da
     return sensorServiceNotifyRealtimeData(&(context.services[deviceType]), buffer, length);
 }
 
-static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id);
+static void setSensorShoudlWork(bool shouldWakeup, bool shouldLogging, uint8_t new_log_id);
 static void flash_mailbox(void)
 {
     ret_code_t err_code;
@@ -230,14 +230,14 @@ static void flash_mailbox(void)
     
     while(true) {
         // キューの深さ表示
-
+/*
         static uint32_t queue_length = 1;
         uint32_t length = app_mailbox_length_get (&m_mailbox);
         if( length > queue_length ) {
             queue_length = length;
             NRF_LOG_PRINTF_DEBUG("queue: %d.\n", queue_length);
         }
-
+*/
         // デキュー
         err_code = app_mailbox_get(&m_mailbox, buffer);
         if(err_code == NRF_ERROR_NO_MEM) {
@@ -371,7 +371,7 @@ static void setSensorPower(bool isPowerOn)
     }
 }
 
-static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id)
+static void setSensorShoudlWork(bool shouldWakeup, bool shouldLogging, uint8_t new_log_id)
 {
     // 状態が同じなら何もする必要はない。
     if(shouldWakeup == context.isSensorWorking) {
@@ -383,16 +383,21 @@ static void setSensorShoudlWork(bool shouldWakeup, uint8_t new_log_id)
         // センサースタート
         setSensorPower(true);
         // ログスタート
-        startLogging(new_log_id);
+        if( shouldLogging ) {
+            startLogging(new_log_id);
+        }
         // タイマーをスタート
         NRF_TIMER2->CC[0]       = TIMER_PERIOD_MS * 1000; // prescalerは1us。1msec = 1,000us
         NRF_TIMER2->TASKS_START = 1;
     } else {
         // タイマーをシャットダウン
         NRF_TIMER2->TASKS_SHUTDOWN = 1;
-        // ログを閉じる
+        // メールボックスをフラッシュ。
         flash_mailbox();
-        stopLogging();
+        // ログを閉じる
+        if(shouldLogging) {
+            stopLogging();
+        }
         // センサ設定情報の永続化処理
         saveSensorSetting();
         // センサーの電源を落とす
@@ -477,13 +482,27 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
     return NRF_SUCCESS;
 }
 
+uint8_t senstickSensorControllerGetNumOfActiveSensor(void)
+{
+    uint8_t count = 0;
+    
+    for(int i=0 ; i < NUM_OF_SENSORS; i++) {
+        sensor_service_command_t command = context.sensorSetting[i].command;
+        if( context.isSensorAvailable[i] && (command != sensorServiceCommand_stop)) {
+            count++;
+        }
+    }
+    return count;
+    
+}
+
 uint8_t senstickSensorControllerGetNumOfLoggingReadySensor(void)
 {
     uint8_t count = 0;
     
     for(int i=0 ; i < NUM_OF_SENSORS; i++) {
         sensor_service_command_t command = context.sensorSetting[i].command;
-        if( context.isSensorAvailable[i] && (command & 0x03) != 0) {
+        if( context.isSensorAvailable[i] && (command & sensorServiceCommand_logging) != 0) {
             count++;
         }
     }
@@ -693,14 +712,14 @@ bool senstickSensorControllerIsDataFull(uint8_t logID)
 /**
  *  observer
  */
-void senstickSensorController_observeControlCommand(senstick_control_command_t command, uint8_t new_log_id)
+void senstickSensorController_observeControlCommand(senstick_control_command_t command, bool shouldStartLogging, uint8_t new_log_id)
 {
     switch(command) {
         case sensorShouldSleep:
-            setSensorShoudlWork(false, new_log_id);
+            setSensorShoudlWork(false, shouldStartLogging, new_log_id);
             break;
         case sensorShouldWork:
-            setSensorShoudlWork(true, new_log_id);
+            setSensorShoudlWork(true, shouldStartLogging, new_log_id);
             break;
         case formattingStorage:
             senstickSensorControllerFormatStorage();
@@ -708,7 +727,7 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
             break;
         case shouldDeviceSleep:
         case enterDFUmode:
-            setSensorShoudlWork(false, new_log_id);
+            setSensorShoudlWork(false, shouldStartLogging, new_log_id);
             break;
         default:
             break;
@@ -732,7 +751,7 @@ void senstickSensorController_handleBLEEvent(ble_evt_t * p_ble_evt)
 
 void senstickSensorControllerFormatStorage(void)
 {
-    setSensorShoudlWork(false, 0);
+    setSensorShoudlWork(false, false, 0);
     memset(context.p_readingLogContext, 0, sizeof(log_context_t *) * NUM_OF_SENSORS);
     
     // 各センサーのストレージ初期化

@@ -23,7 +23,7 @@ public protocol SenStickSensorServiceDelegate : class
 
 open class SenStickSensorService<DataType: SensorDataPackableType, RangeType: RawRepresentable> where RangeType.RawValue == UInt16, DataType.RangeType == RangeType
 {
-    let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue", attributes: [])
+    let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue") // serial queue
 
     // code
     open weak var delegate: SenStickSensorServiceDelegate?

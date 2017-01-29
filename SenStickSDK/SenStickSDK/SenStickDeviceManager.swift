@@ -42,7 +42,7 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     open static let sharedInstance: SenStickDeviceManager = SenStickDeviceManager()
     
     fileprivate override init() {
-        queue = DispatchQueue(label: "senstick.ble-queue", attributes: [])
+        queue = DispatchQueue(label: "senstick.ble-queue") // serial queue
         
         super.init()
         

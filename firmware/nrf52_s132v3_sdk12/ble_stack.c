@@ -37,7 +37,7 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
         .xtal_accuracy = NRF_CLOCK_LF_XTAL_ACCURACY_250_PPM};
 */
     // SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
-    SOFTDEVICE_HANDLER_APPSH_INIT(&clock_lf_cfg, NULL);      // BLEのスタックの処理は、スケジューラを使う。
+    SOFTDEVICE_HANDLER_APPSH_INIT(&clock_lf_cfg, true);      // BLEのスタックの処理は、スケジューラを使う。
     
     ble_enable_params_t ble_enable_params;
     err_code = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT, PERIPHERAL_LINK_COUNT, &ble_enable_params);

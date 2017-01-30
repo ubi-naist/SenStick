@@ -70,8 +70,6 @@ void initTWIManager(void)
     twi.p_reg        = NRF_TWI1;
     twi.irq          = TWI1_IRQ;
     twi.instance_id  = TWI1_INSTANCE_INDEX;
-    err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
-    APP_ERROR_CHECK(err_code);
     
     err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
     APP_ERROR_CHECK(err_code);
@@ -108,7 +106,10 @@ void initTWIManager(void)
 }
 
 void twiPowerDown(void)
-{
+{    
     nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+    
+    nrf_drv_twi_disable(&twi);
+    nrf_drv_twi_uninit(&twi);
 }
 

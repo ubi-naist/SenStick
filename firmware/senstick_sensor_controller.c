@@ -387,6 +387,7 @@ static void setSensorShoudlWork(bool shouldWakeup, bool shouldLogging, uint8_t n
             startLogging(new_log_id);
         }
         // タイマーをスタート
+        NRF_TIMER2->TASKS_CLEAR = 1;
         NRF_TIMER2->CC[0]       = TIMER_PERIOD_MS * 1000; // prescalerは1us。1msec = 1,000us
         NRF_TIMER2->TASKS_START = 1;
     } else {

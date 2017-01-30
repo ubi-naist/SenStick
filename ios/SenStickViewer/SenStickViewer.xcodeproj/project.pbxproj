@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EE841D5DFF3EBAFFCDC24B68 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */; };
-		F883C6A11E36DA590010F781 /* senstick_xxaa_s132_release_rev106.zip in Resources */ = {isa = PBXBuildFile; fileRef = F883C6A01E36DA590010F781 /* senstick_xxaa_s132_release_rev106.zip */; };
+		F85ECC601E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip in Resources */ = {isa = PBXBuildFile; fileRef = F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */; };
+		F85ECC611E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip in Resources */ = {isa = PBXBuildFile; fileRef = F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */; };
 		F8E398551DAB3D120016F789 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E398541DAB3D120016F789 /* SenStickSDK.framework */; };
 		F8F580CC1D9A5C0700811025 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F580CB1D9A5C0700811025 /* images.xcassets */; };
 		F8F580CF1D9A5C8800811025 /* AccelerationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */; };
@@ -32,7 +33,6 @@
 		F8F580F41D9A5CA500811025 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580EE1D9A5CA500811025 /* SensorStatusCellView.swift */; };
 		F8F580F61D9A5CAA00811025 /* UVDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580F51D9A5CAA00811025 /* UVDataModel.swift */; };
 		F8F580FA1D9A5CCA00811025 /* firmwareInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8F580F91D9A5CCA00811025 /* firmwareInfo.plist */; };
-		F8F580FC1D9A5CD100811025 /* senstick_xxaa_s110_release_rev104.zip in Resources */ = {isa = PBXBuildFile; fileRef = F8F580FB1D9A5CD100811025 /* senstick_xxaa_s110_release_rev104.zip */; };
 		F8F581011D9A5D0A00811025 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8F580FD1D9A5D0A00811025 /* LaunchScreen.storyboard */; };
 		F8F581021D9A5D0A00811025 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8F580FF1D9A5D0A00811025 /* Main.storyboard */; };
 		F8F581041D9A5D1A00811025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F581031D9A5D1A00811025 /* Assets.xcassets */; };
@@ -55,7 +55,8 @@
 		2AB044364342F02B277E8488 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
 		3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C7240E1DB84FBADABED69D /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
-		F883C6A01E36DA590010F781 /* senstick_xxaa_s132_release_rev106.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s132_release_rev106.zip; sourceTree = "<group>"; };
+		F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev107.zip; sourceTree = "<group>"; };
+		F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s132_release_rev107.zip; sourceTree = "<group>"; };
 		F8E398541DAB3D120016F789 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
 		F8F580CB1D9A5C0700811025 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationDataModel.swift; sourceTree = "<group>"; };
@@ -80,7 +81,6 @@
 		F8F580F51D9A5CAA00811025 /* UVDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UVDataModel.swift; sourceTree = "<group>"; };
 		F8F580F81D9A5CBC00811025 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		F8F580F91D9A5CCA00811025 /* firmwareInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = firmwareInfo.plist; sourceTree = "<group>"; };
-		F8F580FB1D9A5CD100811025 /* senstick_xxaa_s110_release_rev104.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev104.zip; sourceTree = "<group>"; };
 		F8F580FE1D9A5D0A00811025 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8F581001D9A5D0A00811025 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F8F581031D9A5D1A00811025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -115,9 +115,9 @@
 		F8F580F71D9A5CAE00811025 /* firmware */ = {
 			isa = PBXGroup;
 			children = (
-				F883C6A01E36DA590010F781 /* senstick_xxaa_s132_release_rev106.zip */,
+				F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */,
+				F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */,
 				F8F580F91D9A5CCA00811025 /* firmwareInfo.plist */,
-				F8F580FB1D9A5CD100811025 /* senstick_xxaa_s110_release_rev104.zip */,
 			);
 			name = firmware;
 			sourceTree = "<group>";
@@ -266,13 +266,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8F580FC1D9A5CD100811025 /* senstick_xxaa_s110_release_rev104.zip in Resources */,
+				F85ECC611E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip in Resources */,
 				F8F581021D9A5D0A00811025 /* Main.storyboard in Resources */,
 				F8F581011D9A5D0A00811025 /* LaunchScreen.storyboard in Resources */,
+				F85ECC601E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip in Resources */,
 				F8F580CC1D9A5C0700811025 /* images.xcassets in Resources */,
 				F8F581041D9A5D1A00811025 /* Assets.xcassets in Resources */,
 				F8F580FA1D9A5CCA00811025 /* firmwareInfo.plist in Resources */,
-				F883C6A11E36DA590010F781 /* senstick_xxaa_s132_release_rev106.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

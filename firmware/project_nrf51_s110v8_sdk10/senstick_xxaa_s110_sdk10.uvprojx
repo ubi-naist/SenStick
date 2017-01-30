@@ -1441,7 +1441,7 @@
       <TargetName>nrf51822_xxaa_s110(release)</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>nRF51822_xxAA</Device>
@@ -2940,81 +2940,126 @@
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_advdata" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_advdata">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_advdata" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_advdata">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_advertising" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_advertising">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_advertising" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_advertising">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_common" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_common">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_common" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_common">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_conn_params" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_conn_params">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_conn_params" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_conn_params">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_db_discovery" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_db_discovery">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_db_discovery" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_db_discovery">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_service_common" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_service_common">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="ble_service_common" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_service_common">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="device_manager" Cvariant="Peripheral" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="device_manager_Peripheral">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Modules" Csub="device_manager" Cvariant="Peripheral" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="device_manager_Peripheral">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Services" Csub="ble_bas" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_bas">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Services" Csub="ble_bas" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_bas">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_BLE" Cgroup="BLE_Services" Csub="ble_dis" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="ble_dis">
         <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_BLE" Cgroup="BLE_Services" Csub="ble_dis" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="ble_dis">
+        <package name="nRF_BLE" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_BLE/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
@@ -3035,171 +3080,266 @@
       <component Cclass="nRF_Drivers" Cgroup="nrf_adc" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_adc">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_adc" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_adc">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_clock" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_clock">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_clock" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_clock">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_delay" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_delay">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_delay" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_delay">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_clock" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_clock">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_clock" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_clock">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_common" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_common">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_common" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_common">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_gpiote" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_gpiote">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_gpiote" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_gpiote">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_spi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_spi">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_spi" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_spi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_twi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_twi">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_twi" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_twi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_drv_uart" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_drv_uart">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_drv_uart" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_drv_uart">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_error" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_error_default">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_error" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_error_default">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_gpio" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_gpio">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_gpio" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_gpio">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_gpiote" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_gpiote">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_gpiote" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_gpiote">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_soc" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_soc_default">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_soc" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_soc_default">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_spi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_spi">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_spi" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_spi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_spim" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_spim">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_spim" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_spim">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_twi" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_twi">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_twi" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_twi">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_uart" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_uart">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_uart" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_uart">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="nrf_uarte" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="nrf_uarte">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="nrf_uarte" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="nrf_uarte">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_Drivers" Cgroup="pstorage" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="3.1.0" condition="pstorage_default">
         <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="3.1.0"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_Drivers" Cgroup="pstorage" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="4.0.0-2.alpha" condition="pstorage_default">
+        <package name="nRF_Drivers" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_Drivers/" vendor="NordicSemiconductor" version="4.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
@@ -3388,27 +3528,42 @@
       <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="sd_common" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="1.1.5" condition="sd_common_default">
         <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="1.1.5"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="sd_common" Cvariant="default" Cvendor="NordicSemiconductor" Cversion="2.0.0-2.alpha" condition="sd_common_default">
+        <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="2.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="sd_handler_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="1.1.5" condition="sd_handler_with_app_scheduler">
         <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="1.1.5"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="sd_handler_with_app_scheduler" Cvendor="NordicSemiconductor" Cversion="2.0.0-2.alpha" condition="sd_handler_with_app_scheduler">
+        <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="2.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>
       <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="softdevice_present" Cvendor="NordicSemiconductor" Cversion="1.1.5" condition="softdevice_present">
         <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="1.1.5"/>
         <targetInfos>
-          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110(debug)"/>
           <targetInfo name="nrf51822_xxaa_s110(release)"/>
+        </targetInfos>
+      </component>
+      <component Cclass="nRF_SoftDevice" Cgroup="Internal" Csub="softdevice_present" Cvendor="NordicSemiconductor" Cversion="2.0.0-2.alpha" condition="softdevice_present">
+        <package name="nRF_SoftDevice_Common" schemaVersion="1.2" supportContact="http://www.nordicsemi.com/About-us/Contact-us" url="http://developer.nordicsemi.com/nRF51_SDK/pieces/nRF_SoftDevice_Common/" vendor="NordicSemiconductor" version="2.0.0-2.alpha"/>
+        <targetInfos>
+          <targetInfo name="flash_s110_nrf51_8.0.3_softdevice"/>
           <targetInfo name="nrf51822_xxaa_s110_pana(release)"/>
         </targetInfos>
       </component>

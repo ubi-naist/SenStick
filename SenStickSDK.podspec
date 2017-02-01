@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "SenStickSDK"
-  s.version      = "0.9.1"
+  s.version      = "1.0.7"
   s.summary      = "SenStick software development kit."
 
   # This description is used to generate tags and improve search results.

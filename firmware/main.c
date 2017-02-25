@@ -43,6 +43,8 @@
 #include "senstick_sensor_controller.h"
 #include "senstick_rtc.h"
 
+#include "twi_ext_services.h"
+
 #include "twi_manager.h"
 #include "gpio_led_driver.h"
 #include "gpio_button_monitoring.h"
@@ -121,6 +123,8 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     senstickMetaDataService_handleBLEEvent(p_ble_evt);
 
     senstickSensorController_handleBLEEvent(p_ble_evt);
+    
+    twiExtServices_handleBLEEvent(p_ble_evt);
     
     printBLEEvent(p_ble_evt);
     
@@ -307,6 +311,8 @@ int main(void)
     initSenstickMetaDataService(uuid_type);
 
     initSenstickSensorController(uuid_type);
+    
+    initTwiExtService(uuid_type);
     
     // 不揮発メモリのフォーマット処理
     if( ! isMetaLogFormatted() ) {

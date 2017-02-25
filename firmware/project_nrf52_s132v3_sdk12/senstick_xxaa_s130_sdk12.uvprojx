@@ -15,7 +15,7 @@
         <TargetCommonOption>
           <Device>nRF52832_xxAA</Device>
           <Vendor>Nordic Semiconductor</Vendor>
-          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.11.1</PackID>
+          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.9.0</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF5_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>
           <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(64000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -2549,6 +2549,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>softdevice_handler_appsh.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2802,6 +2807,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>twi_ext</GroupName>
+          <Files>
+            <File>
+              <FileName>twi_ext_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_ext_services.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_services.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
@@ -2817,7 +2837,7 @@
         <TargetCommonOption>
           <Device>nRF52832_xxAA</Device>
           <Vendor>Nordic Semiconductor</Vendor>
-          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.11.1</PackID>
+          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.9.0</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF5_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>
           <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(64000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -5351,6 +5371,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>softdevice_handler_appsh.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5604,6 +5629,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>twi_ext</GroupName>
+          <Files>
+            <File>
+              <FileName>twi_ext_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_ext_services.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_services.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -5756,7 +5796,7 @@
         <TargetCommonOption>
           <Device>nRF52832_xxAA</Device>
           <Vendor>Nordic Semiconductor</Vendor>
-          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.11.1</PackID>
+          <PackID>NordicSemiconductor.nRF_DeviceFamilyPack.8.9.0</PackID>
           <PackURL>http://developer.nordicsemi.com/nRF5_SDK/pieces/nRF_DeviceFamilyPack/</PackURL>
           <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(64000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -8290,6 +8330,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>softdevice_handler_appsh.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\nRF5_SDK_12\components\softdevice\common\softdevice_handler\softdevice_handler_appsh.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -8539,6 +8584,21 @@
               <FileName>test_storage.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\test_storage.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>twi_ext</GroupName>
+          <Files>
+            <File>
+              <FileName>twi_ext_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>twi_ext_services.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\twi_ext_services.c</FilePath>
             </File>
           </Files>
         </Group>

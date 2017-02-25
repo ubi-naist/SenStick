@@ -51,7 +51,7 @@ void init_ble_stack(sys_evt_handler_t systemHandler, ble_evt_handler_t bleHandle
     ble_enable_params.gatt_enable_params.att_mtu = NRF_BLE_MAX_MTU_SIZE;
 
     // nRF52, S132。アトリビュートのテーブルサイズ。S132 v3のデフォルトサイズは0x580。
-    // 0x700増やす。メモリ位置とサイズを start 0x20002128 / size 0xDED8 から start 0x20003128 / size 0xCED8 に変更する。
+    // 0x1000増やす。メモリ位置とサイズを start 0x20002128 / size 0xDED8 から start 0x20003128 / size 0xCED8 に変更する。
     ble_enable_params.gatts_enable_params.attr_tab_size   = 0x580 + 0x1000;
     ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
     

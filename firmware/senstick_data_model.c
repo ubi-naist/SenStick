@@ -231,6 +231,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
         case shouldDeviceSleep:
             // BLE接続していなければ、ここで電源を落とす。接続している場合は、切断完了時に電源を落とす。
             if( senstick_isConnected() == false) {
+                stopAdvertising();
                 twiPowerDown();
                 flashMemoryEnterDeepPowerDown();
             } else {

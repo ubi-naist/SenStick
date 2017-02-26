@@ -30,7 +30,6 @@ typedef struct twi_ext_services_s {
     
 } twi_ext_services_t;
 
-
 // 初期化します
 ret_code_t initTwiExtService(uint8_t uuid_type);
 

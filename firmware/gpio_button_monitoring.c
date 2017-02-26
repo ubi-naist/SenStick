@@ -123,8 +123,9 @@ void initButtonMonitoring(void)
      */
 }
 
-
+/*
 void enableAwakeByButton(void)
 {
     nrf_gpio_cfg_sense_input(PIN_NUMBER_TACT_SWITCH, NRF_GPIO_PIN_PULLUP, NRF_GPIO_PIN_SENSE_LOW);
 }
+*/

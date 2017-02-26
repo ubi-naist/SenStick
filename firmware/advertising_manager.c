@@ -6,6 +6,8 @@
 
 #include "advertising_manager.h"
 
+static ble_uuid_t *p_service_uuid;
+
 static void on_advertising_event(ble_adv_evt_t ble_adv_evt)
 {
     uint32_t err_code;
@@ -59,7 +61,12 @@ static void on_advertising_error(uint32_t nrf_error)
 
 void init_advertising_manager(ble_uuid_t *p_uuid)
 {
-    uint32_t      err_code;
+    p_service_uuid = p_uuid;
+}
+
+void startAdvertising(void)
+{
+    uint32_t      err_code;    
     
     /*
      // アドバタイジングデータを構築する。
@@ -87,9 +94,9 @@ void init_advertising_manager(ble_uuid_t *p_uuid)
     // スキャンレスポンスを構築する。
     ble_advdata_t scan_response_data;
     memset(&scan_response_data, 0, sizeof(scan_response_data));
-    if(p_uuid != NULL) {
+    if(p_service_uuid != NULL) {
         scan_response_data.uuids_complete.uuid_cnt = 1;
-        scan_response_data.uuids_complete.p_uuids  = p_uuid;
+        scan_response_data.uuids_complete.p_uuids  = p_service_uuid;
     }
     
     // アドバタイジングモードのオプション設定
@@ -107,12 +114,13 @@ void init_advertising_manager(ble_uuid_t *p_uuid)
     
     err_code = ble_advertising_init(&advdata, &scan_response_data, &options, on_advertising_event, on_advertising_error);
     APP_ERROR_CHECK(err_code);
-}
-
-void startAdvertising(void)
-{
-    uint32_t      err_code;
     
+    // アドバタイジングを開始
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
+}
+
+void stopAdvertising(void)
+{
+    sd_ble_gap_adv_stop();
 }

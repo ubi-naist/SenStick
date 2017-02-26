@@ -23,7 +23,10 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
-    _state = 0;
+    if(shouldWakeUp) {
+        _state = 0;
+        initHumiditySensor();
+    }
 }
 
 // センサーの値を読み込みます。

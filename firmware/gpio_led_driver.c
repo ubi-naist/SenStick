@@ -23,6 +23,7 @@ APP_TIMER_DEF(m_led_timer_id);
 static int  m_pattern_index;
 static int  m_blink_count;
 static int  m_blank_period;
+static bool m_is_timer_running;
 
 static void setLED(bool blink)
 {
@@ -108,20 +109,35 @@ void initLEDDriver(void)
                                APP_TIMER_TICKS(100, APP_TIMER_PRESCALER),
                                NULL);
     APP_ERROR_CHECK(err_code);
+    
+    m_is_timer_running = true;
 }
 
 void ledDriver_observeControlCommand(senstick_control_command_t command)
 {
-    updateNextBlink();
+    if(command == shouldDeviceSleep) {
+        if(m_is_timer_running) {
+            // タイマー停止, LEDオフ
+            m_is_timer_running = false;
+            app_timer_stop(m_led_timer_id);
+            setLED(false);
+        }
+    } else {
+        if(!m_is_timer_running) {
+            // タイマー停止, LEDオフ
+            m_is_timer_running = true;
+            app_timer_start(m_led_timer_id,
+                            APP_TIMER_TICKS(100, APP_TIMER_PRESCALER),
+                            NULL);
+        }
+    }
 }
 
 
 void ledDriver_observeButtonStatus(ButtonStatus_t status)
 {
-    updateNextBlink();
     switch(status) {
         case BUTTON_RELEASED:
-            updateNextBlink();
             break;
         case BUTTON_PUSH:
             startBlinking(1, 10000);
@@ -139,8 +155,6 @@ void ledDriver_observeButtonStatus(ButtonStatus_t status)
             startBlinking(3, 10000);
             break;
         case BUTTON_VERY_LONG_PUSH_RELEASED:
-            // 長時間押したらフォーマットに落とします。
-            senstick_setControlCommand(formattingStorage);
             break;
         default:
             break;

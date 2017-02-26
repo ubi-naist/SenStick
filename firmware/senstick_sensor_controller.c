@@ -19,6 +19,8 @@
 #include "senstick_flash_address_definition.h"
 #include "spi_slave_mx25_flash_memory.h"
 
+#include "twi_manager.h"
+
 #include "acceleration_sensor_base.h"
 #include "gyro_sensor_base.h"
 #include "magnetic_sensor_base.h"
@@ -363,6 +365,8 @@ static void stopLogging(void)
 
 static void setSensorPower(bool isPowerOn)
 {
+    NRF_LOG_PRINTF_DEBUG("setSensorPower(), isPowerOn: %d.\n", isPowerOn);
+    
     for(int i=0 ; i < NUM_OF_SENSORS; i++) {
         const senstick_sensor_base_t *ptr = m_p_sensor_bases[i];
         if( context.isSensorAvailable[i] ) {
@@ -437,6 +441,9 @@ static void init_timer(void)
     
     // Interrupt setup. Enable interuptions by CC0;
     NRF_TIMER2->INTENSET = (TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos);
+    
+    // タイマーをシャットダウン
+    NRF_TIMER2->TASKS_SHUTDOWN = 1;    
 }
 
 /**
@@ -475,7 +482,7 @@ ret_code_t initSenstickSensorController(uint8_t uuid_type)
             APP_ERROR_CHECK(err_code);
 //        }
     }
-    
+
     // メールボックスを用意
     err_code = app_mailbox_create(&m_mailbox);
     APP_ERROR_CHECK(err_code);
@@ -727,6 +734,8 @@ void senstickSensorController_observeControlCommand(senstick_control_command_t c
             formatSensorSetting();
             break;
         case shouldDeviceSleep:
+            setSensorShoudlWork(false, shouldStartLogging, new_log_id);
+            break;
         case enterDFUmode:
             setSensorShoudlWork(false, shouldStartLogging, new_log_id);
             break;

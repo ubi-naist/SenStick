@@ -13,7 +13,10 @@
 
 #include "gpio_led_driver.h"
 #include "twi_manager.h"
+#include "spi_slave_mx25_flash_memory.h"
 #include "gpio_button_monitoring.h"
+
+#include "advertising_manager.h"
 
 #ifdef NRF52832
 // nRF51, S132, SDK12
@@ -56,7 +59,7 @@ senstick_control_command_t senstick_getControlCommand(void)
 {
     return context.command;
 }
-
+/*
 #define MAX_NUMBER_INTERRUPTS  32
 #define IRQ_ENABLED            0x01
 static void interrupts_disable(void)
@@ -77,6 +80,7 @@ static void interrupts_disable(void)
         }
     }
 }
+ */
 /*
 #ifdef NRF52
 void flash_callback(fs_evt_t const * const evt, fs_ret_t result)
@@ -191,6 +195,16 @@ void senstick_setControlCommand(senstick_control_command_t command)
     // 新しく作るログのID
     const uint8_t new_log_id = senstick_getCurrentLogCount();
     
+    // 本来はここに書くべきではないが、電源管理ロジック。センサ起動時にTWIの起動を確保する。
+    // スリープから復帰したときに、パワーを戻す。
+    if(old_command == shouldDeviceSleep) {
+        flashMemoryReleasePowerDown();
+        twiPowerUp();
+        stopAdvertising();        
+        startAdvertising();
+    }
+    
+    // リスナへの変更通知。
     senstickControlService_observeControlCommand(new_command);
     senstickSensorController_observeControlCommand(new_command, shouldStartLogging, new_log_id);
     metaDatalog_observeControlCommand(old_command, new_command, shouldStartLogging, new_log_id);
@@ -215,11 +229,21 @@ void senstick_setControlCommand(senstick_control_command_t command)
             senstick_setControlCommand(sensorShouldSleep);
             break;
         case shouldDeviceSleep:
+            // BLE接続していなければ、ここで電源を落とす。接続している場合は、切断完了時に電源を落とす。
+            if( senstick_isConnected() == false) {
+                twiPowerDown();
+                flashMemoryEnterDeepPowerDown();
+            } else {
+                // 接続しているなら、落とす。
+                sd_ble_gap_disconnect(context.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            }
+            /*
             // ボタンで起動するように設定。
             enableAwakeByButton();
             // パワーを落とします。
             twiPowerDown();
             sd_power_system_off();
+             */
             break;
         case enterDFUmode:
             startDFU();
@@ -320,15 +344,22 @@ bool senstick_isConnected(void)
 {
     return context.is_connected;
 }
+
 void senstick_setIsConnected(bool value, uint16_t conn_handle)
 {
     context.is_connected = value;
-    context.conn_handle = conn_handle;
+    context.conn_handle  = conn_handle;
     
     // 切断時にシステムリセットして再起動
     if (context.is_waiting_disconnect_for_dfu && context.is_connected == false)
     {
         NVIC_SystemReset();
+    }
+
+    // BLE切断時に電源を落とす。
+    if(senstick_getControlCommand() == shouldDeviceSleep && context.is_connected == false) {
+        twiPowerDown();
+        flashMemoryEnterDeepPowerDown();
     }
 }
 

@@ -11,6 +11,7 @@
 #include "twi_manager.h"
 
 nrf_drv_twi_t twi;
+static bool _isTwiPowerOn;
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
@@ -66,15 +67,7 @@ void initTWIManager(void)
 {
     ret_code_t err_code;
     
-    // TWIインタフェース TWI1を使用。
-    twi.p_reg        = NRF_TWI1;
-    twi.irq          = TWI1_IRQ;
-    twi.instance_id  = TWI1_INSTANCE_INDEX;
-    
-    err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
-    APP_ERROR_CHECK(err_code);
-
-    nrf_drv_twi_enable(&twi);
+    _isTwiPowerOn = false;
     
     // gpioteモジュールを初期化する
     if(!nrf_drv_gpiote_is_init()) {
@@ -97,19 +90,44 @@ void initTWIManager(void)
                  NRF_GPIO_PIN_H0H1,   // 0にハイドライブ、1にハイドライブ
                  NRF_GPIO_PIN_NOSENSE);
 
-    // センサーの電源を下げて300ミリ秒待つ。
-    nrf_delay_ms(300);
+    twiPowerUp();
+}
 
+void twiPowerUp(void)
+{
+    if(_isTwiPowerOn == true) {
+        return;
+    }
+    _isTwiPowerOn = true;
+    
+    // センサーの電源を下げて100ミリ秒待つ。
+    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+    nrf_delay_ms(300);
+    
     // センサーの電源をあげて300ミリ秒を待つ。
     nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
     nrf_delay_ms(300);
+    
+    // TWIインタフェース TWI1を使用。
+    twi.p_reg        = NRF_TWI1;
+    twi.irq          = TWI1_IRQ;
+    twi.instance_id  = TWI1_INSTANCE_INDEX;
+    
+    err_code = nrf_drv_twi_init(&twi, NULL, NULL, NULL);
+    APP_ERROR_CHECK(err_code);
+    
+    nrf_drv_twi_enable(&twi);
 }
 
 void twiPowerDown(void)
-{    
-    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
-    
-    nrf_drv_twi_disable(&twi);
+{
+    if(_isTwiPowerOn == false) {
+        return;
+    }
+    _isTwiPowerOn = false;
+
     nrf_drv_twi_uninit(&twi);
+
+    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
 }
 

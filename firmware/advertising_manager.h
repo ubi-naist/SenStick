@@ -6,5 +6,6 @@
 
 void init_advertising_manager(ble_uuid_t *p_uuid);
 void startAdvertising(void);
+void stopAdvertising(void);
 
 #endif /* advertising_h */

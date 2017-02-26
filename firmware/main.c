@@ -105,6 +105,8 @@ static void disposeSystemEvent(uint32_t sys_evt)
 // BLEイベントを分配する。
 static void diposeBLEEvent(ble_evt_t * p_ble_evt)
 {
+    ret_code_t err_code;
+    
 #ifdef NRF52
     // Forward BLE events to the Connection State module.
     // This must be called before any event handler that uses this module.
@@ -134,29 +136,47 @@ static void diposeBLEEvent(ble_evt_t * p_ble_evt)
     
     switch (p_ble_evt->header.evt_id)
     {
-        case BLE_GAP_EVT_DISCONNECTED:
-            // デバイス名の変更をアドバタイジングに反映するために、切断時にアドバタイジングの再初期化を行う。
-            sd_ble_gap_adv_stop();            
-            init_advertising_manager(&m_advertisiong_uuid);
-            startAdvertising();
+        case BLE_GAP_EVT_CONNECTED:
+            senstick_setIsConnected(true, p_ble_evt->evt.gatts_evt.conn_handle);
             break;
+            
+        case BLE_GAP_EVT_DISCONNECTED:
+            senstick_setIsConnected(false, p_ble_evt->evt.gatts_evt.conn_handle);
+            // デバイス名の変更をアドバタイジングに反映するために、切断時にアドバタイジングの再初期化を行う。
+            stopAdvertising();
+            if(shouldDeviceSleep != senstick_getControlCommand()) {
+                startAdvertising();
+            }
+            break;
+            
+        case BLE_GATTS_EVT_TIMEOUT:
+#ifdef NRF52
+            err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            APP_ERROR_CHECK(err_code);
+#endif
+            break;
+            
+            //nRF52, S132v3
+#if (NRF_SD_BLE_API_VERSION == 3)
+        case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
+            // S132では、ble_gatts.hで、GATT_MTU_SIZE_DEFAULTは、23に定義されている。
+            err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle, GATT_MTU_SIZE_DEFAULT);
+            APP_ERROR_CHECK(err_code);
+            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
+#endif
     }
 }
 
 // デバッグ用、BLEイベントをprintfします。
 static void printBLEEvent(ble_evt_t * p_ble_evt)
-{
-    ret_code_t err_code;
-    
+{    
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
-            senstick_setIsConnected(true, p_ble_evt->evt.gatts_evt.conn_handle);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_CONNECTED");
             break;
             
         case BLE_GAP_EVT_DISCONNECTED:
-            senstick_setIsConnected(false, p_ble_evt->evt.gatts_evt.conn_handle);
             NRF_LOG_PRINTF_DEBUG("\nBLE_GAP_EVT_DISCONNECTED");
             break;
             
@@ -218,20 +238,7 @@ static void printBLEEvent(ble_evt_t * p_ble_evt)
             
         case BLE_GATTS_EVT_TIMEOUT:
             NRF_LOG_PRINTF_DEBUG("\nBLE_GATTS_EVT_TIMEOUT. disconnecting.");
-#ifdef NRF52
-            err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
-            APP_ERROR_CHECK(err_code);
-#endif
             break;
-        
-            //nRF52, S132v3
-#if (NRF_SD_BLE_API_VERSION == 3)
-        case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
-            // S132では、ble_gatts.hで、GATT_MTU_SIZE_DEFAULTは、23に定義されている。
-            err_code = sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle, GATT_MTU_SIZE_DEFAULT);
-            APP_ERROR_CHECK(err_code);
-            break; // BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST
-#endif
             
         default:
             //No implementation needed

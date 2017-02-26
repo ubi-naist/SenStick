@@ -13,6 +13,7 @@
 // twi0は9軸、twiはその他センサーが接続するバス。
 const nrf_drv_twi_t twi0 = NRF_DRV_TWI_INSTANCE(0);
 const nrf_drv_twi_t twi  = NRF_DRV_TWI_INSTANCE(1);
+static bool _isTwiPowerOn;
 
 ret_code_t TwiSlave_TX(uint8_t address, uint8_t const *p_data, uint32_t length, bool xfer_pending)
 {
@@ -73,11 +74,38 @@ bool readFromTwiSlave(uint8_t twi_address, uint8_t target_register, uint8_t *dat
 
 void initTWIManager(void)
 {
-    ret_code_t err_code;
+    _isTwiPowerOn = false;
     
+    // TWIの電源のIOピン設定, ドライブストレンクスを"強"に
+    nrf_gpio_cfg(PIN_NUMBER_TWI_POWER,
+                 NRF_GPIO_PIN_DIR_OUTPUT,
+                 NRF_GPIO_PIN_INPUT_DISCONNECT,
+                 NRF_GPIO_PIN_NOPULL,
+                 NRF_GPIO_PIN_H0H1,   // 0にハイドライブ、1にハイドライブ
+                 NRF_GPIO_PIN_NOSENSE);
+
+    twiPowerUp();
+}
+
+void twiPowerUp(void)
+{
+    if(_isTwiPowerOn == true) {
+        return;
+    }
+    _isTwiPowerOn = true;
+    
+    // センサーの電源を下げて100ミリ秒待つ。
+    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+    nrf_delay_ms(300);
+    
+    // センサーの電源をあげて300ミリ秒を待つ。
+    nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
+    nrf_delay_ms(300);
+
+    // TWIインタフェース TWI0および1を使用。
+    ret_code_t err_code;
     nrf_drv_twi_config_t config = NRF_DRV_TWI_DEFAULT_CONFIG;
     
-    // TWIインタフェース TWI0および1を使用。
     config.scl = PIN_NUMBER_TWI1_SCL;
     config.sda = PIN_NUMBER_TWI1_SDA;
     err_code = nrf_drv_twi_init(&twi0, &config, NULL, NULL);
@@ -89,31 +117,18 @@ void initTWIManager(void)
     err_code = nrf_drv_twi_init(&twi, &config, NULL, NULL);
     APP_ERROR_CHECK(err_code);
     nrf_drv_twi_enable(&twi);
-    
-    // TWIの電源のIOピン設定, ドライブストレンクスを"強"に
-    nrf_gpio_cfg(PIN_NUMBER_TWI_POWER,
-                 NRF_GPIO_PIN_DIR_OUTPUT,
-                 NRF_GPIO_PIN_INPUT_DISCONNECT,
-                 NRF_GPIO_PIN_NOPULL,
-                 NRF_GPIO_PIN_H0H1,   // 0にハイドライブ、1にハイドライブ
-                 NRF_GPIO_PIN_NOSENSE);
-    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
-    
-    // センサーの電源を下げて300ミリ秒待つ。
-    nrf_delay_ms(300);
-    
-    // センサーの電源をあげて300ミリ秒を待つ。
-    nrf_gpio_pin_set(PIN_NUMBER_TWI_POWER);
-    nrf_delay_ms(300);
 }
 
 void twiPowerDown(void)
 {
-    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
+    if(_isTwiPowerOn == false) {
+        return;
+    }
+    _isTwiPowerOn = false;
     
-    nrf_drv_twi_disable(&twi0);
     nrf_drv_twi_uninit(&twi0);
-    nrf_drv_twi_disable(&twi);
     nrf_drv_twi_uninit(&twi);
+
+    nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
 }
 

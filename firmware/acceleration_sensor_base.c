@@ -17,8 +17,12 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
-    awakeNineAxesSensor();
-    setNineAxesSensorAccelerationRange((AccelerationRange_t)p_setting->measurementRange);
+    if(shouldWakeUp) {
+        awakeNineAxesSensor();
+        setNineAxesSensorAccelerationRange((AccelerationRange_t)p_setting->measurementRange);
+    } else {
+        sleepNineAxesSensor();
+    }
 }
 
 // センサーの値を読み込みます。

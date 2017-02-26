@@ -86,22 +86,74 @@ static void readFromAK8963(AK8963Register_t target_register, uint8_t *data, uint
 bool initNineAxesSensor(void)
 {
     _isActive = false;
+    awakeNineAxesSensor();
+
+    return true;
+}
+
+void sleepNineAxesSensor(void)
+{
+    if( ! _isActive ) {
+        return;
+    }
+    _isActive = false;
     
-    // PWR_MGMT_1
-    // D7: H_RESET          1   1- 内部レジスタをリセットしてデフォルト値にする。
-    // D6: SLEEP            0   セットすれば、チップはスリープモードに入る。
-    // D5: CYCLE            0   SLEEPとSTANDBYがセットされてなくて、これがセットされれば、シングルサンプルとSLEEPをサイクルで繰り返す。
-    // D4: GYRO_STANDBY     0   セットされれば、ジャイロのドライバとPLLが有効、しかし検出回路はディセーブル、になる。素早い有効化ができる低消費電力モードに使う。
-    // D3: PD_PTAT          0   PTAT(proportional to absolute temperature)電圧生成とPTAT ADCのパワーをダウンする。もしも1がセットされれば。
-    // D2: CLKSEL[2:0]      0x0 0x0: 内部20MHz発振回路。
+    // CNTL1
+    // D4: BIT              0   0: 14-bit output, 1: 16-bit output
+    // D3: Mode[3:0]        x   "0000": Power-down mode
+    //                          "0001": Single measurement mode
+    //                          "0010" Continuous measurement mode 1, 8 Hz sample rates.
+    //                          "0110" Continuous measurement mode 2, 100 Hz sample rates.
+    // D2: =
     // D1: =
     // D0: =
-    const uint8_t data[] = {0x80};
-    bool result = writeToMPU9250( PWR_MGMT_1, data, sizeof(data));
-    if(! result ) {
-        return false;
-    }
+    const uint8_t data0[] = {0x00};
+    writeToAK8963( CNTL1, data0, sizeof(data0));
+    
+    // PWR_MGMT_1
+    // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
+    // D6: SLEEP            1   セットすれば、チップはスリープモードに入る。
+    // D5: CYCLE            0   SLEEPとSTANDBYがセットされてなくて、これがセットされれば、シングルサンプルとSLEEPをサイクルで繰り返す。
+    // D4: CYRO_STANDBY     0   セットされれば、ジャイロのドライバとPLLが有効、しかし検出回路はディセーブル、になる。素早い有効化ができる低消費電力モードに使う。
+    // D3: TEMP_DIS         0   もしも1がセットされれば、温度センサーを無効化する。
+    // D2: CLKSEL[2:0]      0    0x0 0x0: 内部20MHz発振回路。
+    // D1:                  0
+    // D0:                  0
+    const uint8_t data1[] = {0x40};
+    writeToMPU9250( PWR_MGMT_1, data1, sizeof(data1));
+}
 
+void awakeNineAxesSensor(void)
+{
+    if( _isActive ) {
+        return;
+    }
+    _isActive = true;
+    
+    // PWR_MGMT_1
+    // D7: DEVICE_RESET     1   1- 内部レジスタをリセットしてデフォルト値にする。
+    // D6: SLEEP            0   セットすれば、チップはスリープモードに入る。
+    // D5: CYCLE            0   SLEEPとSTANDBYがセットされてなくて、これがセットされれば、シングルサンプルとSLEEPをサイクルで繰り返す。
+    // D4: CYRO_STANDBY     0   セットされれば、ジャイロのドライバとPLLが有効、しかし検出回路はディセーブル、になる。素早い有効化ができる低消費電力モードに使う。
+    // D3: TEMP_DIS         0   もしも1がセットされれば、温度センサーを無効化する。
+    // D2: CLKSEL[2:0]      0    0x0 0x0: 内部20MHz発振回路。
+    // D1:                  0
+    // D0:                  0
+    const uint8_t data0[] = {0x80};
+    writeToMPU9250( PWR_MGMT_1, data0, sizeof(data0));
+    
+    // PWR_MGMT_2
+    // D7
+    // D6
+    // D5: DIS_XA   0   X加速度はdisabled
+    // D4: DIS_YA   0   Y加速度はdisabled
+    // D3: DIS ZA   0   Z加速度はdisabled
+    // D2: DIS_XG   0   Xジャイロ disabled
+    // D1: DIS_YG   0
+    // D0: DIS_ZG   0
+    const uint8_t data1[] = {0x00};
+    writeToMPU9250( PWR_MGMT_2, data1, sizeof(data1));
+    
     // INT Pin / Bypass Enable Configuration
     // 7: ACTL
     //          1 – The logic level for INT pin is active low. 0 – The logic level for INT pin is active high.
@@ -128,7 +180,7 @@ bool initNineAxesSensor(void)
     writeToMPU9250( INT_PIN_CFG, data2, sizeof(data2));
     
     // CNTL1
-    // D4: BIT              1   0: 14-bit output, 1: 16-bit output
+    // D4: BIT              0   0: 14-bit output, 1: 16-bit output
     // D3: Mode[3:0]        x   "0000": Power-down mode
     //                          "0001": Single measurement mode
     //                          "0010" Continuous measurement mode 1, 8 Hz sample rates.
@@ -138,96 +190,6 @@ bool initNineAxesSensor(void)
     // D0: =
     const uint8_t data3[] = {0x16};
     writeToAK8963( CNTL1, data3, sizeof(data3));
-    
-    return true;
-}
-
-void sleepNineAxesSensor(void)
-{
-    if( ! _isActive ) {
-        return;
-    }
-    _isActive = false;
-    
-    // PWR_MGMT_2
-    // D7: -
-    // D6: -
-    // D5: DIS_XA   1   X加速度はdisabled
-    // D4: DIS_YA   1   Y加速度はdisabled
-    // D3: DIS ZA   1   Z加速度はdisabled
-    // D2: DIS_XG   1   Xジャイロ disabled
-    // D1: DIS_YG   1
-    // D0: DIS_ZG   1
-    const uint8_t data[] = {0x3f};
-    writeToMPU9250( PWR_MGMT_2, data, sizeof(data));
-    
-    // PWR_MGMT_1
-    // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
-    // D6: SLEEP            1   セットすれば、チップはスリープモードに入る。
-    // D5: CYCLE            0   SLEEPとSTANDBYがセットされてなくて、これがセットされれば、シングルサンプルとSLEEPをサイクルで繰り返す。
-    // D4: CYRO_STANDBY     0   セットされれば、ジャイロのドライバとPLLが有効、しかし検出回路はディセーブル、になる。素早い有効化ができる低消費電力モードに使う。
-    // D3: TEMP_DIS         0   もしも1がセットされれば、温度センサーを無効化する。
-    // D2: CLKSEL[2:0]      0    0x0 0x0: 内部20MHz発振回路。
-    // D1:                  0
-    // D0:                  0
-    const uint8_t data2[] = {0x40};
-    writeToMPU9250( PWR_MGMT_1, data2, sizeof(data2));
-    
-    // CNTL1
-    // D4: BIT              0   0: 14-bit output, 1: 16-bit output
-    // D3: Mode[3:0]        x   "0000": Power-down mode
-    //                          "0001": Single measurement mode
-    //                          "0010" Continuous measurement mode 1, 8 Hz sample rates.
-    //                          "0110" Continuous measurement mode 2, 100 Hz sample rates.
-    // D2: =
-    // D1: =
-    // D0: =
-    const uint8_t data3[] = {0x00};
-    writeToAK8963( CNTL1, data3, sizeof(data3));
-}
-
-void awakeNineAxesSensor(void)
-{
-    if( _isActive ) {
-        return;
-    }
-    _isActive = true;
-    
-    // PWR_MGMT_1
-    // D7: DEVICE_RESET     0   1- 内部レジスタをリセットしてデフォルト値にする。
-    // D6: SLEEP            0   セットすれば、チップはスリープモードに入る。
-    // D5: CYCLE            0   SLEEPとSTANDBYがセットされてなくて、これがセットされれば、シングルサンプルとSLEEPをサイクルで繰り返す。
-    // D4: CYRO_STANDBY     0   セットされれば、ジャイロのドライバとPLLが有効、しかし検出回路はディセーブル、になる。素早い有効化ができる低消費電力モードに使う。
-    // D3: TEMP_DIS         0   もしも1がセットされれば、温度センサーを無効化する。
-    // D2: CLKSEL[2:0]      0    0x0 0x0: 内部20MHz発振回路。
-    // D1:                  0
-    // D0:                  0
-    const uint8_t data2[] = {0x00};
-    writeToMPU9250( PWR_MGMT_1, data2, sizeof(data2));
-    
-    // PWR_MGMT_2
-    // D7
-    // D6
-    // D5: DIS_XA   0   X加速度はdisabled
-    // D4: DIS_YA   0   Y加速度はdisabled
-    // D3: DIS ZA   0   Z加速度はdisabled
-    // D2: DIS_XG   0   Xジャイロ disabled
-    // D1: DIS_YG   0
-    // D0: DIS_ZG   0
-    const uint8_t data[] = {0x00};
-    writeToMPU9250( PWR_MGMT_2, data, sizeof(data));
-    
-    // CNTL1
-    // D4: BIT              0   0: 14-bit output, 1: 16-bit output
-    // D3: Mode[3:0]        x   "0000": Power-down mode
-    //                          "0001": Single measurement mode
-    //                          "0010" Continuous measurement mode 1, 8 Hz sample rates.
-    //                          "0110" Continuous measurement mode 2, 100 Hz sample rates.
-    // D2: =
-    // D1: =
-    // D0: =
-    const uint8_t data1[] = {0x16};
-    writeToAK8963( CNTL1, data1, sizeof(data1));
 }
 
 void setNineAxesSensorAccelerationRange(AccelerationRange_t range)

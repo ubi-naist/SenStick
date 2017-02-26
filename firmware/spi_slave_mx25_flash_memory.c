@@ -68,6 +68,9 @@ typedef enum {
     
     FLASH_CMD_NOP   =    0x00,    //NOP (No Operation)
     
+    FLASH_CMD_DEEP_POWER_DOWN    = 0xb9,
+    FLASH_CMD_RELEASE_POWER_DOWN = 0xab,
+    
 } FlashMemoryCommand_t;
 
 // Status Register
@@ -434,4 +437,19 @@ void formatFlash(uint32_t address, int size)
         erase4kSector(address);
         address += MX25L25635F_SECTOR_SIZE;
     }
+}
+
+void flashMemoryEnterDeepPowerDown(void)
+{
+    writeToSPISlave(FLASH_CMD_DEEP_POWER_DOWN , NULL, 0);
+    nrf_delay_us(10); // tDP 10us
+}
+
+void flashMemoryReleasePowerDown(void)
+{
+    uint8_t tx_buffer[3];
+    uint8_t rx_buffer[1];
+    
+    transferToSPISlave(FLASH_CMD_RELEASE_POWER_DOWN,tx_buffer, sizeof(tx_buffer), rx_buffer, sizeof(rx_buffer));
+    nrf_delay_us(30); //tRES2 30us
 }

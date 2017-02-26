@@ -104,6 +104,8 @@ void initSenstickRTC(void)
                                APP_TIMER_TICKS(256 * 1000, APP_TIMER_PRESCALER),
                                NULL);
     APP_ERROR_CHECK(err_code);
+    
+    NRF_LOG_PRINTF_DEBUG("\ninitSenstickRTC()\n");
 }
 
 void setSenstickRTCDateTime(const ble_date_time_t *p_date)
@@ -132,7 +134,7 @@ void getSenstickRTCDateTime(ble_date_time_t *p_date)
     // ctimeをble_date_time_t に変換。
     convertCTimeToBLEDateTime(&ctime, p_date);
     
-//    NRF_LOG_PRINTF_DEBUG("\ngetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.", p_date->year, p_date->month, p_date->hours, p_date->minutes);
+NRF_LOG_PRINTF_DEBUG("\ngetSenstickRTCDateTime() y:%d m:%d h:%d m:%d.\n", p_date->year, p_date->month, p_date->hours, p_date->minutes);
 }
 
 // 時刻をデバッグ出力します。

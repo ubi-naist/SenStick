@@ -7,7 +7,7 @@
 #ifdef PANASONIC
 #define DEVICE_NAME                "PanaStick"
 #else
-#define DEVICE_NAME                "NARA-ACT"
+#define DEVICE_NAME                "SenStick"
 #endif
 
 // ハードウェアバージョン

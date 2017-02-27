@@ -47,7 +47,7 @@ void init_app_gap(void)
     memset(m_device_name, 0, sizeof(m_device_name));
     uint8_t buffer[STORAGE_BLOCK_SIZE];
     err_code = pstorage_load(buffer, &m_flash_handle, STORAGE_BLOCK_SIZE, 0); // sizeof(uint32_t)単位、文字列終端まで含めるため、GATT書き込み最大長20バイト+4。
-    if(err_code == NRF_SUCCESS && buffer[0] != 0xff) {
+    if(err_code == NRF_SUCCESS && buffer[0] != 0xff && buffer[0] != 0x00) {
         strncpy((char *)m_device_name, (char *)buffer, STORAGE_BLOCK_SIZE);
     } else {
         strcpy((char *)m_device_name, DEVICE_NAME);

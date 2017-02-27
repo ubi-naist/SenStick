@@ -122,5 +122,9 @@ void startAdvertising(void)
 
 void stopAdvertising(void)
 {
-    sd_ble_gap_adv_stop();
+    /*
+    uint32_t err_code = sd_ble_gap_adv_stop();
+    APP_ERROR_CHECK(err_code);
+     */
+    sd_ble_gap_adv_stop();    
 }

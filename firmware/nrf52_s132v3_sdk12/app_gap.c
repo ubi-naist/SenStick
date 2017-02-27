@@ -54,7 +54,7 @@ void init_app_gap(void)
     
     // フラッシュのアドレスを取得。先頭がマジックワードでなければ、デバイス名として取得。
     uint8_t *buffer = (uint8_t *)fs_config.p_start_addr;
-    if(buffer[0] != 0xff) {
+    if(buffer[0] != 0xff && buffer[0] != 0x00) {
         strncpy((char *)m_device_name, (char *)buffer, DEVICE_NAME_LENGTH);
     } else {
         strcpy((char *)m_device_name, DEVICE_NAME);

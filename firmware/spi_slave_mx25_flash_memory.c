@@ -297,6 +297,7 @@ static void rawReadFlash(uint32_t address, uint8_t *data, uint8_t data_length)
 void initFlashMemory(void)
 {
     ret_code_t err_code;
+
     // gpioteモジュールを初期化する
     if(!nrf_drv_gpiote_is_init()) {
         err_code = nrf_drv_gpiote_init();
@@ -339,6 +340,9 @@ void initFlashMemory(void)
     
     err_code = nrf_drv_spi_init(&spi, &config, NULL); // blocking mode
     APP_ERROR_CHECK(err_code);
+    
+    // DeepSleepモードに入っていたものが、ファームリセットで再起動した場合、メモリを通常モードに戻す必要がある。
+    flashMemoryReleasePowerDown();
     
     // アドレス4バイトモードに設定
     enableAddress4ByteMode();

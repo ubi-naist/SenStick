@@ -9,6 +9,7 @@
 #include <nrf_log.h>
 #include <nrf_delay.h>
 #include <nrf_assert.h>
+#include <ble_hci.h>
 
 // nRF52 SDK12/nRF51 SDK10, ヘッダファイル差分
 #ifdef NRF52

@@ -95,6 +95,8 @@ void initTWIManager(void)
 
 void twiPowerUp(void)
 {
+    ret_code_t err_code;
+    
     if(_isTwiPowerOn == true) {
         return;
     }
@@ -126,8 +128,12 @@ void twiPowerDown(void)
     }
     _isTwiPowerOn = false;
 
+    nrf_drv_twi_disable(&twi);
     nrf_drv_twi_uninit(&twi);
 
+    nrf_gpio_cfg_input(PIN_NUMBER_TWI_SDA, NRF_GPIO_PIN_NOPULL);
+    nrf_gpio_cfg_input(PIN_NUMBER_TWI_SCL, NRF_GPIO_PIN_NOPULL);
+    
     nrf_gpio_pin_clear(PIN_NUMBER_TWI_POWER);
 }
 

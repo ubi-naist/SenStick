@@ -2,6 +2,7 @@
 #include <app_util_platform.h>
 #include <nrf_log.h>
 #include <nrf_sdm.h>
+#include <ble_hci.h>
 
 #include "senstick_data_model.h"
 
@@ -21,7 +22,6 @@
 #ifdef NRF52832
 // nRF51, S132, SDK12
 #include <nrf_dfu_settings.h>
-#include <ble_hci.h>
 #else
 // nRF51, S110, SDK10
 // これらのヘッダファイルに、startDFU()メソッドが、ブートローダにDFUに入らせるための定義がある。
@@ -59,7 +59,8 @@ senstick_control_command_t senstick_getControlCommand(void)
 {
     return context.command;
 }
-/*
+
+#ifdef NRF51
 #define MAX_NUMBER_INTERRUPTS  32
 #define IRQ_ENABLED            0x01
 static void interrupts_disable(void)
@@ -80,7 +81,7 @@ static void interrupts_disable(void)
         }
     }
 }
- */
+#endif
 /*
 #ifdef NRF52
 void flash_callback(fs_evt_t const * const evt, fs_ret_t result)

@@ -8,8 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		EE841D5DFF3EBAFFCDC24B68 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */; };
-		F85ECC601E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip in Resources */ = {isa = PBXBuildFile; fileRef = F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */; };
-		F85ECC611E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip in Resources */ = {isa = PBXBuildFile; fileRef = F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */; };
+		F89EA5161E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89EA5141E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip */; };
+		F89EA5171E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89EA5151E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip */; };
+		F89EA51B1E66617F00C1D981 /* MagneticFieldDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580E41D9A5C9C00811025 /* MagneticFieldDataModel.swift */; };
+		F89EA51C1E66617F00C1D981 /* SensorDataCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580EB1D9A5CA500811025 /* SensorDataCellView.swift */; };
+		F89EA51D1E66617F00C1D981 /* HumidityDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580DE1D9A5C9700811025 /* HumidityDataModel.swift */; };
+		F89EA51E1E66617F00C1D981 /* SensorDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580EC1D9A5CA500811025 /* SensorDataModel.swift */; };
+		F89EA51F1E66617F00C1D981 /* LogListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580E11D9A5C9C00811025 /* LogListViewController.swift */; };
+		F89EA5201E66617F00C1D981 /* UVDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580F51D9A5CAA00811025 /* UVDataModel.swift */; };
+		F89EA5211E66617F00C1D981 /* BrightnessDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D11D9A5C9000811025 /* BrightnessDataModel.swift */; };
+		F89EA5221E66617F00C1D981 /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D61D9A5C9000811025 /* DeviceTableViewController.swift */; };
+		F89EA5231E66617F00C1D981 /* DeviceInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D41D9A5C9000811025 /* DeviceInformationViewController.swift */; };
+		F89EA5241E66617F00C1D981 /* DeviceListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D51D9A5C9000811025 /* DeviceListCellView.swift */; };
+		F89EA5251E66617F00C1D981 /* DataGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D21D9A5C9000811025 /* DataGraphView.swift */; };
+		F89EA5261E66617F00C1D981 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580D31D9A5C9000811025 /* DetailViewController.swift */; };
+		F89EA5271E66617F00C1D981 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CE1D9A5C8800811025 /* AppDelegate.swift */; };
+		F89EA5281E66617F00C1D981 /* GyroDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580DD1D9A5C9700811025 /* GyroDataModel.swift */; };
+		F89EA5291E66617F00C1D981 /* LogReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580E31D9A5C9C00811025 /* LogReaderViewController.swift */; };
+		F89EA52A1E66617F00C1D981 /* SensorStatusCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580EE1D9A5CA500811025 /* SensorStatusCellView.swift */; };
+		F89EA52B1E66617F00C1D981 /* PressureDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580E91D9A5CA500811025 /* PressureDataModel.swift */; };
+		F89EA52C1E66617F00C1D981 /* SensorDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580ED1D9A5CA500811025 /* SensorDataViewController.swift */; };
+		F89EA52D1E66617F00C1D981 /* AccelerationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */; };
+		F89EA52E1E66617F00C1D981 /* SamplingDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580EA1D9A5CA500811025 /* SamplingDurationViewController.swift */; };
+		F89EA5301E66617F00C1D981 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E398541DAB3D120016F789 /* SenStickSDK.framework */; };
+		F89EA5311E66617F00C1D981 /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */; };
+		F89EA5331E66617F00C1D981 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8F580FF1D9A5D0A00811025 /* Main.storyboard */; };
+		F89EA5341E66617F00C1D981 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8F580FD1D9A5D0A00811025 /* LaunchScreen.storyboard */; };
+		F89EA5351E66617F00C1D981 /* senstick_xxaa_s110_release_rev108.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89EA5141E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip */; };
+		F89EA5361E66617F00C1D981 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F580CB1D9A5C0700811025 /* images.xcassets */; };
+		F89EA5371E66617F00C1D981 /* senstick_xxaa_s132_release_rev108.zip in Resources */ = {isa = PBXBuildFile; fileRef = F89EA5151E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip */; };
+		F89EA5381E66617F00C1D981 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F581031D9A5D1A00811025 /* Assets.xcassets */; };
+		F89EA5391E66617F00C1D981 /* firmwareInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8F580F91D9A5CCA00811025 /* firmwareInfo.plist */; };
 		F8E398551DAB3D120016F789 /* SenStickSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E398541DAB3D120016F789 /* SenStickSDK.framework */; };
 		F8F580CC1D9A5C0700811025 /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F580CB1D9A5C0700811025 /* images.xcassets */; };
 		F8F580CF1D9A5C8800811025 /* AccelerationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */; };
@@ -39,6 +68,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		F89EA53A1E66617F00C1D981 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8F581DA1D9A669D00811025 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,8 +94,10 @@
 		2AB044364342F02B277E8488 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
 		3F68868A90BEF2580FD03043 /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C7240E1DB84FBADABED69D /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
-		F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev107.zip; sourceTree = "<group>"; };
-		F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s132_release_rev107.zip; sourceTree = "<group>"; };
+		F89EA5141E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s110_release_rev108.zip; sourceTree = "<group>"; };
+		F89EA5151E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = senstick_xxaa_s132_release_rev108.zip; sourceTree = "<group>"; };
+		F89EA5401E66617F00C1D981 /* SenStickViewer_deplygate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer_deplygate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F89EA5411E66618000C1D981 /* SenStickViewer copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SenStickViewer copy-Info.plist"; path = "/Users/u_akihiro/Repository/iOS/SenStick/ios/SenStickViewer/SenStickViewer copy-Info.plist"; sourceTree = "<absolute>"; };
 		F8E398541DAB3D120016F789 /* SenStickSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenStickSDK.framework; path = "../SenStickSDK/build/Debug-iphoneos/SenStickSDK.framework"; sourceTree = "<group>"; };
 		F8F580CB1D9A5C0700811025 /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		F8F580CD1D9A5C8800811025 /* AccelerationDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerationDataModel.swift; sourceTree = "<group>"; };
@@ -91,6 +132,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F89EA52F1E66617F00C1D981 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F89EA5301E66617F00C1D981 /* SenStickSDK.framework in Frameworks */,
+				F89EA5311E66617F00C1D981 /* Pods_SenStickViewer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8FE05261D9A110D00222E43 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,8 +165,8 @@
 		F8F580F71D9A5CAE00811025 /* firmware */ = {
 			isa = PBXGroup;
 			children = (
-				F85ECC5E1E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip */,
-				F85ECC5F1E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip */,
+				F89EA5141E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip */,
+				F89EA5151E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip */,
 				F8F580F91D9A5CCA00811025 /* firmwareInfo.plist */,
 			);
 			name = firmware;
@@ -166,6 +216,7 @@
 				F8FE052A1D9A110D00222E43 /* Products */,
 				F8F5814F1D9A61C700811025 /* Frameworks */,
 				92AD08087B09DC672F702DED /* Pods */,
+				F89EA5411E66618000C1D981 /* SenStickViewer copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -173,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				F8FE05291D9A110D00222E43 /* SenStickViewer.app */,
+				F89EA5401E66617F00C1D981 /* SenStickViewer_deplygate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +256,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F89EA5181E66617F00C1D981 /* SenStickViewer_deplygate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F89EA53D1E66617F00C1D981 /* Build configuration list for PBXNativeTarget "SenStickViewer_deplygate" */;
+			buildPhases = (
+				F89EA5191E66617F00C1D981 /* [CP] Check Pods Manifest.lock */,
+				F89EA51A1E66617F00C1D981 /* Sources */,
+				F89EA52F1E66617F00C1D981 /* Frameworks */,
+				F89EA5321E66617F00C1D981 /* Resources */,
+				F89EA53A1E66617F00C1D981 /* Embed Frameworks */,
+				F89EA53B1E66617F00C1D981 /* [CP] Embed Pods Frameworks */,
+				F89EA53C1E66617F00C1D981 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SenStickViewer_deplygate;
+			productName = SenStickViewer;
+			productReference = F89EA5401E66617F00C1D981 /* SenStickViewer_deplygate.app */;
+			productType = "com.apple.product-type.application";
+		};
 		F8FE05281D9A110D00222E43 /* SenStickViewer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8FE053B1D9A110D00222E43 /* Build configuration list for PBXNativeTarget "SenStickViewer" */;
@@ -235,6 +308,9 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = AkihiroUehara;
 				TargetAttributes = {
+					F89EA5181E66617F00C1D981 = {
+						DevelopmentTeam = 3RPD2RKGX8;
+					};
 					F8FE05281D9A110D00222E43 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = LEZ5FS873V;
@@ -257,20 +333,35 @@
 			projectRoot = "";
 			targets = (
 				F8FE05281D9A110D00222E43 /* SenStickViewer */,
+				F89EA5181E66617F00C1D981 /* SenStickViewer_deplygate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F89EA5321E66617F00C1D981 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F89EA5331E66617F00C1D981 /* Main.storyboard in Resources */,
+				F89EA5341E66617F00C1D981 /* LaunchScreen.storyboard in Resources */,
+				F89EA5351E66617F00C1D981 /* senstick_xxaa_s110_release_rev108.zip in Resources */,
+				F89EA5361E66617F00C1D981 /* images.xcassets in Resources */,
+				F89EA5371E66617F00C1D981 /* senstick_xxaa_s132_release_rev108.zip in Resources */,
+				F89EA5381E66617F00C1D981 /* Assets.xcassets in Resources */,
+				F89EA5391E66617F00C1D981 /* firmwareInfo.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8FE05271D9A110D00222E43 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F85ECC611E3F0BC300AB8A0F /* senstick_xxaa_s132_release_rev107.zip in Resources */,
 				F8F581021D9A5D0A00811025 /* Main.storyboard in Resources */,
 				F8F581011D9A5D0A00811025 /* LaunchScreen.storyboard in Resources */,
-				F85ECC601E3F0BC300AB8A0F /* senstick_xxaa_s110_release_rev107.zip in Resources */,
+				F89EA5161E665E7E00C1D981 /* senstick_xxaa_s110_release_rev108.zip in Resources */,
 				F8F580CC1D9A5C0700811025 /* images.xcassets in Resources */,
+				F89EA5171E665E7E00C1D981 /* senstick_xxaa_s132_release_rev108.zip in Resources */,
 				F8F581041D9A5D1A00811025 /* Assets.xcassets in Resources */,
 				F8F580FA1D9A5CCA00811025 /* firmwareInfo.plist in Resources */,
 			);
@@ -324,9 +415,81 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		F89EA5191E66617F00C1D981 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F89EA53B1E66617F00C1D981 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F89EA53C1E66617F00C1D981 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F89EA51A1E66617F00C1D981 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F89EA51B1E66617F00C1D981 /* MagneticFieldDataModel.swift in Sources */,
+				F89EA51C1E66617F00C1D981 /* SensorDataCellView.swift in Sources */,
+				F89EA51D1E66617F00C1D981 /* HumidityDataModel.swift in Sources */,
+				F89EA51E1E66617F00C1D981 /* SensorDataModel.swift in Sources */,
+				F89EA51F1E66617F00C1D981 /* LogListViewController.swift in Sources */,
+				F89EA5201E66617F00C1D981 /* UVDataModel.swift in Sources */,
+				F89EA5211E66617F00C1D981 /* BrightnessDataModel.swift in Sources */,
+				F89EA5221E66617F00C1D981 /* DeviceTableViewController.swift in Sources */,
+				F89EA5231E66617F00C1D981 /* DeviceInformationViewController.swift in Sources */,
+				F89EA5241E66617F00C1D981 /* DeviceListCellView.swift in Sources */,
+				F89EA5251E66617F00C1D981 /* DataGraphView.swift in Sources */,
+				F89EA5261E66617F00C1D981 /* DetailViewController.swift in Sources */,
+				F89EA5271E66617F00C1D981 /* AppDelegate.swift in Sources */,
+				F89EA5281E66617F00C1D981 /* GyroDataModel.swift in Sources */,
+				F89EA5291E66617F00C1D981 /* LogReaderViewController.swift in Sources */,
+				F89EA52A1E66617F00C1D981 /* SensorStatusCellView.swift in Sources */,
+				F89EA52B1E66617F00C1D981 /* PressureDataModel.swift in Sources */,
+				F89EA52C1E66617F00C1D981 /* SensorDataViewController.swift in Sources */,
+				F89EA52D1E66617F00C1D981 /* AccelerationDataModel.swift in Sources */,
+				F89EA52E1E66617F00C1D981 /* SamplingDurationViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8FE05251D9A110D00222E43 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -376,6 +539,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F89EA53E1E66617F00C1D981 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2AB044364342F02B277E8488 /* Pods-SenStickViewer.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3RPD2RKGX8;
+				INFOPLIST_FILE = "SenStickViewer copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wafuu.SenStickViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F89EA53F1E66617F00C1D981 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99C7240E1DB84FBADABED69D /* Pods-SenStickViewer.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3RPD2RKGX8;
+				INFOPLIST_FILE = "SenStickViewer copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wafuu.SenStickViewer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		F8FE05391D9A110D00222E43 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -517,6 +723,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F89EA53D1E66617F00C1D981 /* Build configuration list for PBXNativeTarget "SenStickViewer_deplygate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F89EA53E1E66617F00C1D981 /* Debug */,
+				F89EA53F1E66617F00C1D981 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F8FE05241D9A110D00222E43 /* Build configuration list for PBXProject "SenStickViewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>nrf51_revision</key>
-	<string>rev 1.07</string>
+	<string>rev 1.08</string>
 	<key>nrf51_filename</key>
-	<string>senstick_xxaa_s110_release_rev107.zip</string>
+	<string>senstick_xxaa_s110_release_rev108.zip</string>
 	<key>nrf52_revision</key>
-	<string>rev 1.07</string>
+	<string>rev 1.08</string>
 	<key>nrf52_filename</key>
-	<string>senstick_xxaa_s132_release_rev107.zip</string>
+	<string>senstick_xxaa_s132_release_rev108.zip</string>
 </dict>
 </plist>

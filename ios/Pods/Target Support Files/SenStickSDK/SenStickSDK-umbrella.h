@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "SenStickSDK-umbrella.h"
 #import "SenStickSDK.h"
 
 FOUNDATION_EXPORT double SenStickSDKVersionNumber;

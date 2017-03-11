@@ -35,7 +35,40 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     
     // Properties, KVO
     dynamic open fileprivate(set) var devices:[SenStickDevice] = []
-    dynamic open fileprivate(set) var state: CBManagerState = .unknown
+    
+    // iOS10で、列挙型 CBCentralManagerStateがCBManagerStateに変更された。
+    // 型名だけの変更で要素は変更がないので、Intの値としては、そのまま同じコードでiOS10以降も動く。
+    // しかし強い型を使うSwiftでは、iOSのバージョンの差を吸収しなくてはならない。
+    // 1つは、列挙型を引き継いで、バージョンごとにプロパティを提供する方法。
+    // コメントアウトしたのがそのコード。これはアプリケーション側で、iOSのバージョンごとにプロパティを書き分けなくてはならない。手間だろう。
+    // 綺麗ではないが、Int型をそのまま表に出すことにする。
+    /*
+    // iOS10でCBCentralManagerStateは廃止されてCBManagerStateが代替。型が異なるのでプロパティをそれぞれに分けている。
+    var _state : Int = 0
+    @available(iOS 10.0, *)
+    dynamic open fileprivate(set) var state: CBManagerState {
+        get {
+            return CBManagerState(rawValue: _state) ?? .unknown
+        }
+        set(newState) {
+            _state = newState.rawValue
+        }
+    }
+    
+    // iOS9まではCBCentralManagerStateを使う。
+    @available(iOS, introduced: 5.0, deprecated: 10.0, message: "Use state instead")
+    dynamic open fileprivate(set) var centralState: CBCentralManagerState {
+        get {
+            return CBCentralManagerState(rawValue: _state) ?? .unknown
+        }
+        set(newState) {
+            _state = newState.rawValue
+        }
+    }
+    */
+    
+    dynamic open fileprivate(set) var state: Int = 0
+    
     dynamic open fileprivate(set) var isScanning: Bool = false
     
     // Initializer, Singleton design pattern.
@@ -138,12 +171,20 @@ open class SenStickDeviceManager : NSObject, CBCentralManagerDelegate
     }
     
     // MARK: CBCentralManagerDelegate
-    
     open func centralManagerDidUpdateState(_ central: CBCentralManager)
     {
         // BLEの処理は独立したキューで走っているので、KVOを活かすためにメインキューで代入する
         DispatchQueue.main.async(execute: {
-            self.state = central.state
+            // iOS9以前とiOS10以降で、stateの列挙型の型名は異なるが、Intの値と要素はまったく同じ。
+            // iOSのバージョンごとにプロパティを分けた場合は、コメントアウトのコードでバージョンに合わせて適合させられるが、使う側からすればややこしいだけか。
+            /*
+            if #available(iOS 10.0, *) {
+                self.state = central.state
+            } else { // iOS10以前
+                self.centralState = CBCentralManagerState(rawValue:central.state.rawValue) ?? .unknown
+            }
+             */
+            self.state = central.state.rawValue
         })
         
         switch central.state {

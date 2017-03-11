@@ -1,7 +1,7 @@
 PODS:
   - iOSDFULibrary (3.0.6):
     - Zip (~> 0.6)
-  - SenStickSDK (0.9.1):
+  - SenStickSDK (1.0.7):
     - iOSDFULibrary
   - Zip (0.6.0)
 
@@ -10,13 +10,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   SenStickSDK:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   iOSDFULibrary: e9f7838a54eed84228669c7739d8d7ed98d3da31
-  SenStickSDK: 77abbcef933239b0a41017c270b0c96aefc783af
+  SenStickSDK: f4dc7ab30b7a6c51c4b67273108b32be831a4521
   Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
 PODFILE CHECKSUM: 0bff0764ecc50ceb1ffc4fc08b82005bbe0933be
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1.beta.1

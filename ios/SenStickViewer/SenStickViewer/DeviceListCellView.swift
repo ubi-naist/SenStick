@@ -9,6 +9,8 @@
 import UIKit
 import SenStickSDK
 
+// デバイス一覧の、セルを提供します。
+
 class DeviceListCellView: UITableViewCell
 {
     @IBOutlet var deviceNameLabel:UILabel!

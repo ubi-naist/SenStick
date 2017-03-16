@@ -1,6 +1,6 @@
 {
   "name": "SenStickSDK",
-  "version": "0.9.1",
+  "version": "1.0.8",
   "summary": "SenStick software development kit.",
   "description": "SenStickを操作するiOSのライブラリです。Swift3対応。iOS10以上で動作します。",
   "homepage": "https://github.com/ubi-naist/SenStick/",
@@ -12,11 +12,11 @@
     "Akihiro Uehara": "u-akihiro@reinfoce-lab.com"
   },
   "platforms": {
-    "ios": "10.0"
+    "ios": "9.0"
   },
   "source": {
     "git": "https://github.com/ubi-naist/SenStick.git",
-    "tag": "0.9.1"
+    "tag": "1.0.8"
   },
   "source_files": "**/SenStickSDK/*.{h,swift}",
   "exclude_files": "**/*.playground/**",

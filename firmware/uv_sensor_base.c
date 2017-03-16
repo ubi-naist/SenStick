@@ -17,14 +17,13 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
-    // データ読み捨て
-    UltraVioletData_t data;
-    getUVSensorData(&data);
-    
+    if(shouldWakeUp) {
+        initUVSensor();        
+    }
 }
 
 // センサーの値を読み込みます。
-static uint8_t getSensorDataHandler(uint8_t *p_buffer)
+static uint8_t getSensorDataHandler(uint8_t *p_buffer, samplingDurationType duration_ms)
 {
     getUVSensorData((UltraVioletData_t *)p_buffer);
     return sizeof(UltraVioletData_t);

@@ -9,6 +9,10 @@
 import Foundation
 import CoreBluetooth
 
+// デバイス情報サービスを示します。
+// プロパティは、KVO準拠です。
+// シリアルナンバーは、デバイスの製造時に書き込まれた唯一の識別子です。
+
 open class DeviceInformationService : NSObject, SenStickService //, CustomStringConvertible
 {
     // Variables
@@ -18,7 +22,7 @@ open class DeviceInformationService : NSObject, SenStickService //, CustomString
     dynamic open fileprivate(set) var manufacturerName: String
     dynamic open fileprivate(set) var hardwareRevision: String
     dynamic open fileprivate(set) var firmwareRevision: String
-    dynamic open fileprivate(set) var serialNumber: String
+    dynamic open fileprivate(set) var serialNumber:     String
     
     // イニシャライザ
     required public init?(device:SenStickDevice)

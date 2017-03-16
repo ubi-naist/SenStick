@@ -9,6 +9,10 @@
 import Foundation
 import CoreBluetooth
 
+// バッテリー残量情報サービスを示します。
+// プロパティは、KVO準拠です。
+// batteryLevelプロパティは、0-100(%)でバッテリー残量を示します。
+
 open class BatteryService : NSObject, SenStickService //, CustomStringConvertible
 {
     // Variables

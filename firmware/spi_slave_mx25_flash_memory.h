@@ -14,6 +14,8 @@
 // 初期化関数。
 void initFlashMemory(void);
 
+bool isFlashBusy(void);
+
 void writeFlash(uint32_t address, uint8_t *data, uint8_t data_length);
 void readFlash(uint32_t address,  uint8_t *data, uint8_t data_length);
 
@@ -22,4 +24,6 @@ void erase4kSector(uint32_t address);
 // 4kバイト単位のセクター単位で、データを消去します
 void formatFlash(uint32_t address, int size);
 
+void flashMemoryEnterDeepPowerDown(void);
+void flashMemoryReleasePowerDown(void);
 #endif

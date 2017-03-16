@@ -7,6 +7,8 @@
 
 ret_code_t initSenstickSensorController(uint8_t uuid_type);
 
+// 動作するセンサ数を返します。どうさせるセンサーが、ログ取得するとは限りません。
+uint8_t senstickSensorControllerGetNumOfActiveSensor(void);
 // ログ取得開始時に動作するセンサ数を返します。
 uint8_t senstickSensorControllerGetNumOfLoggingReadySensor(void);
 
@@ -21,7 +23,7 @@ void senstickSensorControllerWriteLogID(sensor_device_t device_type, uint8_t *p_
 void senstickSensorControllerNotifyLogData(void);
 
 // observer
-void senstickSensorController_observeControlCommand(senstick_control_command_t command, uint8_t new_log_id);
+void senstickSensorController_observeControlCommand(senstick_control_command_t command, bool shouldStartLogging, uint8_t new_log_id);
 
 // BLEイベントを受け取ります。
 void senstickSensorController_handleBLEEvent(ble_evt_t * p_ble_evt);

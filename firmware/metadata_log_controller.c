@@ -16,6 +16,8 @@
 #include "senstick_device_definition.h"
 #include "senstick_log_definition.h"
 
+#include "senstick_util.h"
+#include "senstick_rtc.h"
 #include "senstick_data_model.h"
 
 // 領域フォーマット済を示すint32のマジックワード, ファームウェアのリビジョンで変化する。
@@ -39,6 +41,9 @@ static void metaDataLogRead(uint8_t logid, meta_log_content_t *p_content)
     const uint32_t target_address = getTargetAddress(logid);
     readFlash(target_address, (uint8_t *)p_content, sizeof(meta_log_content_t));
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogRead:hours:%d minutes:%d\n", p_content->date.hours,p_content->date.minutes);
+//    NRF_LOG_PRINTF_DEBUG("\nmetaDataLogRead().");
+//    debugPrintRTCDateTime(&p_content->date);
+    
 }
 
 static void metaDataLogWriteContext(uint8_t logid, meta_log_content_t *p_content)
@@ -66,6 +71,9 @@ static void metaDataLogWrite(bool is_closed, uint8_t logid, ble_date_time_t *p_d
     strncpy(content.text, text, sizeof(content.text));
 //    NRF_LOG_PRINTF_DEBUG("metaDataLogWrite: sizeof(content.text) %d\n", sizeof(content.text));
     metaDataLogWriteContext(logid, &content);
+
+//    NRF_LOG_PRINTF_DEBUG("\nmetaDataLogWrite().");
+//    debugPrintRTCDateTime(&content.date);
 }
 
 static void closeLog(uint8_t logid)
@@ -162,13 +170,13 @@ uint8_t metaDataLogReadAbstractText(uint8_t logid, char *text, uint8_t length)
     return MIN(length, strlen(content.text));
 }
 
-void metaDatalog_observeControlCommand(senstick_control_command_t old_command, senstick_control_command_t new_command, uint8_t new_log_id)
+void metaDatalog_observeControlCommand(senstick_control_command_t old_command, senstick_control_command_t new_command, bool shouldLogging, uint8_t new_log_id)
 {
     ble_date_time_t datetime;
     char txt[21];
 
     // ログ終了時にclosedフラグを落とす
-    if(old_command == sensorShouldWork) {
+    if(shouldLogging && (old_command == sensorShouldWork)) {
         closeLog(new_log_id -1); // log id は+1されているので、閉じる対象ログIDは -1 したもの。
         // 記録終了時にログヘッダの最大値を確認する, disk full
         if( new_log_id >= MAX_NUM_OF_LOG ) {
@@ -180,15 +188,17 @@ void metaDatalog_observeControlCommand(senstick_control_command_t old_command, s
         case sensorShouldSleep:
             break;
         case sensorShouldWork:
-            senstick_getCurrentDateTime(&datetime);
-            senstick_getCurrentLogAbstractText(txt, sizeof(txt));
-            metaDataLogWrite(false, new_log_id, &datetime, txt);
+            if(shouldLogging) {
+                senstick_getCurrentDateTime(&datetime);
+                senstick_getCurrentLogAbstractText(txt, sizeof(txt));
+                metaDataLogWrite(false, new_log_id, &datetime, txt);
+            }
 //            NRF_LOG_PRINTF_DEBUG("metaDatalog_observeControlCommand:hour:%d min:%d\n", datetime.hours, datetime.minutes);
             break;
         case formattingStorage:
             metaLogFormatStorage();
             break;
-        case enterDeepSleep:
+        case shouldDeviceSleep:
             break;
         case enterDFUmode:
             break;

@@ -13,6 +13,7 @@
 
 #include "twi_slave_uv_sensor.h"
 
+#include "senstick_util.h"
 #include "senstick_sensor_base_data.h"
 #include "senstick_io_definition.h"
 
@@ -50,7 +51,7 @@ void getUVSensorData(UltraVioletData_t *p_data)
     ret_code_t err_code;
 
     uint8_t data0;
-    err_code = TwiSlave_RX(TWI_VEML6070_RD_ADDRESS, &data0, 1, false);
+    err_code = TwiSlave_RX(TWI_VEML6070_RD_ADDRESS, &data0, 1);
 //    APP_ERROR_CHECK(err_code);
     if(err_code != NRF_SUCCESS) {
         NRF_LOG_PRINTF_DEBUG("getUVSensorData1, error: %d.\n", err_code);
@@ -58,7 +59,7 @@ void getUVSensorData(UltraVioletData_t *p_data)
     }
 
     uint8_t data1;
-    err_code = TwiSlave_RX(TWI_VEML6070_ADDRESS, &data1, 1, false);
+    err_code = TwiSlave_RX(TWI_VEML6070_ADDRESS, &data1, 1);
 //    APP_ERROR_CHECK(err_code);
     if(err_code != NRF_SUCCESS) {
         NRF_LOG_PRINTF_DEBUG("getUVSensorData2, error: %d.\n", err_code);

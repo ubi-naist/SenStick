@@ -9,14 +9,23 @@
 import UIKit
 import SenStickSDK
 
+// 実装メモ
+// センサデータの扱いパターンは同じものなので、ジェネリックで実装するのとスッキリする。
+// しかしジェネリックを使うと、インスタンスの配列の定義ができない(ジェネリックの<T>が実装ごとに異なるから。）このため、扱う側が一律に扱えなくなる。
+// これはジェネリックをインスタンスとして扱う側に見せてしまうために、そうなる。インスタンスとして外部に見せる部分はプロトコルにしておく、実装として同じパターンを1つにまとめるために、ジェネリックを利用する。
+
 protocol SensorDataModelProtocol :class {
     var cell: SensorDataCellView? { get set }
+    
     var duration: SamplingDurationType { get set }
-    var csvHeader: String { get }
-    var logData: [[Double]] { get }
-    var csvEmptyData: String { get }
-    var sensorName: String { get }
+
     var logid: UInt8 { get }
+    var logData: [[Double]] { get }
+
+    var sensorName: String  { get }
+    
+    var csvHeader:    String { get }
+    var csvEmptyData: String { get }
     
     func getCSVDataText(_ index:Int) -> String
     func saveToFile(_ filePath:String)
@@ -27,9 +36,9 @@ protocol SensorDataModelDelegate :class {
     func didStopReadingLog(_ sender: SensorDataModelProtocol)
 }
 
-class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickSensorServiceDelegate, SensorDataModelProtocol where S.RawValue == UInt16, T.RangeType == S {
+class SensorDataModel<DataType: SensorDataPackableType, RangeType: RawRepresentable>: SenStickSensorServiceDelegate, SensorDataModelProtocol where RangeType.RawValue == UInt16, DataType.RangeType == RangeType {
     
-    weak var service: SenStickSensorService<T,S>? {
+    weak var service: SenStickSensorService<DataType,RangeType>? {
         didSet {
             self.service?.delegate = self
             didUpdateSetting(self)
@@ -105,11 +114,11 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
     
     // MARK: - Methods , which should be override
     
-    func updateRange(_ range: S)
+    func updateRange(_ range: RangeType)
     {
     }
     
-    func dataToArray(_ data: T) -> [Double]
+    func dataToArray(_ data: DataType) -> [Double]
     {
         return []
     }
@@ -129,8 +138,10 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
         cell?.graphView?.clearPlot()
     }
     
-    func drawRealTimeData(_ data: [Double])
+    func drawRealTimeData(_ sensorData: DataType)
     {
+        let data = dataToArray(sensorData)
+        
         // データを追加
         for (index, d) in data.enumerated() {
             logData[index].append(d)
@@ -162,7 +173,8 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
         service?.writeLogID(logID)
     }
     
-    func addReadLog(_ data:[Double]) {
+    func addReadLog(_ sensorData: DataType) {
+        let data = dataToArray(sensorData)
         for (index, d) in data.enumerated() {
             logData[index].append(d)
         }
@@ -217,7 +229,7 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
         let status :SenStickStatus = cell!.iconButton!.isSelected ? .stopping : .sensingAndLogging
         
         if let current_setting = self.service?.settingData {
-            let setting = SensorSettingData<S>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
+            let setting = SensorSettingData<RangeType>(status: status, samplingDuration: current_setting.samplingDuration, range: current_setting.range)
             
             service?.writeSetting(setting)
         }
@@ -240,7 +252,7 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
     func didUpdateRealTimeData(_ sender: AnyObject)
     {
         if let data = service?.realtimeData {
-            drawRealTimeData(dataToArray(data))
+            drawRealTimeData(data)
         }
     }
     
@@ -265,7 +277,7 @@ class SensorDataModel<T: SensorDataPackableType, S: RawRepresentable>: SenStickS
     {
         if let array = service?.readLogData() {
             for data in array {
-                addReadLog(dataToArray(data))
+                addReadLog(data)
             }
         }
     }

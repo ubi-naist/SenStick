@@ -18,10 +18,12 @@ public protocol SenStickSensorServiceDelegate : class
     func didFinishedLogData(_ sender: AnyObject)
 }
 
-// センサー各種のベースタイプ, Tはセンサデータ独自のデータ型, Sはサンプリングの型
-open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable> where S.RawValue == UInt16, T.RangeType == S
+// センサーそれぞれのサービスを表すクラスです。
+// センサーの種類が異なっても、処理フローは同じです。それを吸収するために、ジェネリックを使います。DataTypeはセンサそれぞれのデータ型, RangeTypeはセンサーのレンジ型を示します。
+
+open class SenStickSensorService<DataType: SensorDataPackableType, RangeType: RawRepresentable> where RangeType.RawValue == UInt16, DataType.RangeType == RangeType
 {
-    let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue", attributes: [])
+    let lockQueue = DispatchQueue(label: "com.SenStickSensorService.LockQueue") // serial queue
 
     // code
     open weak var delegate: SenStickSensorServiceDelegate?
@@ -52,12 +54,11 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
             objc_sync_exit(_flagLockObj)
         }
     }
-    var logData: [T] = []
+    var logData: [DataType] = []
 
     // MARK: - Properties
-
     
-    open fileprivate(set) var settingData:  SensorSettingData<S>? {
+    open fileprivate(set) var settingData:  SensorSettingData<RangeType>? {
         didSet {
             DispatchQueue.main.async(execute: {
                 self.delegate?.didUpdateSetting(self)
@@ -66,7 +67,9 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     }
 
     var _realTimeDataFlag:Bool = false
+    
     var _lockObj: NSObject = NSObject()
+    
     var realTimeDataFlag: Bool {
         get {
             objc_sync_enter(_lockObj)
@@ -80,7 +83,8 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
             objc_sync_exit(_lockObj)
         }
     }
-    open fileprivate(set) var realtimeData: T? {
+    
+    open fileprivate(set) var realtimeData: DataType? {
         didSet {
             if realTimeDataFlag == false {
                 realTimeDataFlag = true
@@ -94,7 +98,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
 
     open fileprivate(set) var logID: SensorLogID?
 
-    open fileprivate(set) var logMetaData: SensorLogMetaData<S>? {
+    open fileprivate(set) var logMetaData: SensorLogMetaData<RangeType>? {
         didSet {
             DispatchQueue.main.async(execute: {
                 self.delegate?.didUpdateMetaData(self)
@@ -141,7 +145,8 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     }
     
     // MARK: - Private methods
-    func unpackDataArray(_ range:S, value: [UInt8]) -> [T]?
+    
+    func unpackDataArray(_ range:RangeType, value: [UInt8]) -> [DataType]?
     {
         // 空配列
         if value.count == 1 && value[0] == 0 {
@@ -166,13 +171,13 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
         }
 
         let size  = (value.count - 1) / count
-        var array = Array<T>()
+        var array = Array<DataType>()
         for i in 0..<count {
             // センサデータ1つ分を切り出す
             let startIndex = 1 + size * i
             let endIndex   = startIndex + size
             let unit       = Array(value[startIndex..<endIndex])
-            let logunit = T.unpack(settingData!.range, value: unit)!
+            let logunit    = DataType.unpack(settingData!.range, value: unit)!
             array.append( logunit )
         }
         return array
@@ -183,7 +188,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     {
         switch characteristic.uuid {
         case sensorSettingChar.uuid:
-            guard let settingData = SensorSettingData<S>.unpack(data) else {
+            guard let settingData = SensorSettingData<RangeType>.unpack(data) else {
                 // FIXME 不正なデータ処理
                 assert(false, #function)
                 break
@@ -191,7 +196,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
             self.settingData = settingData
             
         case sensorRealTimeDataChar.uuid:
-            self.realtimeData = T.unpack(self.settingData!.range, value: data)
+            self.realtimeData = DataType.unpack(self.settingData!.range, value: data)
 //debugPrint("\(self.realtimeData)")
             
         case sensorLogIDChar.uuid:
@@ -202,7 +207,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
             self.logID = logID
 
         case sensorLogMetaDataChar.uuid:
-            guard let metadata = SensorLogMetaData<S>.unpack(data) else {
+            guard let metadata = SensorLogMetaData<RangeType>.unpack(data) else {
                 assert(false, #function)
                 break
             }
@@ -247,7 +252,7 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     // MARK: -  Public methods
 
     // セッテイングを書き込みます
-    open func writeSetting(_ setting: SensorSettingData<S>)
+    open func writeSetting(_ setting: SensorSettingData<RangeType>)
     {
         let data = setting.pack()
         device.writeValue(sensorSettingChar, value: data)
@@ -281,9 +286,9 @@ open class SenStickSensorService<T: SensorDataPackableType, S: RawRepresentable>
     }
     
     // センサデータを読みだし
-    open func readLogData() -> [T]
+    open func readLogData() -> [DataType]
     {
-        var ret: [T]
+        var ret: [DataType]
         
         objc_sync_enter(self)
         ret = self.logData

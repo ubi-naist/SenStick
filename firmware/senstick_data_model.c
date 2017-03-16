@@ -1,6 +1,8 @@
 #include <nordic_common.h>
 #include <app_util_platform.h>
 #include <nrf_log.h>
+#include <nrf_sdm.h>
+#include <ble_hci.h>
 
 #include "senstick_data_model.h"
 
@@ -8,15 +10,26 @@
 #include "senstick_sensor_controller.h"
 #include "metadata_log_controller.h"
 
-#include "twi_slave_rtc.h"
+#include "senstick_rtc.h"
+
 #include "gpio_led_driver.h"
 #include "twi_manager.h"
+#include "spi_slave_mx25_flash_memory.h"
 #include "gpio_button_monitoring.h"
 
+#include "advertising_manager.h"
+
+#ifdef NRF52832
+// nRF51, S132, SDK12
+#include <nrf_dfu_settings.h>
+#else
+// nRF51, S110, SDK10
+// これらのヘッダファイルに、startDFU()メソッドが、ブートローダにDFUに入らせるための定義がある。
 #include "bootloader_types.h"
 #include "nrf51.h"
 #include "bootloader_util.h"
 #include "nrf_sdm.h"
+#endif
 
 #define ABSTRACT_TEXT_LENGTH 20
 
@@ -28,6 +41,9 @@ typedef struct {
     ButtonStatus_t button_status;
     bool is_disk_full;
     bool is_connected;
+    
+    uint16_t conn_handle;
+    bool is_waiting_disconnect_for_dfu;
 } senstick_core_data_t;
 static senstick_core_data_t context;
 
@@ -44,6 +60,7 @@ senstick_control_command_t senstick_getControlCommand(void)
     return context.command;
 }
 
+#ifdef NRF51
 #define MAX_NUMBER_INTERRUPTS  32
 #define IRQ_ENABLED            0x01
 static void interrupts_disable(void)
@@ -64,10 +81,63 @@ static void interrupts_disable(void)
         }
     }
 }
+#endif
+/*
+#ifdef NRF52
+void flash_callback(fs_evt_t const * const evt, fs_ret_t result)
+{
+    if (result == FS_SUCCESS)
+    {
+        NRF_LOG_INFO("Obtained settings, enter dfu is %d\n", s_dfu_settings.enter_buttonless_dfu);
+
+        // フラグを立てる。
+        context.is_waiting_disconnect_for_dfu = true;
+        // 切断していればシステムリセットして再起動、または切断処理
+        if(context.is_connected == false) {
+            NVIC_SystemReset();
+        } else {
+            sd_ble_gap_disconnect(context.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+        }
+    }
+}
+#endif
+*/
+#ifdef NRF52
+#define BOOTLOADER_DFU_START 0xB1
 static void startDFU(void)
 {
     uint32_t err_code;
     
+    // nRF52でもnRF51と同じgpregを使う方式で、DFUフラグをブートローダに伝える。
+    err_code = sd_power_gpregret_set(0, BOOTLOADER_DFU_START); // 0 for GPREGRET, 1 for GPREGRET2.
+    APP_ERROR_CHECK(err_code);
+
+    if( context.is_connected == false ) {
+        NVIC_SystemReset();
+    } else {
+        context.is_waiting_disconnect_for_dfu = true;
+        sd_ble_gap_disconnect(context.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+    }    
+/*
+    err_code = sd_softdevice_disable();
+    APP_ERROR_CHECK(err_code);
+    
+    err_code = sd_softdevice_vector_table_base_set(NRF_UICR->BOOTLOADERADDR);
+    APP_ERROR_CHECK(err_code);
+    
+    NVIC_ClearPendingIRQ(SWI2_IRQn);
+    interrupts_disable();
+    bootloader_util_app_start(NRF_UICR->BOOTLOADERADDR);
+    //#endif
+*/
+}
+#else // nRF51
+static void startDFU(void)
+{
+    uint32_t err_code;
+    
+    // SDK10のブートローダは、リセットされても内容が保持されるリテンションレジスタを使って、DFU更新をブートローダに伝える。
+    // BOOTLOADER_DFU_STARTは、ブートローダの実装側が bootloader_types.h で　0xB1に定義している。
     err_code = sd_power_gpregret_set(BOOTLOADER_DFU_START);
     APP_ERROR_CHECK(err_code);
     
@@ -80,7 +150,9 @@ static void startDFU(void)
     NVIC_ClearPendingIRQ(SWI2_IRQn);
     interrupts_disable();
     bootloader_util_app_start(NRF_UICR->BOOTLOADERADDR);
+    //#endif
 }
+#endif
 
 void senstick_setControlCommand(senstick_control_command_t command)
 {
@@ -88,7 +160,7 @@ void senstick_setControlCommand(senstick_control_command_t command)
     if(   command != sensorShouldSleep
        && command != sensorShouldWork
        && command != formattingStorage
-       && command != enterDeepSleep
+       && command != shouldDeviceSleep
        && command != enterDFUmode) {
 //       NRF_LOG_PRINTF_DEBUG("_setControlCommand, unexpected command: %d.\n", command);
         return;
@@ -104,11 +176,15 @@ void senstick_setControlCommand(senstick_control_command_t command)
         return;
     }
     
-    // ログ取得できるセンサーがない場合(センサーがハードウェア無効、ログ/リアルタイム動作にない)、動作開始させません。
-    uint8_t numOfWillLoggingSensors = senstickSensorControllerGetNumOfLoggingReadySensor();
-    if(command == sensorShouldWork && numOfWillLoggingSensors == 0) {
+    // 動作するセンサーがない場合は、動作開始させません。
+    uint8_t numOfActiveSensors = senstickSensorControllerGetNumOfActiveSensor();
+    if(command == sensorShouldWork && numOfActiveSensors == 0) {
         return;
     }
+    
+    // ログ取得するセンサ数を取得する。
+    uint8_t numOfLoggingSensors = senstickSensorControllerGetNumOfLoggingReadySensor();
+    bool shouldStartLogging = (numOfLoggingSensors > 0);
     
     // コマンドの実行
     // 新旧コマンドを保存
@@ -120,9 +196,19 @@ void senstick_setControlCommand(senstick_control_command_t command)
     // 新しく作るログのID
     const uint8_t new_log_id = senstick_getCurrentLogCount();
     
+    // 本来はここに書くべきではないが、電源管理ロジック。センサ起動時にTWIの起動を確保する。
+    // スリープから復帰したときに、パワーを戻す。
+    if(old_command == shouldDeviceSleep) {
+        flashMemoryReleasePowerDown();
+        twiPowerUp();
+        stopAdvertising();        
+        startAdvertising();
+    }
+    
+    // リスナへの変更通知。
     senstickControlService_observeControlCommand(new_command);
-    senstickSensorController_observeControlCommand(new_command, new_log_id);
-    metaDatalog_observeControlCommand(old_command, new_command, new_log_id);
+    senstickSensorController_observeControlCommand(new_command, shouldStartLogging, new_log_id);
+    metaDatalog_observeControlCommand(old_command, new_command, shouldStartLogging, new_log_id);
     ledDriver_observeControlCommand(new_command);
 
     // 本当はモデルに書くべきではないけど、コントローラの機能をここに直書き。
@@ -130,8 +216,10 @@ void senstick_setControlCommand(senstick_control_command_t command)
         case sensorShouldSleep:
             break;
         case sensorShouldWork:
-            // ログカウントを更新
-            senstick_setCurrentLogCount( context.logCount + 1);
+            // ログ取得するならば、ログカウントを更新
+            if( shouldStartLogging) {
+                senstick_setCurrentLogCount( context.logCount + 1);
+            }
             break;
         case formattingStorage:
             // フォーマットの実行, 実際のフォーマット処理は、上記のオブザーバで処理されているはず
@@ -141,12 +229,23 @@ void senstick_setControlCommand(senstick_control_command_t command)
             // フォーマット状態からの自動復帰
             senstick_setControlCommand(sensorShouldSleep);
             break;
-        case enterDeepSleep:
+        case shouldDeviceSleep:
+            // BLE接続していなければ、ここで電源を落とす。接続している場合は、切断完了時に電源を落とす。
+            if( senstick_isConnected() == false) {
+               stopAdvertising();
+                twiPowerDown();
+                flashMemoryEnterDeepPowerDown();
+            } else {
+                // 接続しているなら、落とす。
+                sd_ble_gap_disconnect(context.conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+            }
+            /*
             // ボタンで起動するように設定。
             enableAwakeByButton();
             // パワーを落とします。
             twiPowerDown();
             sd_power_system_off();
+             */
             break;
         case enterDFUmode:
             startDFU();
@@ -182,15 +281,11 @@ void senstick_setDiskFull(bool flag)
 // 現在の時刻
 void senstick_getCurrentDateTime(ble_date_time_t *p_datetime)
 {
-    CRITICAL_REGION_ENTER();
-    getTWIRTCDateTime(p_datetime);
-    CRITICAL_REGION_EXIT();
+    getSenstickRTCDateTime(p_datetime);
 }
 void senstick_setCurrentDateTime(ble_date_time_t *p_datetime)
 {
-    CRITICAL_REGION_ENTER();
-    setTWIRTCDateTime(p_datetime);
-    CRITICAL_REGION_EXIT();
+    setSenstickRTCDateTime(p_datetime);
 }
 
 // 現在のログテキスト概要
@@ -235,7 +330,7 @@ void senstick_setButtonStatus(ButtonStatus_t status)
         case BUTTON_LONG_PUSH: break;
         case BUTTON_LONG_PUSH_RELEASED:
             // 長押しでDeepSleep
-            senstick_setControlCommand(enterDeepSleep);
+            senstick_setControlCommand(shouldDeviceSleep);
             break;            
         case BUTTON_VERY_LONG_PUSH: break;
         case BUTTON_VERY_LONG_PUSH_RELEASED:
@@ -251,8 +346,22 @@ bool senstick_isConnected(void)
 {
     return context.is_connected;
 }
-void senstick_setIsConnected(bool value)
+
+void senstick_setIsConnected(bool value, uint16_t conn_handle)
 {
     context.is_connected = value;
+    context.conn_handle  = conn_handle;
+    
+    // 切断時にシステムリセットして再起動
+    if (context.is_waiting_disconnect_for_dfu && context.is_connected == false)
+    {
+        NVIC_SystemReset();
+    }
+
+    // BLE切断時に電源を落とす。
+    if(senstick_getControlCommand() == shouldDeviceSleep && context.is_connected == false) {
+        twiPowerDown();
+        flashMemoryEnterDeepPowerDown();
+    }
 }
 

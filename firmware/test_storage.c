@@ -26,7 +26,6 @@ void test01()
     formatLog(&address_info);
     
     // 書き込みで開いてみる
-    bool result;
     createLog(&log_context, 0x00, 0, 0, &address_info);
     // 適当にデータを1つ書いてみる
     uint32_t data = 0x1234;

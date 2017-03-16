@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "SenStickSDK"
-  s.version      = "0.9.1"
+  s.version      = "1.0.8"
   s.summary      = "SenStick software development kit."
 
   # This description is used to generate tags and improve search results.
@@ -64,7 +64,7 @@ s.license      = { :type => "MIT", :file => "LICENSE.txt" }
   #
 
   # s.platform     = :ios
-  s.platform     = :ios, "10.0"
+  s.platform     = :ios, "9.0"
 
   #  When using multiple platforms
   # s.ios.deployment_target = "5.0"

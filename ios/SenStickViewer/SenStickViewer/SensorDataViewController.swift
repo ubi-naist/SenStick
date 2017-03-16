@@ -10,6 +10,8 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
+// センサデバイスの、センサデータ一覧を提供します。
+
 class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     
     @IBOutlet var deviceInformationButton: UIBarButtonItem!
@@ -24,6 +26,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     var uvDataModel:            UVDataModel?
     var humidityDataModel:      HumidityDataModel?
     var pressureDataModel:      PressureDataModel?
+    
+    // MARK: - View life cycle
     
     override func viewDidLoad()
     {
@@ -72,6 +76,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         }
     }
 
+    // MARK: - Public methods
+    
     func clearGraph()
     {
         accelerationDataModel?.clearPlot()
@@ -84,6 +90,7 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     }
 
     // MARK: - SenStickDeviceDelegate
+    
     func didServiceFound(_ sender: SenStickDevice) {
         self.statusCell?.name       = device?.name
         self.statusCell?.service    = device?.controlService
@@ -105,6 +112,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
     {
         _ = self.navigationController?.popToRootViewController(animated: true)
     }
+    
+    // MARK: - Private methods
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
@@ -130,8 +139,8 @@ class SensorDataViewController : UITableViewController, SenStickDeviceDelegate {
         }
     }
     
-    
     // MARK: - Segues
+    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool
     {
         // デバイス詳細情報表示に遷移

@@ -22,28 +22,28 @@
 
 import CoreBluetooth
 
-internal typealias VersionCallback = (_ major:Int, _ minor:Int) -> Void
+internal typealias VersionCallback = (_ major: Int, _ minor: Int) -> Void
 
 @objc internal class DFUVersion : NSObject, CBPeripheralDelegate {
     static let UUID = CBUUID(string: "00001534-1212-EFDE-1523-785FEABCD123")
     
-    static func matches(_ characteristic:CBCharacteristic) -> Bool {
+    static func matches(_ characteristic: CBCharacteristic) -> Bool {
         return characteristic.uuid.isEqual(UUID)
     }
     
-    fileprivate var characteristic:CBCharacteristic
-    fileprivate var logger:LoggerHelper
+    private var characteristic: CBCharacteristic
+    private var logger: LoggerHelper
     
-    fileprivate var success:VersionCallback?
-    fileprivate var report:ErrorCallback?
+    private var success: VersionCallback?
+    private var report: ErrorCallback?
     
-    var valid:Bool {
+    internal var valid: Bool {
         return characteristic.properties.contains(CBCharacteristicProperties.read)
     }
     
     // MARK: - Initialization
     
-    init(_ characteristic:CBCharacteristic, _ logger:LoggerHelper) {
+    init(_ characteristic: CBCharacteristic, _ logger: LoggerHelper) {
         self.characteristic = characteristic
         self.logger = logger
     }
@@ -57,7 +57,7 @@ internal typealias VersionCallback = (_ major:Int, _ minor:Int) -> Void
     - parameter callback: method called when version is read and is supported
     - parameter error:    method called on error of if version is not supported
     */
-    func readVersion(onSuccess success:VersionCallback?, onError report:ErrorCallback?) {
+    func readVersion(onSuccess success: VersionCallback?, onError report: ErrorCallback?) {
         // Save callbacks
         self.success = success
         self.report = report
@@ -69,31 +69,36 @@ internal typealias VersionCallback = (_ major:Int, _ minor:Int) -> Void
         peripheral.delegate = self
         
         logger.v("Reading DFU Version number...")
-        logger.d("peripheral.readValueForCharacteristic(\(DFUVersion.UUID.uuidString))")
+        logger.d("peripheral.readValue(\(characteristic.uuid.uuidString))")
         peripheral.readValue(for: characteristic)
     }
     
     // MARK: - Peripheral Delegate callbacks
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        // Ignore updates received for other characteristics
+        guard characteristic.uuid.isEqual(DFUVersion.UUID) else {
+            return
+        }
+        
         if error != nil {
             logger.e("Reading DFU Version characteristic failed")
             logger.e(error!)
-            report?(DFUError.readingVersionFailed, "Reading DFU Version characteristic failed")
+            report?(.readingVersionFailed, "Reading DFU Version characteristic failed")
         } else {
             let data = characteristic.value
-            logger.i("Read Response received from \(DFUVersion.UUID.uuidString), \("value (0x):" + (data?.hexString ?? "no value"))")
+            logger.i("Read Response received from \(characteristic.uuid.uuidString), value\(data != nil && data!.count > 0 ? " (0x): " + data!.hexString : ": 0 bytes")")
             
             // Validate data length
             if data == nil || data!.count != 2 {
                 logger.w("Invalid value: 2 bytes expected")
-                report?(DFUError.readingVersionFailed, "Unsupported DFU Version value: \(data != nil ? "0x" + data!.hexString : "nil"))")
+                report?(.readingVersionFailed, "Unsupported DFU Version: \(data != nil && data!.count > 0 ? "0x" + data!.hexString : "no value")")
                 return
             }
             
             // Read major and minor
-            var minor:Int = 0
-            var major:Int = 0
+            var minor: Int = 0
+            var major: Int = 0
             (data as NSData?)?.getBytes(&minor, range: NSRange(location: 0, length: 1))
             (data as NSData?)?.getBytes(&major, range: NSRange(location: 1, length: 1))
             

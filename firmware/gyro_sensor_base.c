@@ -17,15 +17,16 @@ static bool initSensorHandler(void)
 // センサーのwakeup/sleepを指定します
 static void setSensorWakeupHandler(bool shouldWakeUp, const sensor_service_setting_t *p_setting)
 {
-    awakeNineAxesSensor();
-    setNineAxesSensorRotationRange((RotationRange_t)p_setting->measurementRange);
-    
-    uint8_t buf[sizeof(RotationRateData_t)];
-    getRotationRateData(buf);
+    if(shouldWakeUp) {
+        awakeNineAxesSensor();
+        setNineAxesSensorRotationRange((RotationRange_t)p_setting->measurementRange);
+    } else {
+        sleepNineAxesSensor();
+    }
 }
 
 // センサーの値を読み込みます。
-static uint8_t getSensorDataHandler(uint8_t *p_buffer)
+static uint8_t getSensorDataHandler(uint8_t *p_buffer, samplingDurationType duration_ms)
 {
     getRotationRateData(p_buffer);
     return sizeof(RotationRateData_t);

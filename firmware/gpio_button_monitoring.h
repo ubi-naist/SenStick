@@ -13,6 +13,6 @@ typedef enum {
 
 void initButtonMonitoring(void);
 
-void enableAwakeByButton(void);
+//void enableAwakeByButton(void);
 
 #endif /* gpio_button_monitoring_h */

@@ -11,6 +11,8 @@
 
 #include "gpio_button_monitoring.h"
 
+#include "senstick_util.h"
+
 // Delay from a GPIOTE event until a button is reported as pushed.
 #define BUTTON_DETECTION_DELAY_MS       50
 // 長押し
@@ -53,6 +55,8 @@ static void buttonIsReleased(void)
 static void _button_event_handler(uint8_t pin_no, uint8_t button_action)
 {
     ret_code_t err_code;
+
+    NRF_LOG_PRINTF_DEBUG("\n_button_event_handler() pin:%d action:%d.\n", pin_no, button_action);
     
     if(button_action == 0) {
         // released
@@ -123,8 +127,9 @@ void initButtonMonitoring(void)
      */
 }
 
-
+/*
 void enableAwakeByButton(void)
 {
     nrf_gpio_cfg_sense_input(PIN_NUMBER_TACT_SWITCH, NRF_GPIO_PIN_PULLUP, NRF_GPIO_PIN_SENSE_LOW);
 }
+*/

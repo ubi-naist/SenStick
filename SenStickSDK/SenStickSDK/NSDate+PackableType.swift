@@ -36,8 +36,6 @@ extension Date { //: PackableType {
         }
         
         var dateComponents = DateComponents()
-        (dateComponents as NSDateComponents).calendar = Calendar.current
-
         dateComponents.year   = Int(UInt16.unpack(bytes[0...1])!)
         dateComponents.month  = Int(bytes[2])
         dateComponents.day    = Int(bytes[3])
@@ -45,6 +43,7 @@ extension Date { //: PackableType {
         dateComponents.minute = Int(bytes[5])
         dateComponents.second = Int(bytes[6])
         
-        return (dateComponents as NSDateComponents).date
+        let date = Calendar.current.date(from: dateComponents)
+        return date
     }
 }

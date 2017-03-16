@@ -15,6 +15,18 @@ public protocol SenStickDeviceDelegate : class {
     func didDisconnected(_ sender:SenStickDevice)
 }
 
+// デバイスを表します。
+// 
+// 全てのプロパティは、KVO準拠です。
+//
+// nameはデバイス名を表します。
+// identifierは、デバイスの識別子を表します。この識別子は、そのiPhoneからみたデバイスの識別子です。同じBLEデバイスでも、別のiPhoneでは、識別子は異なります。
+//
+// 接続と切断。
+// 接続と切断はそれぞれ connect()メソッド, cancelConnect()メソッドで行います。
+// 接続状態は isConnectedプロパティ で取得できます。
+
+
 open class SenStickDevice : NSObject, CBPeripheralDelegate
 {
     // MARK: variables

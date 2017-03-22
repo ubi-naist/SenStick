@@ -16,8 +16,8 @@ class AccelerationDataModel :SensorDataModel<CMAcceleration, AccelerationRange>
         super.init()
         
         self.sensorName   = "acceleration"
-        self.csvHeader    = "Accs.X,\tAccs.Y,\tAccs.Z"
-        self.csvEmptyData = ",\t,\t"
+        self.csvHeader    = "Accs.X,Accs.Y,Accs.Z"
+        self.csvEmptyData = ",,"
     }
         
     // MARK: - Private methods

@@ -15,8 +15,8 @@ class GyroDataModel : SensorDataModel<CMRotationRate, RotationRange>
     override init() {
         super.init()
         self.sensorName   = "gyro"
-        self.csvHeader    = "Gyro.X,\tGyro.Y,\tGyro.Z"
-        self.csvEmptyData = ",\t,\t"
+        self.csvHeader    = "Gyro.X,Gyro.Y,Gyro.Z"
+        self.csvEmptyData = ",,"
     }
         
     // MARK: - Private methods

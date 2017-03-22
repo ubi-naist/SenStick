@@ -16,8 +16,8 @@ class MagneticFieldDataModel : SensorDataModel<CMMagneticField, MagneticFieldRan
         super.init()
         
         self.sensorName   = "magnetic"
-        self.csvHeader    = "Magnetic.X,\tMagnetic.Y,\tMagnetic.Z"
-        self.csvEmptyData = ",\t,\t"
+        self.csvHeader    = "Magnetic.X,Magnetic.Y,Magnetic.Z"
+        self.csvEmptyData = ",,"
         
         // レンジの更新
         self.maxValue = 100

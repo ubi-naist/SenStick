@@ -15,8 +15,8 @@ class HumidityDataModel : SensorDataModel<HumiditySensorData, HumiditySensorRang
         super.init()
         
         self.sensorName   = "humidity"
-        self.csvHeader    = "Humidity,\ttemp"
-        self.csvEmptyData = ",\t"
+        self.csvHeader    = "Humidity,temp"
+        self.csvEmptyData = ","
         
         // レンジの更新
         self.maxValue = 100

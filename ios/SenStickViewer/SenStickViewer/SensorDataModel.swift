@@ -195,7 +195,7 @@ class SensorDataModel<DataType: SensorDataPackableType, RangeType: RawRepresenta
                 break
             }
         }
-        return items.joined(separator: ",\t")    
+        return items.joined(separator: ",")
     }
     
     func saveToFile(_ filePath:String)
@@ -208,7 +208,7 @@ class SensorDataModel<DataType: SensorDataPackableType, RangeType: RawRepresenta
         var time :Int = 0
         for r in 0..<row {
             time    += samplingDuration
-            content += "\(Double(time) / 1000),\t"
+            content += "\(Double(time) / 1000),"
             content += self.getCSVDataText(r)
             content += "\n"
         }

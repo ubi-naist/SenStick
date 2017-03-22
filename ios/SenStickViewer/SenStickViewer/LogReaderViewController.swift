@@ -131,8 +131,8 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         var content = ""
         
         // ヘッダを吐き出す
-        content += "time,\t"
-        content +=  dataModels!.map { $0.csvHeader}.joined(separator: ",\t")
+        content += "time,"
+        content +=  dataModels!.map { $0.csvHeader}.joined(separator: ",")
         content += "\n"
         
         var time: Int   = 0
@@ -152,10 +152,10 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
                 } else {
                     return $0.csvEmptyData
                 }
-                }.joined(separator: ",\t")
+                }.joined(separator: ",")
             // CSVを出力
             if isValid {
-                content += "\(Double(time) / 1000),\t"
+                content += "\(Double(time) / 1000),"
                 content += csv
                 content += "\n"
             }            

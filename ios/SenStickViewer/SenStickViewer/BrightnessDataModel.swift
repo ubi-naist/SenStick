@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class BrightnessDataModel : SensorDataModel<BrightnessData, BrightnessRange>
+class BrightnessDataModel : SensorDataModel<BrightnessRange, BrightnessData>
 {
     override init() {
         super.init()

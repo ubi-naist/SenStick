@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class AccelerationDataModel :SensorDataModel<CMAcceleration, AccelerationRange>
+class AccelerationDataModel :SensorDataModel<AccelerationRange, CMAcceleration>
 {
     override init() {
         super.init()
@@ -21,6 +21,13 @@ class AccelerationDataModel :SensorDataModel<CMAcceleration, AccelerationRange>
     }
         
     // MARK: - Private methods
+    
+
+    
+    override func dataToArray(_ data: CMAcceleration) -> [Double]
+    {
+        return [data.x, data.y, data.z]
+    }
     
     override func updateRange(_ range:AccelerationRange)
     {
@@ -41,10 +48,5 @@ class AccelerationDataModel :SensorDataModel<CMAcceleration, AccelerationRange>
             self.maxValue = 16.0
             self.minValue = -16.0
         }
-    }
-    
-    override func dataToArray(_ data: CMAcceleration) -> [Double]
-    {
-        return [data.x, data.y, data.z]
     }
 }

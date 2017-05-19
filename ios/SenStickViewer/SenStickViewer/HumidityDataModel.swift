@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class HumidityDataModel : SensorDataModel<HumiditySensorData, HumiditySensorRange>
+class HumidityDataModel : SensorDataModel<HumiditySensorRange, HumiditySensorData>
 {
     override init() {
         super.init()

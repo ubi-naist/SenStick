@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class UVDataModel : SensorDataModel<UVSensorData, UVSensorRange>
+class UVDataModel : SensorDataModel<UVSensorRange, UVSensorData>
 {
     override init() {
         super.init()

@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class MagneticFieldDataModel : SensorDataModel<CMMagneticField, MagneticFieldRange>
+class MagneticFieldDataModel : SensorDataModel<MagneticFieldRange, CMMagneticField>
 {
     override init() {
         super.init()

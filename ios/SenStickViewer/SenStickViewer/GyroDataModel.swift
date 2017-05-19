@@ -10,7 +10,7 @@ import UIKit
 import SenStickSDK
 import CoreMotion
 
-class GyroDataModel : SensorDataModel<CMRotationRate, RotationRange>
+class GyroDataModel : SensorDataModel<RotationRange, CMRotationRate>
 {
     override init() {
         super.init()
@@ -21,7 +21,7 @@ class GyroDataModel : SensorDataModel<CMRotationRate, RotationRange>
         
     // MARK: - Private methods
     
-    override func updateRange(_ range: RotationRange)
+    override func updateRange(_ range: RotationRange) -> Void
     {
         switch(range) {
         case .rotationRange250DPS:

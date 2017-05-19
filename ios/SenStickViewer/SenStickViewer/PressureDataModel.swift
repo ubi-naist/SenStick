@@ -9,7 +9,7 @@
 import UIKit
 import SenStickSDK
 
-class PressureDataModel : SensorDataModel<PressureData, PressureRange>
+class PressureDataModel : SensorDataModel<PressureRange, PressureData>
 {    
     override init() {
         super.init()

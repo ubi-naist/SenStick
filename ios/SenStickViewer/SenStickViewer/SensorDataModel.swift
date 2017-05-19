@@ -36,7 +36,7 @@ protocol SensorDataModelDelegate :class {
     func didStopReadingLog(_ sender: SensorDataModelProtocol)
 }
 
-class SensorDataModel<DataType: SensorDataPackableType, RangeType: RawRepresentable>: SenStickSensorServiceDelegate, SensorDataModelProtocol where RangeType.RawValue == UInt16, DataType.RangeType == RangeType {
+class SensorDataModel<RangeType: RawRepresentable, DataType: SensorDataPackableType>: SenStickSensorServiceDelegate, SensorDataModelProtocol where RangeType.RawValue == UInt16, DataType.RangeType == RangeType {
     
     weak var service: SenStickSensorService<DataType,RangeType>? {
         didSet {
@@ -113,16 +113,19 @@ class SensorDataModel<DataType: SensorDataPackableType, RangeType: RawRepresenta
     }
     
     // MARK: - Methods , which should be override
-    
-    func updateRange(_ range: RangeType)
-    {
-    }
-    
+
     func dataToArray(_ data: DataType) -> [Double]
     {
         return []
     }
 
+    
+    func updateRange(_ range: RangeType) -> Void
+    {
+        return
+    }
+    
+    
     // MARK: - Private methods
     
     func updateCell()

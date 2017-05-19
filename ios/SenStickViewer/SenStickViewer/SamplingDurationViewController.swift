@@ -13,6 +13,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
 {
     @IBOutlet var durationField: UITextField!
     @IBOutlet var picker: UIPickerView!
+    @IBOutlet var rangeLabel: UILabel!
     
     var target: AnyObject?
     
@@ -43,6 +44,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         
         if let service = target as? BrightnessSensorService {
             picker.isHidden = true
+            rangeLabel.isHidden = true
             if let duration = service.settingData?.samplingDuration {
                 durationField.text = "\(Int(duration.duration * 1000))"
             }
@@ -50,6 +52,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         
         if let service = target as? UVSensorService {
             picker.isHidden = true
+            rangeLabel.isHidden = true
             if let duration = service.settingData?.samplingDuration {
                 durationField.text = "\(Int(duration.duration * 1000))"
             }
@@ -57,6 +60,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         
         if let service = target as? HumiditySensorService {
             picker.isHidden = true
+            rangeLabel.isHidden = true
             if let duration = service.settingData?.samplingDuration {
                 durationField.text = "\(Int(duration.duration * 1000))"
             }
@@ -64,6 +68,7 @@ class SamplingDurationViewController : UIViewController, UITextFieldDelegate, UI
         
         if let service = target as? PressureSensorService {
             picker.isHidden = true
+            rangeLabel.isHidden = true
             if let duration = service.settingData?.samplingDuration {
                 durationField.text = "\(Int(duration.duration * 1000))"
             }

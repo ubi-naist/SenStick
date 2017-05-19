@@ -133,7 +133,7 @@ open class SenStickDevice : NSObject, CBPeripheralDelegate
     {
         // エラーなきことを確認
         if error != nil {
-            debugPrint("Unexpected error in \(#function), \(error).")
+            debugPrint("Unexpected error in \(#function), \(String(describing: error)).")
             return
         }
         
@@ -149,7 +149,7 @@ open class SenStickDevice : NSObject, CBPeripheralDelegate
     {
         // エラーなきことを確認
         if error != nil {
-            debugPrint("Unexpected error in \(#function), \(error).")
+            debugPrint("Unexpected error in \(#function), \(String(describing: error)).")
             return
         }
         
@@ -193,7 +193,7 @@ open class SenStickDevice : NSObject, CBPeripheralDelegate
     open func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?)
     {
         if error != nil {
-            debugPrint("didUpdate: \(characteristic.uuid) \(error)")
+            debugPrint("didUpdate: \(characteristic.uuid) \(String(describing: error))")
             return
         }
         

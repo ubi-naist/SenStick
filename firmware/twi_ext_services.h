@@ -17,7 +17,7 @@
  */
 #define TWI_EXT_MOTOR_SERVICE_UUID             0x2206
 #define TWI_EXT_MOTOR_CONTROL_CHAR_UUID        0x7600
-#define TWI_EXT_MOTOR_FAULT_STATUS_CHAR_UUID   0x7600
+#define TWI_EXT_MOTOR_FAULT_STATUS_CHAR_UUID   0x7601
 
 // コンテキスト構造体。
 typedef struct twi_ext_services_s {

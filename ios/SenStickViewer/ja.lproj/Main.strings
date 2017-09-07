@@ -1,0 +1,204 @@
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "04g-WV-2IZ"; */
+"04g-WV-2IZ.text" = "65564";
+
+/* Class = "UILabel"; text = "湿度"; ObjectID = "070-Le-4VB"; */
+"070-Le-4VB.text" = "湿度";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "07l-Ut-zYh"; */
+"07l-Ut-zYh.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "3od-R3-6XC"; */
+"3od-R3-6XC.text" = "65564";
+
+/* Class = "UILabel"; text = "00"; ObjectID = "5l5-su-gQc"; */
+"5l5-su-gQc.text" = "00";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "661-Gr-cPg"; */
+"661-Gr-cPg.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "6X9-aG-CdL"; */
+"6X9-aG-CdL.text" = "65564";
+
+/* Class = "UINavigationItem"; title = "デバイス情報"; ObjectID = "6ew-eG-1eE"; */
+"6ew-eG-1eE.title" = "デバイス情報";
+
+/* Class = "UITableViewController"; title = "Master"; ObjectID = "7bK-jq-Zjz"; */
+"7bK-jq-Zjz.title" = "Master";
+
+/* Class = "UILabel"; text = "ストレージ・フル"; ObjectID = "85P-61-L7q"; */
+"85P-61-L7q.text" = "ストレージ・フル";
+
+/* Class = "UILabel"; text = "Serial number:"; ObjectID = "D8z-fA-ifv"; */
+"D8z-fA-ifv.text" = "Serial number:";
+
+/* Class = "UILabel"; text = "角速度"; ObjectID = "GJt-va-0Zx"; */
+"GJt-va-0Zx.text" = "角速度";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "Gjp-T0-wb9"; */
+"Gjp-T0-wb9.text" = "65564";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "H52-kS-hxi"; */
+"H52-kS-hxi.text" = "Title";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "IsF-Hm-tyb"; */
+"IsF-Hm-tyb.text" = "65564";
+
+/* Class = "UINavigationItem"; title = "ログリスト"; ObjectID = "JTZ-jL-olL"; */
+"JTZ-jL-olL.title" = "ログリスト";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "K3k-9U-YfL"; */
+"K3k-9U-YfL.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "KOJ-Au-hrL"; */
+"KOJ-Au-hrL.text" = "65564";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "Kla-4N-07E"; */
+"Kla-4N-07E.text" = "Detail";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "LO3-Ae-KYZ"; */
+"LO3-Ae-KYZ.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "MXk-Gi-9vB"; */
+"MXk-Gi-9vB.text" = "65564";
+
+/* Class = "UINavigationItem"; title = "ログ読み出し"; ObjectID = "Nue-br-l1M"; */
+"Nue-br-l1M.title" = "ログ読み出し";
+
+/* Class = "UILabel"; text = "湿度"; ObjectID = "PW9-AD-Txh"; */
+"PW9-AD-Txh.text" = "湿度";
+
+/* Class = "UIButton"; normalTitle = "Stop"; ObjectID = "QiD-8B-Rzx"; */
+"QiD-8B-Rzx.normalTitle" = "Stop";
+
+/* Class = "UINavigationController"; title = "Master"; ObjectID = "RMx-3f-FxP"; */
+"RMx-3f-FxP.title" = "Master";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "Rh3-WW-Mbg"; */
+"Rh3-WW-Mbg.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "SeR-gb-gng"; */
+"SeR-gb-gng.text" = "65564";
+
+/* Class = "UILabel"; text = "磁場"; ObjectID = "WUy-o5-tBO"; */
+"WUy-o5-tBO.text" = "磁場";
+
+/* Class = "UINavigationItem"; title = "Device list"; ObjectID = "Zdf-7t-Un8"; */
+"Zdf-7t-Un8.title" = "Device list";
+
+/* Class = "UILabel"; text = "照度"; ObjectID = "aFZ-8Z-dP0"; */
+"aFZ-8Z-dP0.text" = "照度";
+
+/* Class = "UILabel"; text = "4B5C9081-828B-074A-63C2-E8397C796DCA"; ObjectID = "aRF-Wk-W63"; */
+"aRF-Wk-W63.text" = "4B5C9081-828B-074A-63C2-E8397C796DCA";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "akI-Mt-fjW"; */
+"akI-Mt-fjW.text" = "65564";
+
+/* Class = "UILabel"; text = "照度"; ObjectID = "bDS-CB-jnq"; */
+"bDS-CB-jnq.text" = "照度";
+
+/* Class = "UILabel"; text = "progress text label"; ObjectID = "cF7-eT-u8X"; */
+"cF7-eT-u8X.text" = "progress text label";
+
+/* Class = "UILabel"; text = "気圧"; ObjectID = "d66-cg-7sy"; */
+"d66-cg-7sy.text" = "気圧";
+
+/* Class = "UIButton"; normalTitle = "Update firmware"; ObjectID = "dmC-V2-Ici"; */
+"dmC-V2-Ici.normalTitle" = "Update firmware";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "e1B-1L-YeK"; */
+"e1B-1L-YeK.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "eAF-Ff-NCY"; */
+"eAF-Ff-NCY.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "ec9-An-pW3"; */
+"ec9-An-pW3.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "fHc-vv-1Hm"; */
+"fHc-vv-1Hm.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "fvO-FL-x5X"; */
+"fvO-FL-x5X.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "gGb-aA-JWn"; */
+"gGb-aA-JWn.text" = "65564";
+
+/* Class = "UIButton"; normalTitle = "Start"; ObjectID = "gGe-Po-O1I"; */
+"gGe-Po-O1I.normalTitle" = "Start";
+
+/* Class = "UILabel"; text = "Log#:"; ObjectID = "gXK-Xk-TFV"; */
+"gXK-Xk-TFV.text" = "Log#:";
+
+/* Class = "UILabel"; text = "NARA_ACT"; ObjectID = "ga6-3i-fRz"; */
+"ga6-3i-fRz.text" = "NARA_ACT";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "grF-h0-0cV"; */
+"grF-h0-0cV.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "h1L-AM-sYD"; */
+"h1L-AM-sYD.text" = "65564";
+
+/* Class = "UILabel"; text = "角速度"; ObjectID = "iCN-5j-BSy"; */
+"iCN-5j-BSy.text" = "角速度";
+
+/* Class = "UILabel"; text = "レンジ:"; ObjectID = "iDj-hN-YZm"; */
+"iDj-hN-YZm.text" = "レンジ:";
+
+/* Class = "UILabel"; text = "加速度"; ObjectID = "jBK-a5-SeZ"; */
+"jBK-a5-SeZ.text" = "加速度";
+
+/* Class = "UILabel"; text = "加速度"; ObjectID = "k7B-aU-BjN"; */
+"k7B-aU-BjN.text" = "加速度";
+
+/* Class = "UILabel"; text = "Firmware revision:"; ObjectID = "kdL-mQ-R74"; */
+"kdL-mQ-R74.text" = "Firmware revision:";
+
+/* Class = "UILabel"; text = "紫外線"; ObjectID = "lJS-vN-2rr"; */
+"lJS-vN-2rr.text" = "紫外線";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "ms4-Vb-yDP"; */
+"ms4-Vb-yDP.text" = "65564";
+
+/* Class = "UILabel"; text = "log text label"; ObjectID = "oOO-DX-jGF"; */
+"oOO-DX-jGF.text" = "log text label";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "oSL-Sz-lqv"; */
+"oSL-Sz-lqv.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "p81-cy-Uyl"; */
+"p81-cy-Uyl.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "pQj-Cb-Idt"; */
+"pQj-Cb-Idt.text" = "65564";
+
+/* Class = "UILabel"; text = "Hardware revision:"; ObjectID = "qC9-Hv-Xbt"; */
+"qC9-Hv-Xbt.text" = "Hardware revision:";
+
+/* Class = "UILabel"; text = "紫外線"; ObjectID = "qxc-md-zSP"; */
+"qxc-md-zSP.text" = "紫外線";
+
+/* Class = "UINavigationItem"; title = "リアルタイムデータ"; ObjectID = "rqC-cZ-OFe"; */
+"rqC-cZ-OFe.title" = "リアルタイムデータ";
+
+/* Class = "UILabel"; text = "磁場"; ObjectID = "rwX-2G-2TV"; */
+"rwX-2G-2TV.text" = "磁場";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "t8d-lx-EgE"; */
+"t8d-lx-EgE.text" = "65564";
+
+/* Class = "UILabel"; text = "65564"; ObjectID = "tYc-aJ-Ew8"; */
+"tYc-aJ-Ew8.text" = "65564";
+
+/* Class = "UILabel"; text = "Manufacturer name:"; ObjectID = "wnZ-mP-iSn"; */
+"wnZ-mP-iSn.text" = "Manufacturer name:";
+
+/* Class = "UILabel"; text = "気圧"; ObjectID = "xQ5-qE-qqu"; */
+"xQ5-qE-qqu.text" = "気圧";
+
+/* Class = "UILabel"; text = "周期(ミリ秒): "; ObjectID = "xXp-rt-rn8"; */
+"xXp-rt-rn8.text" = "周期(ミリ秒): ";
+
+/* Class = "UIButton"; normalTitle = "Clear"; ObjectID = "xcs-eT-ZUu"; */
+"xcs-eT-ZUu.normalTitle" = "Clear";

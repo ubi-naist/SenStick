@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1E09D6C121155CF0E305B27B /* Pods_SenStickViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA1CDE0533321E8A91989EB /* Pods_SenStickViewer.framework */; };
+		769B7A9B1F61C3FB005A461D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 769B7A9E1F61C3FB005A461D /* Main.storyboard */; };
+		769B7A9C1F61C3FB005A461D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 769B7A9E1F61C3FB005A461D /* Main.storyboard */; };
 		F81F65031E73DB3600FE97DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F81F65021E73DB3600FE97DB /* Assets.xcassets */; };
 		F81F650E1E73DBB200FE97DB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F81F650D1E73DBB200FE97DB /* images.xcassets */; };
 		F81F65241E73DC3100FE97DB /* MagneticFieldDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F65101E73DC3100FE97DB /* MagneticFieldDataModel.swift */; };
@@ -61,14 +63,14 @@
 		F81F65811E73E24800FE97DB /* firmwareInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = F81F653B1E73DCBC00FE97DB /* firmwareInfo.plist */; };
 		F81F658B1E73FBA000FE97DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81F65891E73FBA000FE97DB /* LaunchScreen.storyboard */; };
 		F81F658C1E73FBA000FE97DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81F65891E73FBA000FE97DB /* LaunchScreen.storyboard */; };
-		F81F658D1E73FBA000FE97DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81F658A1E73FBA000FE97DB /* Main.storyboard */; };
-		F81F658E1E73FBA000FE97DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81F658A1E73FBA000FE97DB /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		37E9A3A2671568003EF9D0F1 /* Pods-SenStickViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.release.xcconfig"; sourceTree = "<group>"; };
 		5AA1CDE0533321E8A91989EB /* Pods_SenStickViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SenStickViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA60ACDC07F37F2ECABE545 /* Pods-SenStickViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SenStickViewer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SenStickViewer/Pods-SenStickViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		769B7A9D1F61C3FB005A461D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		769B7AA01F61C400005A461D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		F81F64F81E73DB3600FE97DB /* SenStickViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81F65021E73DB3600FE97DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F81F65071E73DB3600FE97DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,7 +102,6 @@
 		F81F65871E73E24800FE97DB /* SenStickViewer_deploygate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SenStickViewer_deploygate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81F65881E73E24900FE97DB /* SenStickViewer copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SenStickViewer copy-Info.plist"; path = "/Users/u_akihiro/Repository/iOS/SenStick/ios/SenStickViewer/SenStickViewer copy-Info.plist"; sourceTree = "<absolute>"; };
 		F81F65891E73FBA000FE97DB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F81F658A1E73FBA000FE97DB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,7 +146,7 @@
 			children = (
 				F81F650D1E73DBB200FE97DB /* images.xcassets */,
 				F81F65891E73FBA000FE97DB /* LaunchScreen.storyboard */,
-				F81F658A1E73FBA000FE97DB /* Main.storyboard */,
+				769B7A9E1F61C3FB005A461D /* Main.storyboard */,
 				F81F64FA1E73DB3600FE97DB /* SenStickViewer */,
 				F81F64F91E73DB3600FE97DB /* Products */,
 				DD77C4C89495036407C5C251 /* Pods */,
@@ -275,7 +276,7 @@
 				TargetAttributes = {
 					F81F64F71E73DB3600FE97DB = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = LEZ5FS873V;
+						DevelopmentTeam = ZY6FK4H66Q;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
@@ -291,6 +292,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = F81F64EF1E73DB3600FE97DB;
 			productRefGroup = F81F64F91E73DB3600FE97DB /* Products */;
@@ -308,7 +310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F81F658D1E73FBA000FE97DB /* Main.storyboard in Resources */,
+				769B7A9B1F61C3FB005A461D /* Main.storyboard in Resources */,
 				F81F653F1E73DCBC00FE97DB /* senstick_xxaa_s110_release_rev108.zip in Resources */,
 				F81F650E1E73DBB200FE97DB /* images.xcassets in Resources */,
 				F81F65401E73DCBC00FE97DB /* senstick_xxaa_s132_release_rev108.zip in Resources */,
@@ -322,7 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F81F658E1E73FBA000FE97DB /* Main.storyboard in Resources */,
+				769B7A9C1F61C3FB005A461D /* Main.storyboard in Resources */,
 				F81F657D1E73E24800FE97DB /* senstick_xxaa_s110_release_rev108.zip in Resources */,
 				F81F657E1E73E24800FE97DB /* images.xcassets in Resources */,
 				F81F657F1E73E24800FE97DB /* senstick_xxaa_s132_release_rev108.zip in Resources */,
@@ -484,11 +486,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		769B7A9E1F61C3FB005A461D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				769B7A9D1F61C3FB005A461D /* Base */,
+				769B7AA01F61C400005A461D /* ja */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		F81F65081E73DB3600FE97DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -538,6 +553,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -582,14 +598,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = LEZ5FS873V;
+				DEVELOPMENT_TEAM = ZY6FK4H66Q;
 				INFOPLIST_FILE = SenStickViewer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com-ma-tilde-SenStickViewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SenStickViewer/SenStickViewer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -599,13 +617,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = LEZ5FS873V;
+				DEVELOPMENT_TEAM = ZY6FK4H66Q;
 				INFOPLIST_FILE = SenStickViewer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com-ma-tilde-SenStickViewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SenStickViewer/SenStickViewer-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

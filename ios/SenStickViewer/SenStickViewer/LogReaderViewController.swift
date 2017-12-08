@@ -35,8 +35,8 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         uvDataModel            = UVDataModel(self)
         humidityDataModel      = HumidityDataModel(self)
         pressureDataModel      = PressureDataModel(self)
-        
-        dataModels = [accelerationDataModel!, gyroDataModel!, magneticFieldDataModel!, brightnessDataModel!, uvDataModel!, humidityDataModel!, pressureDataModel!]
+
+        dataModels = [accelerationDataModel!,gyroDataModel!,magneticFieldDataModel!,brightnessDataModel!,uvDataModel!,humidityDataModel!,pressureDataModel!]
     }
     
     override func viewDidAppear(_ animated: Bool) {

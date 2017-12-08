@@ -107,6 +107,7 @@ class SensorStatusCellView: UITableViewCell , SenStickControlServiceDelegate, UI
     // MARK: - Eventhandler
     @IBAction func  startButtonToutchUpInside(_ sender: UIButton) {
         controller?.clearGraph()
+        service?.writeDateTime(Date())
         service?.writeCommand(.starting)
     }
     

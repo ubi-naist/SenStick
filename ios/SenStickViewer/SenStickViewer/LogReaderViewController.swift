@@ -12,6 +12,8 @@ import SenStickSDK
 class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, SensorDataModelDelegate {
     var device: SenStickDevice?
     var logID: UInt8?
+    var sensorMetaData: SenStickMetaDataService?
+    
     var dataModels : [SensorDataModelProtocol]?
     var accelerationDataModel:  AccelerationDataModel?
     var gyroDataModel:          GyroDataModel?
@@ -84,6 +86,9 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
     func didStopReadingLog(_ sender: SensorDataModelProtocol)
     {
         debugPrint("\(#function) \(sender.sensorName).")
+
+        // センサデータの記録開始時間を設定。
+        sender.sensorDataStartAt = self.sensorMetaData!.dateTime
         
         // データフォルダを用意
         let folder         = getDataFileFolder()
@@ -138,6 +143,7 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
         var time: Int   = 0
         // データ系列の終端時間を求める。
         let endTime = dataModels!.map{ Int($0.duration.duration * 1000 ) * $0.logData[0].count }.max()!
+        let dataStartAt = Int(self.sensorMetaData!.dateTime.timeIntervalSince1970 * 1000)
         repeat {
             // 次のサンプリング時間を求める。
             time = samplingDurations.map { (time / $0 + 1) * $0 }.min()!
@@ -155,7 +161,9 @@ class LogReaderViewController: UITableViewController, SenStickDeviceDelegate, Se
                 }.joined(separator: ",")
             // CSVを出力
             if isValid {
-                content += "\(Double(time) / 1000),"
+                // 行先頭の時刻は、1970年を基準にしたミリ秒で表示する
+//                content += "\(Double(time) / 1000),"
+                content += "\(dataStartAt + time),"
                 content += csv
                 content += "\n"
             }            

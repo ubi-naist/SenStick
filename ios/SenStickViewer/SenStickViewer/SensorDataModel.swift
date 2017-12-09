@@ -18,6 +18,8 @@ protocol SensorDataModelProtocol :class {
     var cell: SensorDataCellView? { get set }
     
     var duration: SamplingDurationType { get set }
+    // センサデータの記録開始時刻
+    var sensorDataStartAt: Date { get set }
 
     var logid: UInt8 { get }
     var logData: [[Double]] { get }
@@ -91,6 +93,9 @@ class SensorDataModel<RangeType: RawRepresentable, DataType: SensorDataPackableT
             updateCell()
         }
     }
+    
+    // センサデータの記録開始時刻
+    var sensorDataStartAt: Date = Date.init(timeIntervalSince1970: 0)
     
     // MARK: - Initializer
     
@@ -208,10 +213,13 @@ class SensorDataModel<RangeType: RawRepresentable, DataType: SensorDataPackableT
         
         // 浮動小数点型だと、インクリメントしていくと微妙な端数がでるので、ミリ秒単位で整数で扱う
         let samplingDuration = Int(duration.duration * 1000)
+        let startAt = Int(self.sensorDataStartAt.timeIntervalSince1970 * 1000)
         var time :Int = 0
         for r in 0..<row {
             time    += samplingDuration
-            content += "\(Double(time) / 1000),"
+            // 行頭の時間は、1970年を基準としたミリ秒。
+//            content += "\(Double(time) / 1000),"
+            content += "\(startAt + time),"
             content += self.getCSVDataText(r)
             content += "\n"
         }

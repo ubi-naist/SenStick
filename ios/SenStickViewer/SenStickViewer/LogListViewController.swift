@@ -12,6 +12,9 @@ import SenStickSDK
 class LogListViewController: UITableViewController, SenStickDeviceDelegate, SenStickMetaDataServiceDelegate {
 
     var device: SenStickDevice?
+
+    // 画面遷移先のセンサのログデータ出力で、記録開始時刻が必要になる。その時刻があるセンサのメタデータを、この辞書で保持する。
+    var sensorMetaData:Dictionary<Int,SenStickMetaDataService> = [:]
     
     // View Controller life cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +40,9 @@ class LogListViewController: UITableViewController, SenStickDeviceDelegate, SenS
     func didUpdateMetaData(_ sender:SenStickMetaDataService)
     {
         if let cell = self.tableView.cellForRow(at: IndexPath(row: Int(sender.logID), section: 0)) {
+            // センサメタデータを辞書に保存する。
+            sensorMetaData[Int(sender.logID)] = sender
+            
             cell.textLabel?.text = "Log ID:\(sender.logID)"
 
             let formatter = DateFormatter()
@@ -50,6 +56,7 @@ class LogListViewController: UITableViewController, SenStickDeviceDelegate, SenS
         if let vc = segue.destination as? LogReaderViewController {
             vc.device = self.device
             vc.logID  = UInt8((self.tableView.indexPathForSelectedRow! as NSIndexPath).row)
+            vc.sensorMetaData = self.sensorMetaData[(self.tableView.indexPathForSelectedRow! as NSIndexPath).row]
         }
     }
     
